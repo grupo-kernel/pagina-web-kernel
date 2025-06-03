@@ -1,10 +1,45 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Lineas | Kernel</title>
+  <title>Líneas de Investigación | Kernel</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+    }
+    .linea-card {
+      background: #fff;
+      border-radius: 1.4rem;
+      box-shadow: 0 4px 18px rgba(70,130,180,0.08), 0 1.5px 8px rgba(20,44,93,0.04);
+      padding: 2.2rem 2rem 2.2rem 2rem;
+      margin-bottom: 2.2rem;
+      border-left: 7px solid #82b2fd;
+    }
+    .linea-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #167bb7;
+      margin-bottom: 0.6rem;
+    }
+    .linea-desc {
+      color: #34495e;
+      font-size: 1.12rem;
+      margin-bottom: 0.1rem;
+    }
+    h2 {
+      font-weight: bold;
+      color: #2071b2;
+      margin-bottom: 2.1rem;
+      font-size: 2.1rem;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .linea-card { padding: 1.1rem 0.5rem; }
+      h2 { font-size: 1.4rem; }
+    }
+  </style>
 </head>
 <body>
   
@@ -18,7 +53,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
         <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+        <li class="nav-item"><a class="nav-link active fw-bold" href="lineas.html">Líneas</a></li>
         <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
         <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
         <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
@@ -27,11 +62,71 @@
   </div>
 </nav>
 
-  <header class="container mt-4">
-    
-  </header>
-  <main class="container mt-5">
-    <h2>Líneas de Investigación</h2><p>Información detallada sobre cada línea investigativa.</p>
-  </main>
+<main class="container mt-5 mb-5">
+  <h2>Líneas de Investigación</h2>
+
+  <div class="linea-card">
+    <div class="linea-title">1. Diseño de nuevos algoritmos cuasi-Newton híbridos de optimización</div>
+    <div class="linea-desc">
+      Desarrollo y análisis de métodos híbridos cuasi-Newton, incluyendo variantes paramétricas y de memoria limitada, orientados a la optimización de problemas no lineales y al análisis de su comportamiento dinámico según parámetros.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">2. Optimización y modelado en finanzas y ciencias actuariales</div>
+    <div class="linea-desc">
+      Diseño y estudio de modelos matemáticos para variables de problemas financieros y actuariales, empleando técnicas de optimización numérica para toma de decisiones y análisis de riesgo.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">3. Métodos numéricos y entrenamiento de redes neuronales profundas</div>
+    <div class="linea-desc">
+      Desarrollo de algoritmos de memoria limitada y estrategias de regiones de confianza para el entrenamiento eficiente de redes neuronales profundas, incluyendo arquitecturas convolucionales y experimentos con conjuntos de datos como MNIST y FACE.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">4. Métodos híbridos y metaheurísticos para problemas complejos</div>
+    <div class="linea-desc">
+      Investigación en métodos híbridos que integran algoritmos cuasi-Newton con metaheurísticas, dirigidos a la solución de problemas complejos y multidimensionales.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">5. Educación matemática y transferencia de conocimiento</div>
+    <div class="linea-desc">
+      Desarrollo de estrategias, recursos y modelos para la mejora de la enseñanza de la matemática y la transferencia efectiva de los avances científicos hacia la educación y la sociedad.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">6. Dinámica en métodos iterativos para sistemas</div>
+    <div class="linea-desc">
+      Profundización en el estudio de la dinámica real de métodos iterativos para sistemas, con especial interés en el análisis del comportamiento del método Traub-M2 con Jacobiana, dada su notable eficiencia frente a otros esquemas recientes.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">7. Aproximación de la matriz Jacobiana</div>
+    <div class="linea-desc">
+      Desarrollo de técnicas alternativas para la aproximación de la matriz Jacobiana, explorando representaciones mediante diferencias divididas, como la diferencia dividida de Kurchatov, y esquemas con memoria para retener información previa y mejorar la eficiencia computacional.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">8. Adaptación de principios variacionales en ecuaciones semilineales y cuasilineales</div>
+    <div class="linea-desc">
+      Adaptación y aplicación de la teoría variacional al análisis y resolución de ecuaciones diferenciales semilineales y cuasilineales. Se propone implementar técnicas numéricas avanzadas, como esquemas iterativos basados en principios variacionales y métodos de elementos finitos adaptativos para resolver estos problemas complejos.
+    </div>
+  </div>
+
+  <div class="linea-card">
+    <div class="linea-title">9. Conjetura de Optimalidad para sistemas</div>
+    <div class="linea-desc">
+      Investigación sobre métodos óptimos para sistemas de ecuaciones, enfocándose en el desarrollo de esquemas que aumenten el orden de convergencia hasta alcanzar el nivel óptimo, en concordancia con la conjetura Cordero-Torregrosa.
+    </div>
+  </div>
+</main>
 </body>
 </html>
