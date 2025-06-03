@@ -1,15 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Quiénes Somos | Kernel</title>
+  <title>Quiénes Somos | El Kernel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #f3f9fb 0%, #d6eaff 100%);
+      min-height: 100vh;
+    }
+    .navbar {
+      background: rgba(255,255,255,0.97);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .main-card {
+      background: #fff;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(70,130,180,0.06), 0 1.5px 8px rgba(20,44,93,0.02);
+      padding: 3rem 2rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      max-width: 950px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+    h2 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: #0866C6;
+      letter-spacing: 0.04em;
+    }
+    h4, h5 {
+      font-weight: 700;
+      color: #1b566d;
+    }
+    .bi {
+      color: #37a3ff;
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      vertical-align: sub;
+    }
+    .card-section {
+      border-left: 5px solid #cce3fa;
+      padding-left: 1.2rem;
+      margin-bottom: 1.6rem;
+    }
+    .custom-list {
+      padding-left: 1.5rem;
+    }
+    .custom-list li {
+      margin-bottom: 0.7rem;
+      font-size: 1.18rem;
+    }
+    .values-list li {
+      margin-bottom: 0.4rem;
+    }
+    .quote {
+      font-size: 1.3rem;
+      color: #0866C6;
+      margin-top: 2.5rem;
+      font-style: italic;
+      font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      .main-card { padding: 1rem 0.3rem; }
+      h2 { font-size: 2rem; }
+      h4, h5 { font-size: 1.25rem; }
+      .card-section { padding-left: 0.6rem; }
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top mb-2">
     <div class="container">
-      <a class="navbar-brand" href="index.html">El Kernel</a>
+      <a class="navbar-brand fw-bold" href="index.html">
+        <img src="ElKernel.png" alt="Logo El Kernel" style="height:38px; margin-right:8px; vertical-align:middle;">
+        El Kernel
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -26,64 +96,68 @@
     </div>
   </nav>
 
-  <section class="container py-5">
-    <h2 class="text-center mb-4 text-primary">¿Quiénes Somos?</h2>
-
-    <div class="mb-5">
-      <p class="lead text-justify">
-        El <strong>Grupo de Investigación Kernel</strong> es una iniciativa académica multidisciplinaria dedicada a la investigación, innovación y transferencia de conocimiento en las áreas de <em>métodos numéricos</em>, <em>ecuaciones en derivadas parciales no lineales</em>, <em>optimización</em>, <em>álgebra computacional</em> y <em>educación matemática</em>. El grupo está conformado por docentes e investigadores adscritos a prestigiosas instituciones de educación superior de la República Dominicana, con una fuerte vocación hacia el desarrollo científico, tecnológico y pedagógico del país y de la región.
+  <section class="main-card shadow">
+    <div class="text-center mb-4">
+      <h2><i class="bi bi-people-fill"></i>¿Quiénes Somos?</h2>
+    </div>
+    <div class="mb-4 fs-5" style="color:#0e4369;">
+      <p>
+        <strong>El Grupo de Investigación Kernel</strong> es una comunidad académica multidisciplinaria dedicada a la investigación, la innovación y la transferencia de conocimiento en <span style="color:#2994cf;">métodos numéricos, ecuaciones en derivadas parciales no lineales, optimización, álgebra computacional y educación matemática</span>. Nuestro grupo está formado por docentes e investigadores de las instituciones más prestigiosas de la República Dominicana, unidos por la pasión por el avance científic...
       </p>
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <h4 class="text-success">Misión</h4>
+      <div class="col-md-6 card-section">
+        <h4><i class="bi bi-bullseye"></i>Misión</h4>
         <p>
-          Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados, y la implementación de soluciones innovadoras para problemas complejos en contextos académicos, científicos y tecnológicos, con un fuerte componente de impacto educativo.
+          Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados y la implementación de soluciones innovadoras para problemas complejos en ámbitos académicos, científicos y tecnológicos, con un fuerte enfoque en el impacto educativo.
         </p>
       </div>
-      <div class="col-md-6">
-        <h4 class="text-success">Visión</h4>
+      <div class="col-md-6 card-section">
+        <h4><i class="bi bi-eye-fill"></i>Visión</h4>
         <p>
-          Ser un referente nacional e internacional en la investigación matemática aplicada, particularmente en métodos libres de Jacobiano, optimización, álgebra computacional y educación matemática, destacándose por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de la matemática.
+          Ser un referente nacional e internacional en investigación matemática aplicada, en particular en métodos co matrices Jacobianas, libres de Jacobianas, optimización, álgebra matricial y educación matemática, distinguiéndose por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de la matemática.
         </p>
       </div>
     </div>
 
-    <div class="mt-5">
-      <h4 class="text-success">Objetivo General</h4>
-      <p>
-        Impulsar la investigación y el desarrollo de nuevas metodologías y aplicaciones matemáticas en problemas no lineales y educativos, con especial énfasis en la mejora de los procesos de enseñanza-aprendizaje de las matemáticas en todos los niveles educativos.
-      </p>
+    <div class="row mt-4">
+      <div class="col card-section">
+        <h4><i class="bi bi-flag-fill"></i>Objetivo General</h4>
+        <p>
+          Impulsar la investigación y el desarrollo de nuevas metodologías y aplicaciones matemáticas en problemas no lineales y educativos, con especial énfasis en la mejora de los procesos de enseñanza-aprendizaje de las matemáticas en todos los niveles educativos.
+        </p>
+      </div>
     </div>
 
-    <div class="mt-3">
-      <h5 class="text-primary">Objetivos Específicos</h5>
-      <ul>
-        <li>Diseñar y analizar nuevos métodos numéricos para la resolución eficiente de EDPs y sistemas no lineales.</li>
-        <li>Estudiar estructuras algebraicas relevantes para aplicaciones computacionales y visuales.</li>
-        <li>Desarrollar recursos y estrategias didácticas para la enseñanza de la matemática en contextos reales.</li>
-        <li>Fomentar la formación de jóvenes investigadores mediante programas de mentoría y colaboración científica.</li>
-        <li>Establecer redes de cooperación nacional e internacional con grupos afines.</li>
-      </ul>
+    <div class="row mt-2">
+      <div class="col card-section">
+        <h5><i class="bi bi-list-task"></i>Objetivos Específicos</h5>
+        <ul class="custom-list">
+          <li>Diseñar y analizar nuevos métodos numéricos para la resolución eficiente de EDPs y sistemas no lineales.</li>
+          <li>Efectuar Análisis Matricial, relevantes para aplicaciones computacionales y visuales.</li>
+          <li>Desarrollar recursos y estrategias didácticas para la enseñanza de la matemática en contextos reales.</li>
+          <li>Fomentar la formación de jóvenes investigadores mediante programas de mentoría y colaboración científica.</li>
+          <li>Establecer redes de cooperación nacional e internacional con grupos afines.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="mt-5">
-      <h4 class="text-success">Valores</h4>
-      <p>
-        El grupo Kernel se rige por los valores de:
-      </p>
-      <ul>
-        <li><strong>Rigor científico:</strong> Compromiso con la calidad, la veracidad y la solidez metodológica.</li>
-        <li><strong>Innovación:</strong> Búsqueda constante de soluciones originales y útiles.</li>
-        <li><strong>Colaboración:</strong> Trabajo en equipo, horizontal y plural.</li>
-        <li><strong>Responsabilidad social:</strong> Ciencia al servicio del desarrollo educativo y humano.</li>
-        <li><strong>Excelencia docente:</strong> Compromiso con la formación y el impacto pedagógico.</li>
-      </ul>
+    <div class="row mt-2">
+      <div class="col card-section">
+        <h4><i class="bi bi-award-fill"></i>Valores</h4>
+        <ul class="custom-list values-list">
+          <li><strong>Rigor científico:</strong> Compromiso con la calidad, la veracidad y la solidez metodológica.</li>
+          <li><strong>Innovación:</strong> Búsqueda constante de soluciones originales y útiles.</li>
+          <li><strong>Colaboración:</strong> Trabajo en equipo, horizontal y plural.</li>
+          <li><strong>Responsabilidad social:</strong> Ciencia al servicio del desarrollo educativo y humano.</li>
+          <li><strong>Excelencia docente:</strong> Compromiso con la formación y el impacto pedagógico.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="mt-5 text-center">
-      <p class="text-muted">“Transformamos la matemática en herramienta para el cambio educativo, científico y social.”</p>
+    <div class="text-center">
+      <p class="quote">“Transformamos la matemática en herramienta para el cambio educativo, científico y social.”</p>
     </div>
   </section>
 </body>
