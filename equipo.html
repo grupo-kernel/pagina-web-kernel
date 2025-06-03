@@ -6,18 +6,18 @@
   <title>Equipo de Investigación | Kernel</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-    .card-img-top {
-      width: 150px;
-      height: 150px;
+    .card-img-top, .rounded-circle {
+      width: 130px;
+      height: 130px;
       object-fit: cover;
-      border-radius: 50%;
-      margin: 1rem auto 0;
     }
     .card {
+      border: none;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
       margin-bottom: 2rem;
     }
-    .card-body a {
-      text-decoration: none;
+    .card-body {
+      padding: 2rem 1rem;
     }
   </style>
 </head>
@@ -40,73 +40,76 @@
 
   <section class="container py-5">
     <h2 class="text-center text-primary mb-5">Equipo de Investigación</h2>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+
       <!-- Miguel -->
       <div class="col">
-        <div class="card h-100 text-center">
-          <img src="miguel.jpg" class="card-img-top" alt="Miguel Leonardo">
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Miguel Antonio Leonardo Sepúlveda, Ph.D.</h5>
-            <p class="card-text">EDPs no lineales, métodos iterativos, educación matemática, competencias, formación docente.</p>
-            <p class="text-muted">ITLA – ISFODOSU</p>
-            <p><a href="mailto:miguel.leonardo@isfodosu.edu.do">miguel.leonardo@isfodosu.edu.do</a></p>
-            <p>
-              <a href="https://orcid.org/0000-0003-4199-6484" target="_blank">ORCID</a> | 
-              <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda" target="_blank">ResearchGate</a>
-            </p>
+            <img src="miguel.jpg" class="rounded-circle mb-3" alt="Miguel">
+            <h5 class="card-title">Dr. Miguel A. Leonardo Sepúlveda</h5>
+            <h6 class="text-muted">Investigador Senior</h6>
+            <p><strong>Áreas:</strong> EDPs no lineales, métodos iterativos, educación matemática, formación docente</p>
+            <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
+            <p class="small">Doctor en Matemática con experiencia en métodos libres de Jacobiano, matemática computacional y el enfoque por competencias.</p>
+            <a href="mailto:miguel.leonardo@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+            <a href="https://orcid.org/0000-0003-4199-6484" target="_blank">ORCID</a> |
+            <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda" target="_blank">ResearchGate</a>
           </div>
         </div>
       </div>
 
       <!-- Natanael -->
       <div class="col">
-        <div class="card h-100 text-center">
-          <img src="natanael.jpg" class="card-img-top" alt="Natanael Ureña">
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Natanael Ureña Castillo</h5>
-            <p class="card-text">Métodos iterativos, redes neuronales, riesgos y seguros, formación docente.</p>
-            <p class="text-muted">ISFODOSU – ITLA – INTEC</p>
-            <p><a href="mailto:natanael.urena@isfodosu.edu.do">natanael.urena@isfodosu.edu.do</a></p>
-            <p>
-              <a href="https://orcid.org/0000-0001-9186-1778" target="_blank">ORCID</a> |
-              <a href="https://www.researchgate.net/profile/Natanael-Urena-Castillo" target="_blank">ResearchGate</a>
-            </p>
+            <img src="natanael.jpg" class="rounded-circle mb-3" alt="Natanael">
+            <h5 class="card-title">Mtro. Natanael Ureña Castillo</h5>
+            <h6 class="text-muted">Investigador en Optimización</h6>
+            <p><strong>Áreas:</strong> Métodos iterativos, redes neuronales, riesgos y seguros, matemática computacional</p>
+            <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
+            <p class="small">Especialista en optimización y redes neuronales aplicadas a modelos complejos y seguros.</p>
+            <a href="mailto:natanael.urena@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+            <a href="https://orcid.org/0000-0001-9186-1778" target="_blank">ORCID</a> |
+            <a href="https://www.researchgate.net/profile/Natanael-Urena-Castillo" target="_blank">ResearchGate</a>
           </div>
         </div>
       </div>
 
       <!-- Randy -->
       <div class="col">
-        <div class="card h-100 text-center">
-          <img src="randy.jpg" class="card-img-top" alt="Randy Leonardo">
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Randy Leonardo</h5>
-            <p class="card-text">Álgebra Lineal, Matriz Combinada, educación matemática.</p>
-            <p class="text-muted">UASD</p>
-            <p>
-              <a href="https://orcid.org/0000-0002-9493-7165" target="_blank">ORCID</a> |
-              <a href="https://www.researchgate.net/profile/Randy-Leonardo" target="_blank">ResearchGate</a>
-            </p>
+            <img src="randy.jpg" class="rounded-circle mb-3" alt="Randy">
+            <h5 class="card-title">Mtro. Randy Leonardo</h5>
+            <h6 class="text-muted">Investigador en Álgebra Computacional</h6>
+            <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente</p>
+            <p><strong>Afiliación:</strong> UASD</p>
+            <p class="small">Enfocado en estructuras algebraicas aplicadas a la educación matemática y álgebra computacional.</p>
+            <a href="mailto:rleonardo36@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+            <a href="https://orcid.org/0000-0002-9493-7165" target="_blank">ORCID</a> |
+            <a href="https://www.researchgate.net/profile/Randy-Leonardo" target="_blank">ResearchGate</a>
           </div>
         </div>
       </div>
 
       <!-- Antmel -->
       <div class="col">
-        <div class="card h-100 text-center">
-          <img src="antmel.jpg" class="card-img-top" alt="Antmel Rodríguez">
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Antmel Rodríguez Cabral</h5>
-            <p class="card-text">EDPs, sistemas no lineales, planos dinámicos, ingeniería, educación.</p>
-            <p class="text-muted">UASD</p>
-            <p><a href="mailto:arodriguez05@uasd.edu.do">arodriguez05@uasd.edu.do</a></p>
-            <p>
-              <a href="https://orcid.org/0000-0003-4502-0307" target="_blank">ORCID</a> |
-              <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral" target="_blank">ResearchGate</a>
-            </p>
+            <img src="antmel.jpg" class="rounded-circle mb-3" alt="Antmel">
+            <h5 class="card-title">Mtro. Antmel Rodríguez Cabral</h5>
+            <h6 class="text-muted">Investigador en Dinámica Compleja</h6>
+            <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos dinámicos, educación</p>
+            <p><strong>Afiliación:</strong> UASD</p>
+            <p class="small">Aplica técnicas de análisis complejo y métodos iterativos a la solución de EDPs y contextos ingenieriles.</p>
+            <a href="mailto:arodriguez05@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+            <a href="https://orcid.org/0000-0003-4502-0307" target="_blank">ORCID</a> |
+            <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral" target="_blank">ResearchGate</a>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 </body>
