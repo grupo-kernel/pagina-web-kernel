@@ -13,6 +13,23 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 75vw;
+      height: 75vh;
+      background-image: url('ElKernel.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.08;
+      z-index: 0;
     }
 
     .hero {
@@ -35,14 +52,9 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
-    .hero img {
-      max-width: 250px;
-      margin-bottom: 1.5rem;
-    }
-
     .btn-primary {
       margin-top: 2rem;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       padding: 0.75rem 1.5rem;
     }
 
@@ -68,6 +80,11 @@
       background: rgba(255,255,255,0.95);
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+
+    .nav-link {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -75,7 +92,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">El Kernel</a>
+    <a class="navbar-brand fw-bold fs-4" href="index.html">El Kernel</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -94,12 +111,12 @@
 
 <!-- Hero Section -->
 <section class="hero">
-  <img src="ElKernel.png" alt="Logo El Kernel">
   <h1>Grupo de Investigación <em>El Kernel</em></h1>
-  <p>Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos<br> y educación matemática desde una perspectiva moderna y transformadora.</p>
+  <p>Exploramos EDPs no lineales, métodos iterativos, álgebra computacional,<br> diseño de algoritmos y educación matemática desde una perspectiva moderna y transformadora.</p>
+  <a href="publicaciones.html" class="btn btn-primary">Ver Publicaciones</a>
 </section>
 
-<!-- Bubbles -->
+<!-- Burbujas decorativas -->
 <div class="bubble"></div>
 <div class="bubble"></div>
 <div class="bubble"></div>
