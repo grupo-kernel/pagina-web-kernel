@@ -4,63 +4,157 @@
     <meta charset="UTF-8">
     <title>Publicaciones - Grupo Kernel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body { padding-top: 2rem; background-color: #f8f9fa; }
-        .pub-card {
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+        body {
+            padding-top: 2rem;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
         }
-        h2, h3 { font-weight: bold; }
-        a { text-decoration: none; }
+        .glass-card {
+            background: rgba(255,255,255,0.82);
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 20px rgba(70,130,180,0.12), 0 1.5px 8px rgba(20,44,93,0.03);
+            padding: 1.7rem 2rem;
+            margin-bottom: 2.2rem;
+            border-left: 8px solid #a0c6ff;
+            backdrop-filter: blur(4px);
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+        .glass-card:hover {
+            box-shadow: 0 8px 30px rgba(20,50,100,0.12), 0 1.5px 14px rgba(50,120,180,0.10);
+            border-left-color: #3a8fd4;
+        }
+        .pub-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #0a2c5d;
+            margin-bottom: 0.3rem;
+        }
+        .pub-meta {
+            font-size: 1.05rem;
+            color: #2574b6;
+            margin-bottom: 0.15rem;
+        }
+        .pub-icons {
+            font-size: 1.2rem;
+            color: #1b8fc4;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+        .pub-doi {
+            font-size: 1rem;
+            color: #2071b2;
+            word-break: break-all;
+            display: inline-block;
+        }
+        .badge-journal {
+            background: #3a8fd4;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.35em 0.8em;
+            border-radius: 1.1em;
+            margin-right: 0.5em;
+        }
+        .badge-year {
+            background: #fcba03;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.3em 1em;
+            border-radius: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.7em;
+        }
+        h2 {
+            font-weight: bold;
+            letter-spacing: 0.01em;
+        }
+        .author-icon {
+            font-size: 2rem;
+            color: #2a5298;
+            vertical-align: middle;
+            margin-right: 0.4em;
+        }
+        @media (max-width: 600px) {
+            .glass-card { padding: 1.2rem 0.6rem;}
+            .pub-title { font-size: 1.1rem;}
+            .badge-journal, .badge-year { font-size: 0.82rem; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center text-primary mb-5">📚 Publicaciones</h2>
+    <h2 class="text-center text-primary mb-5">
+      <i class="bi bi-journal-richtext author-icon"></i> Publicaciones
+    </h2>
 
-    <h3 class="text-secondary">🧑‍🔬 Miguel Antonio Leonardo Sepúlveda, Ph.D</h3>
+    <h3 class="text-secondary mt-4 mb-3">
+      <i class="bi bi-person-circle"></i> Miguel Antonio Leonardo Sepúlveda, Ph.D
+    </h3>
 
-    <div class="pub-card">
-        <p><strong>Increasing in three units the order of convergence of iterative methods for solving nonlinear systems</strong><br>
-        <em>Mathematics and Computers in Simulation</em>, 2024-09.<br>
-        DOI: <a href="https://doi.org/10.1016/j.matcom.2024.05.001" target="_blank">10.1016/j.matcom.2024.05.001</a></p>
+    <div class="glass-card">
+      <span class="badge-year">2024</span>
+      <span class="badge-journal">Mathematics and Computers in Simulation</span>
+      <div class="pub-title">Increasing in three units the order of convergence of iterative methods for solving nonlinear systems</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://doi.org/10.1016/j.matcom.2024.05.001" target="_blank">10.1016/j.matcom.2024.05.001</a>
+      </div>
+    </div>
+    <div class="glass-card">
+      <span class="badge-year">2023</span>
+      <span class="badge-journal">Mathematics</span>
+      <div class="pub-title">Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://doi.org/10.3390/math11204238" target="_blank">10.3390/math11204238</a>
+      </div>
+    </div>
+    <div class="glass-card">
+      <span class="badge-year">2023</span>
+      <span class="badge-journal">Preprints</span>
+      <div class="pub-title">Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://doi.org/10.20944/preprints202309.0673.v1" target="_blank">10.20944/preprints202309.0673.v1</a>
+      </div>
+    </div>
+    <div class="glass-card">
+      <span class="badge-year">2022</span>
+      <span class="badge-journal">Algorithms</span>
+      <div class="pub-title">Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a15100387" target="_blank">10.3390/a15100387</a>
+      </div>
     </div>
 
-    <div class="pub-card">
-        <p><strong>Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</strong><br>
-        <em>Mathematics</em>, 2023-10-10.<br>
-        DOI: <a href="https://doi.org/10.3390/math11204238" target="_blank">10.3390/math11204238</a></p>
+    <h3 class="text-secondary mt-5 mb-3">
+      <i class="bi bi-person-circle"></i> Antmel Rodríguez Cabral, M.Sc
+    </h3>
+    <div class="glass-card">
+      <span class="badge-year">2024</span>
+      <span class="badge-journal">Mathematics</span>
+      <div class="pub-title">Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://www.mdpi.com/2227-7390/12/21/3341" target="_blank">10.3390/math12213341</a>
+      </div>
     </div>
-
-    <div class="pub-card">
-        <p><strong>Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</strong><br>
-        <em>Preprints</em>, 2023-09-11.<br>
-        DOI: <a href="https://doi.org/10.20944/preprints202309.0673.v1" target="_blank">10.20944/preprints202309.0673.v1</a></p>
-    </div>
-
-    <div class="pub-card">
-        <p><strong>Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods</strong><br>
-        <em>Algorithms</em>, 2022-10-21.<br>
-        DOI: <a href="https://doi.org/10.3390/a15100387" target="_blank">10.3390/a15100387</a></p>
-    </div>
-
-    <h3 class="text-secondary mt-5">🧑‍🔬 Antmel Rodríguez Cabral, M.Sc</h3>
-
-    <div class="pub-card">
-        <p><strong>Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems</strong><br>
-        <em>Mathematics</em>, 2024-10.<br>
-        DOI: <a href="https://www.mdpi.com/2227-7390/12/21/3341" target="_blank">10.3390/math12213341</a></p>
-    </div>
-
-    <div class="pub-card">
-        <p><strong>Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems</strong><br>
-        <em>Algorithms</em>, 2023-03-16.<br>
-        DOI: <a href="https://doi.org/10.3390/a16030163" target="_blank">10.3390/a16030163</a></p>
+    <div class="glass-card">
+      <span class="badge-year">2023</span>
+      <span class="badge-journal">Algorithms</span>
+      <div class="pub-title">Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems</div>
+      <div class="pub-meta">
+        <i class="bi bi-link-45deg pub-icons"></i>
+        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a16030163" target="_blank">10.3390/a16030163</a>
+      </div>
     </div>
 
 </div>
 </body>
 </html>
+
