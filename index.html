@@ -14,24 +14,25 @@
       font-family: 'Segoe UI', sans-serif;
       position: relative;
     }
+    /* LOGO KERNEL EN BACKGROUND */
     body::before {
       content: "";
       position: fixed;
-      top: 12.5%;
+      top: 2%;
       left: 50%;
       transform: translateX(-50%);
-      width: 75vw;
-      height: 75vh;
-      background: url('ElKernel.png') no-repeat center;
+      width: 68vw;
+      height: 44vh;
+      background: url('ElKernel.png') no-repeat center top;
       background-size: contain;
-      opacity: 0.07;
+      opacity: 0.11;
       z-index: 0;
       pointer-events: none;
     }
     .main-content {
       position: relative;
       z-index: 1;
-      padding: 6rem 2rem 2rem 2rem;
+      padding: 6rem 2rem 0 2rem;
       text-align: center;
     }
     .main-content h1 {
@@ -48,64 +49,69 @@
     .collage-cortina {
       display: flex;
       justify-content: center;
-      align-items: center;
-      margin: 4.5rem 0 2.5rem 0;
+      align-items: flex-end;
+      margin: 8rem 0 2.5rem 0;
+      gap: 3vw;
+      min-height: 250px;
+      z-index: 2;
       position: relative;
-      min-height: 230px;
+    }
+    .collage-cortina a {
+      display: inline-block;
+      transition: transform 0.24s;
+    }
+    .collage-cortina a:hover {
+      transform: scale(1.06) rotate(-1.5deg);
+      z-index: 4;
     }
     .collage-cortina img {
-      border-radius: 1.7rem;
-      box-shadow: 0 6px 32px rgba(0,120,255,0.08), 0 1.5px 8px rgba(50,90,170,0.04);
-      opacity: 0.96;
-      transition: transform 0.25s, box-shadow 0.25s;
-      max-width: 330px;
-      max-height: 200px;
+      border-radius: 2.2rem;
+      box-shadow: 0 8px 32px rgba(0,100,255,0.12), 0 2px 10px rgba(50,90,170,0.08);
+      opacity: 0.98;
+      max-width: 340px;
+      max-height: 210px;
       object-fit: contain;
-      position: relative;
+      transition: box-shadow 0.22s, opacity 0.2s;
     }
     .collage-cortina img.logo-izq {
       z-index: 2;
-      transform: translateX(20px) rotate(-5deg) scale(1.09);
-      box-shadow: 0 6px 40px rgba(0, 0, 80, 0.08);
-      opacity: 0.92;
+      transform: translateY(16px) rotate(-4deg) scale(1.14);
     }
     .collage-cortina img.logo-centro {
       z-index: 3;
-      transform: translateY(-15px) scale(1.17);
-      box-shadow: 0 10px 55px rgba(13,59,102,0.14);
+      transform: scale(1.23);
+      box-shadow: 0 16px 65px rgba(13,59,102,0.19);
       opacity: 1;
     }
     .collage-cortina img.logo-der {
       z-index: 2;
-      transform: translateX(-20px) rotate(5deg) scale(1.09);
-      box-shadow: 0 6px 40px rgba(0, 0, 80, 0.08);
-      opacity: 0.92;
+      transform: translateY(16px) rotate(4deg) scale(1.14);
     }
     .afiliaciones {
-      margin-top: 1.8rem;
+      margin-top: 2.2rem;
       font-weight: 600;
       color: #0d3b66;
-      font-size: 1.28rem;
+      font-size: 1.35rem;
+      letter-spacing: 0.02em;
     }
     @media (max-width: 1100px) {
-      .collage-cortina img { max-width: 200px; max-height: 120px; }
-      .main-content h1 { font-size: 2.6rem; }
-      .main-content p { font-size: 1.1rem; }
-      .afiliaciones { font-size: 1rem; }
+      .collage-cortina img { max-width: 170px; max-height: 90px; }
+      .main-content h1 { font-size: 2.2rem; }
+      .main-content p { font-size: 1rem; }
+      .afiliaciones { font-size: 1.04rem; }
+      .collage-cortina { margin-top: 3rem; }
+      body::before { width: 95vw; height: 22vh; top: 0.5rem; }
     }
     @media (max-width: 600px) {
-      .collage-cortina { flex-direction: column; min-height: 10px; }
+      .main-content { padding-top: 3.2rem; }
+      .main-content h1 { font-size: 1.22rem; }
+      .collage-cortina { flex-direction: column; min-height: 10px; gap: 0.7rem; margin: 3rem 0 1rem 0; }
       .collage-cortina img {
-        max-width: 80vw; max-height: 60px; margin: 0.25rem auto;
-        border-radius: 1.2rem;
+        max-width: 85vw; max-height: 50px; border-radius: 1.2rem;
+        transform: none !important; box-shadow: 0 1px 6px rgba(60,90,150,0.12); opacity: 1 !important;
       }
-      .collage-cortina img.logo-izq,
-      .collage-cortina img.logo-centro,
-      .collage-cortina img.logo-der {
-        transform: none !important;
-        box-shadow: 0 1px 6px rgba(60,90,150,0.11);
-        opacity: 1 !important;
-      }
+      .afiliaciones { font-size: 0.95rem; }
+      body::before { width: 100vw; height: 8vh; top: 0.1rem;}
     }
   </style>
 </head>
@@ -134,16 +140,27 @@
     <h1>Grupo de Investigación "El Kernel"</h1>
     <p>Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial,<br>Diseño de algoritmos y Educación Matemática.</p>
 
-    <!-- CORTINA COLLAGE DE UNIVERSIDADES -->
+    <!-- COLLAGE DE UNIVERSIDADES CON ENLACES -->
     <div class="collage-cortina">
-      <img src="isfodosu.png" alt="ISFODOSU" class="logo-izq">
-      <img src="uasd.png" alt="UASD" class="logo-centro">
-      <img src="itla.png" alt="ITLA" class="logo-der">
+      <a href="https://www.isfodosu.edu.do" target="_blank" title="ISFODOSU">
+        <img src="isfodosu.png" alt="ISFODOSU" class="logo-izq">
+      </a>
+      <a href="https://uasd.edu.do" target="_blank" title="UASD">
+        <img src="uasd.png" alt="UASD" class="logo-centro">
+      </a>
+      <a href="https://itla.edu.do" target="_blank" title="ITLA">
+        <img src="itla.png" alt="ITLA" class="logo-der">
+      </a>
     </div>
     <div class="afiliaciones">
-      <span class="text-primary">Afiliaciones:</span> ISFODOSU &nbsp; | &nbsp; UASD &nbsp; | &nbsp; ITLA
+      <span class="text-primary">Afiliaciones:</span> 
+      <a href="https://www.isfodosu.edu.do" target="_blank" style="color: #167bb7; text-decoration:none;">ISFODOSU</a>
+      &nbsp; | &nbsp;
+      <a href="https://uasd.edu.do" target="_blank" style="color: #167bb7; text-decoration:none;">UASD</a>
+      &nbsp; | &nbsp;
+      <a href="https://itla.edu.do" target="_blank" style="color: #167bb7; text-decoration:none;">ITLA</a>
     </div>
-    <!-- /CORTINA COLLAGE UNIVERSIDADES -->
+    <!-- /COLLAGE UNIVERSIDADES -->
   </section>
   <!-- JS de Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
