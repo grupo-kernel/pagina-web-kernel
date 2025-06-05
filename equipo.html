@@ -1,23 +1,70 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Equipo de Investigación | El Kernel</title>
+  <title>Equipo | El Kernel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-    .card-img-top, .rounded-circle {
-      width: 130px;
-      height: 130px;
+    body {
+      background: linear-gradient(120deg, #e7f1ff 0%, #fafbfc 100%);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+    .equipo-perfil {
+      width: 80px;
+      height: 80px;
       object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #1594e9;
+      margin-bottom: 6px;
     }
-    .card {
+    .nav-tabs .nav-link {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #178ac9;
       border: none;
-      box-shadow: 0 0 15px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
+      border-radius: 1.2rem 1.2rem 0 0;
+      background: #f7fcfe;
+      margin-right: 6px;
+      padding: 0.85rem 2.1rem;
     }
-    .card-body {
-      padding: 2rem 1rem;
+    .nav-tabs .nav-link.active {
+      color: #fff !important;
+      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
+      box-shadow: 0 4px 24px rgba(21,148,233,0.07);
+    }
+    .tab-content {
+      background: #fff;
+      border-radius: 0 1.4rem 1.4rem 1.4rem;
+      box-shadow: 0 8px 36px rgba(21,148,233,0.06);
+      padding: 2.2rem 2rem;
+      margin-top: -1px;
+      min-height: 620px;
+    }
+    .formacion-lista li { margin-bottom: 0.45rem; }
+    .grado { font-weight: bold; color: #178ac9; }
+    .subnav-pills .nav-link {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.7rem;
+      color: #1594e9;
+      background: #f3fcf8;
+      border-radius: 1.2rem;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.1rem;
+    }
+    .subnav-pills .nav-link.active {
+      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
+      color: #fff !important;
+      box-shadow: 0 2px 12px rgba(21,148,233,0.09);
+    }
+    @media (max-width: 900px) {
+      .tab-content { min-height: 0; padding: 1.2rem 0.7rem; }
+      .nav-tabs .nav-link { padding: 0.65rem 1.1rem; font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -28,7 +75,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+          <li class="nav-item"><a class="nav-link active" href="equipo.html">Equipo</a></li>
           <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
           <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
           <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
@@ -38,100 +85,182 @@
     </div>
   </nav>
 
-  <section class="container py-5">
-    <h2 class="text-center text-primary mb-5">Equipo de Investigación</h2>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-
-      <!-- Miguel -->
-      <div class="col">
-        <div class="card text-center">
-          <div class="card-body">
-            <img src="miguel.jpg" class="rounded-circle mb-3" alt="Miguel">
-            <h5 class="card-title">Miguel A. Leonardo Sepúlveda, Ph.D</h5>
-            <h6 class="text-muted">Investigador: Análisis de dinámica compleja, Diseño de métodos de alto orden, Solución de EDPs.</h6>
-            <p><strong>Áreas:</strong> EDPs no lineales, métodos iterativos, educación matemática, formación docente</p>
-            <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
-            <p class="small">Doctor en Matemática con experiencia en métodos libres de Jacobiano, matemática computacional y el enfoque por competencias.</p>
-            <a href="mailto:miguel.leonardo@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-            <a href="https://orcid.org/0000-0003-4199-6484" target="_blank">ORCID</a> |
-            <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda" target="_blank">ResearchGate</a>
+  <div class="container py-5">
+    <!-- Tabs principales -->
+    <ul class="nav nav-tabs mb-4" id="mainTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="equipo-tab" data-bs-toggle="tab" data-bs-target="#equipo" type="button" role="tab" aria-controls="equipo" aria-selected="true">
+          Equipo
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="formacion-tab" data-bs-toggle="tab" data-bs-target="#formacion" type="button" role="tab" aria-controls="formacion" aria-selected="false">
+          Formación Académica
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content" id="mainTabContent">
+      <!-- TAB 1: EQUIPO GENERAL -->
+      <div class="tab-pane fade show active" id="equipo" role="tabpanel" aria-labelledby="equipo-tab">
+        <h2 class="text-center text-primary mb-4">Equipo de Investigación</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <!-- Miguel -->
+          <div class="col">
+            <div class="card text-center">
+              <div class="card-body">
+                <img src="miguel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Miguel">
+                <h5 class="card-title">Miguel A. Leonardo Sepúlveda, Ph.D</h5>
+                <h6 class="text-muted">Análisis de dinámica compleja, Métodos iterativos, EDPs</h6>
+                <p><strong>Áreas:</strong> EDPs no lineales, métodos iterativos, educación matemática, formación docente</p>
+                <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
+                <a href="mailto:miguel.leonardo@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+                <a href="https://orcid.org/0000-0003-4199-6484" target="_blank">ORCID</a>
+              </div>
+            </div>
+          </div>
+          <!-- Natanael -->
+          <div class="col">
+            <div class="card text-center">
+              <div class="card-body">
+                <img src="natanael.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Natanael">
+                <h5 class="card-title">Natanael Ureña Castillo, M.Sc</h5>
+                <h6 class="text-muted">Optimización, entrenamiento de redes neuronales</h6>
+                <p><strong>Áreas:</strong> Métodos iterativos, redes neuronales, riesgos y seguros, matemática computacional</p>
+                <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
+                <a href="mailto:natanael.urena@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+                <a href="https://orcid.org/0000-0001-9186-1778" target="_blank">ORCID</a>
+              </div>
+            </div>
+          </div>
+          <!-- Randy -->
+          <div class="col">
+            <div class="card text-center">
+              <div class="card-body">
+                <img src="randy.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Randy">
+                <h5 class="card-title">Randy Leonardo, M.Sc</h5>
+                <h6 class="text-muted">Análisis Matricial, Matrices combinadas</h6>
+                <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente</p>
+                <p><strong>Afiliación:</strong> UASD</p>
+                <a href="mailto:rleonardo36@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+                <a href="https://orcid.org/0000-0002-9493-7165" target="_blank">ORCID</a>
+              </div>
+            </div>
+          </div>
+          <!-- Antmel -->
+          <div class="col">
+            <div class="card text-center">
+              <div class="card-body">
+                <img src="antmel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Antmel">
+                <h5 class="card-title">Antmel Rodríguez Cabral, M.Sc</h5>
+                <h6 class="text-muted">Dinámica compleja y real, Solución de EDPs</h6>
+                <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos dinámicos, educación</p>
+                <p><strong>Afiliación:</strong> UASD</p>
+                <a href="mailto:arodriguez05@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
+                <a href="https://orcid.org/0000-0003-4502-0307" target="_blank">ORCID</a>
+              </div>
+            </div>
+          </div>
+          <!-- Marino -->
+          <div class="col">
+            <div class="card text-center">
+              <div class="card-body">
+                <img src="marino.png" class="rounded-circle mb-3 equipo-perfil" alt="Marino">
+                <h5 class="card-title">Marino Brito Guillén, M.Sc</h5>
+                <h6 class="text-muted">Investigador Senior, Ex-Vicerrector Académico</h6>
+                <p><strong>Áreas:</strong> Educación matemática, gestión universitaria, matemática educativa, álgebra, cálculo</p>
+                <p><strong>Afiliaciones:</strong> Loyola, PUCMM, ISFODOSU</p>
+                <a href="mailto:marinobg@gmail.com" class="btn btn-outline-primary btn-sm mb-2">Contactar</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Natanael -->
-      <div class="col">
-        <div class="card text-center">
-          <div class="card-body">
-            <img src="natanael.jpg" class="rounded-circle mb-3" alt="Natanael">
-            <h5 class="card-title">Natanael Ureña Castillo, M.Sc</h5>
-            <h6 class="text-muted">Investigador: Optimización, entrenamiento de redes neuronales</h6>
-            <p><strong>Áreas:</strong> Métodos iterativos, redes neuronales, riesgos y seguros, matemática computacional</p>
-            <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
-            <p class="small">Especialista en optimización y redes neuronales aplicadas a modelos complejos y seguros.</p>
-            <a href="mailto:natanael.urena@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-            <a href="https://orcid.org/0000-0001-9186-1778" target="_blank">ORCID</a> |
-            <a href="https://www.researchgate.net/profile/Natanael-Urena-Castillo" target="_blank">ResearchGate</a>
+      <!-- TAB 2: FORMACIÓN ACADÉMICA CON SUBPESTAÑAS -->
+      <div class="tab-pane fade" id="formacion" role="tabpanel" aria-labelledby="formacion-tab">
+        <h2 class="text-center text-primary mb-4">Formación Académica del Equipo</h2>
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <!-- SUBPESTAÑAS VERTICALES -->
+            <div class="nav flex-column nav-pills subnav-pills me-3" id="subTab" role="tablist" aria-orientation="vertical">
+              <button class="nav-link active" id="miguel-tab2" data-bs-toggle="pill" data-bs-target="#miguel2" type="button" role="tab" aria-controls="miguel2" aria-selected="true">
+                <img src="miguel.jpg" class="equipo-perfil" alt="Miguel"> Miguel Leonardo
+              </button>
+              <button class="nav-link" id="natanael-tab2" data-bs-toggle="pill" data-bs-target="#natanael2" type="button" role="tab" aria-controls="natanael2" aria-selected="false">
+                <img src="natanael.jpg" class="equipo-perfil" alt="Natanael"> Natanael Ureña
+              </button>
+              <button class="nav-link" id="antmel-tab2" data-bs-toggle="pill" data-bs-target="#antmel2" type="button" role="tab" aria-controls="antmel2" aria-selected="false">
+                <img src="antmel.jpg" class="equipo-perfil" alt="Antmel"> Antmel Rodríguez
+              </button>
+              <button class="nav-link" id="randy-tab2" data-bs-toggle="pill" data-bs-target="#randy2" type="button" role="tab" aria-controls="randy2" aria-selected="false">
+                <img src="randy.jpg" class="equipo-perfil" alt="Randy"> Randy Leonardo
+              </button>
+              <button class="nav-link" id="marino-tab2" data-bs-toggle="pill" data-bs-target="#marino2" type="button" role="tab" aria-controls="marino2" aria-selected="false">
+                <img src="marino.png" class="equipo-perfil" alt="Marino"> Marino Brito
+              </button>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="tab-content" id="subTabContent">
+              <!-- Miguel -->
+              <div class="tab-pane fade show active" id="miguel2" role="tabpanel" aria-labelledby="miguel-tab2">
+                <h4>Miguel A. Leonardo Sepúlveda, Ph.D.</h4>
+                <ul class="formacion-lista">
+                  <li><span class="grado">Doctorado Interuniversitario en Matemática</span> – INTEC (2019-2024), estancias doctorales en la UPV (España).</li>
+                  <li><span class="grado">Especialidad en Planificación y Desarrollo Curricular</span> – Universitat de Barcelona (2019).</li>
+                  <li><span class="grado">Maestría en Matemática</span> – INTEC (2017).</li>
+                  <li><span class="grado">Diplomado en Formación Lasallista</span> – Universidad La Salle, México (2016).</li>
+                  <li><span class="grado">Licenciatura en Educación Matemática y Física</span> – Universidad Dominicana O&M (2011).</li>
+                </ul>
+              </div>
+              <!-- Natanael -->
+              <div class="tab-pane fade" id="natanael2" role="tabpanel" aria-labelledby="natanael-tab2">
+                <h4>Natanael Ureña Castillo</h4>
+                <ul class="formacion-lista">
+                  <li><span class="grado">Certificado de Estudios Superiores en Educación</span> – UASD (2000-2003).</li>
+                  <li><span class="grado">Licenciatura en Educación Matemáticas</span> – UASD (2000-2004).</li>
+                  <li><span class="grado">Especialidad en Cálculo Actuarial</span> – INTEC.</li>
+                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2005-2008).</li>
+                  <li><span class="grado">Doctorado en Matemática</span> – (PUCMM, INTEC y UASD, en proceso).</li>
+                </ul>
+              </div>
+              <!-- Antmel -->
+              <div class="tab-pane fade" id="antmel2" role="tabpanel" aria-labelledby="antmel-tab2">
+                <h4>Antmel Rodríguez Cabral</h4>
+                <ul class="formacion-lista">
+                  <li><span class="grado">Ingeniería Civil</span> – INTEC</li>
+                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2015-2017)</li>
+                  <li><span class="grado">Doctorado en Matemática Pura</span> – (UASD-INTEC-PUCMM, en curso)</li>
+                  <li><span class="grado">Investigador Adscrito</span> – Carreras Nacionales de Ciencias Físico-Químicas y Matemáticas</li>
+                </ul>
+              </div>
+              <!-- Randy -->
+              <div class="tab-pane fade" id="randy2" role="tabpanel" aria-labelledby="randy-tab2">
+                <h4>Randy Leonardo</h4>
+                <ul class="formacion-lista">
+                  <li><span class="grado">Maestría en Matemática</span> – INTEC (2011)</li>
+                  <li><span class="grado">Licenciatura en Matemática</span> – UASD (2008)</li>
+                  <li><span class="grado">Diplomados en Educación en Línea y Modelos SCORM</span> – ILCE (2013, 2014)</li>
+                </ul>
+              </div>
+              <!-- Marino -->
+              <div class="tab-pane fade" id="marino2" role="tabpanel" aria-labelledby="marino-tab2">
+                <h4>Marino Brito Guillén</h4>
+                <ul class="formacion-lista">
+                  <li><span class="grado">Máster Internacional de Gestión Universitaria</span> – Universidades Alcalá de Henares, La Rioja, Castilla La Mancha y Rey Juan Carlos</li>
+                  <li><span class="grado">Maestría en Matemática</span> – PUCMM (1996)</li>
+                  <li><span class="grado">Postgrado en Matemática</span> – PUCMM (1995)</li>
+                  <li><span class="grado">Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas</span> – Universidad Eugenio María de Hostos (1991)</li>
+                  <li><span class="grado">Maestro Normal Primario</span> – Escuela Normal Américo Lugo (1984)</li>
+                  <li><span class="grado">Diplomado en Gerencia Social Ignaciana</span> – Pontificia Universidad Javeriana, Colombia (2009)</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Randy -->
-      <div class="col">
-        <div class="card text-center">
-          <div class="card-body">
-            <img src="randy.jpg" class="rounded-circle mb-3" alt="Randy">
-            <h5 class="card-title">Randy Leonardo, M.Sc</h5>
-            <h6 class="text-muted">Investigador: Análisis Matricial, Matrices combinadas</h6>
-            <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente</p>
-            <p><strong>Afiliación:</strong> UASD</p>
-            <p class="small">Enfocado en estructuras algebraicas aplicadas a la educación matemática y álgebra computacional.</p>
-            <a href="mailto:rleonardo36@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-            <a href="https://orcid.org/0000-0002-9493-7165" target="_blank">ORCID</a> |
-            <a href="https://www.researchgate.net/profile/Randy-Leonardo" target="_blank">ResearchGate</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Antmel -->
-      <div class="col">
-        <div class="card text-center">
-          <div class="card-body">
-            <img src="antmel.jpg" class="rounded-circle mb-3" alt="Antmel">
-            <h5 class="card-title">Antmel Rodríguez Cabral, M.Sc</h5>
-            <h6 class="text-muted">Investigador: Análisis de dinámica compleja y real, solución de de EDPs</h6>
-            <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos dinámicos, educación</p>
-            <p><strong>Afiliación:</strong> UASD</p>
-            <p class="small">Aplica técnicas de análisis complejo y métodos iterativos a la solución de EDPs y contextos ingenieriles.</p>
-            <a href="mailto:arodriguez05@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-            <a href="https://orcid.org/0000-0003-4502-0307" target="_blank">ORCID</a> |
-            <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral" target="_blank">ResearchGate</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Marino Brito Guillén -->
-      <div class="col">
-        <div class="card text-center">
-          <div class="card-body">
-            <img src="marino.png" class="rounded-circle mb-3" alt="Marino Brito Guillén">
-            <h5 class="card-title">Marino Brito Guillén, M.Sc</h5>
-            <h6 class="text-muted">Investigador Senior, Ex-Vicerrector Académico</h6>
-            <p><strong>Áreas:</strong> Educación matemática, gestión universitaria, matemática educativa, álgebra, cálculo</p>
-            <p><strong>Afiliaciones:</strong> Instituto Especializado de Estudios Superiores Loyola, PUCMM, ISFODOSU</p>
-            <p class="small">
-              Experiencia como vicerrector académico del Instituto Loyola, director de departamentos y coordinador académico; profesor universitario en PUCMM, ISFODOSU y Loyola, consultor y formador de docentes en educación matemática.
-            </p>
-            <a href="mailto:marinobg@gmail.com" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-            <!-- Si tienes perfil de ORCID/ResearchGate puedes agregarlos aquí -->
-            <!-- <a href="..." target="_blank">ORCID</a> | <a href="..." target="_blank">ResearchGate</a> -->
-          </div>
-        </div>
-      </div>
-
-
-      
+      <!-- Cierra tab-content -->
     </div>
-  </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
