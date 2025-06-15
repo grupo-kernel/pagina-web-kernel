@@ -63,11 +63,24 @@
       box-shadow: 0 2px 12px rgba(21,148,233,0.09);
     }
     .titulo-miembro { font-size: 2rem; font-weight: 700; color: #1594e9; margin-bottom: 1.5rem;}
+    .perfiles-redes a {
+      margin: 0 0.25rem;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #1291c6;
+      transition: color 0.15s;
+      display: inline-block;
+    }
+    .perfiles-redes a:hover {
+      color: #00394e;
+    }
     @media (max-width: 900px) {
       .tab-content { min-height: 0; padding: 1.2rem 0.7rem; }
       .nav-tabs .nav-link { padding: 0.65rem 1.1rem; font-size: 1.1rem; }
     }
   </style>
+  <!-- ICONOS: fontawesome para logos de redes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -111,11 +124,19 @@
               <div class="card-body">
                 <img src="miguel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Miguel">
                 <h5 class="card-title">Miguel A. Leonardo Sepúlveda, Ph.D</h5>
-                <h6 class="text-muted">Análisis de dinámica compleja, Métodos iterativos, EDPs</h6>
-                <p><strong>Áreas:</strong> EDPs no lineales, métodos iterativos, educación matemática, formación docente</p>
+                <h6 class="text-muted">Investigador en Métodos Numéricos, EDPs y Educación Matemática</h6>
+                <p><strong>Áreas:</strong> Métodos iterativos de alto orden, métodos libres de Jacobiano, EDPs no lineales, optimización, diseño curricular, educación matemática, formación docente.</p>
                 <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
-                <a href="mailto:miguel.leonardo@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-                <a href="https://orcid.org/0000-0003-4199-6484" target="_blank">ORCID</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:miguel.leonardo@isfodosu.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <a href="https://orcid.org/0000-0003-4199-6484" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
+                  <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
+                  <a href="https://scholar.google.com/citations?user=s6b7ybwAAAAJ" title="Google Scholar" target="_blank"><i class="fa-brands fa-google"></i></a>
+                  <!-- Ajusta el link de Scholar si tienes uno diferente -->
+                </div>
+                <p class="small">
+                  Doctor en Matemática con enfoque en métodos numéricos avanzados. Asesor de tesis de posgrado y pregrado. Diseñador y rediseñador de programas curriculares universitarios. Investigador en métodos libres de Jacobiano, análisis numérico y formación de docentes.
+                </p>
               </div>
             </div>
           </div>
@@ -125,11 +146,16 @@
               <div class="card-body">
                 <img src="natanael.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Natanael">
                 <h5 class="card-title">Natanael Ureña Castillo, M.Sc</h5>
-                <h6 class="text-muted">Optimización, entrenamiento de redes neuronales</h6>
-                <p><strong>Áreas:</strong> Métodos iterativos, redes neuronales, riesgos y seguros, matemática computacional</p>
+                <h6 class="text-muted">Optimización, entrenamiento de redes neuronales, formación docente</h6>
+                <p><strong>Áreas:</strong> Métodos iterativos, optimización, redes neuronales, ciencias actuariales, matemática computacional, formación docente.</p>
                 <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
-                <a href="mailto:natanael.urena@isfodosu.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-                <a href="https://orcid.org/0000-0001-9186-1778" target="_blank">ORCID</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:natanael.urena@isfodosu.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <a href="https://orcid.org/0000-0001-9186-1778" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
+                  <a href="https://www.researchgate.net/profile/Natanael-Urena-Castillo" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
+                  <!-- Si tiene Google Scholar agrega aquí -->
+                </div>
+                <p class="small">Especialista en métodos iterativos, optimización y redes neuronales aplicadas a problemas complejos y riesgos. Docente universitario y asesor en proyectos de investigación matemática.</p>
               </div>
             </div>
           </div>
@@ -139,11 +165,16 @@
               <div class="card-body">
                 <img src="randy.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Randy">
                 <h5 class="card-title">Randy Leonardo, M.Sc</h5>
-                <h6 class="text-muted">Análisis Matricial, Matrices combinadas</h6>
-                <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente</p>
+                <h6 class="text-muted">Álgebra Lineal, Matrices combinadas, Educación Matemática</h6>
+                <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente, innovación educativa.</p>
                 <p><strong>Afiliación:</strong> UASD</p>
-                <a href="mailto:rleonardo36@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-                <a href="https://orcid.org/0000-0002-9493-7165" target="_blank">ORCID</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:rleonardo36@uasd.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <a href="https://orcid.org/0000-0002-9493-7165" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
+                  <a href="https://www.researchgate.net/profile/Randy-Leonardo" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
+                  <!-- Agrega Scholar si tiene -->
+                </div>
+                <p class="small">Investigador en álgebra y docencia, co-investigador de proyectos de matrices combinadas. Ponente en congresos nacionales.</p>
               </div>
             </div>
           </div>
@@ -154,10 +185,14 @@
                 <img src="antmel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Antmel">
                 <h5 class="card-title">Antmel Rodríguez Cabral, M.Sc</h5>
                 <h6 class="text-muted">Dinámica compleja y real, Solución de EDPs</h6>
-                <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos dinámicos, educación</p>
+                <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos dinámicos, análisis complejo, educación matemática.</p>
                 <p><strong>Afiliación:</strong> UASD</p>
-                <a href="mailto:arodriguez05@uasd.edu.do" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-                <a href="https://orcid.org/0000-0003-4502-0307" target="_blank">ORCID</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:arodriguez05@uasd.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <a href="https://orcid.org/0000-0003-4502-0307" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
+                  <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
+                </div>
+                <p class="small">Profesor universitario e investigador en métodos numéricos, EDPs y planos dinámicos. Ponente en congresos internacionales.</p>
               </div>
             </div>
           </div>
@@ -167,10 +202,14 @@
               <div class="card-body">
                 <img src="marino.png" class="rounded-circle mb-3 equipo-perfil" alt="Marino">
                 <h5 class="card-title">Marino Brito Guillén, M.Sc</h5>
-                <h6 class="text-muted">Investigador Senior, Ex-Vicerrector Académico</h6>
-                <p><strong>Áreas:</strong> Educación matemática, gestión universitaria, matemática educativa, álgebra, cálculo</p>
+                <h6 class="text-muted">Gestión universitaria, Matemática Educativa, Educación</h6>
+                <p><strong>Áreas:</strong> Educación matemática, gestión universitaria, álgebra, cálculo, formación docente.</p>
                 <p><strong>Afiliaciones:</strong> Loyola, PUCMM, ISFODOSU</p>
-                <a href="mailto:marinobg@gmail.com" class="btn btn-outline-primary btn-sm mb-2">Contactar</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:marinobg@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <!-- Si tiene ORCID, RG, Scholar, LinkedIn -->
+                </div>
+                <p class="small">Ex-vicerrector académico, profesor universitario y consultor educativo. Experto en desarrollo curricular y formación docente.</p>
               </div>
             </div>
           </div>
@@ -181,11 +220,16 @@
                 <img src="marckelly.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Marc-Kelly Jean Philippe">
                 <h5 class="card-title">Marc-Kelly Jean Philippe Jean, M.Sc</h5>
                 <h6 class="text-muted">Álgebra Abstracta, Grupos Finitos y Caracteres</h6>
-                <p><strong>Áreas:</strong> Álgebra, matemática pura, educación matemática, recursos educativos</p>
+                <p><strong>Áreas:</strong> Álgebra, matemática pura, educación matemática, recursos educativos.</p>
                 <p><strong>Afiliaciones:</strong> UASD, UCE</p>
-                <a href="mailto:marckelly21@gmail.com" class="btn btn-outline-primary btn-sm mb-2">Contactar</a><br>
-                <a href="https://orcid.org/0000-0003-2278-5315" target="_blank">ORCID</a> |
-                <a href="https://www.researchgate.net/profile/Marc-Kelly-Jean-Philippe" target="_blank">ResearchGate</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:marckelly21@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <a href="https://orcid.org/0000-0003-2278-5315" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
+                  <a href="https://www.researchgate.net/profile/Marc-Kelly-Jean-Philippe" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
+                  <a href="https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/" title="LinkedIn" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                  <!-- Agrega Google Scholar si tiene -->
+                </div>
+                <p class="small">Profesor adjunto, asesor y conferencista en álgebra, con experiencia en investigación y divulgación científica internacional.</p>
               </div>
             </div>
           </div>
@@ -196,9 +240,13 @@
                 <img src="josealberto.jpg" class="rounded-circle mb-3 equipo-perfil" alt="José Alberto Reyes">
                 <h5 class="card-title">José Alberto Reyes Reyes, M.Sc</h5>
                 <h6 class="text-muted">Métodos Iterativos, Educación Matemática</h6>
-                <p><strong>Áreas:</strong> Matemática pura, métodos iterativos, análisis de estabilidad, innovación educativa</p>
+                <p><strong>Áreas:</strong> Matemática pura, métodos iterativos, análisis de estabilidad, innovación educativa.</p>
                 <p><strong>Afiliaciones:</strong> UASD, INTEC</p>
-                <a href="mailto:Josereyes0187@gmail.com" class="btn btn-outline-primary btn-sm mb-2">Contactar</a>
+                <div class="perfiles-redes mb-2">
+                  <a href="mailto:Josereyes0187@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                  <!-- Agrega ORCID, RG, Scholar, LinkedIn si tiene -->
+                </div>
+                <p class="small">Docente universitario y de postgrado. Investigador en métodos numéricos y asesor de tesis en análisis de estabilidad y convergencia.</p>
               </div>
             </div>
           </div>
