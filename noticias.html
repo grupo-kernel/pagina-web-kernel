@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,7 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    
     body {
       background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
       min-height: 100vh;
@@ -44,6 +42,13 @@
     .card-subtitle {
       font-size: 1rem;
     }
+    .card-img-top {
+      border-radius: 1.2rem 1.2rem 0 0;
+      max-height: 190px;
+      object-fit: cover;
+      margin-bottom: 0.7rem;
+      width: 100%;
+    }
     @media (max-width: 600px) {
       .noticias-hero { padding: 1.2rem 0.3rem 1.1rem 0.3rem; }
       .noticias-hero h1 { font-size: 1.18rem; }
@@ -58,18 +63,18 @@
   <!-- Menú de navegación -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">El Kernel</a>
+      <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" active fw-bold" href="quienes_somos.html">Quiénes Somos</a></li>
-          <li class="nav-item"><a class="nav-link" active fw-bold" href="equipo.html">Equipo</a></li>
-          <li class="nav-item"><a class="nav-link" active fw-bold" href="lineas.html">Líneas</a></li>
-          <li class="nav-item"><a class="nav-link" active fw-bold" href="proyectos.html">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" active fw-bold" href="publicaciones.html">Publicaciones</a></li>
-          <li class="nav-item"><a class="nav-link  active fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
+          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold" href="noticias.html">Noticias</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
         </ul>
       </div>
@@ -83,7 +88,7 @@
     </div>
     <h1>Noticias y Actividades del Grupo</h1>
     <p>
-      En esta sección te mantenemos informado sobre las últimas actividades, presentaciones en congresos, publicación de artículos, lanzamientos de libros y logros destacados del Grupo Kernel.  
+      En esta sección te mantenemos informado sobre las últimas actividades, publicaciones, lanzamientos de libros y logros destacados del Grupo Kernel.  
       <br>
       <span style="color:#217ab7;">¡Descubre nuestro trabajo más reciente y mantente al día con nuestras novedades!</span>
     </p>
@@ -93,46 +98,59 @@
   <section id="noticias" class="py-4">
     <div class="container">
       <div class="row g-4 justify-content-center">
-        <!-- Noticia 1 -->
+
+        <!-- Noticia 1: Publicación del Libro -->
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 shadow-sm">
+            <img src="libro_logica_matematica.jpg" class="card-img-top" alt="Guía Didáctica de Lógica Matemática y Teoría de Conjuntos">
             <div class="card-body">
-              <h5 class="card-title mb-2"><i class="bi bi-easel2" style="color:#1971c0"></i> Presentación en Congreso Internacional</h5>
-              <h6 class="card-subtitle mb-2 text-primary">Junio 2025</h6>
+              <h5 class="card-title mb-2"><i class="bi bi-journal-richtext" style="color:#1971c0"></i> Nueva Publicación de Libro</h5>
+              <h6 class="card-subtitle mb-2 text-primary">17 de junio de 2025</h6>
               <p class="card-text">
-                El Dr. Miguel Leonardo presentó el trabajo <b>“Increasing the Order of Convergence in Jacobian-Free Iterative Schemes”</b> en el Congreso Internacional de Métodos Numéricos celebrado en Valencia, España.
+                Publicación del libro <b>“Guía Didáctica de Lógica Matemática y Teoría de Conjuntos”</b> por los maestros Miguel Leonardo y Marino Brito Guillén. Un recurso clave para la enseñanza de la lógica en educación superior y secundaria.
               </p>
-              <a href="enlace_a_presentacion_o_programa.pdf" class="btn btn-outline-primary btn-sm" target="_blank">Ver presentación</a>
+              <div class="d-flex align-items-center mb-2">
+                <img src="miguel_leonardo.jpg" alt="Miguel Leonardo" style="height: 48px; border-radius: 50%; border:2px solid #3a8fd4; margin-right:10px;">
+                <img src="marino_brito.jpg" alt="Marino Brito" style="height: 48px; border-radius: 50%; border:2px solid #3a8fd4;">
+              </div>
+              <a href="guia_logica.pdf" class="btn btn-outline-primary btn-sm" target="_blank">Ver libro</a>
             </div>
           </div>
         </div>
-        <!-- Noticia 2 -->
+
+        <!-- Noticia 2: Artículo de José Alberto Reyes -->
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 shadow-sm">
+            <img src="jose_reyes.jpg" class="card-img-top" alt="José Alberto Reyes">
             <div class="card-body">
               <h5 class="card-title mb-2"><i class="bi bi-journal-bookmark" style="color:#1971c0"></i> Nuevo Artículo Publicado</h5>
-              <h6 class="card-subtitle mb-2 text-primary">Mayo 2025</h6>
+              <h6 class="card-subtitle mb-2 text-primary">15 de junio de 2025</h6>
               <p class="card-text">
-                Publicación del artículo <b>“Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Nonlinear Systems”</b> en la revista Mathematics (Q1).
+                Publicación del artículo <b>“A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations”</b> en la revista Axioms (Q2), autor principal: José Alberto Reyes Reyes.
               </p>
-              <a href="https://www.mdpi.com/2227-7390/12/21/3341" class="btn btn-outline-primary btn-sm" target="_blank">Leer artículo</a>
+              <a href="https://www.mdpi.com/2075-1680/13/1/34" class="btn btn-outline-primary btn-sm" target="_blank">Leer artículo</a>
             </div>
           </div>
         </div>
-        <!-- Noticia 3 -->
+
+        <!-- Noticia 3: Artículo de Marc-Kelly Jean Philippe -->
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 shadow-sm">
+            <img src="marckelly.jpg" class="card-img-top" alt="Marc-Kelly Jean Philippe Jean">
             <div class="card-body">
-              <h5 class="card-title mb-2"><i class="bi bi-book" style="color:#1971c0"></i> Presentación de Libro</h5>
-              <h6 class="card-subtitle mb-2 text-primary">Abril 2025</h6>
+              <h5 class="card-title mb-2"><i class="bi bi-journal-check" style="color:#1971c0"></i> Artículo Internacional Publicado</h5>
+              <h6 class="card-subtitle mb-2 text-primary">10 de junio de 2025</h6>
               <p class="card-text">
-                Lanzamiento del libro <b>“Matemática Computacional Moderna”</b>, coordinado por miembros del grupo Kernel, disponible en librerías académicas y online.
+                El profesor Marc-Kelly Jean Philippe Jean publica en Mathematische Nachrichten (Q2): <b>“Groups with triangle-free graphs on 𝒑-regular classes”</b>.
               </p>
-              <a href="enlace_al_libro.pdf" class="btn btn-outline-primary btn-sm" target="_blank">Más información</a>
+              <a href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" class="btn btn-outline-primary btn-sm" target="_blank">Ver publicación</a>
             </div>
           </div>
         </div>
-        <!-- Puedes añadir más noticias repitiendo el bloque de tarjeta -->
+
+        <!-- Noticias anteriores (opcional, puedes dejar las de congresos, artículos, libros anteriores, etc.) -->
+        <!-- ... aquí tus otras noticias ... -->
+
       </div>
       <p class="text-center text-muted mt-4" style="font-size:1.04rem;">
         Si quieres que tu actividad aparezca aquí, escríbenos a <a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a>
@@ -140,15 +158,15 @@
     </div>
   </section>
 
+  <!-- BOTÓN INICIO FLOTANTE SIEMPRE VISIBLE -->
+  <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio"
+     style="position: fixed; bottom: 30px; right: 30px; z-index: 999; border-radius: 50px; font-size: 1.2rem; box-shadow: 0 4px 16px rgba(13,59,102,0.16); padding: 0.8rem 1.6rem; display: flex; align-items: center; gap: 0.6rem; background-color: #2071b2; color: #fff;">
+    <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
+    <span class="d-none d-md-inline">Inicio</span>
+  </a>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<!-- BOTÓN INICIO FLOTANTE SIEMPRE VISIBLE -->
-<a href="index.html" class="btn-inicio-flotante" title="Volver al inicio">
-    <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
-    <span class="d-none d-md-inline">Inicio</span>
-</a>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
