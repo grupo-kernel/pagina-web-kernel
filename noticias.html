@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Noticias y Actividades | Grupo Kernel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+    }
+    .noticias-hero {
+      background: rgba(255,255,255,0.94);
+      border-radius: 1.2rem;
+      box-shadow: 0 4px 20px rgba(70,130,180,0.12), 0 1.5px 8px rgba(20,44,93,0.03);
+      padding: 2.5rem 1.6rem 2rem 1.6rem;
+      margin: 2.4rem auto 2.7rem auto;
+      max-width: 680px;
+      text-align: center;
+    }
+    .noticias-hero h1 {
+      color: #2574b6;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1.1rem;
+    }
+    .noticias-hero p {
+      font-size: 1.21rem;
+      color: #354b6e;
+    }
+    .card {
+      border-radius: 1.2rem;
+      border: none;
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 1.22rem;
+      color: #1971c0;
+    }
+    .card-subtitle {
+      font-size: 1rem;
+    }
+    @media (max-width: 600px) {
+      .noticias-hero { padding: 1.2rem 0.3rem 1.1rem 0.3rem; }
+      .noticias-hero h1 { font-size: 1.18rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">El Kernel</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
+          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Encabezado Noticias -->
+  <section class="noticias-hero shadow">
+    <div class="mb-2">
+      <i class="bi bi-newspaper" style="font-size:2.3rem;color:#178ac9;"></i>
+    </div>
+    <h1>Noticias y Actividades del Grupo</h1>
+    <p>
+      En esta sección te mantenemos informado sobre las últimas actividades, presentaciones en congresos, publicación de artículos, lanzamientos de libros y logros destacados del Grupo Kernel.  
+      <br>
+      <span style="color:#217ab7;">¡Descubre nuestro trabajo más reciente y mantente al día con nuestras novedades!</span>
+    </p>
+  </section>
+
+  <!-- Bloque de noticias y actividades -->
+  <section id="noticias" class="py-4">
+    <div class="container">
+      <div class="row g-4 justify-content-center">
+        <!-- Noticia 1 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title mb-2"><i class="bi bi-easel2" style="color:#1971c0"></i> Presentación en Congreso Internacional</h5>
+              <h6 class="card-subtitle mb-2 text-primary">Junio 2025</h6>
+              <p class="card-text">
+                El Dr. Miguel Leonardo presentó el trabajo <b>“Increasing the Order of Convergence in Jacobian-Free Iterative Schemes”</b> en el Congreso Internacional de Métodos Numéricos celebrado en Valencia, España.
+              </p>
+              <a href="enlace_a_presentacion_o_programa.pdf" class="btn btn-outline-primary btn-sm" target="_blank">Ver presentación</a>
+            </div>
+          </div>
+        </div>
+        <!-- Noticia 2 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title mb-2"><i class="bi bi-journal-bookmark" style="color:#1971c0"></i> Nuevo Artículo Publicado</h5>
+              <h6 class="card-subtitle mb-2 text-primary">Mayo 2025</h6>
+              <p class="card-text">
+                Publicación del artículo <b>“Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Nonlinear Systems”</b> en la revista Mathematics (Q1).
+              </p>
+              <a href="https://www.mdpi.com/2227-7390/12/21/3341" class="btn btn-outline-primary btn-sm" target="_blank">Leer artículo</a>
+            </div>
+          </div>
+        </div>
+        <!-- Noticia 3 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title mb-2"><i class="bi bi-book" style="color:#1971c0"></i> Presentación de Libro</h5>
+              <h6 class="card-subtitle mb-2 text-primary">Abril 2025</h6>
+              <p class="card-text">
+                Lanzamiento del libro <b>“Matemática Computacional Moderna”</b>, coordinado por miembros del grupo Kernel, disponible en librerías académicas y online.
+              </p>
+              <a href="enlace_al_libro.pdf" class="btn btn-outline-primary btn-sm" target="_blank">Más información</a>
+            </div>
+          </div>
+        </div>
+        <!-- Puedes añadir más noticias repitiendo el bloque de tarjeta -->
+      </div>
+      <p class="text-center text-muted mt-4" style="font-size:1.04rem;">
+        Si quieres que tu actividad aparezca aquí, escríbenos a <a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
