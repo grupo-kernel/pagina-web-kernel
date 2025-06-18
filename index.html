@@ -9,159 +9,158 @@
   <style>
     body {
       min-height: 100vh;
+      margin: 0;
       background: linear-gradient(120deg, #23d0fe 0%, #57e29a 100%);
       font-family: 'Segoe UI', sans-serif;
       overflow-x: hidden;
     }
-    .kernel-section {
+    .main-flex {
       display: flex;
-      height: 95vh;
-      width: 100vw;
+      height: 100vh;
       align-items: center;
-      justify-content: flex-start;
-      position: relative;
+      justify-content: space-between;
     }
-    /* Panel izquierdo: Título, subtítulo y logo */
-    .left-panel {
-      width: 47vw;
-      min-width: 300px;
-      max-width: 600px;
+    /* IZQUIERDA: Título, subtítulo y logo Kernel */
+    .left-col {
+      flex: 0 0 48vw;
+      min-width: 340px;
+      max-width: 650px;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: flex-start;
       justify-content: center;
       height: 100%;
+      padding-left: 5vw;
       position: relative;
-      z-index: 2;
-      padding-left: 3vw;
     }
-    .kernel-title {
-      font-size: 3.7rem;
+    .main-title {
+      font-size: 4.2rem;
       font-weight: 900;
-      color: #06387b;
-      text-shadow: 0 4px 18px #2df5e18a;
-      margin-bottom: 0.9rem;
-      margin-top: 2.5vh;
+      color: #013060;
+      text-shadow: 0 4px 16px #fff7, 0 1px 1px #21b0c9;
+      margin-bottom: 1.3rem;
+      margin-top: 0.5rem;
+      letter-spacing: -0.02em;
       font-style: italic;
-      text-align: right;
-      width: 100%;
-      line-height: 1.06;
+      line-height: 1.07;
     }
-    .kernel-subtitle {
-      font-size: 1.67rem;
-      color: #168886;
-      font-weight: 700;
-      margin-bottom: 3.7rem;
-      text-align: right;
-      width: 100%;
+    .subtitle {
+      font-size: 1.7rem;
+      color: #009085;
+      font-weight: 600;
+      margin-bottom: 2.8rem;
+      line-height: 1.23;
       text-shadow: 0 2px 16px #fff8;
-      line-height: 1.21;
     }
-    .logo-kernel-bg {
-      width: 98%;
-      max-width: 420px;
-      min-width: 170px;
-      opacity: 0.15;
+    .logo-kernel {
+      width: 355px;
+      max-width: 90vw;
+      min-width: 140px;
+      opacity: 0.18;
+      filter: drop-shadow(0 0 38px #11e7f0bb);
       margin-top: 1vh;
-      margin-right: 1vw;
-      filter: drop-shadow(0 0 44px #10e8f7bb);
+      margin-left: 0.3vw;
       pointer-events: none;
-      align-self: flex-end;
     }
-    /* Panel derecho: Carrusel vertical */
-    .right-panel {
-      width: 53vw;
-      min-width: 260px;
-      max-width: 800px;
+    /* DERECHA: Carrusel logos universidades */
+    .right-col {
+      flex: 1;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: flex-end;
       height: 100vh;
-      position: relative;
-      z-index: 2;
-      padding-left: 1vw;
+      padding-right: 6vw;
     }
-    .carousel-vertical {
+    .uni-carousel-container {
       position: relative;
-      width: 390px;
-      max-width: 98vw;
-      height: 68vh;
-      min-height: 320px;
-      max-height: 650px;
-      margin: auto;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      background: none;
+      height: 85vh;
+      justify-content: center;
+      width: 420px;
+      min-width: 260px;
+      max-width: 540px;
     }
-    .carousel-img-vert {
-      width: 310px;
-      height: 180px;
+    .uni-carousel-img {
+      width: 410px;
+      height: 250px;
       object-fit: contain;
       background: #fff;
-      border-radius: 2.2rem;
-      box-shadow: 0 8px 32px #1aebc8a1, 0 2px 10px #3473f455;
-      transition: opacity 0.65s, transform 0.75s cubic-bezier(.57,1.3,.57,1);
+      border-radius: 2.3rem;
+      box-shadow: 0 14px 54px #1aebc8a1, 0 2px 10px #3473f455;
+      transition: opacity 0.7s, transform 0.7s cubic-bezier(.57,1.3,.57,1);
       position: absolute;
       left: 50%;
-      transform: translateX(-50%) scale(0.75);
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
       opacity: 0;
-      border: 4px solid #0de8b7;
+      border: 7px solid #0de8b7;
       z-index: 1;
     }
-    .carousel-img-vert.active {
+    .uni-carousel-img.active {
       opacity: 1;
-      transform: translateX(-50%) scale(1.08);
+      transform: translate(-50%, -50%) scale(1.12);
       z-index: 4;
-      border: 6px solid #26a9e0;
-      box-shadow: 0 12px 48px #00c1e444, 0 4px 16px #39e4a899;
+      border: 9px solid #26a9e0;
+      box-shadow: 0 24px 74px #00c1e466, 0 8px 34px #39e4a8bb;
     }
-    .carousel-caption-vert {
+    .uni-caption {
       position: absolute;
       left: 50%;
-      top: 90%;
+      top: 91%;
       transform: translate(-50%, 0);
-      font-size: 1.33rem;
+      font-size: 2rem;
       color: #00adac;
       font-weight: bold;
       background: #fff;
       border-radius: 1.1rem;
-      padding: 0.5rem 1.3rem;
+      padding: 0.7rem 2.1rem;
       box-shadow: 0 2px 18px #00e0d5c2;
-      border: 2px solid #1ec6e6;
-      opacity: 0.98;
+      border: 2.5px solid #1ec6e6;
+      opacity: 0.97;
       z-index: 6;
-      text-shadow: 0 1px 6px #fff9;
+      text-shadow: 0 1px 8px #fff9;
       letter-spacing: 0.02em;
       font-style: italic;
+      display: none;
     }
-    .carousel-btn-vert {
-      background: #17e099;
+    .uni-caption.active { display: block; }
+    .uni-carousel-btn {
+      background: #12e5a3;
       color: #fff;
       border: none;
-      border-radius: 100%;
-      width: 50px;
-      height: 50px;
-      font-size: 2rem;
-      margin: 15px 0;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font-size: 2.2rem;
+      margin: 14px 0;
       box-shadow: 0 2px 12px #1bd4c1bb;
       cursor: pointer;
-      transition: background 0.16s, color 0.12s;
-      z-index: 7;
+      transition: background 0.14s, color 0.12s;
+      z-index: 8;
     }
-    .carousel-btn-vert:hover { background: #2d8ff5; color: #fff; }
-    .carousel-btn-vert.up { position: absolute; top: -36px; left: 50%; transform: translateX(-50%);}
-    .carousel-btn-vert.down { position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);}
-    @media (max-width: 1000px) {
-      .kernel-section { flex-direction: column; height: auto; }
-      .left-panel, .right-panel { width: 100vw; max-width: 100vw; align-items: center; padding-left: 0; }
-      .kernel-title, .kernel-subtitle { text-align: center; margin-left: 0; }
-      .logo-kernel-bg { margin: auto; display: block; }
-      .carousel-vertical { width: 93vw; min-height: 130px;}
-      .carousel-img-vert, .carousel-img-vert.active { width: 98vw; height: 74px; border-radius: 1.2rem;}
-      .carousel-caption-vert { font-size: 1.05rem; }
-      .carousel-btn-vert { width: 37px; height: 37px; font-size: 1.18rem; }
+    .uni-carousel-btn:hover { background: #2d8ff5; color: #fff; }
+    .uni-carousel-btn.up { position: absolute; top: -68px; left: 50%; transform: translateX(-50%);}
+    .uni-carousel-btn.down { position: absolute; bottom: -68px; left: 50%; transform: translateX(-50%);}
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .main-flex { flex-direction: column; height: auto; }
+      .left-col, .right-col { width: 100vw; max-width: 100vw; align-items: center; padding: 0; }
+      .main-title, .subtitle { text-align: center; margin-left: 0; }
+      .logo-kernel { margin: 0 auto 0 auto; display: block; }
+      .uni-carousel-container { width: 98vw; min-height: 180px;}
+      .uni-carousel-img, .uni-carousel-img.active { width: 98vw; height: 110px; border-radius: 1.2rem;}
+      .uni-caption { font-size: 1.15rem; }
+      .uni-carousel-btn { width: 38px; height: 38px; font-size: 1.08rem; }
+    }
+    @media (max-width: 600px) {
+      .main-title { font-size: 1.8rem; }
+      .subtitle { font-size: 1.09rem; }
+      .logo-kernel { width: 99vw; }
+      .uni-carousel-container { width: 97vw; min-height: 55px;}
+      .uni-carousel-img, .uni-carousel-img.active { width: 96vw; height: 48px; }
+      .uni-caption { font-size: 1rem; }
     }
     .navbar-nav .nav-link {
       font-weight: bold !important;
@@ -192,123 +191,74 @@
   </nav>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <section class="kernel-section">
-    <!-- Panel Izquierdo: Título, Subtítulo y logo grande -->
-    <div class="left-panel">
-      <div class="kernel-title">Grupo de Investigación</div>
-      <div class="kernel-subtitle">
-        Exploramos EDPs no lineales, Métodos iterativos,<br>
-        Análisis Matricial, Diseño de algoritmos<br>
-        y Educación Matemática.
+  <div class="main-flex">
+    <!-- IZQUIERDA -->
+    <div class="left-col">
+      <div>
+        <div class="main-title">Grupo de Investigación</div>
+        <div class="subtitle">
+          Exploramos EDPs no lineales, Métodos iterativos,<br>
+          Análisis Matricial, Diseño de algoritmos y Educación Matemática.
+        </div>
       </div>
-      <img src="ElKernel.png" alt="Logo Kernel" class="logo-kernel-bg">
+      <img src="ElKernel.png" alt="Logo Kernel" class="logo-kernel">
     </div>
 
-    <!-- Panel Derecho: Carrusel Vertical -->
-    <div class="right-panel">
-      <div class="carousel-vertical" id="kernelUniCarouselVert">
-        <button class="carousel-btn-vert up" onclick="showPrevUniVert()">&uarr;</button>
-        <a href="https://www.isfodosu.edu.do" target="_blank" id="uni-link-0">
-          <img src="isfodosu.png" alt="ISFODOSU" class="carousel-img-vert active" id="uni-img-0">
-          <span class="carousel-caption-vert" id="uni-caption-0">ISFODOSU</span>
-        </a>
-        <a href="https://uasd.edu.do" target="_blank" id="uni-link-1">
-          <img src="uasd.png" alt="UASD" class="carousel-img-vert" id="uni-img-1">
-          <span class="carousel-caption-vert" id="uni-caption-1">UASD</span>
-        </a>
-        <a href="https://itla.edu.do" target="_blank" id="uni-link-2">
-          <img src="itla.png" alt="ITLA" class="carousel-img-vert" id="uni-img-2">
-          <span class="carousel-caption-vert" id="uni-caption-2">ITLA</span>
-        </a>
-        <button class="carousel-btn-vert down" onclick="showNextUniVert()">&darr;</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- JS de Bootstrap y Carrusel Vertical -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // --- Carrusel vertical ---
-    const unis = [
-      {img: "isfodosu.png", link: "https://www.isfodosu.edu.do", caption: "ISFODOSU"},
-      {img: "uasd.png", link: "https://uasd.edu.do", caption: "UASD"},
-      {img: "itla.png", link: "https://itla.edu.do", caption: "ITLA"}
-    ];
-    let current = 0;
-    let autoSlide;
-
-    function updateCarouselVert(idx) {
-      for (let i = 0; i < unis.length; ++i) {
-        const img = document.getElementById('uni-img-' + i);
-        const caption = document.getElementById('uni-caption-' + i);
-        const link = document.getElementById('uni-link-' + i);
-        img.classList.remove('active');
-        caption.style.display = "none";
-        link.style.zIndex = "1";
-        if (i === idx) {
-          img.classList.add('active');
-          caption.style.display = "inline-block";
-          link.style.zIndex = "7";
-        }
-      }
-    }
-    function showPrevUniVert() {
-      current = (current + unis.length - 1) % unis.length;
-      updateCarouselVert(current);
-      resetAutoSlideVert();
-    }
-    function showNextUniVert() {
-      current = (current + 1) % unis.length;
-      updateCarouselVert(current);
-      resetAutoSlideVert();
-    }
-    function resetAutoSlideVert() {
-      clearInterval(autoSlide);
-      autoSlide = setInterval(() => { showNextUniVert(); }, 5000);
-    }
-    window.onload = () => {
-      updateCarouselVert(current);
-      autoSlide = setInterval(() => { showNextUniVert(); }, 5000);
-    };
-  </script>
-
-<footer class="bg-dark text-light mt-5 pt-4 pb-3 shadow-sm">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-12 col-md-4 mb-3 mb-md-0 text-center text-md-start">
-        <img src="ElKernel.png" alt="Logo Kernel" style="max-height:54px; margin:0 8px 8px 0; border-radius:1rem;">
-        <div class="mt-2" style="font-size:1.17rem; font-weight:600;">Grupo de Investigación</div>
-        <div class="small text-secondary">Explorando EDPs no lineales, Métodos iterativos y más.</div>
-      </div>
-      <div class="col-12 col-md-4 mb-3 mb-md-0 text-center">
-        <span class="fw-bold" style="color:#39bdf5">Contacto:</span>
-        <div>
-          <a href="mailto:mleonardo@itla.edu.do" class="text-light" style="text-decoration:underline;">mleonardo@itla.edu.do</a>
-        </div>
-        <div>
-          <span class="text-secondary small">República Dominicana</span>
-        </div>
-        <div class="mt-2">
-          <a href="https://grupo-kernel.github.io/" class="text-info" target="_blank" style="text-decoration:none;">
-            <i class="bi bi-globe2"></i> grupoelkernel.com
-          </a>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 text-center text-md-end">
-        <div class="mb-2">
-          <a href="https://www.isfodosu.edu.do" target="_blank" class="btn btn-link btn-sm text-light" style="text-decoration:none;">ISFODOSU</a>
-          <a href="https://uasd.edu.do" target="_blank" class="btn btn-link btn-sm text-light" style="text-decoration:none;">UASD</a>
-          <a href="https://itla.edu.do" target="_blank" class="btn btn-link btn-sm text-light" style="text-decoration:none;">ITLA</a>
-        </div>
-        <div class="mb-2">
-          <a href="https://www.linkedin.com/" target="_blank" class="text-light me-2" title="LinkedIn"><i class="bi bi-linkedin" style="font-size:1.2em"></i></a>
-          <a href="https://www.grupoelkernel.com" target="_blank" class="text-light me-2" title="GitHub"><i class="bi bi-github" style="font-size:1.2em"></i></a>
-          <a href="https://twitter.com/" target="_blank" class="text-light me-2" title="Twitter"><i class="bi bi-twitter" style="font-size:1.2em"></i></a>
-        </div>
-        <small class="text-secondary">© 2025 Grupo de Investigación El Kernel — Todos los derechos reservados</small>
+    <!-- DERECHA -->
+    <div class="right-col">
+      <div class="uni-carousel-container" id="uniCarousel">
+        <button class="uni-carousel-btn up" onclick="showPrevUni()">&uarr;</button>
+        <img src="isfodosu.png" alt="ISFODOSU" class="uni-carousel-img active" id="uni-img-0">
+        <div class="uni-caption active" id="uni-caption-0">ISFODOSU</div>
+        <img src="uasd.png" alt="UASD" class="uni-carousel-img" id="uni-img-1">
+        <div class="uni-caption" id="uni-caption-1">UASD</div>
+        <img src="itla.png" alt="ITLA" class="uni-carousel-img" id="uni-img-2">
+        <div class="uni-caption" id="uni-caption-2">ITLA</div>
+        <button class="uni-carousel-btn down" onclick="showNextUni()">&darr;</button>
       </div>
     </div>
   </div>
-</footer>
+
+  <!-- Carrusel JS -->
+  <script>
+    // Carrusel de logos universidades
+    const logos = [
+      {img: "isfodosu.png", caption: "ISFODOSU"},
+      {img: "uasd.png", caption: "UASD"},
+      {img: "itla.png", caption: "ITLA"}
+    ];
+    let curr = 0;
+    let autoInterval;
+    function updateUniCarousel(idx) {
+      for (let i = 0; i < logos.length; i++) {
+        document.getElementById('uni-img-' + i).classList.remove('active');
+        document.getElementById('uni-caption-' + i).classList.remove('active');
+        if (i === idx) {
+          document.getElementById('uni-img-' + i).classList.add('active');
+          document.getElementById('uni-caption-' + i).classList.add('active');
+        }
+      }
+    }
+    function showPrevUni() {
+      curr = (curr + logos.length - 1) % logos.length;
+      updateUniCarousel(curr);
+      resetAutoUni();
+    }
+    function showNextUni() {
+      curr = (curr + 1) % logos.length;
+      updateUniCarousel(curr);
+      resetAutoUni();
+    }
+    function resetAutoUni() {
+      clearInterval(autoInterval);
+      autoInterval = setInterval(() => { showNextUni(); }, 5000);
+    }
+    window.onload = () => {
+      updateUniCarousel(curr);
+      autoInterval = setInterval(() => { showNextUni(); }, 5000);
+    };
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
