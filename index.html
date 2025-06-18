@@ -8,200 +8,160 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      padding: 0;
       min-height: 100vh;
-      font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(120deg, #23d0fe 0%, #57e29a 100%);
+      font-family: 'Segoe UI', sans-serif;
       overflow-x: hidden;
+    }
+    .kernel-section {
+      display: flex;
+      height: 95vh;
+      width: 100vw;
+      align-items: center;
+      justify-content: flex-start;
       position: relative;
     }
-    /* LOGO KERNEL FIJO EN LA IZQUIERDA */
-    .logo-kernel-bg {
-      position: fixed;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1;
-      width: 32vw;
-      min-width: 270px;
-      max-width: 470px;
-      opacity: 0.16;
-      pointer-events: none;
-      filter: drop-shadow(0 0 32px #00f6fb);
-      transition: opacity 0.2s;
-    }
-    @media (max-width: 1000px) {
-      .logo-kernel-bg {
-        width: 45vw;
-        min-width: 120px;
-        max-width: 200px;
-      }
-    }
-    @media (max-width: 700px) {
-      .logo-kernel-bg { display: none;}
-    }
-    /* CONTENIDO DEL CARRUSEL */
-    .main-content {
+    /* Panel izquierdo: Título, subtítulo y logo */
+    .left-panel {
+      width: 47vw;
+      min-width: 300px;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
       position: relative;
       z-index: 2;
-      padding: 5.5rem 0 0 0;
-      text-align: left;
-      max-width: 1100px;
-      margin: 0 auto;
+      padding-left: 3vw;
     }
-    .main-content h1 {
-      font-size: 3.6rem;
-      color: #08528b;
+    .kernel-title {
+      font-size: 3.7rem;
+      font-weight: 900;
+      color: #06387b;
+      text-shadow: 0 4px 18px #2df5e18a;
+      margin-bottom: 0.9rem;
+      margin-top: 2.5vh;
       font-style: italic;
-      font-weight: bold;
-      text-shadow: 1px 1px 8px #e0f6ff66;
-      margin-bottom: 1.6rem;
-      margin-left: 38vw;
+      text-align: right;
+      width: 100%;
+      line-height: 1.06;
     }
-    .main-content p {
-      font-size: 1.6rem;
-      color: #035652;
-      margin-bottom: 3.5rem;
-      margin-left: 38vw;
+    .kernel-subtitle {
+      font-size: 1.67rem;
+      color: #168886;
+      font-weight: 700;
+      margin-bottom: 3.7rem;
+      text-align: right;
+      width: 100%;
+      text-shadow: 0 2px 16px #fff8;
+      line-height: 1.21;
     }
-    /* CARRUSEL: Side-to-Side con animación */
-    .carousel-unis {
-      position: relative;
-      width: 60vw;
-      max-width: 540px;
+    .logo-kernel-bg {
+      width: 98%;
+      max-width: 420px;
+      min-width: 170px;
+      opacity: 0.15;
+      margin-top: 1vh;
+      margin-right: 1vw;
+      filter: drop-shadow(0 0 44px #10e8f7bb);
+      pointer-events: none;
+      align-self: flex-end;
+    }
+    /* Panel derecho: Carrusel vertical */
+    .right-panel {
+      width: 53vw;
       min-width: 260px;
-      height: 320px;
-      margin-left: 36vw;
-      margin-bottom: 2.2rem;
-      overflow: visible;
+      max-width: 800px;
       display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
+      padding-left: 1vw;
+    }
+    .carousel-vertical {
+      position: relative;
+      width: 390px;
+      max-width: 98vw;
+      height: 68vh;
+      min-height: 320px;
+      max-height: 650px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
       background: none;
     }
-    .carousel-img-container {
-      width: 100%;
-      height: 320px;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: visible;
-    }
-    .carousel-uni-img {
-      width: 320px;
-      height: 220px;
+    .carousel-img-vert {
+      width: 310px;
+      height: 180px;
       object-fit: contain;
       background: #fff;
-      border-radius: 2.5rem;
-      box-shadow: 0 12px 36px #28e4c966, 0 4px 10px #2a60ed22;
-      transition: transform 0.95s cubic-bezier(.57,1.3,.57,1), opacity 0.4s;
+      border-radius: 2.2rem;
+      box-shadow: 0 8px 32px #1aebc8a1, 0 2px 10px #3473f455;
+      transition: opacity 0.65s, transform 0.75s cubic-bezier(.57,1.3,.57,1);
       position: absolute;
-      top: 50%;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%) scale(0.75);
       opacity: 0;
-      transform: translateY(-50%) translateX(-50vw) scale(0.8);
-      z-index: 0;
       border: 4px solid #0de8b7;
+      z-index: 1;
     }
-    .carousel-uni-img.active {
-      left: 65%;
+    .carousel-img-vert.active {
       opacity: 1;
-      transform: translateY(-50%) translateX(0vw) scale(1.12);
+      transform: translateX(-50%) scale(1.08);
       z-index: 4;
-      box-shadow: 0 12px 48px #0ac5ff44, 0 4px 16px #38e9a799;
-      border: 5px solid #2fbbfd;
+      border: 6px solid #26a9e0;
+      box-shadow: 0 12px 48px #00c1e444, 0 4px 16px #39e4a899;
     }
-    .carousel-uni-img.next {
-      left: 120%;
-      opacity: 0;
-      transform: translateY(-50%) translateX(40vw) scale(0.7);
-      z-index: 1;
-    }
-    .carousel-uni-img.prev {
-      left: 0;
-      opacity: 0;
-      transform: translateY(-50%) translateX(-50vw) scale(0.7);
-      z-index: 1;
-    }
-    .uni-caption {
+    .carousel-caption-vert {
       position: absolute;
-      top: 76%;
-      left: 70%;
-      font-size: 1.35rem;
-      color: #10a1b1;
+      left: 50%;
+      top: 90%;
+      transform: translate(-50%, 0);
+      font-size: 1.33rem;
+      color: #00adac;
       font-weight: bold;
       background: #fff;
       border-radius: 1.1rem;
-      padding: 0.43rem 1.35rem;
+      padding: 0.5rem 1.3rem;
       box-shadow: 0 2px 18px #00e0d5c2;
-      z-index: 6;
-      transform: translate(-50%, 0);
-      letter-spacing: 0.04em;
       border: 2px solid #1ec6e6;
-      opacity: 0.97;
+      opacity: 0.98;
+      z-index: 6;
       text-shadow: 0 1px 6px #fff9;
+      letter-spacing: 0.02em;
+      font-style: italic;
     }
-    .carousel-btn {
-      background: #19e39f;
+    .carousel-btn-vert {
+      background: #17e099;
       color: #fff;
       border: none;
       border-radius: 100%;
-      width: 48px;
-      height: 48px;
-      font-size: 2.3rem;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 6;
+      width: 50px;
+      height: 50px;
+      font-size: 2rem;
+      margin: 15px 0;
+      box-shadow: 0 2px 12px #1bd4c1bb;
       cursor: pointer;
-      box-shadow: 0 2px 12px #16b1a5cc;
-      transition: background 0.18s, color 0.15s;
+      transition: background 0.16s, color 0.12s;
+      z-index: 7;
     }
-    .carousel-btn:hover { background: #1594e9; color: #fff; }
-    .carousel-btn.prev { left: -36px; }
-    .carousel-btn.next { right: -36px; }
-    @media (max-width: 1100px) {
-      .main-content h1,
-      .main-content p {
-        margin-left: 27vw;
-      }
-      .carousel-unis { margin-left: 24vw; }
-      .logo-kernel-bg { width: 24vw; min-width: 95px; }
-    }
-    @media (max-width: 850px) {
-      .main-content h1, .main-content p { margin-left: 8vw; }
-      .carousel-unis { margin-left: 8vw; }
-    }
-    @media (max-width: 700px) {
-      .carousel-unis {
-        width: 97vw;
-        min-width: 50vw;
-        max-width: 99vw;
-        margin-left: 0;
-        height: 145px;
-      }
-      .carousel-img-container {
-        height: 110px;
-      }
-      .carousel-uni-img, .carousel-uni-img.active {
-        width: 140px;
-        height: 55px;
-        border-radius: 1.1rem;
-        border-width: 2px;
-      }
-      .uni-caption {
-        left: 56%;
-        top: 98%;
-        font-size: 0.98rem;
-        padding: 0.23rem 0.79rem;
-        border-width: 1.5px;
-      }
-      .carousel-btn, .carousel-btn.prev, .carousel-btn.next {
-        width: 34px; height: 34px; font-size: 1.45rem;
-        left: -15px; right: -15px;
-      }
-      .main-content h1 { font-size: 1.35rem; }
-      .main-content p { font-size: 0.98rem; }
+    .carousel-btn-vert:hover { background: #2d8ff5; color: #fff; }
+    .carousel-btn-vert.up { position: absolute; top: -36px; left: 50%; transform: translateX(-50%);}
+    .carousel-btn-vert.down { position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);}
+    @media (max-width: 1000px) {
+      .kernel-section { flex-direction: column; height: auto; }
+      .left-panel, .right-panel { width: 100vw; max-width: 100vw; align-items: center; padding-left: 0; }
+      .kernel-title, .kernel-subtitle { text-align: center; margin-left: 0; }
+      .logo-kernel-bg { margin: auto; display: block; }
+      .carousel-vertical { width: 93vw; min-height: 130px;}
+      .carousel-img-vert, .carousel-img-vert.active { width: 98vw; height: 74px; border-radius: 1.2rem;}
+      .carousel-caption-vert { font-size: 1.05rem; }
+      .carousel-btn-vert { width: 37px; height: 37px; font-size: 1.18rem; }
     }
     .navbar-nav .nav-link {
       font-weight: bold !important;
@@ -210,10 +170,7 @@
   </style>
 </head>
 <body>
-  <!-- Logo fijo a la izquierda -->
-  <img src="ElKernel.png" alt="Logo Kernel" class="logo-kernel-bg">
-
-  <!-- Menú de navegación -->
+  <!-- NAV -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container">
       <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
@@ -233,45 +190,45 @@
       </div>
     </div>
   </nav>
-  <!-- Contenido principal -->
-  <section class="main-content">
-    <h1>Grupo de Investigación</h1>
-    <p>Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial,<br>Diseño de algoritmos y Educación Matemática.</p>
 
-    <!-- Carrusel personalizado side-to-side -->
-    <div class="carousel-unis" id="kernelUniCarousel">
-      <button class="carousel-btn prev" onclick="showPrevUni()">&lt;</button>
-      <div class="carousel-img-container">
-        <a href="https://www.isfodosu.edu.do" target="_blank">
-          <img src="isfodosu.png" alt="ISFODOSU" class="carousel-uni-img active" id="uni-img-0">
-          <span class="uni-caption" id="uni-caption-0">ISFODOSU</span>
-        </a>
-        <a href="https://uasd.edu.do" target="_blank">
-          <img src="uasd.png" alt="UASD" class="carousel-uni-img" id="uni-img-1">
-          <span class="uni-caption" id="uni-caption-1">UASD</span>
-        </a>
-        <a href="https://itla.edu.do" target="_blank">
-          <img src="itla.png" alt="ITLA" class="carousel-uni-img" id="uni-img-2">
-          <span class="uni-caption" id="uni-caption-2">ITLA</span>
-        </a>
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="kernel-section">
+    <!-- Panel Izquierdo: Título, Subtítulo y logo grande -->
+    <div class="left-panel">
+      <div class="kernel-title">Grupo de Investigación</div>
+      <div class="kernel-subtitle">
+        Exploramos EDPs no lineales, Métodos iterativos,<br>
+        Análisis Matricial, Diseño de algoritmos<br>
+        y Educación Matemática.
       </div>
-      <button class="carousel-btn next" onclick="showNextUni()">&gt;</button>
+      <img src="ElKernel.png" alt="Logo Kernel" class="logo-kernel-bg">
     </div>
 
-    <div class="afiliaciones">
-      <span class="text-primary">Afiliaciones:</span> 
-      <a href="https://www.isfodosu.edu.do" target="_blank" style="color: #15bbd4; text-decoration:none;"><b><i>ISFODOSU</i></b></a>
-      &nbsp; | &nbsp;
-      <a href="https://uasd.edu.do" target="_blank" style="color: #15bbd4; text-decoration:none;"><b><i>UASD</i></b></a>
-      &nbsp; | &nbsp;
-      <a href="https://itla.edu.do" target="_blank" style="color: #15bbd4; text-decoration:none;"><b><i>ITLA</i></b></a>
+    <!-- Panel Derecho: Carrusel Vertical -->
+    <div class="right-panel">
+      <div class="carousel-vertical" id="kernelUniCarouselVert">
+        <button class="carousel-btn-vert up" onclick="showPrevUniVert()">&uarr;</button>
+        <a href="https://www.isfodosu.edu.do" target="_blank" id="uni-link-0">
+          <img src="isfodosu.png" alt="ISFODOSU" class="carousel-img-vert active" id="uni-img-0">
+          <span class="carousel-caption-vert" id="uni-caption-0">ISFODOSU</span>
+        </a>
+        <a href="https://uasd.edu.do" target="_blank" id="uni-link-1">
+          <img src="uasd.png" alt="UASD" class="carousel-img-vert" id="uni-img-1">
+          <span class="carousel-caption-vert" id="uni-caption-1">UASD</span>
+        </a>
+        <a href="https://itla.edu.do" target="_blank" id="uni-link-2">
+          <img src="itla.png" alt="ITLA" class="carousel-img-vert" id="uni-img-2">
+          <span class="carousel-caption-vert" id="uni-caption-2">ITLA</span>
+        </a>
+        <button class="carousel-btn-vert down" onclick="showNextUniVert()">&darr;</button>
+      </div>
     </div>
   </section>
 
-  <!-- JS de Bootstrap y Carrusel personalizado -->
+  <!-- JS de Bootstrap y Carrusel Vertical -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // --- Carrusel manual con animación side-to-side ---
+    // --- Carrusel vertical ---
     const unis = [
       {img: "isfodosu.png", link: "https://www.isfodosu.edu.do", caption: "ISFODOSU"},
       {img: "uasd.png", link: "https://uasd.edu.do", caption: "UASD"},
@@ -280,42 +237,38 @@
     let current = 0;
     let autoSlide;
 
-    function updateCarousel(idx, dir) {
+    function updateCarouselVert(idx) {
       for (let i = 0; i < unis.length; ++i) {
         const img = document.getElementById('uni-img-' + i);
         const caption = document.getElementById('uni-caption-' + i);
-        img.classList.remove('active', 'next', 'prev');
+        const link = document.getElementById('uni-link-' + i);
+        img.classList.remove('active');
         caption.style.display = "none";
+        link.style.zIndex = "1";
         if (i === idx) {
           img.classList.add('active');
           caption.style.display = "inline-block";
-        } else if (i === (idx + 1) % unis.length) {
-          img.classList.add('next');
-        } else if (i === (idx + unis.length - 1) % unis.length) {
-          img.classList.add('prev');
+          link.style.zIndex = "7";
         }
       }
     }
-
-    function showPrevUni() {
+    function showPrevUniVert() {
       current = (current + unis.length - 1) % unis.length;
-      updateCarousel(current, -1);
-      resetAutoSlide();
+      updateCarouselVert(current);
+      resetAutoSlideVert();
     }
-    function showNextUni() {
+    function showNextUniVert() {
       current = (current + 1) % unis.length;
-      updateCarousel(current, 1);
-      resetAutoSlide();
+      updateCarouselVert(current);
+      resetAutoSlideVert();
     }
-    function resetAutoSlide() {
+    function resetAutoSlideVert() {
       clearInterval(autoSlide);
-      autoSlide = setInterval(() => { showNextUni(); }, 3000);
+      autoSlide = setInterval(() => { showNextUniVert(); }, 5000);
     }
-
-    // Inicialización
     window.onload = () => {
-      updateCarousel(current, 1);
-      autoSlide = setInterval(() => { showNextUni(); }, 3000);
+      updateCarouselVert(current);
+      autoSlide = setInterval(() => { showNextUniVert(); }, 5000);
     };
   </script>
 
