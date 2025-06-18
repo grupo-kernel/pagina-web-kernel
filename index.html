@@ -16,59 +16,44 @@
     .hero-section {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      min-height: 70vh;
-      padding-top: 4vw;
+      min-height: 74vh;
+      padding-top: 3vw;
       position: relative;
       z-index: 2;
+      gap: 2vw;
     }
     .hero-content {
       flex: 1.2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      position: relative;
+      justify-content: flex-start;
       z-index: 3;
-      margin-top: 2vw;
-    }
-    /* Logo Kernel centrado y semitransparente */
-    .kernel-logo-bg {
-      position: absolute;
-      left: 50%;
-      top: 50px;
-      transform: translateX(-50%);
-      width: 480px;
-      max-width: 50vw;
-      opacity: 0.16;
-      z-index: 1;
-      pointer-events: none;
-      transition: all 0.4s;
-    }
-    @media (max-width: 900px) {
-      .kernel-logo-bg { width: 260px; top: 26px;}
+      margin-top: 0;
+      position: relative;
     }
     .main-title {
-      font-size: 3.9rem;
-      font-weight: 800;
+      font-size: 4vw;
+      font-weight: 900;
       color: #0053a0;
       text-align: center;
-      margin-bottom: 0.2em;
+      margin-bottom: 0.4em;
       font-style: italic;
       letter-spacing: 1px;
       z-index: 3;
-      line-height: 1;
+      line-height: 1.04;
     }
     .main-desc {
-      font-size: 1.55rem;
+      font-size: 1.5vw;
       color: #05385e;
       text-align: center;
-      margin-bottom: 0.3em;
+      margin-bottom: 0.2em;
       z-index: 3;
     }
     .main-quote {
-      font-size: 1.37rem;
+      font-size: 1.5vw;
       font-weight: 700;
       font-style: italic;
       color: #0386fa;
@@ -77,52 +62,64 @@
       text-align: center;
       z-index: 3;
     }
-    /* Carrusel universidades */
+    /* Logo Kernel grande, centrado, debajo del texto */
+    .kernel-logo-bg {
+      margin-top: 2vw;
+      width: 310px;
+      max-width: 27vw;
+      opacity: 1;
+      display: block;
+      margin-bottom: 1.7vw;
+      z-index: 2;
+      filter: drop-shadow(0px 4px 44px #08e0ee44);
+    }
+    /* Carrusel universidades derecha */
     .carousel-uni-section {
       flex: 1;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-end;
-      min-height: 480px;
+      min-height: 420px;
       z-index: 2;
     }
     .uni-carousel-container {
-      background: rgba(255,255,255,0.76);
+      background: rgba(255,255,255,0.84);
       border-radius: 2.2rem;
-      box-shadow: 0 6px 32px #1b6dc114;
-      padding: 2rem 1.6rem;
+      box-shadow: 0 8px 32px #1b6dc126;
+      padding: 2.1rem 1.8rem;
       width: 420px;
-      min-width: 320px;
+      min-width: 300px;
       max-width: 99vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      margin-right: 2vw;
+      margin-right: 1vw;
       z-index: 4;
     }
     .uni-img {
-      width: 330px;
-      height: 200px;
+      width: 370px;
+      height: 240px;
       object-fit: cover;
       border-radius: 1.2rem;
       margin-bottom: 1.1rem;
-      box-shadow: 0 8px 32px #38bbff22;
+      box-shadow: 0 8px 32px #38bbff28;
       border: 3px solid #70cbf9;
       transition: box-shadow 0.22s;
       background: #fff;
     }
     .uni-name {
-      font-size: 2.15rem;
-      font-weight: 700;
+      font-size: 2.6rem;
+      font-weight: 800;
       color: #0984e3;
-      background: rgba(240,250,255,0.9);
+      background: rgba(240,250,255,0.95);
       border-radius: 0.9em;
-      padding: 0.22em 0.85em;
+      padding: 0.22em 0.95em;
       margin-top: -0.7em;
       margin-bottom: 0.3em;
       text-align: center;
       box-shadow: 0 2px 8px #96dafc33;
+      letter-spacing: 0.03em;
     }
     .carousel-controls {
       display: flex;
@@ -136,24 +133,24 @@
       color: #fff;
       font-size: 2.3em;
       border-radius: 50%;
-      width: 50px; height: 50px;
+      width: 52px; height: 52px;
       transition: background 0.2s;
-      opacity: 0.82;
+      opacity: 0.89;
     }
     .carousel-btn:hover { background: #196bb8; opacity: 1;}
     /* Botones principales */
     .nav-btns {
       display: flex;
       justify-content: center;
-      gap: 1.6vw;
-      margin: 0.7em 0 1.8em 0;
+      gap: 1.4vw;
+      margin: 0.7em 0 1.1em 0;
       flex-wrap: wrap;
       z-index: 4;
       position: relative;
     }
     .main-btn {
-      font-size: 1.6rem;
-      padding: 0.85em 2.8em;
+      font-size: 1.5rem;
+      padding: 0.82em 2.2em;
       font-weight: 700;
       border: none;
       border-radius: 2.5em;
@@ -166,7 +163,7 @@
       margin-bottom: 0.2em;
       display: flex; align-items: center; gap: 0.7em;
     }
-    .main-btn i { font-size: 1.6em; }
+    .main-btn i { font-size: 1.5em; }
     .main-btn:nth-child(2) {
       background: linear-gradient(90deg, #ffe19b 0%, #ffa97b 100%);
       color: #184d59;
@@ -181,8 +178,8 @@
       display: flex;
       justify-content: center;
       gap: 4vw;
-      margin: 2em 0 1.2em 0;
-      font-size: 2.45rem;
+      margin: 2.2em 0 1.4em 0;
+      font-size: 2.4rem;
       font-weight: 800;
       color: #1ca0ff;
     }
@@ -251,16 +248,16 @@
     .footer-links a:hover { text-decoration: underline; }
     @media (max-width: 1100px) {
       .hero-section { flex-direction: column; align-items: center; justify-content: flex-start;}
-      .carousel-uni-section { margin: 1.5em 0 0 0; }
+      .carousel-uni-section { margin: 1.2em 0 0 0; }
       .uni-carousel-container { margin-right: 0; }
+      .uni-img { width: 90vw; height: 28vw; min-height: 120px;}
     }
     @media (max-width: 700px) {
-      .main-title { font-size: 2.3rem; }
-      .main-desc { font-size: 1.01rem; }
-      .main-quote { font-size: 1.03rem; }
-      .kernel-logo-bg { width: 125px; top: 11vw;}
+      .main-title { font-size: 2.2rem; }
+      .main-desc, .main-quote { font-size: 1.02rem; }
+      .kernel-logo-bg { width: 120px; }
       .uni-carousel-container { width: 96vw; padding: 1.1rem 0.4rem;}
-      .uni-img { width: 93vw; height: 21vw; min-height: 86px;}
+      .uni-img { width: 95vw; height: 22vw; min-height: 90px;}
       .carousel-uni-section { justify-content: center;}
       .stats-section { flex-direction: column; gap: 1.4em;}
       .nav-btns { flex-direction: column; gap: 0.45em;}
@@ -294,9 +291,8 @@
   <!-- HERO -->
   <section class="hero-section container-fluid position-relative">
     <div class="hero-content">
-      <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
       <div class="main-title">
-        Grupo de Investigación
+        <b><i>Grupo de Investigación</i></b>
       </div>
       <div class="main-desc">
         Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
@@ -304,6 +300,7 @@
       <div class="main-quote">
         “Innovando en la frontera entre matemática y educación”
       </div>
+      <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
       <!-- Botones principales -->
       <div class="nav-btns">
         <a href="equipo.html" class="main-btn"><i class="bi bi-people"></i> Equipo</a>
