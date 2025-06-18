@@ -5,224 +5,275 @@
   <title>Index | El Kernel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
     body {
-      margin: 0; padding: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #a8e063, #39b385 68%, #29b6f6 100%);
+      background: linear-gradient(135deg, #9ff7bb 0%, #74c6f2 100%);
       font-family: 'Segoe UI', sans-serif;
-      position: relative;
       overflow-x: hidden;
     }
-    /* Logo Kernel al fondo a la izquierda */
-    .logo-kernel-bg {
-      position: absolute;
-      top: 44%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 34vw;
-      min-width: 310px;
-      max-width: 450px;
-      opacity: 0.12;
-      z-index: 0;
-      pointer-events: none;
-    }
-    @media (max-width: 900px) {
-      .logo-kernel-bg { width: 55vw; min-width: 140px; }
-    }
-    .main-content {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
+    .hero-section {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      justify-content: flex-start;
-      padding-left: 3vw;
-      padding-right: 3vw;
-      gap: 1vw;
-    }
-    .main-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       justify-content: center;
-      max-width: 560px;
+      min-height: 70vh;
+      padding-top: 4vw;
+      position: relative;
       z-index: 2;
     }
+    .hero-content {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+      margin-top: 2vw;
+    }
+    /* Logo Kernel centrado y semitransparente */
+    .kernel-logo-bg {
+      position: absolute;
+      left: 50%;
+      top: 50px;
+      transform: translateX(-50%);
+      width: 480px;
+      max-width: 50vw;
+      opacity: 0.16;
+      z-index: 1;
+      pointer-events: none;
+      transition: all 0.4s;
+    }
+    @media (max-width: 900px) {
+      .kernel-logo-bg { width: 260px; top: 26px;}
+    }
     .main-title {
-      font-size: 3.5rem;
-      color: #0d3b66;
-      font-weight: 900;
+      font-size: 3.9rem;
+      font-weight: 800;
+      color: #0053a0;
+      text-align: center;
+      margin-bottom: 0.2em;
       font-style: italic;
-      line-height: 1.07;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.01em;
-      text-shadow: 1px 2px 8px #b2fbdf44;
+      letter-spacing: 1px;
+      z-index: 3;
+      line-height: 1;
     }
-    .main-subtitle {
-      font-size: 1.35rem;
-      color: #1a4d6b;
-      font-weight: 500;
-      margin-bottom: 0.6rem;
+    .main-desc {
+      font-size: 1.55rem;
+      color: #05385e;
+      text-align: center;
+      margin-bottom: 0.3em;
+      z-index: 3;
     }
-    .slogan {
-      font-size: 1.35rem;
-      color: #1e7be6;
-      font-style: italic;
+    .main-quote {
+      font-size: 1.37rem;
       font-weight: 700;
-      margin-bottom: 1.4rem;
-      margin-top: 0.3rem;
-      letter-spacing: 0.01em;
-      text-shadow: 1px 1px 6px #ffffff77;
+      font-style: italic;
+      color: #0386fa;
+      text-shadow: 0 2px 8px #b5e8fc;
+      margin-bottom: 1.2em;
+      text-align: center;
+      z-index: 3;
     }
-    .btn-group-main {
-      margin-bottom: 2.1rem;
-      margin-top: 0.7rem;
-      display: flex;
-      gap: 1.3rem;
-    }
-    .btn-main {
-      font-size: 1.13rem;
-      border-radius: 2rem;
-      padding: 0.9rem 2.3rem;
-      font-weight: bold;
-      box-shadow: 0 4px 22px #0ae5b455;
-      border: none;
-      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-    }
-    .btn-equipo { background: linear-gradient(90deg,#22e1ff,#1fa2ff); color: #fff; }
-    .btn-publicaciones { background: linear-gradient(90deg,#ffe259,#ffa751); color: #442d00; }
-    .btn-noticias { background: linear-gradient(90deg,#43e97b,#38f9d7); color: #003c21; }
-    .btn-main:hover {
-      filter: brightness(1.07) saturate(1.2);
-      box-shadow: 0 8px 34px #11e2bb82;
-      color: #fff !important;
-      text-decoration: none;
-      transform: scale(1.07);
-    }
-    /* Cifras rápidas */
-    .impacto-row {
-      display: flex;
-      gap: 2.5rem;
-      margin: 2.3rem 0 0.5rem 0;
-      width: 100%;
-      justify-content: flex-start;
-    }
-    .impacto-col {
-      text-align: left;
-      flex: 0 0 110px;
-      margin-right: 0.2rem;
-    }
-    .impacto-num {
-      font-size: 2.7rem;
-      font-weight: 900;
-      color: #178aff;
-      line-height: 1.1;
-      margin-bottom: 0.1rem;
-      letter-spacing: 0.01em;
-      text-shadow: 0 3px 13px #5cfbf37c;
-    }
-    .impacto-label {
-      font-size: 1.08rem;
-      color: #1b3b5b;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-    /* Redes sociales */
-    .main-social {
-      margin-top: 1.8rem;
-      margin-bottom: 0.6rem;
-    }
-    .main-social a {
-      color: #1474ed;
-      font-size: 2.1rem;
-      margin-right: 1.25rem;
-      transition: color 0.16s;
-      vertical-align: middle;
-      text-decoration: none;
-    }
-    .main-social a:hover { color: #14e9a2; }
     /* Carrusel universidades */
-    .carrusel-wrapper {
+    .carousel-uni-section {
       flex: 1;
-      max-width: 460px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      height: 77vh;
-      min-height: 400px;
-      z-index: 3;
-      margin-left: 1vw;
+      min-height: 480px;
+      z-index: 2;
     }
-    .carousel {
-      width: 95%;
-      height: 390px;
+    .uni-carousel-container {
+      background: rgba(255,255,255,0.76);
+      border-radius: 2.2rem;
+      box-shadow: 0 6px 32px #1b6dc114;
+      padding: 2rem 1.6rem;
+      width: 420px;
+      min-width: 320px;
+      max-width: 99vw;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: linear-gradient(132deg, #ecf6ffbb 90%, #bee3f3a6 100%);
-      border-radius: 2.7rem;
-      box-shadow: 0 8px 42px #33e9c222, 0 2px 12px #34a8f477;
-      padding: 2.5rem 1.5rem;
+      position: relative;
+      margin-right: 2vw;
+      z-index: 4;
     }
-    .carousel-item {
-      text-align: center;
-    }
-    .carousel-img {
-      max-height: 210px;
-      max-width: 97%;
-      object-fit: contain;
-      border-radius: 2rem;
-      margin-bottom: 2.2rem;
-      box-shadow: 0 8px 30px #3b7dd644;
+    .uni-img {
+      width: 330px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 1.2rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 8px 32px #38bbff22;
+      border: 3px solid #70cbf9;
+      transition: box-shadow 0.22s;
       background: #fff;
     }
-    .carousel-caption {
-      color: #1565c0;
+    .uni-name {
+      font-size: 2.15rem;
       font-weight: 700;
-      font-size: 1.35rem;
-      margin-top: 1.2rem;
-      text-shadow: 1px 2px 8px #fff;
-      background: rgba(255,255,255,0.7);
-      padding: 0.22rem 0.7rem;
-      border-radius: 1.2rem;
-      display: inline-block;
+      color: #0984e3;
+      background: rgba(240,250,255,0.9);
+      border-radius: 0.9em;
+      padding: 0.22em 0.85em;
+      margin-top: -0.7em;
+      margin-bottom: 0.3em;
+      text-align: center;
+      box-shadow: 0 2px 8px #96dafc33;
     }
-    @media (max-width: 900px) {
-      .main-content { flex-direction: column; padding-left: 1vw; }
-      .main-info { align-items: center; text-align: center; max-width: 100vw;}
-      .impacto-row { justify-content: center; }
-      .carrusel-wrapper { margin-top: 2.2rem; height: 320px;}
-      .carousel { height: 260px; min-height: 0; }
-      .carousel-img { max-height: 120px;}
-      .logo-kernel-bg { left: 50%; top: 13%; width: 62vw; max-width: 330px; min-width: 130px;}
+    .carousel-controls {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 0.7em 0 0.5em 0;
     }
-    @media (max-width: 600px) {
-      .main-title { font-size: 1.3rem; }
-      .main-subtitle, .slogan, .carousel-caption, .impacto-label { font-size: 1.01rem;}
-      .impacto-num { font-size: 1.2rem;}
-      .btn-main { font-size: 0.92rem; padding: 0.5rem 1.1rem;}
-      .carousel { padding: 0.5rem 0.4rem; height: 95vw; min-height: 130px;}
-      .carousel-img { max-width: 90vw; max-height: 66px;}
-      .logo-kernel-bg { width: 98vw; top: 1rem; }
-      .carrusel-wrapper { height: 120px; margin-top: 1.2rem;}
+    .carousel-btn {
+      background: #2f94e9;
+      border: none;
+      color: #fff;
+      font-size: 2.3em;
+      border-radius: 50%;
+      width: 50px; height: 50px;
+      transition: background 0.2s;
+      opacity: 0.82;
     }
-    .navbar-nav .nav-link {
-      font-weight: bold !important;
-      font-style: italic !important;
+    .carousel-btn:hover { background: #196bb8; opacity: 1;}
+    /* Botones principales */
+    .nav-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1.6vw;
+      margin: 0.7em 0 1.8em 0;
+      flex-wrap: wrap;
+      z-index: 4;
+      position: relative;
+    }
+    .main-btn {
+      font-size: 1.6rem;
+      padding: 0.85em 2.8em;
+      font-weight: 700;
+      border: none;
+      border-radius: 2.5em;
+      background: linear-gradient(90deg, #2ec7f3 0%, #55fa93 100%);
+      color: #fff;
+      margin: 0 0.18em;
+      box-shadow: 0 4px 18px #1cb3f830;
+      transition: background 0.18s, box-shadow 0.16s;
+      outline: none;
+      margin-bottom: 0.2em;
+      display: flex; align-items: center; gap: 0.7em;
+    }
+    .main-btn i { font-size: 1.6em; }
+    .main-btn:nth-child(2) {
+      background: linear-gradient(90deg, #ffe19b 0%, #ffa97b 100%);
+      color: #184d59;
+    }
+    .main-btn:nth-child(3) {
+      background: linear-gradient(90deg, #53fff7 0%, #33d57f 100%);
+      color: #05385e;
+    }
+    .main-btn:active, .main-btn:focus { outline: 2px solid #179fff; }
+    /* Estadísticas */
+    .stats-section {
+      display: flex;
+      justify-content: center;
+      gap: 4vw;
+      margin: 2em 0 1.2em 0;
+      font-size: 2.45rem;
+      font-weight: 800;
+      color: #1ca0ff;
+    }
+    .stat-item {
+      text-align: center;
+      min-width: 150px;
+    }
+    .stat-item span { color: #1a36b8;}
+    .stat-label {
+      font-size: 1.16rem;
+      color: #16334e;
+      font-weight: 600;
+      margin-top: -0.2em;
+      display: block;
+    }
+    /* Redes sociales */
+    .social-section {
+      display: flex;
+      justify-content: center;
+      gap: 2.6vw;
+      margin-bottom: 2em;
+      margin-top: 0.7em;
+    }
+    .social-link {
+      font-size: 2.3rem;
+      color: #2498fb;
+      transition: color 0.2s;
+      margin: 0 0.12em;
+    }
+    .social-link:hover { color: #0067bb; }
+    /* Footer */
+    footer {
+      background: #232c32;
+      color: #fff;
+      padding: 2.5em 0 1.5em 0;
+      font-size: 1.06rem;
+      margin-top: 1.5em;
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .footer-logo img {
+      width: 46px;
+      height: 46px;
+      border-radius: 1.1em;
+      background: #fff;
+      padding: 2px;
+      box-shadow: 0 2px 7px #1397e180;
+    }
+    .footer-links a {
+      color: #a9e2fb;
+      text-decoration: none;
+      font-weight: 700;
+      margin: 0 1.2em;
+    }
+    .footer-links a:hover { text-decoration: underline; }
+    @media (max-width: 1100px) {
+      .hero-section { flex-direction: column; align-items: center; justify-content: flex-start;}
+      .carousel-uni-section { margin: 1.5em 0 0 0; }
+      .uni-carousel-container { margin-right: 0; }
+    }
+    @media (max-width: 700px) {
+      .main-title { font-size: 2.3rem; }
+      .main-desc { font-size: 1.01rem; }
+      .main-quote { font-size: 1.03rem; }
+      .kernel-logo-bg { width: 125px; top: 11vw;}
+      .uni-carousel-container { width: 96vw; padding: 1.1rem 0.4rem;}
+      .uni-img { width: 93vw; height: 21vw; min-height: 86px;}
+      .carousel-uni-section { justify-content: center;}
+      .stats-section { flex-direction: column; gap: 1.4em;}
+      .nav-btns { flex-direction: column; gap: 0.45em;}
+      .footer-row { flex-direction: column; align-items: flex-start; gap: 1.7em;}
     }
   </style>
 </head>
 <body>
-  <!-- LOGO DE FONDO -->
-  <img src="ElKernel.png" alt="Logo Kernel" class="logo-kernel-bg">
-
-  <!-- Menú de navegación -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
+      <a class="navbar-brand fw-bold" href="index.html">
+        <img src="ElKernel.png" alt="Logo El Kernel" style="height: 54px; border-radius: 1em; margin-right: 0.6em; background:#fff;"> El Kernel
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -233,77 +284,138 @@
           <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
           <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
           <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-          <li class="nav-item"><a class="nav-link active fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <section class="main-content">
-    <div class="main-info">
-      <div class="main-title mb-1">Grupo de Investigación</div>
-      <div class="main-subtitle mb-1">Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.</div>
-      <div class="slogan mb-2">
-        “Innovando en la frontera entre <b>matemática</b> y <b>educación</b>”
+  <!-- HERO -->
+  <section class="hero-section container-fluid position-relative">
+    <div class="hero-content">
+      <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
+      <div class="main-title">
+        Grupo de Investigación
       </div>
-
-      <div class="btn-group-main">
-        <a href="equipo.html" class="btn btn-main btn-equipo"><i class="bi bi-people"></i> Equipo</a>
-        <a href="publicaciones.html" class="btn btn-main btn-publicaciones"><i class="bi bi-journal-richtext"></i> Publicaciones</a>
-        <a href="noticias.html" class="btn btn-main btn-noticias"><i class="bi bi-megaphone"></i> Noticias</a>
+      <div class="main-desc">
+        Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
       </div>
-      <div class="impacto-row">
-        <div class="impacto-col">
-          <div class="impacto-num">7+</div>
-          <div class="impacto-label">Miembros<br>principales</div>
-        </div>
-        <div class="impacto-col">
-          <div class="impacto-num">15+</div>
-          <div class="impacto-label">Artículos<br>publicados</div>
-        </div>
-        <div class="impacto-col">
-          <div class="impacto-num">5</div>
-          <div class="impacto-label">Proyectos<br>en curso</div>
-        </div>
+      <div class="main-quote">
+        “Innovando en la frontera entre matemática y educación”
       </div>
-      <div class="main-social">
-        <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        <a href="https://www.researchgate.net/" target="_blank" title="ResearchGate"><i class="bi bi-share"></i></a>
-        <a href="https://github.com/grupo-kernel" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
-        <a href="mailto:mleonardo@itla.edu.do" target="_blank" title="Email"><i class="bi bi-envelope"></i></a>
+      <!-- Botones principales -->
+      <div class="nav-btns">
+        <a href="equipo.html" class="main-btn"><i class="bi bi-people"></i> Equipo</a>
+        <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> Publicaciones</a>
+        <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> Noticias</a>
       </div>
     </div>
-    <div class="carrusel-wrapper">
-      <!-- CARRUSEL UNIVERSIDADES -->
-      <div id="universidadesCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="isfodosu.png" class="carousel-img" alt="ISFODOSU">
-            <div class="carousel-caption">ISFODOSU</div>
-          </div>
-          <div class="carousel-item">
-            <img src="uasd.png" class="carousel-img" alt="UASD">
-            <div class="carousel-caption">UASD</div>
-          </div>
-          <div class="carousel-item">
-            <img src="itla.png" class="carousel-img" alt="ITLA">
-            <div class="carousel-caption">ITLA</div>
-          </div>
-          <!-- Agrega más logos aquí si lo deseas -->
+    <!-- Carrusel universidades derecha -->
+    <div class="carousel-uni-section">
+      <div class="uni-carousel-container">
+        <div class="carousel-controls mb-1">
+          <button class="carousel-btn" id="prevUni"><i class="bi bi-chevron-left"></i></button>
+          <button class="carousel-btn" id="nextUni"><i class="bi bi-chevron-right"></i></button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#universidadesCarousel" data-bs-slide="prev" style="filter:invert(1);">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#universidadesCarousel" data-bs-slide="next" style="filter:invert(1);">
-          <span class="carousel-control-next-icon"></span>
-        </button>
+        <img src="isfodosu.png" class="uni-img" id="uniImg" alt="Universidad">
+        <div class="uni-name" id="uniName">ISFODOSU</div>
       </div>
     </div>
   </section>
+  <!-- Estadísticas -->
+  <div class="stats-section">
+    <div class="stat-item">
+      <span>7+</span>
+      <div class="stat-label">Miembros principales</div>
+    </div>
+    <div class="stat-item">
+      <span>15+</span>
+      <div class="stat-label">Artículos publicados</div>
+    </div>
+    <div class="stat-item">
+      <span>5</span>
+      <div class="stat-label">Proyectos en curso</div>
+    </div>
+  </div>
+  <!-- Redes sociales -->
+  <div class="social-section">
+    <a href="https://www.linkedin.com" target="_blank" class="social-link"><i class="bi bi-linkedin"></i></a>
+    <a href="#" target="_blank" class="social-link"><i class="bi bi-share"></i></a>
+    <a href="https://github.com/grupo-kernel" target="_blank" class="social-link"><i class="bi bi-github"></i></a>
+    <a href="mailto:mleonardo@itla.edu.do" class="social-link"><i class="bi bi-envelope"></i></a>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div class="footer-logo">
+          <img src="ElKernel.png" alt="Logo Kernel"> Grupo de Investigación
+          <div class="text-secondary small">Explorando EDPs no lineales, Métodos iterativos y más.</div>
+        </div>
+        <div>
+          <span class="fw-bold" style="color:#48e1f7">Contacto:</span>
+          <div><a href="mailto:mleonardo@itla.edu.do" class="text-light" style="text-decoration:underline;">mleonardo@itla.edu.do</a></div>
+          <div class="text-secondary small">República Dominicana</div>
+          <div>
+            <a href="https://grupoelkernel.com" class="text-info" target="_blank" style="text-decoration:none;">
+              grupoelkernel.com
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://www.isfodosu.edu.do" target="_blank">ISFODOSU</a>
+          <a href="https://uasd.edu.do" target="_blank">UASD</a>
+          <a href="https://itla.edu.do" target="_blank">ITLA</a>
+        </div>
+      </div>
+      <div class="text-secondary small mt-2">
+        © 2025 Grupo de Investigación El Kernel — Todos los derechos reservados
+      </div>
+    </div>
+  </footer>
 
-  <!-- JS de Bootstrap -->
+  <script>
+    // Carrusel de universidades JS
+    const universidades = [
+      { img: 'isfodosu.png', nombre: 'ISFODOSU', link: 'https://www.isfodosu.edu.do' },
+      { img: 'uasd.png', nombre: 'UASD', link: 'https://uasd.edu.do' },
+      { img: 'itla.png', nombre: 'ITLA', link: 'https://itla.edu.do' }
+    ];
+    let uniIdx = 0;
+    const uniImg = document.getElementById('uniImg');
+    const uniName = document.getElementById('uniName');
+
+    function mostrarUniversidad(idx) {
+      uniImg.src = universidades[idx].img;
+      uniName.textContent = universidades[idx].nombre;
+      uniImg.parentNode.href = universidades[idx].link || "#";
+    }
+
+    document.getElementById('prevUni').onclick = function() {
+      uniIdx = (uniIdx - 1 + universidades.length) % universidades.length;
+      mostrarUniversidad(uniIdx);
+    }
+    document.getElementById('nextUni').onclick = function() {
+      uniIdx = (uniIdx + 1) % universidades.length;
+      mostrarUniversidad(uniIdx);
+    }
+
+    // Clic en imagen lleva a universidad
+    uniImg.onclick = () => {
+      window.open(universidades[uniIdx].link, '_blank');
+    }
+    uniName.onclick = () => {
+      window.open(universidades[uniIdx].link, '_blank');
+    }
+    // Automático cada 5 segundos
+    setInterval(() => {
+      uniIdx = (uniIdx + 1) % universidades.length;
+      mostrarUniversidad(uniIdx);
+    }, 5000);
+    // Inicializa
+    mostrarUniversidad(0);
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
