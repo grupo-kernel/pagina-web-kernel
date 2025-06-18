@@ -14,18 +14,18 @@
       font-family: 'Segoe UI', sans-serif;
       position: relative;
     }
-    /* LOGO KERNEL EN BACKGROUND 1 */
+    /* LOGO KERNEL EN BACKGROUND */
     body::before {
       content: "";
       position: fixed;
-      top: 2%;
+      top: 1%;
       left: 50%;
       transform: translateX(-50%);
-      width: 68vw;
-      height: 44vh;
-      background: url('ElKernel.png') no-repeat center top;
+      width: 78vw;       /* más grande */
+      height: 64vh;      /* más grande */
+      background: url('ElKernel.png') no-repeat center center;
       background-size: contain;
-      opacity: 0.11;
+      opacity: 0.15;
       z-index: 0;
       pointer-events: none;
     }
@@ -54,129 +54,142 @@
       color: #334e68;
       margin-top: 1.5rem;
     }
-    .collage-cortina {
+    /* Carrusel central */
+    .carousel {
+      margin: 3.5rem auto 0 auto;
+      max-width: 380px;
+      min-height: 230px;
+      z-index: 2;
+      background: rgba(255,255,255,0.88);
+      border-radius: 2.2rem;
+      box-shadow: 0 8px 40px rgba(0,100,255,0.12), 0 2px 14px rgba(50,90,170,0.07);
+      padding: 2.5rem 1rem 1.1rem 1rem;
+      position: relative;
       display: flex;
+      align-items: center;
       justify-content: center;
-      align-items: flex-end;
-      margin: 8rem 0 2.5rem 0;
-      gap: 3vw;
-      min-height: 250px;
+    }
+    .carousel-inner {
+      width: 100%;
+      text-align: center;
+    }
+    .carousel-item img {
+      max-height: 180px;
+      max-width: 90%;
+      width: auto;
+      object-fit: contain;
+      margin: 0 auto;
+      border-radius: 1.3rem;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(44,100,190,0.13);
+      transition: box-shadow 0.2s;
+    }
+    .carousel-caption {
+      background: rgba(13,59,102,0.13);
+      border-radius: 0.7rem;
+      font-size: 1.14rem;
+      padding: 0.45rem 1.1rem;
+      color: #146ac5;
+      font-weight: 500;
+      text-shadow: 0 1px 8px #fff;
+    }
+    .carousel-indicators [data-bs-target] {
+      background-color: #0d6efd;
+    }
+    .afiliaciones {
+      margin-top: 2.7rem;
+      font-weight: 600;
+      color: #0d3b66;
+      font-size: 1.38rem;
+      letter-spacing: 0.02em;
       z-index: 2;
       position: relative;
     }
-    .collage-cortina a {
-      display: inline-block;
-      transition: transform 0.24s;
-    }
-    .collage-cortina a:hover {
-      transform: scale(1.06) rotate(-1.5deg);
-      z-index: 4;
-    }
-    /* IMÁGENES: tamaño y bordes redondeados iguales */
-    .collage-cortina img {
-      border-radius: 2.2rem;
-      box-shadow: 0 8px 32px rgba(0,100,255,0.12), 0 2px 10px rgba(50,90,170,0.08);
-      opacity: 0.98;
-      width: 340px;
-      height: 210px;
-      object-fit: cover;  /* Mejor visualmente que contain */
-      transition: box-shadow 0.22s, opacity 0.2s;
-      background: #fff;
-    }
-    /* Ajustes de posición y escala para estilo collage */
-    .collage-cortina img.logo-izq {
-      z-index: 2;
-      transform: translateY(16px) rotate(-4deg) scale(1.14);
-    }
-    .collage-cortina img.logo-centro {
-      z-index: 3;
-      transform: scale(1.23);
-      box-shadow: 0 16px 65px rgba(13,59,102,0.19);
-      opacity: 1;
-    }
-    .collage-cortina img.logo-der {
-      z-index: 2;
-      transform: translateY(16px) rotate(4deg) scale(1.16);
-    }
-    /* Si quieres forzar altura especial para ITLA pero sin perder bordes redondeados */
-    .collage-cortina img.logo-itla-alto {
-      height: 210px !important;
-      width: 340px !important;
-      object-fit: cover !important;
-      /* No tocar border-radius aquí */
-    }
-    .afiliaciones {
-      margin-top: 2.2rem;
-      font-weight: 600;
-      color: #0d3b66;
-      font-size: 1.35rem;
-      letter-spacing: 0.02em;
-    }
     @media (max-width: 1100px) {
-      .collage-cortina img { width: 170px; height: 90px; }
       .main-content h1 { font-size: 2.2rem; }
       .main-content p { font-size: 1rem; }
       .afiliaciones { font-size: 1.04rem; }
-      .collage-cortina { margin-top: 3rem; }
-      body::before { width: 95vw; height: 22vh; top: 0.5rem; }
+      body::before { width: 95vw; height: 36vh; top: 0.5rem; }
     }
     @media (max-width: 600px) {
       .main-content { padding-top: 3.2rem; }
       .main-content h1 { font-size: 1.22rem; }
-      .collage-cortina { flex-direction: column; min-height: 10px; gap: 0.7rem; margin: 3rem 0 1rem 0; }
-      .collage-cortina img {
-        width: 85vw; height: 50px; border-radius: 1.2rem;
-        transform: none !important; box-shadow: 0 1px 6px rgba(60,90,150,0.12); opacity: 1 !important;
-      }
       .afiliaciones { font-size: 0.95rem; }
-      body::before { width: 100vw; height: 8vh; top: 0.1rem;}
+      body::before { width: 100vw; height: 10vh; top: 0.1rem;}
+      .carousel { max-width: 99vw; min-height: 95px; padding: 0.9rem 0.2rem 0.2rem 0.2rem;}
+      .carousel-item img { max-height: 60px; }
     }
     .navbar-nav .nav-link {
-  font-weight: bold !important;
-  font-style: italic !important;
-}
-
+      font-weight: bold !important;
+      font-style: italic !important;
+    }
   </style>
 </head>
 <body>
   <!-- Menú de navegación -->
- <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-  <div class="container">
-    <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold" href="noticias.html">Noticias</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-      </ul>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
+          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+
   <!-- Contenido principal -->
   <section class="main-content">
+
     <h1>Grupo de Investigación</h1>
     <p>Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial,<br>Diseño de algoritmos y Educación Matemática.</p>
 
-    <!-- COLLAGE DE UNIVERSIDADES CON ENLACES -->
-    <div class="collage-cortina">
-      <a href="https://www.isfodosu.edu.do" target="_blank" title="ISFODOSU">
-        <img src="isfodosu.png" alt="ISFODOSU" class="logo-izq">
-      </a>
-      <a href="https://uasd.edu.do" target="_blank" title="UASD">
-        <img src="uasd.png" alt="UASD" class="logo-centro">
-      </a>
-      <a href="https://itla.edu.do" target="_blank" title="ITLA">
-        <img src="itla.png" alt="ITLA" class="logo-der logo-itla-alto">
-      </a>
+    <!-- CARRUSEL DE UNIVERSIDADES -->
+    <div id="carruselUniversidades" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carruselUniversidades" data-bs-slide-to="0" class="active" aria-current="true" aria-label="ISFODOSU"></button>
+        <button type="button" data-bs-target="#carruselUniversidades" data-bs-slide-to="1" aria-label="UASD"></button>
+        <button type="button" data-bs-target="#carruselUniversidades" data-bs-slide-to="2" aria-label="ITLA"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <a href="https://www.isfodosu.edu.do" target="_blank">
+            <img src="isfodosu.png" class="d-block w-100" alt="ISFODOSU">
+            <div class="carousel-caption d-none d-md-block">ISFODOSU</div>
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://uasd.edu.do" target="_blank">
+            <img src="uasd.png" class="d-block w-100" alt="UASD">
+            <div class="carousel-caption d-none d-md-block">UASD</div>
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://itla.edu.do" target="_blank">
+            <img src="itla.png" class="d-block w-100" alt="ITLA">
+            <div class="carousel-caption d-none d-md-block">ITLA</div>
+          </a>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carruselUniversidades" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carruselUniversidades" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
     </div>
+    <!-- /CARRUSEL -->
 
     <div class="afiliaciones">
       <span class="text-primary">Afiliaciones:</span> 
@@ -186,11 +199,10 @@
       &nbsp; | &nbsp;
       <a href="https://itla.edu.do" target="_blank" style="color: #167bb7; text-decoration:none;">ITLA</a>
     </div>
-    <!-- /COLLAGE UNIVERSIDADES -->
   </section>
+
   <!-- JS de Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- ... tu contenido principal ... -->
 
 <footer class="bg-dark text-light mt-5 pt-4 pb-3 shadow-sm">
   <div class="container">
