@@ -7,6 +7,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
+    :root {
+      --itla: rgb(11, 32, 96);
+    }
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #9ff7bb 0%, #74c6f2 100%);
@@ -76,7 +79,7 @@
     .carousel-uni-section {
       flex: 1;
       display: flex;
-      align-items: flex-end; /* Pega el carrusel abajo */
+      align-items: flex-end;
       justify-content: flex-end;
       min-height: 620px;
       z-index: 2;
@@ -120,6 +123,10 @@
       box-shadow: 0 2px 8px #96dafc33;
       letter-spacing: 0.035em;
       border: 2.2px solid #73d3f9;
+      transition: color 0.3s;
+    }
+    .uni-name.itla {
+      color: var(--itla) !important;
     }
     .carousel-controls {
       display: flex;
@@ -392,6 +399,12 @@
       uniImg.src = universidades[idx].img;
       uniName.textContent = universidades[idx].nombre;
       uniImg.parentNode.href = universidades[idx].link || "#";
+      // Color especial ITLA
+      if (universidades[idx].nombre === 'ITLA') {
+        uniName.classList.add('itla');
+      } else {
+        uniName.classList.remove('itla');
+      }
     }
 
     document.getElementById('prevUni').onclick = function() {
