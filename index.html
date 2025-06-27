@@ -33,6 +33,8 @@
       z-index: 3;
       margin-top: 0;
       position: relative;
+      /* Para contenedor relativo del logo absoluto */
+      min-height: 540px;
     }
     .main-title {
       font-size: 5vw;
@@ -66,14 +68,25 @@
       z-index: 3;
     }
     .kernel-logo-bg {
-      margin-top: 2vw;
+      position: absolute;
+      left: 50%;
+      top: 55px; /* Ajusta según prefieras */
+      transform: translateX(-50%);
       width: 376px;   /* 30% más grande de 290px */
       max-width: 35vw;
-      opacity: 0.42;
-      display: block;
-      margin-bottom: 2vw;
+      opacity: 0.50;
       z-index: 2;
       filter: drop-shadow(0px 6px 54px #0b70b1a8);
+      pointer-events: none;
+      /* El logo va debajo de los textos (z-index menor que 3), pero sobre el fondo */
+    }
+    .hero-content > .hero-text-content {
+      position: relative;
+      z-index: 3; /* Asegura que los textos estén sobre el logo */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     /* Carrusel universidades derecha pegado abajo */
     .carousel-uni-section {
@@ -277,11 +290,10 @@
       .footer-row { flex-direction: column; align-items: flex-start; gap: 1.7em;}
     }
     .navbar-nav .nav-link {
-  font-size: 1.7rem !important;
-  font-weight: bold !important;
-  font-style: italic !important;
-}
-
+      font-size: 1.7rem !important;
+      font-weight: bold !important;
+      font-style: italic !important;
+    }
   </style>
 </head>
 <body>
@@ -311,24 +323,27 @@
   <!-- HERO -->
   <section class="hero-section container-fluid position-relative">
     <div class="hero-content">
-      <div class="main-title">
-        <b><i>Grupo de Investigación</i></b>
-      </div>
-      <div class="main-desc">
-        Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
-      </div>
-      <div class="main-quote">
-        “Innovando en la frontera entre matemática y educación”
-      </div>
+      <!-- Logo detrás de los textos, delante del fondo -->
       <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
-      <!-- Botones principales -->
-      <div class="nav-btns">
-        <a href="equipo.html" class="main-btn">
-          <i class="bi bi-people"></i>
-          <b><span style="color:#111; text-decoration: underline;">Equipo</span></b>
-        </a>
-        <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> <b>Publicaciones</b></a>
-        <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> <b>Noticias</b></a>
+      <div class="hero-text-content">
+        <div class="main-title">
+          <b><i>Grupo de Investigación</i></b>
+        </div>
+        <div class="main-desc">
+          Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
+        </div>
+        <div class="main-quote">
+          “Innovando en la frontera entre matemática y educación”
+        </div>
+        <!-- Botones principales -->
+        <div class="nav-btns">
+          <a href="equipo.html" class="main-btn">
+            <i class="bi bi-people"></i>
+            <b><span style="color:#111; text-decoration: underline;">Equipo</span></b>
+          </a>
+          <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> <b>Publicaciones</b></a>
+          <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> <b>Noticias</b></a>
+        </div>
       </div>
     </div>
     <!-- Carrusel universidades derecha -->
@@ -439,3 +454,4 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
