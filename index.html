@@ -33,8 +33,6 @@
       z-index: 3;
       margin-top: 0;
       position: relative;
-      /* Para contenedor relativo del logo absoluto */
-      min-height: 540px;
     }
     .main-title {
       font-size: 5vw;
@@ -68,25 +66,16 @@
       z-index: 3;
     }
     .kernel-logo-bg {
-      position: absolute;
-      left: 50%;
-      top: 55px; /* Ajusta según prefieras */
-      transform: translateX(-50%);
+      margin-top: 2vw;
       width: 376px;   /* 30% más grande de 290px */
       max-width: 35vw;
-      opacity: 0.50;
-      z-index: 2;
-      filter: drop-shadow(0px 6px 54px #0b70b1a8);
-      pointer-events: none;
-      /* El logo va debajo de los textos (z-index menor que 3), pero sobre el fondo */
-    }
-    .hero-content > .hero-text-content {
-      position: relative;
-      z-index: 3; /* Asegura que los textos estén sobre el logo */
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: block;
+      margin-bottom: 2vw;
+      z-index: 3;
+      /* Quitar opacidad y filtro */
+      opacity: 1 !important;
+      filter: none !important;
+      background: none !important;
     }
     /* Carrusel universidades derecha pegado abajo */
     .carousel-uni-section {
@@ -323,27 +312,25 @@
   <!-- HERO -->
   <section class="hero-section container-fluid position-relative">
     <div class="hero-content">
-      <!-- Logo detrás de los textos, delante del fondo -->
+      <div class="main-title">
+        <b><i>Grupo de Investigación</i></b>
+      </div>
+      <div class="main-desc">
+        Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
+      </div>
+      <div class="main-quote">
+        “Innovando en la frontera entre matemática y educación”
+      </div>
+      <!-- LOGO en colores originales, sin opacidad ni filtro -->
       <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
-      <div class="hero-text-content">
-        <div class="main-title">
-          <b><i>Grupo de Investigación</i></b>
-        </div>
-        <div class="main-desc">
-          Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
-        </div>
-        <div class="main-quote">
-          “Innovando en la frontera entre matemática y educación”
-        </div>
-        <!-- Botones principales -->
-        <div class="nav-btns">
-          <a href="equipo.html" class="main-btn">
-            <i class="bi bi-people"></i>
-            <b><span style="color:#111; text-decoration: underline;">Equipo</span></b>
-          </a>
-          <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> <b>Publicaciones</b></a>
-          <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> <b>Noticias</b></a>
-        </div>
+      <!-- Botones principales -->
+      <div class="nav-btns">
+        <a href="equipo.html" class="main-btn">
+          <i class="bi bi-people"></i>
+          <b><span style="color:#111; text-decoration: underline;">Equipo</span></b>
+        </a>
+        <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> <b>Publicaciones</b></a>
+        <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> <b>Noticias</b></a>
       </div>
     </div>
     <!-- Carrusel universidades derecha -->
