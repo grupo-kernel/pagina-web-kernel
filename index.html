@@ -33,47 +33,53 @@
       z-index: 3;
       margin-top: 0;
       position: relative;
+      width: 100%;
     }
+    /* NUEVO: Título en dos líneas, grande y centrado */
     .main-title {
+      text-align: center;
       font-size: 5vw;
       font-weight: 900;
-      color: #fff;
-      text-align: center;
-      margin-bottom: 0.38em;
       font-style: italic;
-      letter-spacing: 1.5px;
-      z-index: 3;
-      line-height: 1.03;
-      text-shadow: 0 6px 18px #0a2447, 0 2px 10px #222c5a66;
+      color: #fff;
+      line-height: 1.07;
+      margin-top: 1vw;
+      margin-bottom: 0.22em;
+      letter-spacing: 0.7px;
+      text-shadow: 0 6px 22px #05204488;
+    }
+    .main-title span {
+      display: block;
     }
     .main-desc {
-      font-size: 2.1vw;
-      color: #fff;
       text-align: center;
-      margin-bottom: 0.14em;
-      z-index: 3;
-      text-shadow: 0 3px 10px #0b173a, 0 2px 8px #26367a7d;
-      font-weight: 600;
+      font-size: 2.3vw;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.55em;
+      margin-top: 0.1em;
+      text-shadow: 0 4px 16px #05336699;
+      letter-spacing: 0.2px;
+      line-height: 1.13;
     }
     .main-quote {
-      font-size: 1.7vw;
-      font-weight: 700;
-      font-style: italic;
-      color: #f7feff;
-      text-shadow: 0 1px 9px #054b6a, 0 2px 8px #0008;
-      margin-bottom: 1.05em;
       text-align: center;
-      z-index: 3;
+      font-size: 2vw;
+      font-style: italic;
+      color: #e5fdff;
+      font-weight: 700;
+      margin-bottom: 2.1em;
+      text-shadow: 0 2px 10px #022950cc;
+      letter-spacing: 0.2px;
     }
-    .kernel-logo-bg {
-      margin-top: 2vw;
-      width: 376px;
-      max-width: 35vw;
-      opacity: 0.42;
+    /* Logo original sin opacidad */
+    .kernel-logo {
+      width: 330px;
+      max-width: 26vw;
+      margin: 1vw auto 0 auto;
       display: block;
-      margin-bottom: 2vw;
-      z-index: 2;
-      filter: drop-shadow(0px 6px 54px #0b70b1a8);
+      opacity: 1 !important;
+      filter: none !important;
     }
     /* Carrusel universidades aún más grande (+192px ≈ 2 pulgadas) */
     .carousel-uni-section {
@@ -272,7 +278,7 @@
     @media (max-width: 700px) {
       .main-title { font-size: 2.4rem; }
       .main-desc, .main-quote { font-size: 1.13rem; }
-      .kernel-logo-bg { width: 156px; }
+      .kernel-logo { width: 156px; }
       .uni-carousel-container { width: 96vw; padding: 1.1rem 0.4rem;}
       .uni-img { width: 95vw; height: 22vw; min-height: 90px;}
       .carousel-uni-section { justify-content: center;}
@@ -315,15 +321,18 @@
   <section class="hero-section container-fluid position-relative">
     <div class="hero-content">
       <div class="main-title">
-        <b><i>Grupo de Investigación</i></b>
+        <span>Grupo de</span>
+        <span>Investigación</span>
       </div>
       <div class="main-desc">
-        Exploramos EDPs no lineales, Métodos iterativos, Análisis Matricial, Diseño de algoritmos y Educación Matemática.
+        Exploramos EDPs no lineales, Métodos iterativos,<br>
+        Análisis Matricial, Diseño de algoritmos y Educación Matemática.
       </div>
       <div class="main-quote">
         “Innovando en la frontera entre matemática y educación”
       </div>
-      <img src="ElKernel.png" class="kernel-logo-bg" alt="Logo Kernel">
+      <!-- LOGO sin opacidad ni filtro -->
+      <img src="ElKernel.png" class="kernel-logo" alt="Logo Kernel">
       <!-- Botones principales -->
       <div class="nav-btns">
         <a href="equipo.html" class="main-btn">
