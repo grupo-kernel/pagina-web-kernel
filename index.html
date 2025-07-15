@@ -18,7 +18,7 @@
       flex-direction: row;
       align-items: stretch;
       justify-content: center;
-      min-height: 76vh;
+      min-height: 60vh;
       padding-top: 2vw;
       position: relative;
       z-index: 2;
@@ -33,12 +33,15 @@
       z-index: 3;
       margin-top: 0;
       position: relative;
+      max-width: 780px;
       width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
     /* NUEVO: Título en dos líneas, grande y centrado */
     .main-title {
       text-align: center;
-      font-size: 5vw;
+      font-size: clamp(2.1rem, 3.8vw, 4.5rem);
       font-weight: 900;
       font-style: italic;
       color: #fff;
@@ -53,50 +56,48 @@
     }
     .main-desc {
       text-align: center;
-      font-size: 2.3vw;
+      font-size: clamp(1.1rem, 1.65vw, 2.1rem);
       font-weight: 500;
       color: #fff;
-      margin-bottom: 0.55em;
+      margin-bottom: 0.35em;
       margin-top: 0.1em;
       text-shadow: 0 4px 16px #05336699;
       letter-spacing: 0.2px;
-      line-height: 1.13;
+      line-height: 1.19;
     }
     .main-quote {
       text-align: center;
-      font-size: 2vw;
+      font-size: clamp(1rem, 1.15vw, 1.6rem);
       font-style: italic;
       color: #e5fdff;
       font-weight: 700;
-      margin-bottom: 2.1em;
+      margin-bottom: 1.5em;
       text-shadow: 0 2px 10px #022950cc;
       letter-spacing: 0.2px;
     }
-    /* Logo original sin opacidad */
     .kernel-logo {
-      width: 330px;
-      max-width: 26vw;
-      margin: 1vw auto 0 auto;
+      width: 240px;
+      max-width: 22vw;
+      margin: 0.7vw auto 0.4vw auto;
       display: block;
       opacity: 1 !important;
       filter: none !important;
     }
-    /* Carrusel universidades aún más grande (+192px ≈ 2 pulgadas) */
     .carousel-uni-section {
       flex: 1;
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-      min-height: 1052px; /* 860 + 192 */
+      min-height: 700px;
       z-index: 2;
     }
     .uni-carousel-container {
       background: rgba(255,255,255,0.94);
       border-radius: 2.3rem;
       box-shadow: 0 14px 54px #1b6dc130, 0 2px 18px #1492ff24;
-      padding: 4.7rem 4rem 3.5rem 4rem;
-      width: 1102px; /* 910 + 192 */
-      max-width: 99vw;
+      padding: 2.5rem 2.3rem 2.1rem 2.3rem;
+      width: 650px;
+      max-width: 98vw;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,8 +107,8 @@
       border: 3px solid #53bfff44;
     }
     .uni-img {
-      width: 1072px; /* 880 + 192 */
-      height: 582px; /* 390 + 192 */
+      width: 620px;
+      height: 330px;
       object-fit: cover;
       border-radius: 1.25rem;
       margin-bottom: 1.25rem;
@@ -117,12 +118,12 @@
       transition: box-shadow 0.22s;
     }
     .uni-name {
-      font-size: 3.6rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: #0984e3;
       background: rgba(240,250,255,0.98);
       border-radius: 1.2em;
-      padding: 0.38em 2.5em;
+      padding: 0.3em 2.2em;
       margin-top: -0.7em;
       margin-bottom: 0.1em;
       text-align: center;
@@ -140,40 +141,39 @@
       background: #379af4;
       border: none;
       color: #fff;
-      font-size: 4.3em;
+      font-size: 2.2em;
       border-radius: 50%;
-      width: 102px; height: 102px;
+      width: 64px; height: 64px;
       transition: background 0.2s;
       opacity: 0.93;
       box-shadow: 0 2px 10px #84d0fc50;
     }
     .carousel-btn:hover { background: #2267a2; opacity: 1;}
-    /* Botones principales */
     .nav-btns {
       display: flex;
       justify-content: center;
-      gap: 1.4vw;
+      gap: 1.1vw;
       margin: 0.7em 0 1.15em 0;
       flex-wrap: wrap;
       z-index: 4;
       position: relative;
     }
     .main-btn {
-      font-size: 1.6rem;
-      padding: 0.8em 2.3em;
+      font-size: 1.18rem;
+      padding: 0.6em 2em;
       font-weight: 700;
       border: none;
       border-radius: 2.5em;
       background: linear-gradient(90deg, #2ec7f3 0%, #55fa93 100%);
       color: #fff;
-      margin: 0 0.18em;
+      margin: 0 0.14em;
       box-shadow: 0 4px 18px #1cb3f830;
       transition: background 0.18s, box-shadow 0.16s;
       outline: none;
       margin-bottom: 0.2em;
       display: flex; align-items: center; gap: 0.7em;
     }
-    .main-btn i { font-size: 1.5em; }
+    .main-btn i { font-size: 1.3em; }
     .main-btn:nth-child(2) {
       background: linear-gradient(90deg, #ffe19b 0%, #ffa97b 100%);
       color: #184d59;
@@ -183,53 +183,50 @@
       color: #05385e;
     }
     .main-btn:active, .main-btn:focus { outline: 2px solid #179fff; }
-    /* Estadísticas */
     .stats-section {
       display: flex;
       justify-content: center;
-      gap: 4vw;
-      margin: 2.7em 0 1.7em 0;
-      font-size: 2.8rem;
+      gap: 3vw;
+      margin: 2em 0 1em 0;
+      font-size: 2.1rem;
       font-weight: 800;
       color: #fff;
       text-shadow: 0 3px 12px #122447, 0 1.5px 6px #1ca0ff44;
     }
     .stat-item {
       text-align: center;
-      min-width: 170px;
+      min-width: 130px;
     }
     .stat-item span {
       color: #f5f8fa;
-      font-size: 3.3rem;
+      font-size: 2.4rem;
       font-weight: 900;
       display: block;
       line-height: 1.1;
     }
     .stat-label {
-      font-size: 1.32rem;
+      font-size: 1.1rem;
       color: #f5faff;
       font-weight: 600;
       margin-top: -0.18em;
       display: block;
       text-shadow: 0 1px 6px #0b123c88;
     }
-    /* Redes sociales */
     .social-section {
       display: flex;
       justify-content: center;
-      gap: 2.6vw;
+      gap: 2vw;
       margin-bottom: 2em;
       margin-top: 0.7em;
     }
     .social-link {
-      font-size: 2.3rem;
+      font-size: 1.7rem;
       color: #fff;
       transition: color 0.2s;
       margin: 0 0.12em;
       text-shadow: 0 2px 6px #1115;
     }
     .social-link:hover { color: #27d3f6; }
-    /* Footer */
     footer {
       background: #232c32;
       color: #fff;
@@ -265,10 +262,6 @@
       margin: 0 1.2em;
     }
     .footer-links a:hover { text-decoration: underline; }
-    @media (max-width: 1400px) {
-      .uni-carousel-container { width: 98vw !important; padding: 1rem; }
-      .uni-img { width: 95vw !important; height: 320px !important; }
-    }
     @media (max-width: 1100px) {
       .hero-section { flex-direction: column; align-items: center; justify-content: flex-start;}
       .carousel-uni-section { margin: 1.2em 0 0 0; }
@@ -276,18 +269,18 @@
       .uni-img { width: 90vw; height: 28vw; min-height: 120px;}
     }
     @media (max-width: 700px) {
-      .main-title { font-size: 2.4rem; }
-      .main-desc, .main-quote { font-size: 1.13rem; }
-      .kernel-logo { width: 156px; }
+      .main-title { font-size: 2.1rem; }
+      .main-desc, .main-quote { font-size: 1.1rem; }
+      .kernel-logo { width: 120px; }
       .uni-carousel-container { width: 96vw; padding: 1.1rem 0.4rem;}
       .uni-img { width: 95vw; height: 22vw; min-height: 90px;}
       .carousel-uni-section { justify-content: center;}
-      .stats-section { flex-direction: column; gap: 1.4em;}
-      .nav-btns { flex-direction: column; gap: 0.45em;}
-      .footer-row { flex-direction: column; align-items: flex-start; gap: 1.7em;}
+      .stats-section { flex-direction: column; gap: 1.2em;}
+      .nav-btns { flex-direction: column; gap: 0.32em;}
+      .footer-row { flex-direction: column; align-items: flex-start; gap: 1.3em;}
     }
     .navbar-nav .nav-link {
-      font-size: 1.7rem !important;
+      font-size: 1.4rem !important;
       font-weight: bold !important;
       font-style: italic !important;
     }
@@ -297,7 +290,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container">
       <a class="navbar-brand fw-bold" href="index.html">
-        <img src="ElKernel.png" alt="Logo El Kernel" style="height: 60px; border-radius: 1.5em; margin-right: 0.8em; background:#fff;">
+        <img src="ElKernel.png" alt="Logo El Kernel" style="height: 46px; border-radius: 1.5em; margin-right: 0.8em; background:#fff;">
         <b><i>El Kernel</i></b>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
