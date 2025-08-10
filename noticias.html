@@ -147,17 +147,17 @@
   <!-- Carrusel de Noticias -->
   <section id="noticias" class="py-4">
     <div class="container">
-      <div id="noticiasCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div id="noticiasCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="0" class="active"></button>
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="1"></button>
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="2"></button>
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="3"></button>
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="4"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Noticia 1"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="1" aria-label="Noticia 2"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="2" aria-label="Noticia 3"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="3" aria-label="Noticia 4"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="4" aria-label="Noticia 5"></button>
         </div>
-        <div class="carousel-inner">
 
-          <!-- Noticia 1: Antmel Rodríguez -->
+        <div class="carousel-inner">
+          <!-- Noticia 1: Antmel Rodríguez (ACTIVA) -->
           <div class="carousel-item active">
             <div class="card h-100 shadow-sm mx-auto" style="max-width:500px;">
               <img src="antmel_rodriguez.jpg" class="card-img-top" alt="Antmel Rodríguez Cabral">
@@ -186,7 +186,7 @@
                 <h5 class="card-title mb-2"><i class="bi bi-mortarboard-fill" style="color:#fd7e14"></i> Defensa de Tesis Doctoral</h5>
                 <h6 class="card-subtitle mb-2">2 de agosto de 2025</h6>
                 <p class="card-text">
-                  El Dr. <b>Marc-Kelly Jean Philippe Jean</b> defendió exitosamente su tesis doctoral obteniendo la máxima calificación que puede otorgar el jurado, contribuyendo con importantes avances en su línea de investigación de Álgebra Abstracta. ¡Felicidades por este logro académico!
+                  El Dr. <b>Marc-Kelly Jean Philippe Jean</b> defendió exitosamente su tesis doctoral, contribuyendo con importantes avances en su línea de investigación. ¡Felicidades por este logro académico!
                 </p>
               </div>
             </div>
@@ -240,9 +240,9 @@
               </div>
             </div>
           </div>
-
         </div>
 
+        <!-- Controles -->
         <button class="carousel-control-prev" type="button" data-bs-target="#noticiasCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>
           <span class="visually-hidden">Anterior</span>
@@ -252,7 +252,34 @@
           <span class="visually-hidden">Siguiente</span>
         </button>
       </div>
+
+      <p class="text-center text-muted mt-4" style="font-size:1.05rem;">
+        ¿Quieres que tu actividad aparezca aquí? Escríbenos a <a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a>
+      </p>
     </div>
   </section>
+
+  <!-- BOTÓN INICIO FLOTANTE -->
+  <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio"
+     style="position: fixed; bottom: 30px; right: 30px; z-index: 999; border-radius: 50px; font-size: 1.2rem; box-shadow: 0 4px 16px rgba(13,59,102,0.16); padding: 0.8rem 1.6rem; display: flex; align-items: center; gap: 0.6rem; background-color: #fb6f00; color: #fff;">
+    <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
+    <span class="d-none d-md-inline">Inicio</span>
+  </a>
+
+  <!-- Bootstrap JS (necesario para que el carrusel funcione) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Inicialización explícita del carrusel (asegura el auto-avance) -->
+  <script>
+    const el = document.getElementById('noticiasCarousel');
+    if (el) {
+      new bootstrap.Carousel(el, {
+        interval: 5000,   // 5s
+        ride: 'carousel',
+        pause: false,     // no pausar al pasar el mouse
+        touch: true,
+        wrap: true
+      });
+    }
+  </script>
 </body>
 </html>
