@@ -29,58 +29,100 @@
       text-shadow: 0 2px 16px #f6c60e18;
     }
     .noticias-hero p {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: #c75c06;
     }
-
-    /* Carrusel */
-    .carousel-indicators [data-bs-target] { background-color: #ff9800; }
-    .carousel-control-prev-icon, .carousel-control-next-icon {
-      background-color: #ffb300; border-radius: 50%;
+    .carousel-indicators [data-bs-target] {
+      background-color: #ff9800;
     }
-    .carousel-item { transition: opacity 0.75s ease-in-out; }
-    .carousel-inner { border-radius: 1.3rem; max-width: 780px; margin: auto; }
-
-    /* Tarjetas */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: #ffb300;
+      border-radius: 50%;
+    }
+    .carousel-item {
+      transition: opacity 0.75s ease-in-out;
+    }
     .card {
-      border-radius: 1.2rem; border: none;
-      box-shadow: 0 6px 32px rgba(248, 139, 0, 0.12);
-      background: #fffdf5;
+      border-radius: 1.2rem;
+      border: none;
+      box-shadow: 0 4px 28px rgba(248, 139, 0, 0.11);
+      background: #fff9e4;
+    }
+    .card-title {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #fd7e14;
+      margin-top: 0.25rem;
+      line-height: 1.25;
+    }
+    .card-subtitle {
+      font-size: 1rem;
+      color: #1971c0;
+      font-weight: bold;
+    }
+    .card-text {
+      font-size: 1.05rem;
+      color: #7a4b00;
     }
     .card-img-top {
       border-radius: 1.2rem 1.2rem 0 0;
-      width: 100%; height: 420px;
-      object-fit: cover; object-position: center;
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center;
       background: #ffecb3;
     }
-    .card-title { font-weight: 800; font-size: 1.5rem; color: #fd7e14; margin-top: 0.35rem; }
-    .card-subtitle { font-size: 1rem; color: #1971c0; font-weight: bold; }
-    .card-text { font-size: 1.05rem; line-height: 1.55; color: #5d4037; }
-    .meta-row { font-size: .95rem; color: #7c4a03; }
-    .badge-tag { background: #ffe082; color: #6d4c41; font-weight: 700; }
-    .btn-outline-primary { border-color: #fd7e14 !important; color: #fd7e14 !important; font-weight: 600; }
-    .btn-outline-primary:hover { background: #fd7e14 !important; color: #fff !important; }
-
-    .author-avatars img {
-      height: 60px; width: 60px; object-fit: cover;
-      border-radius: 50%; border: 3px solid #ff9800; margin-right: 10px;
+    .d-flex.align-items-center.mb-3 img {
+      height: 64px;
+      width: 64px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ff9800;
+      margin-right: 10px;
     }
-
-    /* Responsive */
+    .carousel-inner {
+      border-radius: 1.3rem;
+      max-width: 720px;
+      margin: auto;
+    }
+    .btn-outline-primary {
+      border-color: #fd7e14 !important;
+      color: #fd7e14 !important;
+      font-weight: 600;
+    }
+    .btn-outline-primary:hover {
+      background: #fd7e14 !important;
+      color: #fff !important;
+    }
     @media (max-width: 900px) {
       .card-img-top { height: 300px; }
-      .carousel-inner { max-width: 96vw; }
+      .carousel-inner { max-width: 99vw; }
     }
     @media (max-width: 600px) {
-      .noticias-hero { padding: 1.2rem 0.6rem; }
-      .noticias-hero h1 { font-size: 1.6rem; }
-      .card-img-top { height: 210px; }
-      .card-title { font-size: 1.25rem; }
+      .noticias-hero { padding: 1.2rem 0.3rem 1.1rem 0.3rem; }
+      .noticias-hero h1 { font-size: 1.5rem; }
+      .card-img-top { height: 220px; }
+    }
+    .navbar-nav .nav-link {
+      font-weight: bold !important;
+      font-style: italic !important;
+      font-size: 1.7rem !important;
     }
 
-    /* Navbar */
-    .navbar-nav .nav-link { font-weight: bold !important; font-style: italic !important; }
-    .navbar-nav .nav-link { font-size: 1.7rem !important; font-weight: bold !important; font-style: italic !important; }
+    /* ==== FIXES para ver detalles dentro del carrusel y controles por encima ==== */
+    #noticiasCarousel .carousel-inner { overflow: visible; }
+    #noticiasCarousel .carousel-control-prev,
+    #noticiasCarousel .carousel-control-next,
+    #noticiasCarousel .carousel-indicators {
+      z-index: 1100;
+    }
+    @media (max-width: 768px) {
+      .btn-inicio-flotante {
+        bottom: 14px !important;
+        right: 14px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -112,114 +154,54 @@
     </div>
     <h1>Noticias y Actividades del Grupo</h1>
     <p>
-      ¡Descubre lo más reciente en publicaciones, libros y logros destacados del Grupo Kernel!<br>
-      <span style="color:#ff9100;">Revisa nuestro trabajo más actual y mantente al día con nuestras novedades.</span>
+      ¡Descubre lo más reciente en publicaciones, logros académicos y actividades del Grupo Kernel!<br>
+      <span style="color:#ff9100;">Explora cada tarjeta y abre “Más detalles” para ver el contenido ampliado.</span>
     </p>
   </section>
 
   <!-- Carrusel de Noticias -->
   <section id="noticias" class="py-4">
     <div class="container">
-      <div id="noticiasCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+      <div id="noticiasCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Noticia 1"></button>
+          <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="0" class="active" aria-label="Noticia 1"></button>
           <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="1" aria-label="Noticia 2"></button>
           <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="2" aria-label="Noticia 3"></button>
           <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="3" aria-label="Noticia 4"></button>
           <button type="button" data-bs-target="#noticiasCarousel" data-bs-slide-to="4" aria-label="Noticia 5"></button>
         </div>
-
         <div class="carousel-inner">
 
-          <!-- 1) Antmel Rodríguez – Publicación (ACTIVA) -->
+          <!-- Noticia 1: Publicación de Antmel (reciente) -->
           <div class="carousel-item active">
-            <div class="card h-100 shadow-sm mx-auto" style="max-width:780px;">
-              <img src="antmel_rodriguez.jpg" class="card-img-top" alt="Antmel Rodríguez Cabral" loading="lazy">
+            <div class="card h-100 shadow-sm mx-auto" style="max-width:720px;">
+              <img src="antmel_publicacion.jpg" class="card-img-top" alt="Publicación reciente de Antmel Rodríguez">
               <div class="card-body">
                 <h5 class="card-title mb-2">
-                  <i class="bi bi-journal-bookmark-fill" style="color:#fd7e14"></i>
-                  Publicación: parámetros autoacelerados en métodos iterativos
+                  <i class="bi bi-journal-check" style="color:#fd7e14"></i>
+                  Nueva publicación de Antmel Rodríguez
                 </h5>
-                <h6 class="card-subtitle mb-2">5 de agosto de 2025 · Journal of Computational Methods in Sciences and Engineering (Q4)</h6>
+                <h6 class="card-subtitle mb-2">2025</h6>
                 <p class="card-text">
-                  El artículo <b>“About the stability of self-accelerating parameters in vectorial iterative methods without memory”</b>
-                  analiza la <b>estabilidad</b> de familias de métodos iterativos para <b>sistemas no lineales</b> que incorporan un
-                  parámetro autoacelerado. Se estudian dos subfamilias (con parámetros <em>p₁</em>, <em>p₂</em>) mediante herramientas de
-                  <b>dinámica discreta</b>, diagramas de bifurcación y <b>planos dinámicos</b>. Entre los hallazgos destaca que ciertos
-                  miembros de <b>orden 4</b> exhiben <b>mejor estabilidad</b> práctica que el esquema de <b>orden 5</b>. Las pruebas numéricas
-                  incluyen problemas académicos entre otros.
+                  Se publicó el artículo <b>“About the stability of self-accelerating parameters in vectorial iterative methods without memory”</b>
+                  en <em>Journal of Computational Methods in Sciences and Engineering</em>. El trabajo estudia la estabilidad de familias con
+                  parámetros autoacelerados en métodos iterativos sin memoria usando dinámica discreta, diagramas de bifurcación y planos dinámicos.
                 </p>
-                <div class="row meta-row gy-2">
-                  <div class="col-md-auto">
-                    <span class="badge rounded-pill badge-tag"><i class="bi bi-hash"></i> dinámica numérica</span>
-                    <span class="badge rounded-pill badge-tag"><i class="bi bi-hash"></i> estabilidad</span>
-                    <span class="badge rounded-pill badge-tag"><i class="bi bi-hash"></i> métodos sin memoria</span>
-                  </div>
+                <div class="d-flex align-items-center mb-3">
+                  <img src="antmel.jpg" alt="Antmel Rodríguez">
                 </div>
-                <div class="author-avatars my-3 d-flex align-items-center">
-                  <img src="antmel_rodriguez.jpg" alt="Antmel Rodríguez">
-                </div>
-                <div class="mb-3">
-                  <a href="https://doi.org/10.1177/14727978251361407" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Leer artículo (DOI)</a>
-                </div>
-                <div>
-                  <a class="link-primary" data-bs-toggle="collapse" href="#masAntmel" role="button" aria-expanded="false" aria-controls="masAntmel">
-                    Más detalles
-                  </a>
-                  <div class="collapse mt-2" id="masAntmel">
-                    <ul class="card-text">
-                      <li>Comparativa de estabilidad vs. orden de convergencia (no siempre “más orden” = “más robusto”).</li>
-                      <li>Identificación de regiones paramétricas con órbitas periódicas y comportamiento caótico.</li>
-                      <li>Resultados reproducibles en sistemas vectoriales de diferente tamaño.</li>
-                    </ul>
-                  </div>
-                </div>
+                <a href="https://doi.org/10.1177/14727978251361407" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Leer artículo</a>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAntmel">
+                  Más detalles
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- 2) Marc-Kelly – Defensa de tesis -->
+          <!-- Noticia 2: Publicación del Libro -->
           <div class="carousel-item">
-            <div class="card h-100 shadow-sm mx-auto" style="max-width:780px;">
-              <img src="marckelly_tesis.jpg" class="card-img-top" alt="Defensa de tesis doctoral de Marc-Kelly Jean Philippe Jean" loading="lazy">
-              <div class="card-body">
-                <h5 class="card-title mb-2">
-                  <i class="bi bi-mortarboard-fill" style="color:#fd7e14"></i>
-                  Defensa de Tesis Doctoral de Marc-Kelly Jean Philippe Jean
-                </h5>
-                <h6 class="card-subtitle mb-2">2 de agosto de 2025</h6>
-                <p class="card-text">
-                  ¡Felicitaciones! El Dr. <b>Marc-Kelly Jean Philippe Jean</b> defendió exitosamente su tesis doctoral, obteniendo la más alta calificación que puede otorgar un jurado. El trabajo
-                  consolida aportes en <b>teoría de grupos finitos</b> y <b>gráficas asociadas a clases p-regulares</b>, conectando propiedades
-                  estructurales con resultados en teoría de caracteres y grafos divisorios. Este hito fortalece la línea de
-                  <b>álgebra y combinatoria</b> del grupo.
-                </p>
-                <div class="row meta-row gy-2">
-                  <div class="col-md-auto">
-                    <span class="badge rounded-pill badge-tag"><i class="bi bi-hash"></i> teoría de grupos</span>
-                    <span class="badge rounded-pill badge-tag"><i class="bi bi-hash"></i> grafos de clases</span>
-                  </div>
-                </div>
-                <div>
-                  <a class="link-primary" data-bs-toggle="collapse" href="#masTesis" role="button" aria-expanded="false" aria-controls="masTesis">
-                    Más detalles
-                  </a>
-                  <div class="collapse mt-2" id="masTesis">
-                    <ul class="card-text">
-                      <li>Aplicaciones potenciales en clasificación de grupos mediante invariantes gráficos.</li>
-                      <li>Transferencia de técnicas a problemas de grafos divisorios y estructuras p-regulares.</li>
-                      <li>Próxima difusión de materiales y charla de resultados para estudiantes de posgrado.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3) Libro Lógica Matemática -->
-          <div class="carousel-item">
-            <div class="card h-100 shadow-sm mx-auto" style="max-width:780px;">
-              <img src="libro_logica_matematica.jpg" class="card-img-top" alt="Guía Didáctica de Lógica Matemática y Teoría de Conjuntos" loading="lazy">
+            <div class="card h-100 shadow-sm mx-auto" style="max-width:720px;">
+              <img src="libro_logica_matematica.jpg" class="card-img-top" alt="Guía Didáctica de Lógica Matemática y Teoría de Conjuntos">
               <div class="card-body">
                 <h5 class="card-title mb-2">
                   <i class="bi bi-journal-richtext" style="color:#fd7e14"></i>
@@ -227,38 +209,25 @@
                 </h5>
                 <h6 class="card-subtitle mb-2">17 de junio de 2025</h6>
                 <p class="card-text">
-                  Sale a la luz <b>“Guía Didáctica de Lógica Matemática y Teoría de Conjuntos”</b>, de <b>Miguel Leonardo</b> y
-                  <b>Marino Brito Guillén</b>. Un recurso práctico para cursos de fundamentos, enfocando nociones
-                  de <b>lógica proposicional</b>, <b>cuantificadores</b>, <b>métodos de demostración</b> y <b>teoría de conjuntos</b>, con una
-                  aproximación didáctica y ejemplos resueltos.
+                  Se lanzó <b>“Guía Didáctica de Lógica Matemática y Teoría de Conjuntos”</b>, de Miguel Leonardo y Marino Brito Guillén.
+                  Incluye ejercicios resueltos, actividades guiadas y recursos didácticos para bachillerato y nivel universitario inicial.
                 </p>
-                <div class="author-avatars my-3 d-flex align-items-center">
+                <div class="d-flex align-items-center mb-3">
                   <img src="miguel_leonardo.jpg" alt="Miguel Leonardo">
                   <img src="marino_brito.jpg" alt="Marino Brito">
                 </div>
-                <div class="mb-3">
-                  <a href="https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Ver libro</a>
-                </div>
-                <div>
-                  <a class="link-primary" data-bs-toggle="collapse" href="#masLibro" role="button" aria-expanded="false" aria-controls="masLibro">
-                    Más detalles
-                  </a>
-                  <div class="collapse mt-2" id="masLibro">
-                    <ul class="card-text">
-                      <li>Orientado a cursos introductorios en educación superior y formación docente.</li>
-                      <li>Enfatiza la resolución de problemas y el diseño de actividades en aula.</li>
-                      <li>Material de apoyo descargable para docentes (pronto en la web del grupo).</li>
-                    </ul>
-                  </div>
-                </div>
+                <a href="https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view?usp=share_link" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Ver libro</a>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalLibro">
+                  Más detalles
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- 4) José Alberto Reyes – Artículo Axioms -->
+          <!-- Noticia 3: Artículo de José Alberto Reyes -->
           <div class="carousel-item">
-            <div class="card h-100 shadow-sm mx-auto" style="max-width:780px;">
-              <img src="jose_reyes.jpg" class="card-img-top" alt="José Alberto Reyes" loading="lazy">
+            <div class="card h-100 shadow-sm mx-auto" style="max-width:720px;">
+              <img src="jose_reyes.jpg" class="card-img-top" alt="José Alberto Reyes">
               <div class="card-body">
                 <h5 class="card-title mb-2">
                   <i class="bi bi-journal-bookmark" style="color:#fd7e14"></i>
@@ -266,73 +235,67 @@
                 </h5>
                 <h6 class="card-subtitle mb-2">15 de junio de 2025</h6>
                 <p class="card-text">
-                  <b>“A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations”</b> presenta una
-                  familia robusta de <b>métodos sin derivadas</b> y <b>alto orden</b> para ecuaciones no lineales. Se estudia su
-                  <b>convergencia y estabilidad</b> teóricas y se validan numéricamente en problemas de referencia.
+                  <b>“A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations”</b>.
+                  Métodos de alto orden sin derivadas para resolver ecuaciones no lineales, con análisis de convergencia y pruebas numéricas.
                 </p>
-                <div class="mb-3">
-                  <a href="https://www.mdpi.com/2075-1680/13/1/34" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Leer artículo</a>
-                </div>
-                <div>
-                  <a class="link-primary" data-bs-toggle="collapse" href="#masJose" role="button" aria-expanded="false" aria-controls="masJose">
-                    Más detalles
-                  </a>
-                  <div class="collapse mt-2" id="masJose">
-                    <ul class="card-text">
-                      <li>Comparación frente a métodos clásicos en precisión y coste computacional.</li>
-                      <li>Estrategias libres de Jacobiano para sistemas de gran escala.</li>
-                      <li>Aplicabilidad a ecuaciones con ruido o funciones no suaves.</li>
-                    </ul>
-                  </div>
-                </div>
+                <a href="https://www.mdpi.com/2075-1680/13/1/34" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Leer artículo</a>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalJose">
+                  Más detalles
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- 5) Marc-Kelly – Publicación en Mathematische Nachrichten -->
+          <!-- Noticia 4: Artículo de Marc-Kelly Jean Philippe -->
           <div class="carousel-item">
-            <div class="card h-100 shadow-sm mx-auto" style="max-width:780px;">
-              <img src="marckelly.jpg" class="card-img-top" alt="Marc-Kelly Jean Philippe Jean" loading="lazy">
+            <div class="card h-100 shadow-sm mx-auto" style="max-width:720px;">
+              <img src="marckelly.jpg" class="card-img-top" alt="Marc-Kelly Jean Philippe Jean">
               <div class="card-body">
                 <h5 class="card-title mb-2">
                   <i class="bi bi-journal-check" style="color:#fd7e14"></i>
-                  Artículo internacional publicado (Mathematische Nachrichten, Q2)
+                  Publicación en Mathematische Nachrichten (Q2)
                 </h5>
                 <h6 class="card-subtitle mb-2">10 de junio de 2025</h6>
                 <p class="card-text">
-                  El profesor <b>Marc-Kelly Jean Philippe Jean</b> publica <b>“Groups with triangle-free graphs on 𝒑-regular classes”</b>.
-                  Se estudian <b>grafos sobre clases p-regulares</b> en grupos finitos y condiciones para que sean <b>libres de triángulos</b>,
-                  aportando criterios estructurales útiles en la interfaz entre <b>álgebra</b> y <b>teoría de grafos</b>.
+                  <b>“Groups with triangle-free graphs on 𝒑-regular classes”</b>. Resultados en teoría de grupos finitos
+                  con propiedades combinatorias de clases p-regulares y sus grafos asociados.
                 </p>
-                <div class="mb-3">
-                  <a href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Ver publicación</a>
-                </div>
-                <div>
-                  <a class="link-primary" data-bs-toggle="collapse" href="#masMana" role="button" aria-expanded="false" aria-controls="masMana">
-                    Más detalles
-                  </a>
-                  <div class="collapse mt-2" id="masMana">
-                    <ul class="card-text">
-                      <li>Relación entre propiedades del grafo y restricciones en la estructura del grupo.</li>
-                      <li>Conexiones con diámetro, conectividad y clasificación de familias de grupos.</li>
-                      <li>Perspectivas para nuevos invariantes gráficos en teoría de clases.</li>
-                    </ul>
-                  </div>
-                </div>
+                <a href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Ver publicación</a>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalMKPaper">
+                  Más detalles
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Noticia 5: Defensa de tesis doctoral de Markelly -->
+          <div class="carousel-item">
+            <div class="card h-100 shadow-sm mx-auto" style="max-width:720px;">
+              <img src="marckelly_tesis.jpg" class="card-img-top" alt="Defensa de tesis doctoral de Marc-Kelly Jean Philippe">
+              <div class="card-body">
+                <h5 class="card-title mb-2">
+                  <i class="bi bi-mortarboard" style="color:#fd7e14"></i>
+                  Defensa de tesis doctoral de Marc-Kelly Jean Philippe
+                </h5>
+                <h6 class="card-subtitle mb-2">junio de 2025</h6>
+                <p class="card-text">
+                  Marc-Kelly defendió con éxito su tesis doctoral en teoría de grupos. El trabajo explora estructuras
+                  asociadas a clases p-regulares y relaciones con grafos libres de triángulos, aportando nuevas técnicas
+                  combinatorias y resultados de conectividad.
+                </p>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTesisMK">
+                  Más detalles
+                </button>
               </div>
             </div>
           </div>
 
         </div>
-
-        <!-- Controles -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#noticiasCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-          <span class="visually-hidden">Anterior</span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#noticiasCarousel" data-bs-slide="prev" aria-label="Anterior">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#noticiasCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-          <span class="visually-hidden">Siguiente</span>
+        <button class="carousel-control-next" type="button" data-bs-target="#noticiasCarousel" data-bs-slide="next" aria-label="Siguiente">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
         </button>
       </div>
 
@@ -342,23 +305,162 @@
     </div>
   </section>
 
-  <!-- BOTÓN INICIO FLOTANTE -->
-  <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio"
+  <!-- BOTÓN INICIO FLOTANTE SIEMPRE VISIBLE -->
+  <a href="index.html" class="btn btn-inicio-flotante" title="Volver al inicio"
      style="position: fixed; bottom: 30px; right: 30px; z-index: 999; border-radius: 50px; font-size: 1.2rem; box-shadow: 0 4px 16px rgba(13,59,102,0.16); padding: 0.8rem 1.6rem; display: flex; align-items: center; gap: 0.6rem; background-color: #fb6f00; color: #fff;">
     <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
     <span class="d-none d-md-inline">Inicio</span>
   </a>
 
-  <!-- Bootstrap JS -->
+  <!-- ===== Modales de “Más detalles” ===== -->
+
+  <!-- Modal Antmel -->
+  <div class="modal fade" id="modalAntmel" tabindex="-1" aria-labelledby="modalAntmelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAntmelLabel">About the stability of self-accelerating parameters…</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            El artículo analiza dos subfamilias paramétricas (p₁ y p₂) de métodos iterativos sin memoria para sistemas no lineales,
+            evaluando <b>estabilidad vs. orden de convergencia</b>. Usando herramientas de dinámica discreta (planos y diagramas de
+            bifurcación) se muestran regiones con órbitas periódicas y zonas de caos.
+          </p>
+          <ul>
+            <li>Miembros de orden 4 muestran mayor estabilidad práctica que el esquema de orden 5.</li>
+            <li>Pruebas en problemas reales: determinación preliminar de órbitas, Fisher, convección-difusión.</li>
+            <li>Recomendaciones para escoger parámetros estables según el problema.</li>
+          </ul>
+          <p class="mb-0">DOI: <a href="https://doi.org/10.1177/14727978251361407" target="_blank" rel="noopener">10.1177/14727978251361407</a></p>
+        </div>
+        <div class="modal-footer">
+          <a href="https://doi.org/10.1177/14727978251361407" class="btn btn-primary" target="_blank" rel="noopener">Leer artículo</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Libro -->
+  <div class="modal fade" id="modalLibro" tabindex="-1" aria-labelledby="modalLibroLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLibroLabel">Guía Didáctica de Lógica Matemática y Teoría de Conjuntos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Recurso didáctico con enfoque práctico y gradual. Incluye explicaciones claras, actividades guiadas,
+            problemas con soluciones y secciones para evaluación formativa.
+          </p>
+          <ul>
+            <li>Temas: proposicional, cuantificadores, pruebas, conjuntos y aplicaciones.</li>
+            <li>Para docentes (planeación) y estudiantes (autonomía y refuerzo).</li>
+          </ul>
+          <p class="mb-0">
+            Enlace: <a href="https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view?usp=share_link" target="_blank" rel="noopener">Ver libro</a>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <a href="https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view?usp=share_link" class="btn btn-primary" target="_blank" rel="noopener">Abrir libro</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal José -->
+  <div class="modal fade" id="modalJose" tabindex="-1" aria-labelledby="modalJoseLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalJoseLabel">A Robust Family of High-Order Derivative-Free… (Axioms, Q2)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Proponen una familia robusta de métodos <b>sin derivadas</b> y de <b>alto orden</b> para ecuaciones no lineales,
+            con análisis teórico de convergencia y experimentación numérica comparativa.
+          </p>
+          <p class="mb-0">
+            Artículo: <a href="https://www.mdpi.com/2075-1680/13/1/34" target="_blank" rel="noopener">MDPI Axioms</a>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <a href="https://www.mdpi.com/2075-1680/13/1/34" class="btn btn-primary" target="_blank" rel="noopener">Leer artículo</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Paper Marc-Kelly -->
+  <div class="modal fade" id="modalMKPaper" tabindex="-1" aria-labelledby="modalMKPaperLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalMKPaperLabel">Groups with triangle-free graphs on 𝒑-regular classes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Resultados en teoría de grupos finitos analizando grafos asociados a clases p-regulares y condiciones
+            bajo las cuales dichos grafos son libres de triángulos, con implicaciones estructurales.
+          </p>
+          <p class="mb-0">
+            DOI: <a href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" target="_blank" rel="noopener">10.1002/mana.202400554</a>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <a href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" class="btn btn-primary" target="_blank" rel="noopener">Ver publicación</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tesis Marc-Kelly -->
+  <div class="modal fade" id="modalTesisMK" tabindex="-1" aria-labelledby="modalTesisMKLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTesisMKLabel">Defensa de tesis doctoral de Marc-Kelly Jean Philippe</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            La tesis aborda aspectos combinatorios y estructurales en teoría de grupos, con énfasis en clases p-regulares
+            y sus grafos asociados. Se presentan nuevas cotas y caracterizaciones relacionadas con conectividad y
+            ausencia de triángulos.
+          </p>
+          <ul>
+            <li>Direcciones futuras: extensiones a otras familias de grafos y aplicaciones a problemas de factorización.</li>
+            <li>Próxima disponibilidad del manuscrito para consulta institucional.</li>
+          </ul>
+          <p class="mb-0">
+            Foto: <em>marckelly_tesis.jpg</em> (reemplaza por tu imagen oficial).
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Inicialización explícita del carrusel -->
   <script>
+    // Inicialización explícita del carrusel (auto-avance, táctil y loop)
     const el = document.getElementById('noticiasCarousel');
     if (el) {
       new bootstrap.Carousel(el, {
-        interval: 5000,   // 5s
+        interval: 5000,
         ride: 'carousel',
-        pause: false,     // no pausar al pasar el mouse
+        pause: false,
         touch: true,
         wrap: true
       });
