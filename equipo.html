@@ -270,297 +270,178 @@
         </div>
       </div>
 
-     <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Equipo | El Kernel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <style>
-    body {
-      background: linear-gradient(120deg, #e7f1ff 0%, #fafbfc 100%);
-      font-family: 'Segoe UI', sans-serif;
-      min-height: 100vh;
-    }
-    .equipo-perfil {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #1594e9;
-      margin-bottom: 6px;
-    }
-    .nav-tabs .nav-link {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #178ac9;
-      border: none;
-      border-radius: 1.2rem 1.2rem 0 0;
-      background: #f7fcfe;
-      margin-right: 6px;
-      padding: 0.85rem 2.1rem;
-    }
-    .nav-tabs .nav-link.active {
-      color: #fff !important;
-      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-      box-shadow: 0 4px 24px rgba(21,148,233,0.07);
-    }
-    .tab-content {
-      background: #fff;
-      border-radius: 0 1.4rem 1.4rem 1.4rem;
-      box-shadow: 0 8px 36px rgba(21,148,233,0.06);
-      padding: 2.2rem 2rem;
-      margin-top: -1px;
-      min-height: 620px;
-    }
-    .formacion-lista li, .formacion li { margin-bottom: 0.45rem; }
-    .grado { font-weight: bold; color: #178ac9; }
-    .subnav-pills .nav-link, .nav-pills .nav-link {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 0.7rem;
-      color: #1594e9;
-      background: #f3fcf8;
-      border-radius: 1.2rem;
-      transition: background 0.2s, color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.65rem 1.1rem;
-    }
-    .subnav-pills .nav-link.active, .nav-pills .nav-link.active {
-      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-      color: #fff !important;
-      box-shadow: 0 2px 12px rgba(21,148,233,0.09);
-    }
-    .titulo-miembro { font-size: 2rem; font-weight: 700; color: #1594e9; margin-bottom: 1.5rem;}
-    .perfiles-redes a {
-      margin: 0 0.25rem;
-      font-size: 1.2rem;
-      text-decoration: none;
-      color: #1291c6;
-      transition: color 0.15s;
-      display: inline-block;
-    }
-    .perfiles-redes a:hover { color: #00394e; }
-    @media (max-width: 900px) {
-      .tab-content { min-height: 0; padding: 1.2rem 0.7rem; }
-      .nav-tabs .nav-link { padding: 0.65rem 1.1rem; font-size: 1.1rem; }
-    }
-    .navbar-nav .nav-link {
-      font-weight: bold !important;
-      font-style: italic !important;
-      font-size: 1.7rem !important;
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">El Kernel</a>
-      <div class="collapse navbar-collapse">
-       <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container py-5">
-    <!-- Tabs principales -->
-    <ul class="nav nav-tabs mb-4" id="mainTab" role="tablist">
-      <li class="nav-item"><button class="nav-link active" id="equipo-tab" data-bs-toggle="tab" data-bs-target="#equipo" type="button">Equipo</button></li>
-      <li class="nav-item"><button class="nav-link" id="formacion-tab" data-bs-toggle="tab" data-bs-target="#formacion" type="button">Formación Académica</button></li>
-    </ul>
-
-    <div class="tab-content" id="mainTabContent">
-      <!-- TAB EQUIPO -->
-      <div class="tab-pane fade show active" id="equipo" role="tabpanel">
-        <h2 class="text-center text-primary mb-4">Equipo de Investigación</h2>
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-          <!-- Miguel -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="miguel.jpg" class="equipo-perfil" alt="Miguel">
-            <h5 class="card-title">Miguel A. Leonardo Sepúlveda, Ph.D</h5>
-            <h6 class="text-muted">Métodos Numéricos, EDPs y Educación Matemática</h6>
-            <p><strong>Áreas:</strong> Métodos iterativos, EDPs, optimización, educación matemática.</p>
-            <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
-            <div class="perfiles-redes mb-2">
-              <a href="mailto:miguel.leonardo@isfodosu.edu.do"><i class="fa-solid fa-envelope"></i></a>
-              <a href="https://orcid.org/0000-0003-4199-6484"><i class="fa-brands fa-orcid"></i></a>
-              <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda"><i class="fa-brands fa-researchgate"></i></a>
-              <a href="https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es"><i class="fa-brands fa-google"></i></a>
-            </div>
-            <p class="small">Doctor en Matemática con enfoque en métodos numéricos avanzados. Investigador y diseñador curricular.</p>
-          </div></div></div>
-
-          <!-- Antmel -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="antmel.jpg" class="equipo-perfil" alt="Antmel">
-            <h5 class="card-title">Dr. Antmel Rodríguez Cabral</h5>
-            <h6 class="text-muted">Dinámica compleja y real de métodos iterativos</h6>
-            <p><strong>Áreas:</strong> EDPs, sistemas no lineales, dinámica compleja y real, análisis complejo.</p>
-            <p><strong>Afiliación:</strong> UASD</p>
-            <div class="perfiles-redes mb-2">
-              <a href="mailto:arodriguez05@uasd.edu.do"><i class="fa-solid fa-envelope"></i></a>
-              <a href="https://orcid.org/0000-0003-4502-0307"><i class="fa-brands fa-orcid"></i></a>
-              <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral"><i class="fa-brands fa-researchgate"></i></a>
-            </div>
-            <p class="small">Doctor en Matemática (2025). Profesor universitario e investigador en dinámica de métodos iterativos.</p>
-          </div></div></div>
-
-          <!-- Natanael -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="natanael.jpg" class="equipo-perfil" alt="Natanael">
-            <h5 class="card-title">Natanael Ureña Castillo, M.Sc</h5>
-            <h6 class="text-muted">Optimización y Redes Neuronales</h6>
-            <p><strong>Áreas:</strong> Métodos iterativos, optimización, redes neuronales.</p>
-            <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
-            <p class="small">Especialista en métodos iterativos y optimización aplicada. Docente universitario.</p>
-          </div></div></div>
-
-          <!-- Randy -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="randy.jpg" class="equipo-perfil" alt="Randy">
-            <h5 class="card-title">Randy Leonardo, M.Sc</h5>
-            <h6 class="text-muted">Álgebra Lineal y Educación Matemática</h6>
-            <p><strong>Áreas:</strong> Álgebra lineal, matrices combinadas, docencia.</p>
-            <p><strong>Afiliaciones:</strong> UASD, ISFODOSU</p>
-            <p class="small">Investigador en álgebra y docencia. Co-investigador en matrices combinadas.</p>
-          </div></div></div>
-
-          <!-- Marino -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="marino.png" class="equipo-perfil" alt="Marino">
-            <h5 class="card-title">Marino Brito Guillén, M.Sc</h5>
-            <h6 class="text-muted">Educación Matemática y Gestión Universitaria</h6>
-            <p><strong>Áreas:</strong> Educación matemática, gestión académica, formación docente.</p>
-            <p><strong>Afiliación:</strong> ISFODOSU</p>
-            <p class="small">Ex-vicerrector académico, profesor universitario y consultor educativo.</p>
-          </div></div></div>
-
-          <!-- Marc-Kelly -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="marckelly.jpg" class="equipo-perfil" alt="Marc-Kelly">
-            <h5 class="card-title">Marc-Kelly Jean Philippe Jean, Ph.D</h5>
-            <h6 class="text-muted">Álgebra Abstracta y Grupos Finitos</h6>
-            <p><strong>Áreas:</strong> Álgebra pura, grupos finitos, educación matemática.</p>
-            <p><strong>Afiliación:</strong> UASD</p>
-            <p class="small">Doctor en Matemática (2025). Profesor adjunto e investigador en álgebra.</p>
-          </div></div></div>
-
-          <!-- José Alberto -->
-          <div class="col"><div class="card text-center"><div class="card-body">
-            <img src="josealberto.jpg" class="equipo-perfil" alt="José Alberto">
-            <h5 class="card-title">José Alberto Reyes Reyes, M.Sc</h5>
-            <h6 class="text-muted">Métodos Iterativos y Educación Matemática</h6>
-            <p><strong>Áreas:</strong> Métodos iterativos, estabilidad, innovación educativa.</p>
-            <p><strong>Afiliación:</strong> UASD</p>
-            <p class="small">Docente universitario e investigador en métodos numéricos.</p>
-          </div></div></div>
-        </div>
-      </div>
-
-      <!-- TAB FORMACIÓN -->
-      <div class="tab-pane fade" id="formacion" role="tabpanel">
-        <h2 class="text-center text-primary mb-4">Formación Académica del Equipo</h2>
+      <!-- TAB 2: FORMACIÓN ACADÉMICA -->
+      <div class="tab-pane fade" id="formacion" role="tabpanel" aria-labelledby="formacion-tab">
+        <h2 class="text-center mb-4 text-primary titulo-miembro">Formación Académica del Equipo</h2>
         <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist">
-              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#miguel-form"><img src="miguel.jpg" class="equipo-perfil"> Miguel</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#antmel-form"><img src="antmel.jpg" class="equipo-perfil"> Antmel</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#natanael-form"><img src="natanael.jpg" class="equipo-perfil"> Natanael</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#randy-form"><img src="randy.jpg" class="equipo-perfil"> Randy</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#marino-form"><img src="marino.png" class="equipo-perfil"> Marino</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#marckelly-form"><img src="marckelly.jpg" class="equipo-perfil"> Marc-Kelly</button>
-              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#jose-form"><img src="josealberto.jpg" class="equipo-perfil"> José Alberto</button>
+          <div class="col-md-4 mb-4 mb-md-0">
+            <!-- PESTAÑAS VERTICALES CON FOTOS -->
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <button class="nav-link active" id="miguel-tab" data-bs-toggle="pill" data-bs-target="#miguel" type="button" role="tab" aria-controls="miguel" aria-selected="true">
+                <img src="miguel.jpg" class="equipo-perfil" alt="Miguel"> Miguel A. Leonardo Sepúlveda
+              </button>
+              <button class="nav-link" id="natanael-tab" data-bs-toggle="pill" data-bs-target="#natanael" type="button" role="tab" aria-controls="natanael" aria-selected="false">
+                <img src="natanael.jpg" class="equipo-perfil" alt="Natanael"> Natanael Ureña Castillo
+              </button>
+              <button class="nav-link" id="antmel-tab" data-bs-toggle="pill" data-bs-target="#antmel" type="button" role="tab" aria-controls="antmel" aria-selected="false">
+                <img src="antmel.jpg" class="equipo-perfil" alt="Antmel"> Antmel Rodríguez Cabral
+              </button>
+              <button class="nav-link" id="randy-tab" data-bs-toggle="pill" data-bs-target="#randy" type="button" role="tab" aria-controls="randy" aria-selected="false">
+                <img src="randy.jpg" class="equipo-perfil" alt="Randy"> Randy Leonardo
+              </button>
+              <button class="nav-link" id="marino-tab" data-bs-toggle="pill" data-bs-target="#marino" type="button" role="tab" aria-controls="marino" aria-selected="false">
+                <img src="marino.png" class="equipo-perfil" alt="Marino"> Marino Brito Guillén
+              </button>
+              <button class="nav-link" id="marckelly-tab" data-bs-toggle="pill" data-bs-target="#marckelly" type="button" role="tab" aria-controls="marckelly" aria-selected="false">
+                <img src="marckelly.jpg" class="equipo-perfil" alt="Marc-Kelly"> Marc-Kelly Jean Philippe Jean
+              </button>
+              <button class="nav-link" id="josealberto-tab" data-bs-toggle="pill" data-bs-target="#josealberto" type="button" role="tab" aria-controls="josealberto" aria-selected="false">
+                <img src="josealberto.jpg" class="equipo-perfil" alt="José Alberto"> Jose Alberto Reyes Reyes
+              </button>
             </div>
           </div>
           <div class="col-md-8">
-            <div class="tab-content">
-              <!-- Miguel formación -->
-              <div class="tab-pane fade show active" id="miguel-form">
-                <h4>Miguel A. Leonardo Sepúlveda, Ph.D</h4>
+            <div class="tab-content" id="v-pills-tabContent">
+              <!-- MIGUEL -->
+              <div class="tab-pane fade show active" id="miguel" role="tabpanel" aria-labelledby="miguel-tab">
+                <h4>Miguel A. Leonardo Sepúlveda, Ph.D.</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Doctorado en Matemática</span> – INTEC (2019-2024), con estancias doctorales en la Universitat Politècnica de València.</li>
+                  <li><span class="grado">Doctorado en Matemática</span> – INTEC (2019-2024), con estancias doctorales en la Universitat Politècnica de València (España), (defendido con éxito, 2024 obteniendo la máxima puntuación en su tesis.)</li>
                   <li><span class="grado">Especialidad en Planificación y Desarrollo Curricular</span> – Universitat de Barcelona (2019).</li>
-                  <li><span class="grado">Maestría en Matemática</span> – INTEC (2017).</li>
-                  <li><span class="grado">Lic. Educación, Matemática y Física</span> – Universidad Dominicana O&M (2011).</li>
+                  <li><span class="grado">Maestría en Matemática</span> – Instituto Tecnológico de Santo Domingo (INTEC, 2017).</li>
+                  <li><span class="grado">Diplomado en Formación Lasallista</span> – Universidad La Salle, México (2016).</li>
+                  <li><span class="grado">Lic. Educación Mención Matemática y Física</span> – Universidad Dominicana O&M (2011).</li>
+                  <li><span class="grado">Investigador</span> – Carrera Nacional de investigadores en el área de Ciencias Físico-Químicas y Matemáticas</li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Diseñador, rediseñador y coordinador curricular de programas de Maestría en Matemática Superior y Licenciatura en Matemática y Física, ISFODOSU.</li>
+                  <li>Docente de Matemática, ITLA e ISFODOSU (2016-presente).</li>
+                  <li>Docente universitario de matemática, cálculo, ecuaciones diferenciales, Variable Compleja (INTEC, 2017-2024).</li>
+                  <li>Docente de secundaria y preuniversitaria (2007–2016), coordinador y asesor de diplomados y planes educativos.</li>
                 </ul>
               </div>
-              <!-- Antmel formación -->
-              <div class="tab-pane fade" id="antmel-form">
-                <h4>Dr. Antmel Rodríguez Cabral</h4>
+              <!-- NATANAEL -->
+              <div class="tab-pane fade" id="natanael" role="tabpanel" aria-labelledby="natanael-tab">
+                <h4>Natanael Ureña Castillo</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Doctorado en Matemática Pura</span> – INTEC (2025).</li>
-                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2017).</li>
-                  <li><span class="grado">Ingeniería Civil</span> – INTEC.</li>
+                  <li><span class="grado">Certificado de Estudios Superiores en Educación</span> – UASD (2000-2003).</li>
+                  <li><span class="grado">Licenciatura en Educación, Mención Matemáticas</span> – UASD (2000-2004).</li>
+                  <li><span class="grado">Especialidad en Cálculo Actuarial</span> – INTEC.</li>
+                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2005-2008).</li>
+                  <li><span class="grado">Doctorado en Matemática</span> – (En proceso: INTEC 2019-actual).</li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Docente universitario de matemática, cálculo y ecuaciones diferenciales (INTEC, UASD).</li>
+                  <li>Director de secundaria y asesor en competencias académicas y economía.</li>
+                  <li>Ponente en congresos nacionales e internacionales.</li>
                 </ul>
               </div>
-              <!-- Natanael formación -->
-              <div class="tab-pane fade" id="natanael-form">
-                <h4>Natanael Ureña Castillo, M.Sc</h4>
+              <!-- ANTMEL -->
+<div class="tab-pane fade" id="antmel" role="tabpanel" aria-labelledby="antmel-tab">
+  <h4>Antmel Rodríguez Cabral</h4>
+  <ul class="formacion">
+    <li><span class="grado">Ingeniería Civil</span> – INTEC</li>
+    <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2015-2017)</li>
+    <li><span class="grado">Doctorado en Matemática Pura</span> – INTEC (defendido con éxito, 2025 obteniendo la máxima puntuación en su tesis.)</li>
+    <li><span class="grado">Investigador Adscrito</span> – Carrera Nacional de investigadores en el área de Ciencias Físico-Químicas y Matemáticas</li>
+  </ul>
+  <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+  <ul>
+    <li>Profesor universitario de matemáticas (UASD, UFHEC, UAPA, UTESA, UTESUR).</li>
+    <li>Ponente y colaborador en congresos (RELME, MESCyT, UASD, entre otros).</li>
+    <li>Capacitación en inglés avanzado, AutoCAD, ajedrez y plataformas tecnológicas.</li>
+  </ul>
+  <p class="mt-3 text-muted">
+    <em>Especialista en dinámica compleja y dinámica real de métodos iterativos para sistemas no lineales.</em>
+  </p>
+</div>
+
+              <!-- RANDY -->
+              <div class="tab-pane fade" id="randy" role="tabpanel" aria-labelledby="randy-tab">
+                <h4>Randy Leonardo</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Doctorado en Matemática</span> – INTEC (en curso).</li>
-                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2008).</li>
-                  <li><span class="grado">Licenciatura en Educación Matemática</span> – UASD (2004).</li>
+                  <li><span class="grado">Maestría en Matemática</span> – INTEC (2011)</li>
+                  <li><span class="grado">Licenciatura en Matemática</span> – UASD (2008)</li>
+                  <li><span class="grado">Diplomados en Educación en Línea y Modelos SCORM</span> – Instituto Latinoamericano de la Comunicación Educativa (2013, 2014)</li>
+                   <li><span class="grado">Investigador Titular</span> – Carrera Nacional de investigadores en el área de Ciencias Físico-Químicas y Matemáticas</li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Docente de matemática en INTEC, UASD e ISFODOSU (2009–presente).</li>
+                  <li>Co-investigador en Álgebra Lineal y Matriz Combinada.</li>
+                  <li>Ponente en congresos y seminarios nacionales e internacionales.</li>
                 </ul>
               </div>
-              <!-- Randy formación -->
-              <div class="tab-pane fade" id="randy-form">
-                <h4>Randy Leonardo, M.Sc</h4>
+              <!-- MARINO -->
+              <div class="tab-pane fade" id="marino" role="tabpanel" aria-labelledby="marino-tab">
+                <h4>Marino Brito Guillén</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Maestría en Matemática</span> – INTEC (2011).</li>
-                  <li><span class="grado">Licenciatura en Matemática</span> – UASD (2008).</li>
+                  <li><span class="grado">Máster Internacional de Gestión Universitaria</span> – Universidades Alcalá de Henares, La Rioja, Castilla La Mancha y Rey Juan Carlos</li>
+                  <li><span class="grado">Maestría en Matemática</span> – Pontificia Universidad Católica Madre y Maestra (1996)</li>
+                  <li><span class="grado">Postgrado en Matemática</span> – Pontificia Universidad Católica Madre y Maestra (1995)</li>
+                  <li><span class="grado">Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas</span> – Universidad Eugenio María de Hostos (1991)</li>
+                  <li><span class="grado">Maestro Normal Primario</span> – Escuela Normal Américo Lugo (1984)</li>
+                  <li><span class="grado">Diplomado en Gerencia Social Ignaciana</span> – Pontificia Universidad Javeriana, Colombia (2009)</li>
+                  <li><span class="grado">Cursos, talleres y seminarios en pedagogía, matemática, topología y evaluación universitaria</span></li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Vicerrector Académico, Instituto Loyola (2009–2018), director académico y coordinador de matemática.</li>
+                  <li>Profesor universitario en PUCMM, ISFODOSU, Loyola, y otros centros.</li>
+                  <li>Entrenador y jurado de Olimpiadas de Matemática, consultor y formador de docentes.</li>
                 </ul>
               </div>
-              <!-- Marino formación -->
-              <div class="tab-pane fade" id="marino-form">
-                <h4>Marino Brito Guillén, M.Sc</h4>
-                <ul class="formacion">
-                  <li><span class="grado">Máster Internacional en Gestión Universitaria</span> – Univ. Alcalá y otras (2009).</li>
-                  <li><span class="grado">Maestría en Matemática</span> – PUCMM (1996).</li>
-                  <li><span class="grado">Licenciatura en Educación Matemática</span> – Univ. Eugenio María de Hostos (1991).</li>
-                </ul>
-              </div>
-              <!-- Marc-Kelly formación -->
-              <div class="tab-pane fade" id="marckelly-form">
+              <!-- MARC-KELLY JEAN PHILIPPE JEAN -->
+              <div class="tab-pane fade" id="marckelly" role="tabpanel" aria-labelledby="marckelly-tab">
                 <h4>Marc-Kelly Jean Philippe Jean, Ph.D</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Doctorado en Matemática</span> – Programa UASD-INTEC-PUCMM (2025).</li>
-                  <li><span class="grado">Maestría en Matemática</span> – UASD (2023).</li>
-                  <li><span class="grado">Maestría en Matemática</span> – UTESA (2015).</li>
-                  <li><span class="grado">Licenciatura en Matemática Pura</span> – UASD (2011).</li>
+                  <li><span class="grado">Doctor en Matemática</span> Programa interuniversitario UASD-INTEC-PUCMM, República Dominicana, (defendido con éxito, 2025 obteniendo la máxima puntuación en su tesis.)</li>
+                  <li><span class="grado">Maestría en Matemática</span> – Universidad Tecnológica de Santiago (UTESA), 2015.</li>
+                  <li><span class="grado">Maestría en Matemática</span> – Universidad Autónoma de Santo Domingo (UASD), 2023.</li>
+                  <li><span class="grado">Licenciatura en Matemática Pura</span> – Universidad Autónoma de Santo Domingo (UASD), 2011.</li>
+                  <li><span class="grado">Bachillerato Humanístico</span> – Colegio Mi Hogar Cristiano, La Romana, 2004.</li>
+                  <li><span class="grado">Diplomado en Desarrollo de Competencias Didácticas</span> – Universidad Santander, España, 2024.</li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Profesor adjunto y monitor en la Escuela de Matemáticas de la UASD (2012–actualidad).</li>
+                  <li>Tutor virtual y profesor en UCE y Loyola.</li>
+                  <li>Asesor, árbitro y conferencista en investigación en álgebra y educación matemática.</li>
+                  <li>Ponente en congresos nacionales e internacionales (MESCYT, UASD, APEC, REDOME).</li>
                 </ul>
               </div>
-              <!-- José Alberto formación -->
-              <div class="tab-pane fade" id="jose-form">
+              <!-- JOSE ALBERTO REYES REYES -->
+              <div class="tab-pane fade" id="josealberto" role="tabpanel" aria-labelledby="josealberto-tab">
                 <h4>José Alberto Reyes Reyes, M.Sc</h4>
                 <ul class="formacion">
-                  <li><span class="grado">Doctorado en Matemática</span> – INTEC (en curso).</li>
-                  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2016).</li>
-                  <li><span class="grado">Magíster en Matemáticas</span> – UTESA (2015).</li>
-                  <li><span class="grado">Licenciatura en Matemática</span> – UASD (2011).</li>
+                  <li><span class="grado">Doctorado en Matemáticas</span> (en tesis) – Instituto Tecnológico de Santo Domingo (INTEC).</li>
+                  <li><span class="grado">Maestría en Ciencias, Matemática Pura</span> – Universidad Autónoma de Santo Domingo (UASD), 2014-2016.</li>
+                  <li><span class="grado">Magíster en Matemáticas</span> – Universidad Tecnológica de Santiago (UTESA), 2013-2015.</li>
+                  <li><span class="grado">Máster en Educación y Nuevas Tecnologías</span> – Universidad a Distancia de Madrid (UDIMA), 2012-2013.</li>
+                  <li><span class="grado">Licenciatura en Matemáticas</span> – Universidad Autónoma de Santo Domingo (UASD), 2007-2011.</li>
+                  <li><span class="grado">Diplomado en Fundamentos del Análisis de Variable Real</span> – Universidad Central del Este (UCE), 2011-2012.</li>
+                  <li><span class="grado">Asesoría de Tesis de Postgrado</span> – UASD, 2024 (64 horas).</li>
+                  <li><span class="grado">Tutor Virtual</span> – UASD, 2024 (120 horas).</li>
+                  <li><span class="grado">Diplomado Virtual: Competencias Digitales para Aprendizajes de Calidad</span> – Red Qualitas/Microsoft, 2020 (108 horas).</li>
+                </ul>
+                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
+                <ul>
+                  <li>Docente universitario y de postgrado en matemáticas, UASD.</li>
+                  <li>Investigador en métodos iterativos, análisis de estabilidad y convergencia.</li>
+                  <li>Consultor en innovación educativa y tecnologías para la educación matemática.</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-    </div>
-  </div>
-
+      <!-- FIN TAB 2 -->
+   <!-- BOTÓN INICIO FLOTANTE SIEMPRE VISIBLE -->
   <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio">
-    <i class="fa-solid fa-house"></i> Inicio
+    <span style="font-size:1.3em;line-height:1"><i class="fa-solid fa-house"></i></span>
+    <span class="d-none d-md-inline">Inicio</span>
   </a>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
