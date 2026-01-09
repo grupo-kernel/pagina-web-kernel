@@ -1,9 +1,12 @@
 {
-  "dependencies": {
-    "@tailwindcss/cli": "^4.1.18",
-    "tailwindcss": "^4.1.18"
+  "name": "grupo-el-kernel",
+  "version": "1.0.0",
+  "description": "\"# Grupo El Kernel\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx @tailwindcss/cli -i ./css/style.css -o ./css/output.css --watch "
   },
-  "script": {
-        "dev": "npx @tailwindcss/cli -i ./css/style.css -o ./css/output.css --watch"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
