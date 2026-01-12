@@ -1,6 +1,8 @@
 import { createHeader } from "./components/Header/header.js";
 import { createNavBar } from "./components/NavBar/navBar.js";
 import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
+import { Footer } from "./components/Footer/Footer.js";
+
 
 const header = document.querySelector("#header");
 header.innerHTML = createHeader();
@@ -10,6 +12,8 @@ navBar.innerHTML = createNavBar();
 
 initNavBar(navBar, header);
 
+const footer = document.querySelector("#footer");
+footer.innerHTML = Footer();
 
 //aqui inicializas todo los componentes que utilizaras, el contenido que cambiara es el del main
 //recuerda que el header. navBar y el footer son fijos, aun no he creado la logica de navegacion
