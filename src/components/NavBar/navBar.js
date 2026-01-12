@@ -1,38 +1,46 @@
 export function createNavBar(){
-        const wrapper = `<nav class=" flex flex-col lg:flex-row  w-4/5 md:w-3/4 lg:w-3xl h-dvh lg:h-24">
-        <div class="lg:hidden flex px-2.5  justify-between items-center w-96 mb-7">
+        const wrapper = `<div class="lg:hidden flex px-2.5  justify-between items-center  mb-7">
                     <span class="text-4xl font-medium ">El Kernel</span>
                     <i class=" text-6xl cursor-pointer bx  bx-x"></i>
                 </div>
-                    <ul class="flex text-black flex-col lg:flex-row p-4 gap-8 lg:gap-9  w-96 lg:w-3xl">
-                      <li class="flex lg:gap-3  justify-between font-medium  items-center text-2xl min-h-11" >
-                      <a href="#"> Nosotros </a>
-                      <i class=" text-3xl bx  bx-caret-down"></i> 
-                      <ul class="hidden" >
-                            <li><a href="#" >Quienes Somos</a></li>
-                            <li><a href="#" >Equipo</a></li>
+
+                  <ul class="flex text-black flex-col lg:flex-row p-4 gap-8 lg:gap-9  lg:w-3xl">
+                    
+                  <li data-action="open-subMenu" class=" flex   lg:gap-3 lg:relative group hover:cursor-pointer 
+                       justify-between font-medium  items-center text-2xl " >
+                        <a href="#" class="" > Nosotros </a>
+                        <i class="text-3xl bx bx-caret-down"></i> 
+                        
+                      <ul class="flex-col text-base hidden  lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56  group-hover:block lg:bg-white lg:shadow-2xl " >
+                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white " ><a href="#" >Quienes Somos</a></li>
+                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white  " ><a href="#" >Equipo</a></li>
                         </ul>
                       </li>  
-                      <li class=" flex lg:gap-3  justify-between font-medium  items-center  text-2xl min-h-11">
-                      <a href="#"> Nuestro Trabajo </a>
-                      <i class=" text-3xl bx  bx-caret-down"></i> 
-                      <ul class="hidden">
-                            <li><a href="#">Líneas</a></li>
-                            <li><a href="#"> Proyectos</a></li> 
-                            <li><a href="#"> Publicaciones</a></li> 
+
+                      <li data-action="open-subMenu" class="  flex relative lg:gap-3 hover:cursor-pointer group  justify-between font-medium  items-center  text-2xl ">
+                          <a href="#"> Nuestro Trabajo </a>
+                          <i class=" text-3xl bx  bx-caret-down"></i> 
+
+                      <ul class="group-hover:block absolute top-full w-56 left-0 mt-2 text-base bg-white shadow-2xl  hidden">
+                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white " ><a href="#">Líneas</a></li>
+                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white " ><a href="#"> Proyectos</a></li> 
+                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white " ><a href="#"> Publicaciones</a></li> 
                       </ul>
 
                       </li>  
-                      <li class=" flex lg:gap-3  justify-between font-medium  items-center  text-2xl min-h-11">
-                      <a href="#"> Noticias </a>
-                    <i class=" text-3xl bx  bx-news"></i> 
+
+                      <li class=" flex lg:gap-3 hover:cursor-pointer  justify-between font-medium  items-center  text-2xl ">
+                        <a href="#"> Noticias </a>
+                      <i class=" text-3xl bx  bx-news"></i> 
                     </li>  
 
-                    <li class=" flex lg:gap-3  justify-between  font-medium items-center  text-2xl min-h-11">
-                    <a href="#"> Noticias </a>
-                    <i class=" text-3xl bx  bx-contact-book"></i> 
+                    <li class=" flex lg:gap-3 hover:cursor-pointer  justify-between  font-medium items-center  text-2xl ">
+                      <a href="#"> Noticias </a>
+                      <i class=" text-3xl bx  bx-contact-book"></i> 
                       </li>  
-                    </ul></nav>`;
+                    </ul>`;
 
+                
+                  
         return wrapper;
 }
