@@ -1,6 +1,11 @@
 import { createHeader } from "./components/Header/header.js";
 import { createNavBar } from "./components/NavBar/navBar.js";
+
+import { createQuienesSomos } from "./components/QuienesSomos/quienesSomos.js";
+import { initQuienesSomos } from "./components/QuienesSomos/initQuienesSomos.js";
+
 import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
+
 
 const header = document.querySelector("#header");
 header.innerHTML = createHeader();
@@ -8,7 +13,13 @@ header.innerHTML = createHeader();
 const navBar = document.querySelector("#navBar");
 navBar.innerHTML = createNavBar();
 
+// Estoy inicilializando la seccion de quienes somos desde aqui porque estoy en la rama quienes-somos
+const quienesSomos = document.querySelector("#main");
+quienesSomos.innerHTML = createQuienesSomos();
+
+
 initNavBar(navBar, header);
+initQuienesSomos(quienesSomos);
 
 
 //aqui inicializas todo los componentes que utilizaras, el contenido que cambiara es el del main
