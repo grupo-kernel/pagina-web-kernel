@@ -1,4 +1,4 @@
-export function initDescriptionToggle() {
+export function initDescriptionToggle(container) {
     const text = container.querySelector("[data-description-text]");
     const button = container.querySelector("[data-description-btn]");
 

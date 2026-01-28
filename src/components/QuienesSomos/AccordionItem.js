@@ -41,23 +41,24 @@ const accordionData = [
 export function createAccordion() {
   const itemsHTML = accordionData.map(item => createItem(item)).join('');
 
-  return `
+  const accordionContent = `
     <div id="accordion-container">
       <section role="accordion" class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-start">
         ${itemsHTML}
       </section>
-      
+
       <p class="text-center italic text-black text-lg md:text-2xl p-8 mb-8">
         “Transformamos la matemática en herramienta para el cambio educativo, científico y social.”
       </p>
     </div>
   `;
+  return accordionContent;
 }
 
 
 function createItem({ icon, title, content }) {
   return `
-    <div class="accordion-item rounded-lg overflow-hidden border border-gray-700 bg-[#232C32] flex flex-col transition-all duration-300">
+    <div class="accordion-item rounded-lg overflow-hidden border border-gray-700  flex flex-col transition-all duration-300" style="background-color: #232C32;">
 
        <!-- HEADER -->
       <button type="button" data-accordion-header
@@ -69,7 +70,6 @@ function createItem({ icon, title, content }) {
         </div>
 
         <img src="./assets/chevron-down.png" class="chevron-icon w-8 h-8 transition-transform duration-300 pointer-events-none" data-accordion-icon />
-        
       </button>
 
       <!-- CONTENT -->
