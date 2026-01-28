@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+    --color-footer-primary:#232C32; 
+    --color-footer-contacto:#48E1F7;
+    --text-family-size:20px;
+    --color-widgets-bg:#0D6EFD;
+
+}

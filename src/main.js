@@ -1,29 +1,32 @@
+// UI COMPONENTS
 import { createHeader } from "./components/Header/header.js";
 import { createNavBar } from "./components/NavBar/navBar.js";
+import { createQuienesSomos } from "./components/QuienesSomos/CreateQuienesSomos.js";
+import { Footer } from "./components/Footer/Footer.js";
 
-import { createQuienesSomos } from "./components/QuienesSomos/quienesSomos.js";
-import { initQuienesSomos } from "./components/QuienesSomos/initQuienesSomos.js";
-
+// CONTROLLERS & LOGIC
 import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
 
+// PAGE VIEWS
+import { CreatePageHome } from "./pages/Home.js";
+import { CreatePageQuienesSomos } from "./pages/QuienesSomos.js";
 
+// GLOBAL COMPONENT RENDERING
 const header = document.querySelector("#header");
 header.innerHTML = createHeader();
 
 const navBar = document.querySelector("#navBar");
 navBar.innerHTML = createNavBar();
 
-// Estoy inicilializando la seccion de quienes somos desde aqui porque estoy en la rama quienes-somos
-const quienesSomos = document.querySelector("#main");
-quienesSomos.innerHTML = createQuienesSomos();
+const footer = document.querySelector("#footer");
+footer.innerHTML = Footer();
 
-
+// COMPONENT INITIALIZATION
 initNavBar(navBar, header);
-initQuienesSomos(quienesSomos);
 
 
-//aqui inicializas todo los componentes que utilizaras, el contenido que cambiara es el del main
-//recuerda que el header. navBar y el footer son fijos, aun no he creado la logica de navegacion
-// pero ira en la carpeta router, ahi se definen las rutas y eso y los cambios entre componentes
-//pages, en el navBar me falta colocar los data-link para la navegacion, los otros cambios del footer
-// la page home
+// TEST PAGES
+
+const main = document.querySelector("#main");
+//main.appendChild(CreatePageHome());
+main.appendChild(CreatePageQuienesSomos());
