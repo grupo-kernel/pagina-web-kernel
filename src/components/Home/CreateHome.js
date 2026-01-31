@@ -1,8 +1,9 @@
+
 import { CreateCardFirstHome } from "./CardFirst.js";
 import { CreateSliderComponentHome } from "./SliderComponent.js";
 export function CreateHome() {
         const section = document.createElement('section');
-        section.classList.add('relative', 'w-full', 'flex', 'flex-col', 'lg:flex-row');
+        section.classList.add('relative', 'w-full', 'flex',  'flex-col', 'lg:flex-row');
         
         const card = document.createElement('div');
         const slider = document.createElement('div');
