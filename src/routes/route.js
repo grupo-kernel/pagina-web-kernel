@@ -13,7 +13,6 @@ export function navigate (route){
         const content = document.querySelector('main');
         content.innerHTML  = "";
         const page = routes[route];
-        
         if(!page) return;
         return content.appendChild(page());
 }
