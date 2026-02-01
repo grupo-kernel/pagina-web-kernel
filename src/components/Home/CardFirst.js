@@ -1,7 +1,8 @@
 
 export function CreateCardFirstHome(){
 
-    const card = `<div class =" flex justify-center 
+    const card = `
+    <div class =" flex justify-center 
             bg-white shadow-2xl p-2 
                 border-l-2 border-t-2 
                 w-89.5 h-85 md:w-184

@@ -1,6 +1,7 @@
 export function CreateSliderComponentHome(){
     
-    const slider = `<div class="absolute bottom-0 col-span-4
+    const slider = `
+    <div class="absolute bottom-0 col-span-4
             left-0 bg-footer-primary z-10 translate-y-1/2
             w-89.5 h-47.5 md:h-64 
             rounded-2xl md:w-184 
