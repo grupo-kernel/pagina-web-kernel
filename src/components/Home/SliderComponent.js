@@ -1,6 +1,7 @@
+import { SliderController } from "../../Controllers/Slider/Slider.controller.js";
+
 export function CreateSliderComponentHome(){
-    
-    const slider = `
+const slider = `
     <div class="absolute bottom-0 col-span-4
             left-0 bg-footer-primary z-10 translate-y-1/2
             w-89.5 h-47.5 md:h-64 
@@ -9,17 +10,16 @@ export function CreateSliderComponentHome(){
             lg:w-130 lg:translate-y-0  
             lg:h-130  lg:rounded-none lg:rounded-tr-2xl lg:rounded-br-2xl" >
 
-                    <div class="justify-center flex p-2.5 flex-col items-center">
+                    <div id="containerFather"  class="justify-center flex p-2.5 flex-col items-center">
                          <div class="hidden md:flex items-center justify-between p-4 gap-5 z-10 " >
-                                <i class=" text-4xl absolute left-4 top-1/2 lg:top-1/3   lg:text-5xl -translate-y-1/2 cursor-pointer text-white   bg-footer-primary rounded-full  bxr  bx-arrow-left"></i> 
-                                <i class=" text-4xl absolute right-4 top-1/2 lg:top-1/3  lg:text-5xl    -translate-y-1/2 cursor-pointer text-white bg-footer-primary rounded-full    bxr  bx-arrow-right"></i> 
+                                <i  id="arrowL" class=" text-4xl absolute left-4 top-1/2 lg:top-1/3   lg:text-5xl -translate-y-1/2 cursor-pointer text-white   bg-footer-primary rounded-full  bxr  bx-arrow-left"></i> 
+                                <i  id="arrowR" class=" text-4xl absolute right-4 top-1/2 lg:top-1/3  lg:text-5xl    -translate-y-1/2 cursor-pointer text-white bg-footer-primary rounded-full    bxr  bx-arrow-right"></i> 
                          </div>
-                        <div class="p-3 md:p-0 " >
+                            <div id="contenedorSlide" class="p-3 md:p-0 " >
                             <div id="1" class="relative flex flex-col justify-center items-center w-full h-full">
                                 <img id="img1" src="./assets/ITLA.jpg" alt="Itla"
                                 title="Instituto Tecnológico de Las Américas ITLA" 
                                 class="w-70.5 h-32.5 md:w-142.5 md:h-38.5  rounded-3xl object-cover lg:w-137.75 lg:h-64.5   ">
-
                                 <span class="md:border md:border-footer-contacto md:px-2.5 md:w-32 text-center   rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2  " >ITLA</span>
                             </div>
 
@@ -41,5 +41,10 @@ export function CreateSliderComponentHome(){
 
             </div>`;
 
-    return slider;
+        const element = document.createElement('div');
+        element.innerHTML = slider;        
+        const slideNode = element.firstElementChild;
+        SliderController(slideNode.querySelector('#containerFather'));
+
+    return slideNode;
 }
