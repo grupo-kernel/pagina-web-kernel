@@ -6,7 +6,7 @@ import { setMainLayout } from "../layout/mainLayout.js";
 const routes = {
 
   home: { page: CreatePageHome, layout: "default" },
-  quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
+  quienesSomos: { page: CreatePageQuienesSomos, layout: "default" },
   equipo: { page: Equipment, layout: "default" },
 
 };

@@ -1,6 +1,6 @@
 export function createHero(
   title = "¿Quiénes Somos?",
-  imageUrl = "./assets/QuienesSomos.png"
+  imageUrl = "./src/assets/QuienesSomos.png"
 ) {
 
   const heroContent = `

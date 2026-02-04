@@ -1,4 +1,3 @@
-// Ajustar el espacio del main según el layout que se defina en la ruta. 
 export function setMainLayout(layout = "default") {
     const main = document.getElementById("main");
 
