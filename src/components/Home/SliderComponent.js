@@ -1,7 +1,7 @@
 import { SliderController } from "../../Controllers/Slider/Slider.controller.js";
 
-export function CreateSliderComponentHome(){
-const slider = `
+export function CreateSliderComponentHome() {
+    const slider = `
     <div class="absolute bottom-0 col-span-4
             left-0 bg-footer-primary z-10 translate-y-1/2
             w-89.5 h-47.5 md:h-64 
@@ -17,11 +17,10 @@ const slider = `
                          </div>
                             <div id="contenedorSlide" class="p-3 md:p-0 " >
                             <div id="1" class="relative flex flex-col justify-center items-center w-full h-full">
-                                <img id="img1" src="./assets/ITLA.jpg" alt="Itla"
-                                title="Instituto Tecnológico de Las Américas ITLA" 
+                                <img id="img1" src="./assets/apec.png" alt="UNAPEC"
+                                title="UNAPEC" 
                                 class="w-70.5 h-32.5 md:w-142.5 md:h-38.5  rounded-3xl object-cover lg:w-137.75 lg:h-64.5   ">
-                                <span class="md:border md:border-footer-contacto md:px-2.5 md:w-32 text-center   rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2  " >ITLA</span>
-                            </div>
+                                <span class="md:border md:border-footer-contacto md:px-2.5 md:w-32 text-center   rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2  " >UNAPEC</span>                            </div>
 
                     </div>
  
@@ -41,10 +40,10 @@ const slider = `
 
             </div>`;
 
-        const element = document.createElement('div');
-        element.innerHTML = slider;        
-        const slideNode = element.firstElementChild;
-        SliderController(slideNode.querySelector('#containerFather'));
+    const element = document.createElement('div');
+    element.innerHTML = slider;
+    const slideNode = element.firstElementChild;
+    SliderController(slideNode.querySelector('#containerFather'));
 
     return slideNode;
 }
