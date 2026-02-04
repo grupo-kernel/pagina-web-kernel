@@ -21,7 +21,7 @@ export function createNavBar(){
 
                       <ul class="flex-col mt-2.5 text-lg lg:text-base hidden w-full   lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56  lg:bg-white lg:shadow-2xl " >
                             <li data-route="quienesSomos" class="px-2 py-1.5 hover:bg-sky-800 hover:text-white " ><span  >Quienes Somos</span></li>
-                            <li class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white  " ><span >Equipo</span></li>
+                            <li data-route="Equipment" class=" px-2 py-1.5 hover:bg-sky-800 hover:text-white  " ><span >Equipo</span></li>
                         </ul>
                         
                       </li>  

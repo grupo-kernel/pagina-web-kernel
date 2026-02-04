@@ -1,4 +1,4 @@
-export function createHero(title = "¿Quiénes Somos?", imageUrl = "./assets/QuienesSomos.png") {
+export function createHero(title = "¿Quiénes Somos?", imageUrl = "/src/assets/QuienesSomos.png") {
   const heroContent = `
   
     <section role="banner" class="relative w-full h-80 sm:h-96 lg:h-150 overflow-hidden">

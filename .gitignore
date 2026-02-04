@@ -1,1 +1,6 @@
 src/css/output.css
+node_modules/
+dist/
+.vite/
+.env
+.DS_Store

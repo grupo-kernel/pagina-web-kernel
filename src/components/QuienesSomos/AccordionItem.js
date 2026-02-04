@@ -1,17 +1,17 @@
 const accordionData = [
   {
-    icon: "./assets/mision.png",
+    icon: "/src/assets/mision.png",
     title: "Misión",
     content: "Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados y la implementación de soluciones innovadoras para problemas complejos en ámbitos académicos, científicos y tecnológicos, con un fuerte enfoque en el impacto educativo."
   },
 
   {
-    icon: "./assets/vision.png",
+    icon: "/src/assets/vision.png",
     title: "Visión",
     content: "Ser un referente nacional e internacional en investigación matemática, matemática pura y aplicada, con especial énfasis en Métodos iterativos, Optimización, Álgebra abstracta, Análisis matricial y Educación Matemática. Distinguirnos por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de las matemáticas."
   },
   {
-    icon: "./assets/objetivos.png",
+    icon: "/src/assets/objetivos.png",
     title: "Objetivos",
     content: `
       <ul class="list-disc pl-5 space-y-2">
@@ -25,7 +25,7 @@ const accordionData = [
       </ul>`
   },
   {
-    icon: "./assets/valores.png",
+    icon: "/src/assets/valores.png",
     title: "Valores",
     content: `
       <div class="space-y-1">
@@ -69,7 +69,7 @@ function createItem({ icon, title, content }) {
           <h3 class="text-lg font-semibold text-white pointer-events-none">${title}</h3>
         </div>
 
-        <img src="./assets/chevron-down.png" class="chevron-icon w-8 h-8 transition-transform duration-300 pointer-events-none" data-accordion-icon />
+        <img src="/src/assets/chevron-down.png" class="chevron-icon w-8 h-8 transition-transform duration-300 pointer-events-none" data-accordion-icon />
       </button>
 
       <!-- CONTENT -->
