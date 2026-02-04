@@ -1,11 +1,14 @@
 import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
+import { setMainLayout } from "../layaout/mainLayaout.js";
 
 const routes = {
-  portada: CreatePageHome,
-  quienesSomos: CreatePageQuienesSomos,
-  equipo: Equipment,
+
+  home: { page: CreatePageHome, layout: "default" },
+  quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
+  equipo: { page: Equipment, layout: "default" },
+
 };
 
 export function navigate(route) {
@@ -31,5 +34,7 @@ function loadRoute(route) {
     
     return;
   }
-  content.appendChild(page());
+
+  setMainLayout(page.layout);
+  content.appendChild(page.page());
 }
