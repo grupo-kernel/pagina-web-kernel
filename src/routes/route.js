@@ -1,7 +1,7 @@
 import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
-import { setMainLayout } from "../components/layaout/mainLayaout.js";
+import { setMainLayout } from "../layaout/mainLayaout.js";
 
 const routes = {
 
@@ -31,6 +31,7 @@ function loadRoute(route) {
   const page = routes[route];
   content.innerHTML = "";
   if (!page) {
+    
     return;
   }
   setMainLayout(page.layout);
