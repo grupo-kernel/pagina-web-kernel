@@ -13,5 +13,6 @@ export function setMainLayout(layout = "default") {
     }
     else {
         main.classList.add("p-2", "mt-8", "md:mt-12");
+         main.classList.add("m-auto");
     }
 }
