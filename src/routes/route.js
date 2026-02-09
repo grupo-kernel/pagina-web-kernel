@@ -1,7 +1,7 @@
 import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
-import {setMainLayout } from "../components/layaout/mainLayaout.js";
+import {setMainLayout } from "../components/layout/mainLayaout.js";
 
 const routes = {
 

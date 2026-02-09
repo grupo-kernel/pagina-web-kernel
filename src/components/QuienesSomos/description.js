@@ -26,4 +26,3 @@ export function createDescription(
   `;
   return descriptionContent;
 }
-

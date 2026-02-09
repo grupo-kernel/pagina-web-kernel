@@ -83,5 +83,3 @@ function createItem({ icon, title, content }) {
     </div>
   `;
 }
-
-
