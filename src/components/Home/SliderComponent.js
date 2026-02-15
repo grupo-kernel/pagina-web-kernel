@@ -1,3 +1,4 @@
+import { navSliderBtns } from "../../Controllers/navSliderBtns/navSliderBtns.js";
 import { SliderController } from "../../Controllers/Slider/Slider.controller.js";
 
 export function CreateSliderComponentHome() {
@@ -25,14 +26,15 @@ export function CreateSliderComponentHome() {
                     </div>
  
                     </div>
-                    <div class=" flex justify-center mt-4 md:mt-8.5  items-center gap-10.75  " >
-                        <span class=" hover:-translate-y-2.5 cursor-pointer  transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
+
+                    <div id="btnsGroup" class=" flex justify-center mt-4 md:mt-8.5  items-center gap-10.75  " >
+                        <span data-route="equipment" class=" hover:-translate-y-2.5 cursor-pointer  transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
                             <i class=" text-4xl text-white bxr  bx-group" ></i> 
                         </span>
-                       <span class=" hover:-translate-y-2.5  cursor-pointer transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
+                       <span data-route="publicaciones" class=" hover:-translate-y-2.5  cursor-pointer transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
                             <i class=" text-4xl text-white bxr  bx-article" ></i> 
                         </span>
-                        <span class=" hover:-translate-y-2.5  cursor-pointer transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
+                        <span  data-route="noticias"class=" hover:-translate-y-2.5  cursor-pointer transition transform bg-widgets-bg rounded-full flex justify-center items-center w-15 h-15 p-2  " >
                             <i class=" text-4xl text-white bxr  bx-megaphone" ></i> 
                         </span>
 
@@ -44,6 +46,8 @@ export function CreateSliderComponentHome() {
     element.innerHTML = slider;
     const slideNode = element.firstElementChild;
     SliderController(slideNode.querySelector('#containerFather'));
+    navSliderBtns(slideNode.querySelector('#btnsGroup'));
+    
 
     return slideNode;
 }

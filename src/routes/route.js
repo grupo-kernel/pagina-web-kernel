@@ -1,39 +1,43 @@
 import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
-import {setMainLayout } from "../components/layout/mainLayaout.js";
+import { setMainLayout } from "../components/layout/mainLayaout.js";
 
 const routes = {
-
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
-  equipment: { page: Equipment, layout: "left" }
-
+  equipment: { page: Equipment, layout: "left" },
+  publicaciones: {page: publicaciones, layout: "default"}
 };
 
 export function navigate(route) {
-  history.pushState({}, "", `/${route}`);
-  loadRoute(route);
+  window.location.hash = `/${route}`;
 }
 
 export function routerInit() {
-  const route = location.pathname.replace("/", "") || "home";
-  loadRoute(route);
+  const handleRouteChange = () => {
+  
+    const route = window.location.hash.replace("#/", "") || "home";
+    loadRoute(route);
+  };
 
-  window.addEventListener("popstate", () => {
-    const r = location.pathname.replace("/", "") || "home";
-    loadRoute(r);
-  });
+  window.addEventListener("hashchange", handleRouteChange);
+
+  handleRouteChange();
 }
 
 function loadRoute(route) {
   const content = document.querySelector("main");
   const page = routes[route];
+  
+  if (!content) return; 
   content.innerHTML = "";
+  
   if (!page) {
-    
+   
     return;
   }
+  
   setMainLayout(page.layout);
   content.appendChild(page.page());
 }
