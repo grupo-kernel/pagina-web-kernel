@@ -2,13 +2,16 @@ import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
 import { setMainLayout } from "../components/layout/mainLayaout.js";
-import {FormacionAcademica} from "../pages/FormacionAcademica.js";
+import {FormacionAcademia} from "../pages/FormacionAcademia.js";
+import { CreatePageNews } from "../pages/News.js";
+import { setMainLayout } from "../components/layout/mainLayaout.js";
 
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
   equipment: { page: Equipment, layout: "default" },
-  FormacionAcademica: { page : FormacionAcademica, layout: "default" }
+  FormacionAcademia: { page : FormacionAcademia, layout: "default" },
+  noticias: { page: CreatePageNews, layout: "full" },
 
 };
 
@@ -36,7 +39,7 @@ function loadRoute(route) {
   content.innerHTML = "";
   
   if (!page) {
-   
+
     return;
   }
   
