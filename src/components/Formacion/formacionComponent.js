@@ -1,6 +1,6 @@
-import { formacionContenido } from "./formacionContenido.js";
 import { renderProfesorItem, renderDetalleContenido } from "./FormacionRender.js";
 import { NavBarEquipment } from "../Equipo/NavBarEquipment.js";
+import { formacionContenido } from "../../data/formacionContenido.js";
 
 export function formacionComponent() {
     let selectedId = 1; 

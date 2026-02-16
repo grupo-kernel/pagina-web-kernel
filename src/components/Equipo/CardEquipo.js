@@ -1,5 +1,6 @@
-import { contenidoCards } from "./CardContenido.js";
+
 import { renderSingleCard } from "./CardRender.js";
+import { contenidoCards } from "../../data/CardContenido.js";
 
 export function CardEquipo() {
     let currentIndex = 0;

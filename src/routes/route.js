@@ -2,15 +2,14 @@ import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
 import { setMainLayout } from "../components/layout/mainLayaout.js";
-import {FormacionAcademia} from "../pages/FormacionAcademia.js";
+import { FormacionAcademica } from "../pages/FormacionAcademica.js";
 import { CreatePageNews } from "../pages/News.js";
-import { setMainLayout } from "../components/layout/mainLayaout.js";
 
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
   equipment: { page: Equipment, layout: "default" },
-  FormacionAcademia: { page : FormacionAcademia, layout: "default" },
+  formacionAcademia: { page : FormacionAcademica, layout: "default" },
   noticias: { page: CreatePageNews, layout: "full" },
 
 };
