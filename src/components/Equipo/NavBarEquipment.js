@@ -1,9 +1,28 @@
-export function NavBarEquipment(){
-    const navEquipment  = `<nav class="bg-white shadow-2xs w-89.5 min-h-9.5 border  border-black rounded-t-xl pr-1  md:w-119.25 lg:w-148  ">
-        <ul class="flex items-center justify-between text-center">
-                <li data-action="equipo" class="lg:text-xl cursor-pointer   font-bold text-lg rounded-t-xl bg-sky-800 text-white w-27.5 h-12 p-1.5 "  >Equipo</li>
-                <li data-action="formacionAcademica" class="lg:text-xl font-bold  cursor-pointer  text-lg rounded-t-xl bg-transparent ">Formación Academica</li>
+import { equipoFormacion } from "../../Controllers/equipoFormacion/equipoFormacion.js";
+export function NavBarEquipment() {
+    const currentRoute = window.location.hash.replace("#/", "") || "equipment";
+    const div = document.createElement('div');
+    
+  
+    const activeClass = "bg-sky-800 text-white border-b-sky-800";
+    const inactiveClass = "bg-transparent text-black hover:bg-gray-50";
+
+    div.innerHTML = `
+    <nav class="bg-white overflow-hidden w-90 md:mb-5 min-h-11 border border-black rounded-t-xl md:w-119.25 lg:w-148">
+        <ul class="flex items-stretch justify-center text-center h-full">
+            <li data-route="equipment" 
+                class="flex-1 flex items-center justify-center lg:text-xl p-2 cursor-pointer font-bold text-lg transition-colors
+                ${currentRoute === 'equipment' ? activeClass : inactiveClass}">
+                Equipo
+            </li>
+            <li data-route="FormacionAcademica" 
+                class="flex-1 flex items-center justify-center lg:text-xl p-2 cursor-pointer font-bold text-lg transition-colors
+                ${currentRoute === 'FormacionAcademica' ? activeClass : inactiveClass}">
+                Formación  Academica
+            </li>
         </ul>
     </nav>`;
-    return navEquipment;
+
+    equipoFormacion(div.firstElementChild);
+    return div.firstElementChild;
 }

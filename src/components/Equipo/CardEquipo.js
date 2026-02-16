@@ -36,7 +36,7 @@ export function CardEquipo() {
    
     const startAutoplay = () => {
         stopAutoplay(); 
-        autoplayInterval = setInterval(nextSlide, 5000); 
+        autoplayInterval = setInterval(nextSlide, 3500); 
     };
 
     const stopAutoplay = () => {

@@ -9,3 +9,34 @@
     --breakpoint-xsM:700px;
     --text-textMs:16px;
 }
+
+/* Scrollbar personalizado para las cajas de contenido */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #0284c7; /* sky-600 */
+    border-radius: 10px;
+}
+
+/* Permitir scroll táctil suave en móviles */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #0284c7 transparent;
+    -webkit-overflow-scrolling: touch; 
+}
+
+/* Animación de entrada para el modal mobile */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#detalle-container > div {
+    animation: fadeIn 0.3s ease-out;
+}

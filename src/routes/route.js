@@ -2,12 +2,14 @@ import { CreatePageHome } from "../pages/Home.js";
 import { CreatePageQuienesSomos } from "../pages/QuienesSomos.js";
 import { Equipment } from "../pages/Equipment.js";
 import { setMainLayout } from "../components/layout/mainLayaout.js";
+import {FormacionAcademica} from "../pages/FormacionAcademica.js";
 
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
-  equipment: { page: Equipment, layout: "default" }
-  //publicaciones: {page: publicaciones, layout: "default"}
+  equipment: { page: Equipment, layout: "default" },
+  FormacionAcademica: { page : FormacionAcademica, layout: "default" }
+
 };
 
 export function navigate(route) {
