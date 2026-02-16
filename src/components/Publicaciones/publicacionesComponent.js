@@ -9,9 +9,11 @@ export function publicacionesComponent() {
     container.className = "relative flex flex-col md:shadow-2xl md:rounded-2xl md:flex-row gap-6 w-full max-w-6xl mx-auto p-4 h-[600px]";
 
     const updateView = () => {
-        const profesor = publicacionesContenido.find(p => p.id === selectedId);
+
+  const profesor = publicacionesContenido.find(p => p.id === selectedId);
 
         container.innerHTML = `
+           
             <div id="profesores-list" class="flex flex-col gap-4 w-full md:w-1/3 overflow-y-auto pr-2 custom-scrollbar bg-gray-50 p-4 rounded-2xl border border-gray-200">
                 ${publicacionesContenido.map(p => renderProfesorItem(p, p.id === selectedId)).join('')}
             </div>
@@ -27,6 +29,7 @@ export function publicacionesComponent() {
             </div>
         `;
 
+      
        
         container.querySelectorAll('[data-id]').forEach(item => {
             item.onclick = () => {
@@ -54,5 +57,6 @@ export function publicacionesComponent() {
 
     updateView();
     
+      
     return container;
 }
