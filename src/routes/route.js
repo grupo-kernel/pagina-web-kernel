@@ -10,7 +10,7 @@ const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
   equipment: { page: Equipment, layout: "default" },
-  formacionAcademia: { page : FormacionAcademica, layout: "default" },
+  FormacionAcademica: { page : FormacionAcademica, layout: "default" },
   noticias: { page: CreatePageNews, layout: "full" },
   proyectos: {page: proyectos, layout: "full" }
 
