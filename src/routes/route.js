@@ -6,8 +6,8 @@ import { setMainLayout } from "../components/layout/mainLayaout.js";
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
-  equipment: { page: Equipment, layout: "left" },
-  publicaciones: {page: publicaciones, layout: "default"}
+  equipment: { page: Equipment, layout: "default" }
+  //publicaciones: {page: publicaciones, layout: "default"}
 };
 
 export function navigate(route) {
