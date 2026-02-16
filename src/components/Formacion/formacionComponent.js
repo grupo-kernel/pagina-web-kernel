@@ -6,7 +6,6 @@ export function formacionComponent() {
     let selectedId = 1; 
     let isModalOpen = false; 
     const container = document.createElement('div');
-   
     container.className = "relative flex flex-col md:mb-10 lg:shadow-2xl lg:rounded-2xl  w-full max-w-6xl mx-auto p-4 min-h-[600px]  ";
 
     const updateView = () => {
