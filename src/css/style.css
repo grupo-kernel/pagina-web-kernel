@@ -40,3 +40,35 @@
 #detalle-container > div {
     animation: fadeIn 0.3s ease-out;
 }
+
+/*publicaciones*/
+
+.custom-scroll2::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scroll2::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scroll2::-webkit-scrollbar-thumb {
+    background: #4A5568;
+    border-radius: 10px;
+}
+
+/* Permitir scroll táctil suave */
+.custom-scroll2 {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #4A5568 transparent;
+}
+
+/* Animación de entrada para las cards */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#detalle-contenido > div {
+    animation: fadeIn 0.3s ease forwards;
+}
