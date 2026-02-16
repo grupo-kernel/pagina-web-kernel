@@ -4,14 +4,15 @@ import { Equipment } from "../pages/Equipment.js";
 import { setMainLayout } from "../components/layout/mainLayaout.js";
 import { FormacionAcademica } from "../pages/FormacionAcademica.js";
 import { CreatePageNews } from "../pages/News.js";
+import { Contacto } from "../pages/Contacto.js";
 
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
   equipment: { page: Equipment, layout: "default" },
-  formacionAcademia: { page : FormacionAcademica, layout: "default" },
+  formacionAcademica: { page : FormacionAcademica, layout: "default" },
   noticias: { page: CreatePageNews, layout: "full" },
-
+  contacto: { page: Contacto, layout: "default" },
 };
 
 export function navigate(route) {
