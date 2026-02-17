@@ -7,6 +7,7 @@ import { CreatePageNews } from "../pages/News.js";
 import { publicaciones } from "../pages/publicaciones.js";
 import {lineas} from "../pages/lineas.js";
 import { proyectos } from "../pages/proyectos.js";
+import { Contacto } from "../pages/Contacto.js";
 
 
 const routes = {
