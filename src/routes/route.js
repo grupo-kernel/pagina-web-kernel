@@ -4,6 +4,7 @@ import { Equipment } from "../pages/Equipment.js";
 import { setMainLayout } from "../components/layout/mainLayaout.js";
 import { FormacionAcademica } from "../pages/FormacionAcademica.js";
 import { CreatePageNews } from "../pages/News.js";
+import { proyectos } from "../pages/proyectos.js";
 
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
@@ -11,6 +12,7 @@ const routes = {
   equipment: { page: Equipment, layout: "default" },
   formacionAcademia: { page : FormacionAcademica, layout: "default" },
   noticias: { page: CreatePageNews, layout: "full" },
+  proyectos: {page: proyectos, layout: "full" }
 
 };
 
