@@ -6,7 +6,7 @@ export function publicacionesComponent() {
     let isModalOpen = false;
 
     const container = document.createElement('div');
-    container.className = "relative flex flex-col md:shadow-2xl md:rounded-2xl md:flex-row gap-6 w-full max-w-6xl mx-auto p-4 h-[600px]";
+    container.className = "relative flex flex-col md:shadow-2xl md:rounded-2xl md:flex-row gap-6 w-full max-w-6xl mx-auto p-4 h-[600px] tabletBig:w-7xl tabletBig:px-20 xl:w-full xl:px-0";
 
     const updateView = () => {
 

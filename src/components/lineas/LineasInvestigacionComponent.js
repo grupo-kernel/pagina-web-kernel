@@ -5,7 +5,7 @@ export function lineasInvestigacionComponent() {
     const total = lineasInvestigacion.length;
 
     const container = document.createElement('section');
-    container.className = "w-full max-w-6xl mx-auto p-4 mt-10 mb-20 font-sans";
+    container.className = "w-full max-w-6xl mx-auto p-4 mt-10 mb-20 font-sans tabletBig:w-7xl tabletBig:px-20 xl:w-full xl:px-0 ";
 
     const updateView = () => {
         const nextIndex = (currentIndex + 1) % total;
@@ -52,7 +52,6 @@ export function lineasInvestigacionComponent() {
     return container;
 }
 
-// Mantenemos la estructura de contenido pero ajustamos el CSS para uniformidad
 export function renderCardPrincipal(item, bgColorClass) {
     return `
         <div class="${bgColorClass} rounded-[20px] p-8 shadow-lg flex flex-col h-112.5 md:h-125 transition-all duration-500">

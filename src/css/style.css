@@ -8,6 +8,7 @@
     --color-widgets-bg:#0D6EFD;
     --breakpoint-xsM:700px;
     --text-textMs:16px;
+    --breakpoint-tabletBig:  1024px;
 }
 
 /* Scrollbar personalizado para las cajas de contenido */

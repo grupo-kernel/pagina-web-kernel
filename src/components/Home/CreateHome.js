@@ -4,14 +4,19 @@ import { CreateSliderComponentHome } from "./SliderComponent.js";
 export function CreateHome() {
         const section = document.createElement('section');
  section.classList.add(
-    "relative",
+"relative",
     "w-full",
     "flex",
     "flex-col",
-    "lg:flex-row",
+    "m-auto",
+    "tabletBig:flex-row",
     "md:mb-50",
-    "lg:mb-0",
-    "lg:pb-0"
+    "xl:mb-0",
+    "xl:pb-0",
+    "xl:w-full",
+    "xl:px-0",
+    "tabletBig:w-7xl",
+    "tabletBig:px-20"
 
   );
         section.innerHTML = `${CreateCardFirstHome()}`;

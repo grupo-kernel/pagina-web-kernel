@@ -5,7 +5,7 @@ export function proyectoComponent() {
     const total = proyecto.length;
 
     const container = document.createElement('section');
-    container.className = "w-full max-w-6xl mx-auto p-4 mt-10 mb-20 font-sans";
+    container.className = "w-full max-w-6xl mx-auto p-4 mt-10 mb-20 font-sans tabletBig:w-7xl tabletBig:px-20 xl:w-full xl:px-0";
 
     const updateView = () => {
         const nextIndex = (currentIndex + 1) % total;
