@@ -1,5 +1,5 @@
 export function Footer(){
-    const wrapper = `<div class = "md:flex  md:flex-row md:items-center md:justify-between " >
+    const wrapper = `<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
     <div class=" flex items-center gap-4  text-white "> 
                     <div>
                     <img class="object-fill  rounded-full " width="87px" heigth="87px" src="/src/assets/Elkernel.png" alt="Grupo de investigacion dominicano" _blank title="El kernel">
@@ -26,7 +26,7 @@ export function Footer(){
                     </ul>
         </div> 
         </div>
-        <div class="text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5  ">
+        <div class="max-w-7xl mx-auto px-3 text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5">
                 <h5>© 2025 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
         </div>
         `
@@ -35,3 +35,6 @@ export function Footer(){
 
         return wrapper;
 }
+
+//<div class = "md:flex  md:flex-row md:items-center md:justify-between " >
+//<div class="text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5  ">

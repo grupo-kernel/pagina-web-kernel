@@ -4,16 +4,16 @@ export function createNavBar(){
                     <i data-action="close-navBar"  class=" text-6xl cursor-pointer bx  bx-x"></i>
                 </div>
 
-                <ul class="flex w-full text-black flex-col lg:flex-row p-4 gap-8 lg:gap-9">
+                <ul class="flex w-full text-black flex-col lg:flex-row p-4 gap-4 xl:gap-9">
                 
                 
-                   <li data-route="home" class="flex gap-1 text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-xl xl:text-2xl" >
+                   <li data-route="home" class="flex gap-1 text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-lg xl:text-2xl" >
                         <span>Portada</span>
                         <i class="bx bx-home text-3xl" ></i>
                     </li>
 
                   <li data-action="open-subMenu" class="gap-1 text-nowrap lg:relative  hover:cursor-pointer 
-                       font-medium  items-center text-xl xl:text-2xl " >
+                       font-medium  items-center text-lg xl:text-2xl " >
                        <div class="flex justify-between" >
                          <span > Nosotros </span>
                         <i class=" text-3xl bx bx-caret-down"></i> 
@@ -26,7 +26,7 @@ export function createNavBar(){
                         
                       </li>  
 
-                      <li data-action="open-subMenu" class="lg:relative gap-1 text-nowrap hover:cursor-pointer   font-medium  items-center  text-xl xl:text-2xl ">
+                      <li data-action="open-subMenu" class="lg:relative gap-1 text-nowrap hover:cursor-pointer   font-medium  items-center  text-lg xl:text-2xl ">
                         <div class="flex  justify-between">
                             <span> Nuestro Trabajo </span>
                             <i class=" text-3xl bx  bx-caret-down"></i> 
@@ -40,12 +40,12 @@ export function createNavBar(){
 
                       </li>  
 
-                      <li data-route="noticias" class=" flex gap-1  text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-xl xl:text-2xl  ">
+                      <li data-route="noticias" class=" flex gap-1  text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-lg xl:text-2xl  ">
                         <span> Noticias </span>
                         <i class="text-3xl bx  bx-news"></i> 
                     </li>  
 
-                       <li data-route="contacto" class="flex gap-1 text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-xl xl:text-2xl" >
+                       <li data-route="contacto" class="flex gap-1 text-nowrap hover:cursor-pointer  justify-between font-medium  items-center  text-lg xl:text-2xl" >
                         <span>Contacto</span>
                         <i class="bx bx-envelope text-3xl" ></i>
                     </li>
@@ -57,3 +57,5 @@ export function createNavBar(){
                   
         return wrapper;
 }
+//<ul class="flex w-full text-black flex-col lg:flex-row p-4 gap-8 lg:gap-9">
+//text-lg xl:text-2xl

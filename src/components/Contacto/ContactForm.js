@@ -53,7 +53,7 @@ export function contactForm() {
                   Mensaje
                 </label>                
                 <textarea id="mensaje" name="mensaje" maxlength="1000" rows="4" required
-                  class="w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+                  class="resize-none w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
               </div>
           
           <!-- BUTTON -->
