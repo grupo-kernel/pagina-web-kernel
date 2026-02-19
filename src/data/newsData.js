@@ -1,9 +1,16 @@
+//Imagenes
+import antmel from "../assets/antmel_rodriguez.jpg";
+import libroLogica from "../assets/libro_logica_matematica.jpg";
+import jos from "../assets/jos.png";
+import marc from "../assets/marc.png";
+import marc_tesis from "../assets/marckelly_tesis.jpg";
+
 export const newsData = [
     {
         id: "nw1",
         title: "Sobre la estabilidad de los parámetros de autoaceleración",
         date: "2025",
-        image: "/src/assets/antmel_rodriguez.jpg",
+        image: antmel,
         excerpt:
             "Se publicó el artículo sobre la estabilidad de familias con parámetros autoacelerados en métodos iterativos sin memoria usando dinámica discreta.",
         content: {
@@ -23,7 +30,7 @@ export const newsData = [
         id: "nw2",
         title: "Guía Didáctica de Lógica Matemática y Teoría de Conjuntos",
         date: "17 de junio de 2025",
-        image: "/src/assets/libro_logica_matematica.jpg",
+        image: libroLogica,
         excerpt:
             "Se lanzó la “Guía Didáctica de Lógica Matemática y Teoría de Conjuntos”, con ejercicios y recursos para bachillerato y nivel universitario inicial.",
         content: {
@@ -43,7 +50,7 @@ export const newsData = [
         id: "nw3",
         title: "Robust Family of High-Order Derivative-Free Methods (Axioms, Q2)",
         date: "15 de junio de 2025",
-        image: "/src/assets/jos.png",
+        image: jos,
         excerpt:
             "Métodos de alto orden sin derivadas para resolver ecuaciones no lineales, con análisis de convergencia y pruebas numéricas comparativas.",
         content: {
@@ -60,7 +67,7 @@ export const newsData = [
         id: "nw4",
         title: "Groups with triangle-free graphs on p-regular classes",
         date: "10 de junio de 2025",
-        image: "/src/assets/marc.png",
+        image: marc,
         excerpt:
             "Resultados en teoría de grupos finitos con propiedades combinatorias de clases p-regulares y sus grafos asociados.",
         content: {
@@ -78,7 +85,7 @@ export const newsData = [
         id: "nw5",
         title: "Defensa de Tesis doctoral de Marck-Kelly Jean Philippe",
         date: "Junio de 2025",
-        image: "/src/assets/marckelly_tesis.jpg",
+        image: marc_tesis,
         excerpt:
             "Defensa exitosa de tesis doctoral en teoría de grupos, explorando estructuras asociadas a clases p-regulares y grafos libres de triángulos.",
         content: {

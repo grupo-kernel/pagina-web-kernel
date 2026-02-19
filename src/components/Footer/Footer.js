@@ -1,8 +1,10 @@
-export function Footer(){
-    const wrapper = `<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
+import kernel from "../../assets/Elkernel.png";
+
+export function Footer() {
+        const wrapper = `<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
     <div class=" flex items-center gap-4  text-white "> 
                     <div>
-                    <img class="object-fill  rounded-full " width="87px" heigth="87px" src="/src/assets/Elkernel.png" alt="Grupo de investigacion dominicano" _blank title="El kernel">
+                    <img class="object-fill  rounded-full " width="87px" heigth="87px" src="${kernel}" alt="Grupo de investigacion dominicano" _blank title="El kernel">
                     </div>
                 <div class="flex flex-col">
                      <h5 class=" text-xs lg:text-xl  md:text-sm  font-bold ">Grupo de Investigación</h5>   
@@ -30,8 +32,8 @@ export function Footer(){
                 <h5>© 2025 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
         </div>
         `
-        
-        ;
+
+                ;
 
         return wrapper;
 }

@@ -1,13 +1,12 @@
-export function createHero(
-  title = "¿Quiénes Somos?",
-  imageUrl = "/src/assets/QuienesSomos.png"
-) {
+import heroQuienes from "../../assets/QuienesSomos.png";
+
+export function createHero() {
 
   const heroContent = `
     <section role="banner" class="relative w-full min-h-screen overflow-hidden">
      
     <!-- Imagen del banner -->
-      <img src="${imageUrl}" alt="${title}" class="absolute inset-0 w-full h-full object-cover" loading="lazy"/>
+      <img src="${heroQuienes}" alt="QuienesSomos" class="absolute inset-0 w-full h-full object-cover" loading="lazy"/>
       
     <!-- Overlay -->
       <div class="absolute inset-0 bg-[#1A2B48]/55"></div>
@@ -19,7 +18,7 @@ export function createHero(
 
     <!-- Texto -->
       <h1 class="font-sans font-bold italic text-white text-5xl md:text-6xl lg:text-8xl inline-block ">
-      ${title}        
+      ¿Quiénes Somos?        
       </h1>
 
     <!-- Barra decorativa -->
