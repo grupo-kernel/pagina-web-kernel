@@ -8,6 +8,7 @@ export function CreateHome() {
               "tabletBig:flex-row", "md:mb-50",
               "tabletBig:w-7xl", "tabletBig:px-20", 
               "xl:mb-0", "xl:pb-0", "xl:w-full", "xl:px-0",
+              "2xl:w-450", "2xl:h-187.5"  
               
        );
        section.innerHTML = `${CreateCardFirstHome()}`;

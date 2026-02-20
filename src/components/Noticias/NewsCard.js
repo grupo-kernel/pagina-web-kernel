@@ -10,20 +10,20 @@ export function newsCard({ id, title, date, image, excerpt }) {
       </div>
 
       <div class="p-3 space-y-3 flex flex-col flex-1">
-        <span class="text-sm text-gray-500">
+        <span class="text-sm  lg:text-2xl text-gray-500">
           ${date}
         </span>
 
-        <h3 class="text-lg font-bold text-gray-800">
+        <h3 class="text-lg   lg:text-2xl font-bold text-gray-800">
           ${title}
         </h3>
 
-        <p class="text-sm text-gray-600 leading-relaxed">
+        <p class="text-sm  lg:text-2xl text-gray-600 leading-relaxed">
           ${excerpt}
         </p>
 
         <button data-news-btn="${id}"
-          class="mt-auto self-start lg:text-base font-medium text-blue-600 
+          class="mt-auto self-start   lg:text-2xl font-medium text-blue-600 
           hover:text-blue-700 transition underline-offset-4 hover:underline">
           Más detalles
         </button>

@@ -6,8 +6,7 @@ export function createQuienesSomos() {
   const section = document.createElement('section');
   section.classList.add(
     'w-full',
-    'tabletBig:w-7xl'
-    
+    'lg:w-320',
   );
 
   section.innerHTML = `

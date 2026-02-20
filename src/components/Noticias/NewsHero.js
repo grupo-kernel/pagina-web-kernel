@@ -10,7 +10,7 @@ export function newsHero() {
         </h1>
 
         <!-- Subtitulo --> 
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
+        <p class="text-base sm:text-lg lg:text-2xl text-gray-600 leading-relaxed">
           ¡Descubre lo más reciente en publicaciones, logros académicos y actividades del Grupo Kernel! 
           <br>
           Explora cada tarjeta y abre “Más detalles” para ver el contenido ampliado.

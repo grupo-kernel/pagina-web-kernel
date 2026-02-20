@@ -19,47 +19,47 @@ export function contactForm() {
           
             <!-- NOMBRE COMPLETO -->
               <div>
-                <label for="nombre" class="inline-block text-sm font-semibold text-white bg-slate-700 px-3 py-1 rounded-tr-lg">
+                <label for="nombre" class="inline-block text-sm   lg:text-xl font-semibold text-white bg-slate-700 px-3 py-1 rounded-tr-lg">
                   Nombre completo
                 </label>
                 <input type="text" id="nombre" name="nombre" minlength="3" maxlength="80" required
-                  class="w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500" 
+                  class="w-full border border-gray-300  lg:text-xl rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500" 
                   placeholder="Ej: Carlos Santana"/>
               </div>
 
           <!-- CORREO ELECTRONICO -->
               <div>
-                <label for="correo" class="inline-block text-sm font-semibold text-white bg-slate-700 px-3 py-1 rounded-t">
+                <label for="correo" class="inline-block text-sm  lg:text-xl font-semibold text-white bg-slate-700 px-3 py-1 rounded-t">
                   Correo electrónico
                 </label>
                 <input type="email" id="correo" name="correo" maxlength="100" required
-                  class="w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full border border-gray-300 lg:text-xl rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="Ej: nombre@correo.com"/>
               </div>
 
           <!-- ASUNTO -->
               <div>
-                <label for="asunto" class="inline-block text-sm font-semibold text-white bg-slate-700 px-3 py-1 rounded-t">
+                <label for="asunto" class="inline-block text-sm lg:text-xl font-semibold text-white bg-slate-700 px-3 py-1 rounded-t">
                   Asunto
                 </label>
                 <input type="text" id="asunto" name="asunto" maxlength="100" required
-                  class="w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full border border-gray-300  lg:text-xl rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             
           <!-- MENSAJE -->
               <div>
-                <label for="mensaje" class="inline-block text-sm font-semibold text-white bg-slate-700 px-3 py-1 rounded-t ">
+                <label for="mensaje" class="inline-block text-sm lg:text-xl font-semibold text-white bg-slate-700 px-3 py-1 rounded-t ">
                   Mensaje
                 </label>                
                 <textarea id="mensaje" name="mensaje" maxlength="1000" rows="4" required
-                  class="resize-none w-full border border-gray-300 rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+                  class="resize-none w-full border border-gray-300 lg:text-xl rounded-b px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
               </div>
           
           <!-- BUTTON -->
               <div class="text-center pt-4">
                 <button type="submit" id="submitBtn"
-                  class="bg-blue-600 hover:bg-blue-700 text-white font-semibold w-full md:w-auto px-12  py-2 rounded-md transition duration-200">
+                  class="bg-blue-600 hover:bg-blue-700 lg:text-xl text-white font-semibold w-full md:w-auto px-12  py-2 rounded-md transition duration-200">
                   Enviar
                 </button>
               </div>

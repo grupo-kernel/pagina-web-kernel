@@ -4,11 +4,16 @@
 @theme {
     --color-footer-primary:#232C32; 
     --color-footer-contacto:#48E1F7;
+    --color-slider-primary:#0D6EFD;
     --text-family-size:20px;
     --color-widgets-bg:#0D6EFD;
     --breakpoint-xsM:700px;
     --text-textMs:16px;
     --breakpoint-tabletBig:  1024px;
+    --breakpoint-3xl:1920px;
+    --breakpoint-4k:2560px;
+    --breakpoint-quienesSomos-tabletS:1156px;
+
 }
 
 /* Scrollbar personalizado para las cajas de contenido */
