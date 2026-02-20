@@ -5,10 +5,10 @@ export function newsCTA() {
 
         <p class="text-gray-600 text-base sm:text-xl md:text-lg">
           ¿Quieres que tu actividad aparezca aquí? Escríbenos a
-          <a href="mailto:mleonardo@itla.edu.do" 
+          <a href="mailto:mleonardos@unapec.edu.do" 
           target="_blank" rel="noopener noreferrer"
              class="text-blue-600 hover:underline">
-             mleonardo@itla.edu.do
+             mleonardos@unapec.edu.do
           </a>
         </p>
 

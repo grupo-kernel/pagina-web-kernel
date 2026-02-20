@@ -1,10 +1,9 @@
+
 import { navSliderBtns } from "../../Controllers/navSliderBtns/navSliderBtns.js";
 import { SliderController } from "../../Controllers/Slider/Slider.controller.js";
 
 // Imagenes
 import unappec from "../../assets/apec.png";
-import isfodosu from "../../assets/isfodosu.png";
-import uasd from "../../assets/uasd.png";
 
 
 export function CreateSliderComponentHome() {
@@ -15,7 +14,8 @@ export function CreateSliderComponentHome() {
             rounded-2xl md:w-184 
             lg:static xl:174 
             lg:w-130 lg:translate-y-0  
-            lg:h-130  lg:rounded-none lg:rounded-tr-2xl lg:rounded-br-2xl" >
+            lg:h-130  lg:rounded-none lg:rounded-tr-2xl lg:rounded-br-2xl
+            2xl:w-150 2xl:h-187.5">
 
                     <div id="containerFather"  class="justify-center flex p-2.5 flex-col items-center">
                          <div class="hidden md:flex items-center justify-between p-4 gap-5 z-10 " >

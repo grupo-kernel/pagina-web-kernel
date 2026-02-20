@@ -19,9 +19,9 @@ export function contactInfo() {
           </div>
           <div>
             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Correo</p>
-            <a href="mailto:mleonardo@itla.edu.do" target="_blank" rel="noopener noreferrer"
+            <a href="mailto:mleonardos@unapec.edu.do" target="_blank" rel="noopener noreferrer"
                class="text-lg font-semibold text-slate-700 hover:text-blue-600 transition-colors">
-              mleonardo@itla.edu.do
+              mleonardos@unapec.edu.do
             </a>
           </div>
         </div>

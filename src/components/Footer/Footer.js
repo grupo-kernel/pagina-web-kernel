@@ -15,7 +15,7 @@ export function Footer() {
         <div class=" mt-6 md:mt-0 flex flex-col text-white " >
                 <h5 class=" text-footer-contacto text-xs md:text-sm  lg:text-xl font-bold mb-2 ">Contacto</h5>
                 <ul class=" md:text-sm  text-xs lg:text-lg lg:leading-9 ">
-                        <li><a class=" underline " target="_blank" href="maito:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></li>
+                        <li><a class=" underline " target="_blank" href="maito:mleonardos@unapec.edu.do">mleonardos@unapec.edu.do</a></li>
                         <li>República Dominicana</li>
                         <li><a class=" underline text-footer-contacto " target="_blank" href="https://www.grupoelkernel.com" _blank >grupoelkernel.com</a></li>
                 </ul>
