@@ -3,7 +3,7 @@ export function initContactController() {
     if (!form) return;
 
     form.addEventListener("submit", handleSubmit);
-    console.log("Controller cargado");
+    //console.log("Controller cargado");
 }
 
 async function handleSubmit(e) {
@@ -21,7 +21,7 @@ async function handleSubmit(e) {
     }
 
     await sendToFormspree(form, data);
-    console.log("Submit interceptado");
+    //console.log("Submit interceptado");
 
 }
 

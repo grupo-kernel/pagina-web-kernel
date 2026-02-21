@@ -3,3 +3,4 @@ node_modules/
 .vite/
 .env
 .DS_Store
+.vscode/
