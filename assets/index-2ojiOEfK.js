@@ -70,7 +70,7 @@
         <div class=" mt-6 md:mt-0 flex flex-col text-white " >
                 <h5 class=" text-footer-contacto text-xs md:text-sm  lg:text-xl font-bold mb-2 ">Contacto</h5>
                 <ul class=" md:text-sm  text-xs lg:text-lg lg:leading-9 ">
-                        <li><a class=" underline " target="_blank" href="maito:mleonardos@unapec.edu.do">mleonardos@unapec.edu.do</a></li>
+                        <li><a class=" underline " target="_blank" href="mailto:mleonardos@unapec.edu.do">mleonardos@unapec.edu.do</a></li>
                         <li>República Dominicana</li>
                         <li><a class=" underline text-footer-contacto " target="_blank" href="https://www.grupoelkernel.com" _blank >grupoelkernel.com</a></li>
                 </ul>
@@ -429,15 +429,13 @@
         <div class="max-w-3xl mx-auto space-y-6">
 
         <!-- Titulo -->
-        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl 2xl:text-7xl font-bold text-gray-900">
           Noticias y Actividades del Grupo
         </h1>
 
         <!-- Subtitulo --> 
-        <p class="text-base sm:text-lg lg:text-2xl text-gray-600 leading-relaxed">
+        <p class="text-base sm:text-lg lg:text-2xl 2xl:text-3xl text-gray-600 leading-relaxed">
           ¡Descubre lo más reciente en publicaciones, logros académicos y actividades del Grupo Kernel! 
-          <br>
-          Explora cada tarjeta y abre “Más detalles” para ver el contenido ampliado.
         </p>
 
       </div>
@@ -454,20 +452,20 @@
       </div>
 
       <div class="p-3 space-y-3 flex flex-col flex-1">
-        <span class="text-sm  lg:text-2xl text-gray-500">
+        <span class="text-sm 2xl:text-2xl text-gray-500">
           ${a}
         </span>
 
-        <h3 class="text-lg   lg:text-2xl font-bold text-gray-800">
+        <h3 class="text-lg 2xl:text-2xl font-bold text-gray-800">
           ${t}
         </h3>
 
-        <p class="text-sm  lg:text-2xl text-gray-600 leading-relaxed">
+        <p class="text-sm 2xl:text-xl text-gray-600 leading-relaxed">
           ${o}
         </p>
 
         <button data-news-btn="${e}"
-          class="mt-auto self-start   lg:text-2xl font-medium text-blue-600 
+          class="mt-auto self-start lg:text-base 2xl:text-xl font-medium text-blue-600 
           hover:text-blue-700 transition underline-offset-4 hover:underline">
           Más detalles
         </button>
@@ -855,7 +853,7 @@
     
     `}function Xe(){const e=document.createElement("section");return e.classList.add("w-full","tabletBig:w-7xl"),e.innerHTML=`
     ${Ze()}
-    `,e}function _e(){const e=document.getElementById("contactForm");e&&(e.addEventListener("submit",et),console.log("Controller cargado"))}async function et(e){e.preventDefault();const t=e.target,a=new FormData(t),i=Object.fromEntries(a.entries()),o=tt(i);if(o.length>0){it(o);return}await ot(t,i),console.log("Submit interceptado")}function tt(e){const t=[];return e.nombre?.trim()||t.push("El nombre es obligatorio."),e.asunto?.trim()||t.push("El asunto es obligatorio."),e.mensaje?.trim()||t.push("El mensaje es obligatorio."),e.correo?.trim()?at(e.correo)||t.push("El formato del correo no es válido."):t.push("El correo es obligatorio."),t}function at(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)}function it(e){p(e[0],"error")}function p(e,t="success"){const a=document.querySelector(".custom-toast");a&&a.remove();const i=document.createElement("div");i.className=`
+    `,e}function _e(){const e=document.getElementById("contactForm");e&&e.addEventListener("submit",et)}async function et(e){e.preventDefault();const t=e.target,a=new FormData(t),i=Object.fromEntries(a.entries()),o=tt(i);if(o.length>0){it(o);return}await ot(t,i)}function tt(e){const t=[];return e.nombre?.trim()||t.push("El nombre es obligatorio."),e.asunto?.trim()||t.push("El asunto es obligatorio."),e.mensaje?.trim()||t.push("El mensaje es obligatorio."),e.correo?.trim()?at(e.correo)||t.push("El formato del correo no es válido."):t.push("El correo es obligatorio."),t}function at(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)}function it(e){p(e[0],"error")}function p(e,t="success"){const a=document.querySelector(".custom-toast");a&&a.remove();const i=document.createElement("div");i.className=`
         custom-toast fixed top-6 right-6 z-50
         px-6 py-3 rounded-lg shadow-xl text-white font-medium 
         transform transition-all duration-300 translate-x-full opacity-0
