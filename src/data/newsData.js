@@ -99,24 +99,5 @@ export const newsData = [
             ]
         },
         articleURL: null
-    },
-    {
-        id: "nw6",
-        title: "Defensa de Tesis doctoral de Marck-Kelly Jean Philippe",
-        date: "Junio de 2025",
-        image: marc_tesis,
-        excerpt:
-            "Defensa exitosa de tesis doctoral en teoría de grupos, explorando estructuras asociadas a clases p-regulares y grafos libres de triángulos.",
-        content: {
-            paragraphs: [
-                "La tesis aborda aspectos combinatorios y estructurales en teoría de grupos, con énfasis en clases p-regulares y sus grafos asociados.",
-                "Se presentan nuevas cotas y caracterizaciones relacionadas con conectividad y ausencia de triángulos."
-            ],
-            list: [
-                "Direcciones futuras: extensiones a otras familias de grafos y aplicaciones a problemas de factorización.",
-                "Próxima disponibilidad del manuscrito para consulta institucional."
-            ]
-        },
-        articleURL: "https://www.grupoelkernel.com/#/quienesSomos"
     }
 ];
