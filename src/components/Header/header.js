@@ -1,4 +1,4 @@
-import kernel from "../../assets/Elkernel.png";
+import kernel from "../../assets/ElKernel.png";
 
 export function createHeader() {
     const wrapper = `<div class="flex items-center px-2.5   w-full  ">
