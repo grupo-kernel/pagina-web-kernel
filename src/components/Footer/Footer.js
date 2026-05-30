@@ -1,4 +1,4 @@
-import kernel from "../../assets/Elkernel.png";
+import kernel from "../../assets/ElKernel.png";
 
 export function Footer() {
         const wrapper = `<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
