@@ -99,5 +99,25 @@ export const newsData = [
             ]
         },
         articleURL: null
+    },
+    {
+        id: "nw6",
+        title: "Tesis Miguel A. Sepulveda",
+        date: "Diciembre de 2026",
+        image: antmel,
+        excerpt:
+            "Defensa exitosa de tesis de Sepulveda.",
+        content: {
+            paragraphs: [
+                "La tesis aborda aspectos combinatorios y estructurales en teoría de grupos, con énfasis en clases p-regulares y sus grafos asociados.",
+            ],
+            list: [
+                "Proximamente.",
+                "Próximamente",
+                "Proximamente."
+            ]
+        },
+        articleURL: 
+            "https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554"
     }
 ];
