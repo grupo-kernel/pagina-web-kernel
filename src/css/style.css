@@ -9,14 +9,16 @@
     --color-widgets-bg:#0D6EFD;
     --breakpoint-xsM:700px;
     --text-textMs:16px;
-    --breakpoint-tabletBig:  1024px;
+    --breakpoint-tabletBig:1024px;
     --breakpoint-3xl:1920px;
     --breakpoint-4k:2560px;
     --breakpoint-quienesSomos-tabletS:1156px;
-
 }
 
-/* Scrollbar personalizado para las cajas de contenido */
+/* ============================================================
+   Scrollbar principal usado en publicaciones
+   ============================================================ */
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
@@ -26,28 +28,23 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #0284c7; /* sky-600 */
+    background: #0284c7;
     border-radius: 10px;
 }
 
-/* Permitir scroll táctil suave en móviles */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #0369a1;
+}
+
 .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #0284c7 transparent;
-    -webkit-overflow-scrolling: touch; 
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Animación de entrada para el modal mobile */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-#detalle-container > div {
-    animation: fadeIn 0.3s ease-out;
-}
-
-/*publicaciones*/
+/* ============================================================
+   Scrollbar secundario: se mantiene por compatibilidad
+   ============================================================ */
 
 .custom-scroll2::-webkit-scrollbar {
     width: 6px;
@@ -62,19 +59,94 @@
     border-radius: 10px;
 }
 
-/* Permitir scroll táctil suave */
+.custom-scroll2::-webkit-scrollbar-thumb:hover {
+    background: #2d3748;
+}
+
 .custom-scroll2 {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #4A5568 transparent;
 }
 
-/* Animación de entrada para las cards */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* ============================================================
+   Animaciones para publicaciones
+   ============================================================ */
+
+@keyframes kernelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-#detalle-contenido > div {
-    animation: fadeIn 0.3s ease forwards;
+@keyframes kernelModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-fade-in {
+    animation: kernelFadeIn 0.35s ease forwards;
+}
+
+#detalle-container > div {
+    animation: kernelModalIn 0.3s ease-out;
+}
+
+/* ============================================================
+   Mejoras visuales generales para la sección de publicaciones
+   ============================================================ */
+
+.publicaciones-shell {
+    background:
+        radial-gradient(circle at top left, rgba(14, 165, 233, 0.16), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 35%);
+}
+
+.publicacion-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.publicacion-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Evita saltos extraños en DOI largos */
+.pub-doi-text {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Mejora la lectura en móviles */
+@media (max-width: 768px) {
+    .custom-scrollbar::-webkit-scrollbar,
+    .custom-scroll2::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    #detalle-container > div {
+        max-height: 90vh;
+    }
+}
+
+/* Accesibilidad visual para botones seleccionables */
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 3px;
 }
