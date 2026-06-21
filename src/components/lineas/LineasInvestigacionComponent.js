@@ -1,82 +1,191 @@
-import { lineasInvestigacion } from "../../data/lineasInvestigacion.js";
-
-export function lineasInvestigacionComponent() {
-    let currentIndex = 0;
-    const total = lineasInvestigacion.length;
-
-    const container = document.createElement('section');
-    container.className = "w-full max-w-6xl mx-auto p-4 mt-10 mb-20 font-sans tabletBig:w-7xl tabletBig:px-20 xl:w-full xl:px-0 ";
-
-    const updateView = () => {
-        const nextIndex = (currentIndex + 1) % total;
-        const thirdIndex = (currentIndex + 2) % total;
-
-        const actual = lineasInvestigacion[currentIndex];
-        const siguiente = lineasInvestigacion[nextIndex];
-        const tercera = lineasInvestigacion[thirdIndex];
-
-        container.innerHTML = `
-            <h2 class="text-2xl font-bold mb-8 text-gray-800 ml-2">Líneas de investigación</h2>
-            
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                
-                <div class="relative h-full">
-                    ${renderCardPrincipal(actual, "bg-[#5580C1] text-white")}
-                    
-                    <button id="next-btn" class="absolute -bottom-6 cursor-pointer -right-3 z-30 bg-white text-gray-800 w-12 h-12 rounded-full shadow-xl flex items-center justify-center hover:bg-gray-100 transition-transform active:scale-90 border border-gray-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="h-full hidden md:block">
-                    ${renderCardPrincipal(siguiente, "bg-[#96B4E1] text-[#1A2B49]")}
-                </div>
-
-                <div class="md:col-span-2 flex justify-center mt-4">
-                    <div class="w-full md:w-3/4">
-                        ${renderCardOscura(tercera)}
-                    </div>
-                </div>
-            </div>
-        `;
-
-        container.querySelector('#next-btn').onclick = () => {
-            currentIndex = nextIndex;
-            updateView();
-        };
-    };
-
-    updateView();
-    return container;
-}
-
-export function renderCardPrincipal(item, bgColorClass) {
-    return `
-        <div class="${bgColorClass} rounded-[20px] p-8 shadow-lg flex flex-col h-112.5 md:h-125 transition-all duration-500">
-            <h3 class="font-bold text-2xl mb-6 leading-tight">
-                ${item.title}
-            </h3>
-            <div class="overflow-y-auto pr-2 grow custom-scrollbar">
-                <p class="text-sm md:text-base opacity-90 leading-relaxed mb-6">
-                    ${item.desarrollo}
-                </p>
-            </div>
-
-            
-        </div>
-    `;
-}
-
-export function renderCardOscura(item) {
-    return `
-        <div class="bg-[#1E1E1E] text-white rounded-[20px]  p-8 shadow-2xl relative overflow-hidden min-h-30 flex items-center justify-center transition-all duration-500">
-            <h3 class="font-bold text-lg md:text-xl text-center md:text-center w-full md:w-2/3 leading-tight">
-                ${item.title}
-            </h3>
-            
-            <div class="absolute -bottom-10 -right-10 w-20 h-20 bg-white rounded-full"></div>
-        </div>
-    `;
-}
+export const lineasInvestigacion = [
+    {
+        id: 1,
+        title: "Métodos iterativos de alto orden y sistemas no lineales",
+        categoria: "Análisis numérico",
+        prioridad: "Línea central",
+        desarrollo: "Esta línea se enfoca en el diseño, análisis y validación de métodos iterativos de alto orden para la resolución de sistemas de ecuaciones no lineales. Incluye esquemas libres de Jacobiano, métodos tipo Steffensen, familias óptimas, funciones peso, análisis de convergencia local, estabilidad dinámica y eficiencia computacional.",
+        aplicaciones: [
+            "Resolución de sistemas no lineales de gran dimensión.",
+            "Diseño de métodos libres de Jacobiano.",
+            "Análisis de estabilidad y dinámica de familias iterativas.",
+            "Comparación de eficiencia computacional frente a métodos clásicos."
+        ],
+        investigadores: [
+            "Dr. Miguel Antonio Leonardo Sepúlveda",
+            "Dr. Antmel Rodríguez Cabral",
+            "Natanael Ureña Castillo",
+            "Dra. Alicia Cordero Barbero",
+            "Dr. Juan Ramón Torregrosa Sánchez"
+        ],
+        proyectosAsociados: [
+            "Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos"
+        ],
+        publicacionesClave: [
+            "Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",
+            "Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",
+            "Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis"
+        ],
+        palabrasClave: [
+            "Métodos iterativos",
+            "Sistemas no lineales",
+            "Jacobian-free",
+            "Alto orden",
+            "Convergencia",
+            "Estabilidad"
+        ]
+    },
+    {
+        id: 2,
+        title: "EDPs no lineales y modelización matemática aplicada",
+        categoria: "Matemática aplicada",
+        prioridad: "Línea prioritaria",
+        desarrollo: "Esta línea aborda la formulación, discretización y resolución numérica de ecuaciones diferenciales parciales no lineales, con énfasis en problemas donde la solución analítica no es viable. Se orienta al desarrollo de herramientas matemáticas y computacionales para estudiar fenómenos físicos, biológicos, ambientales y agroproductivos.",
+        aplicaciones: [
+            "Modelización de difusión y transporte de nutrientes.",
+            "Discretización de EDPs no lineales mediante esquemas numéricos.",
+            "Resolución de sistemas no lineales derivados de modelos diferenciales.",
+            "Validación computacional de modelos aplicados."
+        ],
+        investigadores: [
+            "Dr. Miguel Antonio Leonardo Sepúlveda",
+            "Dr. Antmel Rodríguez Cabral",
+            "Natanael Ureña Castillo"
+        ],
+        proyectosAsociados: [
+            "Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos"
+        ],
+        publicacionesClave: [
+            "Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",
+            "First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems"
+        ],
+        palabrasClave: [
+            "EDPs no lineales",
+            "Modelización matemática",
+            "Diferencias finitas",
+            "Difusión",
+            "Transporte",
+            "Aplicaciones biológicas"
+        ]
+    },
+    {
+        id: 3,
+        title: "Optimización numérica, métodos híbridos y aprendizaje automático",
+        categoria: "Optimización e inteligencia artificial",
+        prioridad: "Línea emergente",
+        desarrollo: "Esta línea estudia métodos híbridos de optimización para problemas de alta dimensionalidad, integrando estructuras cuasi-Newton, pasos tipo Newton o de alto orden, actualizaciones BFGS y DFP, búsquedas lineales, regiones de confianza, funciones peso y variantes de memoria limitada. Sus aplicaciones incluyen entrenamiento de redes neuronales convolucionales y problemas de aprendizaje automático.",
+        aplicaciones: [
+            "Entrenamiento de redes neuronales convolucionales.",
+            "Optimización no convexa de alta dimensionalidad.",
+            "Diseño de métodos híbridos cuasi-Newton.",
+            "Comparación con optimizadores como L-BFGS, SGD, Adam y RMSProp."
+        ],
+        investigadores: [
+            "Dr. Antmel Rodríguez Cabral",
+            "Dr. Miguel Antonio Leonardo Sepúlveda",
+            "Natanael Ureña Castillo",
+            "Dra. Alicia Cordero Barbero",
+            "Dr. Juan Ramón Torregrosa Sánchez"
+        ],
+        proyectosAsociados: [
+            "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera"
+        ],
+        publicacionesClave: [
+            "Efficiency and Stability of a New Hybrid Unconstrained Optimization Algorithm with Quasi-Newton Updates and Higher-Order Methods"
+        ],
+        palabrasClave: [
+            "Optimización híbrida",
+            "Cuasi-Newton",
+            "BFGS",
+            "DFP",
+            "Redes neuronales",
+            "Aprendizaje automático"
+        ]
+    },
+    {
+        id: 4,
+        title: "Modelización econométrico-financiera y análisis actuarial",
+        categoria: "Matemática financiera",
+        prioridad: "Línea aplicada",
+        desarrollo: "Esta línea conecta la optimización numérica y la modelización matemática con problemas econométricos, financieros y actuariales. Incluye la estimación de modelos asociados a tasas de interés, mecanismos de transmisión monetaria, proyección de variables actuariales, siniestralidad, severidad e indexación de primas.",
+        aplicaciones: [
+            "Modelización de la tasa de interés nominal de política monetaria.",
+            "Estimación y calibración de modelos econométricos.",
+            "Proyección de variables actuariales.",
+            "Análisis cuantitativo de riesgo financiero y asegurador."
+        ],
+        investigadores: [
+            "Dr. Antmel Rodríguez Cabral",
+            "Dr. Miguel Antonio Leonardo Sepúlveda",
+            "Natanael Ureña Castillo"
+        ],
+        proyectosAsociados: [
+            "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera"
+        ],
+        publicacionesClave: [],
+        palabrasClave: [
+            "Econometría",
+            "Finanzas cuantitativas",
+            "Análisis actuarial",
+            "Optimización",
+            "Política monetaria",
+            "Riesgo"
+        ]
+    },
+    {
+        id: 5,
+        title: "Teoría de grupos, caracteres y estructuras algebraicas",
+        categoria: "Álgebra",
+        prioridad: "Línea especializada",
+        desarrollo: "Esta línea se orienta al estudio de estructuras algebraicas, teoría de grupos, caracteres, subgrupos normales y grafos asociados a clases de grupos. Incluye problemas relacionados con grafos de divisibilidad, clases p-regulares y propiedades estructurales derivadas de tablas de caracteres.",
+        aplicaciones: [
+            "Análisis de propiedades estructurales de grupos finitos.",
+            "Estudio de grafos asociados a clases p-regulares.",
+            "Caracterización de subgrupos normales mediante tablas de caracteres.",
+            "Desarrollo teórico en álgebra y teoría de grupos."
+        ],
+        investigadores: [
+            "Dr. Marc-Kelly Jean Philippe Jean"
+        ],
+        proyectosAsociados: [],
+        publicacionesClave: [
+            "Groups with Triangle-Free Graphs on p-Regular Classes",
+            "Groups Whose Common Divisor Graph on p-Regular Classes Has Diameter Three",
+            "Some Properties of Normal Subgroups Determined from Character Tables"
+        ],
+        palabrasClave: [
+            "Teoría de grupos",
+            "Caracteres",
+            "Álgebra",
+            "Grafos",
+            "Clases p-regulares",
+            "Subgrupos normales"
+        ]
+    },
+    {
+        id: 6,
+        title: "Didáctica de la matemática, STEAM y formación matemática avanzada",
+        categoria: "Educación matemática",
+        prioridad: "Línea formativa",
+        desarrollo: "Esta línea articula la investigación matemática con la formación docente, la didáctica de la matemática, el enfoque STEAM, el uso de herramientas tecnológicas y el diseño de experiencias de aprendizaje para secundaria, grado y posgrado. Su propósito es fortalecer la enseñanza de contenidos matemáticos desde una perspectiva aplicada, interdisciplinaria y orientada a competencias.",
+        aplicaciones: [
+            "Diseño de propuestas didácticas con enfoque STEAM.",
+            "Uso de tecnología para enseñar funciones, geometría, cónicas y sistemas.",
+            "Formación de docentes de matemática.",
+            "Desarrollo de actividades investigativas en matemática educativa."
+        ],
+        investigadores: [
+            "Dr. Miguel Antonio Leonardo Sepúlveda"
+        ],
+        proyectosAsociados: [],
+        publicacionesClave: [],
+        palabrasClave: [
+            "Didáctica de la matemática",
+            "STEAM",
+            "Formación docente",
+            "Tecnología educativa",
+            "Competencias",
+            "Matemática educativa"
+        ]
+    }
+];
