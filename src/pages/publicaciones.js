@@ -1,6 +1,5 @@
-import { publicacionesComponent } from "../components/Publicaciones/publicacionesComponent"
+import { publicacionesComponent } from "../components/Publicaciones/publicacionesComponent.js";
 
-export function publicaciones(){
-    
+export function publicaciones() {
     return publicacionesComponent();
 }
