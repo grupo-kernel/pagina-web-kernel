@@ -218,7 +218,16 @@
 
                 </div>
 
-            </div>`,a=document.createElement("div");a.innerHTML=e;const t=a.firstElementChild;return de(t.querySelector("#containerFather")),le(t.querySelector("#btnsGroup")),t}function pe(){const e=document.createElement("section");e.classList.add("relative","w-full","flex","flex-col","m-auto","tabletBig:flex-row","md:mb-50","tabletBig:w-7xl","tabletBig:px-20","xl:mb-0","xl:pb-0","xl:w-full","xl:px-0","2xl:w-450","2xl:h-187.5"),e.innerHTML=`${ne()}`;const a=document.createElement("div");return a.appendChild(me()),e.appendChild(a.firstElementChild),e}function ue(){return pe()}const xe=""+new URL("QuienesSomos-DS8enKgt.png",import.meta.url).href;function ge(){return`
+            </div>`,a=document.createElement("div");a.innerHTML=e;const t=a.firstElementChild;return de(t.querySelector("#containerFather")),le(t.querySelector("#btnsGroup")),t}function pe(){const e=document.createElement("section");e.className=`
+        relative w-full max-w-7xl mx-auto px-4 py-10
+        flex flex-col tabletBig:flex-row
+        items-stretch justify-center
+        gap-0
+        font-sans
+        tabletBig:px-20
+        xl:px-0
+        2xl:max-w-[1800px]
+    `,e.innerHTML=`${ne()}`;const a=me();return e.appendChild(a),e}function ue(){return pe()}const xe=""+new URL("QuienesSomos-DS8enKgt.png",import.meta.url).href;function ge(){return`
     <section role="banner" class="relative w-full min-h-screen overflow-hidden">
      
     <!-- Imagen del banner -->
