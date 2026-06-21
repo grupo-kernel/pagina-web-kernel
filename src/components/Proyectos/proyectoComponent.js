@@ -13,14 +13,6 @@ function getProyectoActual(id) {
     return proyecto.find(item => item.id === id) || proyecto[0];
 }
 
-function renderEtiquetas(etiquetas = []) {
-    return etiquetas.map(tag => `
-        <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/60 px-3 py-1 rounded-full text-xs font-bold">
-            ${safeText(tag)}
-        </span>
-    `).join("");
-}
-
 function renderLista(items = []) {
     return items.map(item => `
         <li class="flex gap-3 text-sm md:text-base text-slate-600 leading-relaxed">
@@ -30,26 +22,20 @@ function renderLista(items = []) {
     `).join("");
 }
 
+function renderEtiquetas(etiquetas = []) {
+    return etiquetas.map(tag => `
+        <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/60 px-3 py-1 rounded-full text-xs font-bold">
+            ${safeText(tag)}
+        </span>
+    `).join("");
+}
+
 function renderEquipo(equipo = []) {
     return equipo.map(persona => `
         <span class="inline-flex items-center bg-white/10 text-white border border-white/10 px-3 py-1 rounded-full text-xs font-semibold">
             ${safeText(persona)}
         </span>
     `).join("");
-}
-
-function getStats() {
-    const total = proyecto.length;
-    const instituciones = new Set(proyecto.map(p => p.institucion)).size;
-    const fondocyt = proyecto.filter(p => String(p.convocatoria).includes("FONDOCyT") || String(p.convocatoria).includes("FONDOCYT")).length;
-    const pendientes = proyecto.filter(p => String(p.estado).toLowerCase().includes("pendiente")).length;
-
-    return {
-        total,
-        instituciones,
-        fondocyt,
-        pendientes
-    };
 }
 
 function renderProyectoSelector(item, isActive = false) {
@@ -64,11 +50,11 @@ function renderProyectoSelector(item, isActive = false) {
 
             <div class="flex flex-wrap items-center gap-2 mb-3">
                 <span class="inline-block bg-orange-500 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${safeText(item.convocatoria)}
+                    ${safeText(item.estado)}
                 </span>
 
                 <span class="inline-block ${isActive ? "bg-white/20 text-white" : "bg-[#96B4E1]/30 text-[#1A2B49]"} text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${safeText(item.tipo)}
+                    ${safeText(item.convocatoria)}
                 </span>
             </div>
 
@@ -129,19 +115,31 @@ function renderDetalleProyecto(item) {
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Duración</p>
-                        <p class="text-slate-800 font-bold mt-1">${safeText(item.duracion)}</p>
+                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Tipo</p>
+                        <p class="text-slate-800 font-bold mt-1">${safeText(item.tipo)}</p>
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Periodo previsto</p>
-                        <p class="text-slate-800 font-bold mt-1">${safeText(item.fechaInicio)} – ${safeText(item.fechaFinalizacion)}</p>
+                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Duración estimada</p>
+                        <p class="text-slate-800 font-bold mt-1">${safeText(item.duracion)}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha inicial prevista</p>
+                        <p class="text-slate-700 font-semibold mt-1">${safeText(item.fechaInicio)}</p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha final prevista</p>
+                        <p class="text-slate-700 font-semibold mt-1">${safeText(item.fechaFinalizacion)}</p>
                     </div>
                 </div>
 
                 <div class="mb-8">
                     <h3 class="text-[#1A2B49] text-xl font-black mb-3">
-                        Contexto del proyecto
+                        Contexto general
                     </h3>
 
                     <p class="text-slate-600 leading-relaxed">
@@ -213,7 +211,6 @@ export function proyectoComponent() {
 
     const updateView = () => {
         const actual = getProyectoActual(selectedId);
-        const stats = getStats();
 
         container.innerHTML = `
             <div class="mb-8">
@@ -222,50 +219,40 @@ export function proyectoComponent() {
                 </p>
 
                 <h1 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight">
-                    Proyectos de investigación
+                    Posibles propuestas de investigación
                 </h1>
 
                 <p class="text-slate-500 max-w-4xl mt-3 text-sm md:text-base leading-relaxed">
-                    Propuestas de investigación sometidas a FONDOCyT, actualmente pendientes de aprobación,
-                    orientadas al desarrollo de métodos numéricos avanzados, modelización matemática,
-                    optimización, inteligencia artificial y aplicaciones interdisciplinarias.
+                    Esta sección presenta posibles propuestas sometidas a FONDOCyT por integrantes del grupo.
+                    Su inclusión tiene carácter informativo y no implica aprobación, financiamiento ni ejecución formal.
                 </p>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
                     <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        Proyectos
+                        Posibles propuestas
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${stats.total}
+                        ${proyecto.length}
                     </p>
                 </div>
 
                 <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
                     <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
+                        Convocatoria
+                    </p>
+                    <p class="text-xl font-black text-slate-800">
                         FONDOCyT
                     </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.fondocyt}
-                    </p>
                 </div>
 
                 <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
                     <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        Instituciones
+                        Estado
                     </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.instituciones}
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
-                    <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        En evaluación
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.pendientes}
+                    <p class="text-xl font-black text-slate-800">
+                        Posibles sometidas
                     </p>
                 </div>
             </div>
@@ -274,10 +261,11 @@ export function proyectoComponent() {
                 <aside class="bg-slate-50 border border-slate-200 rounded-[24px] p-4 shadow-sm">
                     <div class="mb-4 px-1">
                         <h2 class="text-xl font-black text-slate-800">
-                            Propuestas sometidas
+                            Propuestas disponibles
                         </h2>
+
                         <p class="text-slate-500 text-sm leading-relaxed">
-                            Seleccione un proyecto para ver sus detalles principales.
+                            Seleccione una posible propuesta para ver sus detalles principales.
                         </p>
                     </div>
 
