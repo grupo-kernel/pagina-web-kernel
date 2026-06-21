@@ -13,12 +13,29 @@ export const proyecto = [
         fechaFinalizacion: "30 de junio de 2030",
         enfoque: "Métodos iterativos de alto orden, EDPs no lineales y modelización agrobiológica",
         contenido: "Esta posible propuesta se orienta al desarrollo y análisis de métodos iterativos de alto orden para la resolución numérica de ecuaciones en derivadas parciales no lineales asociadas a la difusión y transporte de nutrientes en sustratos biológicos. La propuesta articula modelización matemática, análisis numérico, implementación computacional, validación experimental controlada e interpretación interdisciplinaria.",
-        contexto: "La propuesta busca conectar el desarrollo de métodos numéricos avanzados con problemas de interés agrobiológico, especialmente la comprensión de la distribución de nutrientes en sustratos biológicos y el análisis de esquemas de fertirrigación que favorezcan un mejor aprovechamiento nutricional.",
+        contexto: "La propuesta busca conectar el desarrollo de métodos numéricos avanzados con problemas de interés agrobiológico, especialmente la comprensión de la distribución de nutrientes en sustratos biológicos y el análisis de esquemas de fertirrigación que favorezcan un mejor aprovechamiento nutricional y contribuyan al fortalecimiento de la producción de tomate.",
         equipo: [
             "Dr. Neel Lobatchewski Báez Ureña",
             "Dr. Miguel Antonio Leonardo Sepúlveda",
             "Dr. Antmel Rodríguez Cabral",
-            "Natanael Ureña Castillo"
+            "Natanael Ureña Castillo, MSc."
+        ],
+        serviciosProfesionalesEspecializados: [
+            {
+                rol: "Asesoría científica internacional en análisis numérico",
+                nombre: "Dr. Juan R. Torregrosa Sánchez",
+                descripcion: "Asesoría especializada para fortalecer el rigor teórico del componente numérico, validar el análisis de convergencia y eficiencia, y orientar la preparación de productos científicos de alto nivel."
+            },
+            {
+                rol: "Asesoría nacional en biotecnología",
+                nombre: "M.Sc. Yaset Rodríguez Rodríguez",
+                descripcion: "Asesoría nacional orientada al diseño, acompañamiento y fortalecimiento de la fase experimental, incluyendo la selección, preparación y caracterización de sustratos biológicos."
+            },
+            {
+                rol: "Asesoría nacional en agronomía",
+                nombre: "Dr. Luis De Francisco",
+                descripcion: "Asesoría nacional para contribuir a la interpretación aplicada de los resultados matemáticos, numéricos y experimentales desde una perspectiva agronómica."
+            }
         ],
         objetivos: [
             "Formular modelos matemáticos basados en EDPs no lineales para describir la difusión de nutrientes en sustratos biológicos.",
@@ -41,7 +58,9 @@ export const proyecto = [
             "Análisis numérico",
             "Matemática aplicada",
             "Sustratos biológicos",
-            "Fertirrigación"
+            "Fertirrigación",
+            "Biotecnología",
+            "Agronomía"
         ]
     },
     {
@@ -62,9 +81,19 @@ export const proyecto = [
         equipo: [
             "Dr. Antmel Rodríguez Cabral",
             "Dr. Miguel Antonio Leonardo Sepúlveda",
-            "Natanael Ureña Castillo",
-            "Dra. Alicia Cordero Barbero",
-            "Dr. Juan Ramón Torregrosa Sánchez"
+            "Natanael Ureña Castillo, MSc."
+        ],
+        asesores: [
+            {
+                rol: "Asesora científica internacional",
+                nombre: "Dra. Alicia Cordero Barbero",
+                descripcion: "Asesoría científica para fortalecer el rigor teórico del componente numérico, orientar el diseño y análisis de los métodos híbridos propuestos, validar la consistencia matemática de los resultados y apoyar la producción científica derivada del proyecto."
+            },
+            {
+                rol: "Asesor científico internacional",
+                nombre: "Dr. Juan Ramón Torregrosa Sánchez",
+                descripcion: "Asesoría científica para orientar el diseño y análisis de los métodos híbridos, fortalecer la validación del estudio de convergencia y estabilidad, y acompañar la proyección internacional de los resultados científicos."
+            }
         ],
         objetivos: [
             "Formular problemas de optimización no lineal de alta dimensionalidad vinculados a inteligencia artificial, econometría y análisis actuarial.",
@@ -87,7 +116,8 @@ export const proyecto = [
             "Redes neuronales convolucionales",
             "Econometría",
             "Finanzas cuantitativas",
-            "Análisis actuarial"
+            "Análisis actuarial",
+            "Inteligencia artificial"
         ]
     }
 ];
