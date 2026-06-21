@@ -26,6 +26,30 @@
 }
 
 /* ============================================================
+   Líneas de investigación
+   ============================================================ */
+
+.lineas-shell {
+    background:
+        radial-gradient(circle at top left, rgba(85, 128, 193, 0.12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(150, 180, 225, 0.16), transparent 35%);
+    border-radius: 24px;
+}
+
+.linea-stat-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.linea-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(85, 128, 193, 0.14);
+    border-color: rgba(85, 128, 193, 0.35);
+}
+
+/* ============================================================
    Scrollbar principal
    ============================================================ */
 
