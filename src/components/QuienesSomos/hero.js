@@ -86,9 +86,9 @@ export function createHero() {
                         </div>
 
                         <div class="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-4">
-                            <p class="text-3xl font-black text-white">4</p>
+                            <p class="text-3xl font-black text-white">6</p>
                             <p class="text-white/75 text-xs md:text-sm font-semibold">
-                                Defensas doctorales
+                                Líneas activas
                             </p>
                         </div>
                     </div>
