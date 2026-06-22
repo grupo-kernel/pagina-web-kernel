@@ -50,10 +50,6 @@ export function createDescription(
                             <p class="text-xs text-slate-500 font-semibold">Propuestas FONDOCyT</p>
                         </div>
 
-                        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-                            <p class="text-2xl font-black text-slate-900">4</p>
-                            <p class="text-xs text-slate-500 font-semibold">Defensas doctorales</p>
-                        </div>
                     </div>
 
                 </div>
