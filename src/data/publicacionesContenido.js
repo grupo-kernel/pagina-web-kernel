@@ -226,7 +226,7 @@ export const publicacionesContenido = [
     {
         id: 5,
         img: jose,
-        name: "José Alberto Reyes Reyes, Ph.D",
+        name: "Jose Alberto Reyes Reyes, Ph.D",
         area: "Métodos iterativos libres de derivadas, estabilidad y convergencia local",
         publicaciones: [
             {
