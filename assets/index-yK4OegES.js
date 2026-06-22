@@ -483,11 +483,17 @@
         </div>
       </div>
     </div>
-  `}function Ee(){const e=document.createElement("section");return e.classList.add("w-full","lg:w-320"),e.innerHTML=`
-    ${ge()}
-    ${be()}
-    ${ke()}
-  `,e}function Se(e){e.querySelectorAll("[data-accordion-header]").forEach(t=>{t.addEventListener("click",()=>{const i=t.nextElementSibling,o=t.querySelector("[data-accordion-icon]"),s=i.classList.contains("max-h-[1000px]");e.querySelectorAll("[data-accordion-content]").forEach(l=>{l.classList.remove("max-h-[1000px]"),l.classList.add("max-h-0")}),e.querySelectorAll("[data-accordion-icon]").forEach(l=>{l.classList.remove("rotate-180")}),s||(i.classList.remove("max-h-0"),i.classList.add("max-h-[1000px]"),o.classList.add("rotate-180"))})})}function Me(e){const a=e.querySelector("[data-description-text]"),t=e.querySelector("[data-description-btn]");if(!a||!t)return;let i=!1;t.addEventListener("click",()=>{i=!i,a.classList.toggle("line-clamp-4",!i),t.textContent=i?"Leer menos":"Leer más"})}function De(){const e=Ee();return Se(e),Me(e),e}function h(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Ie(e=[]){return!e||e.length===0?`
+  `}function Ee(){const e=document.createElement("section");return e.className=`
+        w-full max-w-7xl mx-auto
+        px-4 py-10 mb-20
+        font-sans
+        tabletBig:px-20
+        xl:px-0
+    `,e.innerHTML=`
+        ${ge()}
+        ${be()}
+        ${ke()}
+    `,e}function Se(e){e.querySelectorAll("[data-accordion-header]").forEach(t=>{t.addEventListener("click",()=>{const i=t.nextElementSibling,o=t.querySelector("[data-accordion-icon]"),s=i.classList.contains("max-h-[1000px]");e.querySelectorAll("[data-accordion-content]").forEach(l=>{l.classList.remove("max-h-[1000px]"),l.classList.add("max-h-0")}),e.querySelectorAll("[data-accordion-icon]").forEach(l=>{l.classList.remove("rotate-180")}),s||(i.classList.remove("max-h-0"),i.classList.add("max-h-[1000px]"),o.classList.add("rotate-180"))})})}function Me(e){const a=e.querySelector("[data-description-text]"),t=e.querySelector("[data-description-btn]");if(!a||!t)return;let i=!1;t.addEventListener("click",()=>{i=!i,a.classList.toggle("line-clamp-4",!i),t.textContent=i?"Leer menos":"Leer más"})}function De(){const e=Ee();return Se(e),Me(e),e}function h(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Ie(e=[]){return!e||e.length===0?`
             <span class="text-xs text-gray-400 italic">
                 Enlaces académicos no registrados
             </span>
