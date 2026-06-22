@@ -100,7 +100,6 @@ export function CreateSliderComponentHome() {
                     <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20">ISFODOSU</span>
                     <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20">UASD</span>
                     <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20">UNAPEC</span>
-                    <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20">INTEC</span>
                 </div>
 
             </div>
