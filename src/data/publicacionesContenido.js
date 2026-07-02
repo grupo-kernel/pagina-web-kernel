@@ -14,83 +14,76 @@ export const publicacionesContenido = [
         name: "Miguel Antonio Leonardo Sepúlveda, Ph.D",
         area: "Métodos iterativos, sistemas no lineales, análisis numérico y EDPs",
         publicaciones: [
-           // Miguel Antonio Leonardo Sepúlveda
-{
-    id: 1,
-    img: sepulveda,
-    name: "Miguel Antonio Leonardo Sepúlveda, Ph.D",
-    area: "Métodos iterativos, sistemas no lineales, análisis numérico y EDPs",
-    publicaciones: [
-        {
-            year: 2026,
-            title: "Numerical Algorithms",
-            q: "Q1",
-            contenido: "Increasing the Order of Convergence in Jacobian-Free Iterative Schemes: Applications to Real-Life Problems",
-            autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
-            DOI: "10.1007/s11075-026-02417-5",
-            url: "https://doi.org/10.1007/s11075-026-02417-5"
-        },
-        {
-            year: 2026,
-            title: "Mathematics",
-            q: "Q1",
-            contenido: "First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",
-            autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",
-            DOI: "10.3390/math14122114",
-            url: "https://doi.org/10.3390/math14122114",
-            pdf: "https://www.mdpi.com/2227-7390/14/12/2114/pdf"
-        },
-        {
-            year: 2026,
-            title: "Mathematics",
-            q: "Q1",
-            contenido: "A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",
-            autores: "Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",
-            DOI: "10.3390/math14111944",
-            url: "https://doi.org/10.3390/math14111944",
-            pdf: "https://www.mdpi.com/2227-7390/14/11/1944/pdf"
-        },
-        {
-            year: 2026,
-            title: "Mathematics",
-            q: "Q1",
-            contenido: "Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",
-            autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",
-            DOI: "10.3390/math14071161",
-            url: "https://doi.org/10.3390/math14071161",
-            pdf: "https://www.mdpi.com/2227-7390/14/7/1161/pdf"
-        },
-        {
-            year: 2024,
-            title: "Mathematics and Computers in Simulation",
-            q: "Q1",
-            contenido: "Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",
-            autores: "Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
-            DOI: "10.1016/j.matcom.2024.05.001",
-            url: "https://doi.org/10.1016/j.matcom.2024.05.001"
-        },
-        {
-            year: 2023,
-            title: "Mathematics",
-            q: "Q1",
-            contenido: "Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",
-            autores: "Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
-            DOI: "10.3390/math11204238",
-            url: "https://doi.org/10.3390/math11204238",
-            pdf: "https://www.mdpi.com/2227-7390/11/20/4238/pdf"
-        },
-        {
-            year: 2022,
-            title: "Algorithms",
-            q: "Q2",
-            contenido: "Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods",
-            autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa",
-            DOI: "10.3390/a15100387",
-            url: "https://doi.org/10.3390/a15100387",
-            pdf: "https://www.mdpi.com/1999-4893/15/10/387/pdf"
-        }
-    ]
-},
+            {
+                year: 2026,
+                title: "Numerical Algorithms",
+                q: "Q1",
+                contenido: "Increasing the Order of Convergence in Jacobian-Free Iterative Schemes: Applications to Real-Life Problems",
+                autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
+                DOI: "10.1007/s11075-026-02417-5",
+                url: "https://doi.org/10.1007/s11075-026-02417-5"
+            },
+            {
+                year: 2026,
+                title: "Mathematics",
+                q: "Q1",
+                contenido: "First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",
+                autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",
+                DOI: "10.3390/math14122114",
+                url: "https://doi.org/10.3390/math14122114",
+                pdf: "https://www.mdpi.com/2227-7390/14/12/2114/pdf"
+            },
+            {
+                year: 2026,
+                title: "Mathematics",
+                q: "Q1",
+                contenido: "A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",
+                autores: "Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",
+                DOI: "10.3390/math14111944",
+                url: "https://doi.org/10.3390/math14111944",
+                pdf: "https://www.mdpi.com/2227-7390/14/11/1944/pdf"
+            },
+            {
+                year: 2026,
+                title: "Mathematics",
+                q: "Q1",
+                contenido: "Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",
+                autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",
+                DOI: "10.3390/math14071161",
+                url: "https://doi.org/10.3390/math14071161",
+                pdf: "https://www.mdpi.com/2227-7390/14/7/1161/pdf"
+            },
+            {
+                year: 2024,
+                title: "Mathematics and Computers in Simulation",
+                q: "Q1",
+                contenido: "Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",
+                autores: "Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
+                DOI: "10.1016/j.matcom.2024.05.001",
+                url: "https://doi.org/10.1016/j.matcom.2024.05.001"
+            },
+            {
+                year: 2023,
+                title: "Mathematics",
+                q: "Q1",
+                contenido: "Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",
+                autores: "Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",
+                DOI: "10.3390/math11204238",
+                url: "https://doi.org/10.3390/math11204238",
+                pdf: "https://www.mdpi.com/2227-7390/11/20/4238/pdf"
+            },
+            {
+                year: 2022,
+                title: "Algorithms",
+                q: "Q2",
+                contenido: "Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods",
+                autores: "Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa",
+                DOI: "10.3390/a15100387",
+                url: "https://doi.org/10.3390/a15100387",
+                pdf: "https://www.mdpi.com/1999-4893/15/10/387/pdf"
+            }
+        ]
+    },
 
     // Antmel Rodríguez Cabral
     {
@@ -242,7 +235,7 @@ export const publicacionesContenido = [
     {
         id: 5,
         img: jose,
-        name: "Jose Alberto Reyes Reyes, Ph.D",
+        name: "José Alberto Reyes Reyes, Ph.D",
         area: "Métodos iterativos libres de derivadas, estabilidad y convergencia local",
         publicaciones: [
             {
