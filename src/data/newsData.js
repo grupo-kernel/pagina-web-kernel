@@ -22,14 +22,9 @@ import congreso9 from "../assets/congreso9.jpeg";
 export const newsData = [
     {
         id: "nw10",
-        featured: true,
-        category: "Congresos",
         title: "El Kernel presenta tres ponencias en el XXI Congreso Internacional de Investigación Científica",
         date: "1 de julio de 2026",
         image: congreso3,
-        imageAlt:
-            "Asistentes al simposio del Grupo de Investigación El Kernel en el XXI Congreso Internacional de Investigación Científica",
-        imageFit: "contain",
         excerpt:
             "El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica con tres ponencias en formato de simposio, presentando resultados recientes en análisis numérico, sistemas no lineales y optimización.",
         content: {
@@ -50,109 +45,21 @@ export const newsData = [
                 "Duración aproximada: una hora.",
                 "Asistencia estimada: alrededor de 50 personas.",
                 "Público principal: estudiantes de la Maestría en Matemática Superior.",
+                "Primera ponencia: Miguel Antonio Leonardo Sepúlveda.",
+                "Segunda ponencia: Natanael Ureña Castillo.",
+                "Tercera ponencia: Antmel Rodríguez Cabral.",
                 "Áreas abordadas: análisis numérico, métodos iterativos, sistemas no lineales, optimización, álgebra, análisis matricial, matemática aplicada y didáctica de la matemática.",
                 "Coordinación académica: Miguel Antonio Leonardo Sepúlveda."
             ]
         },
-        talks: [
-            {
-                order: 1,
-                speaker: "Miguel Antonio Leonardo Sepúlveda, Ph.D.",
-                title:
-                    "Generalización con funciones peso del método Singh–Sharma de quinto orden para sistemas de ecuaciones no lineales",
-                subtitle:
-                    "Aplicación a un problema estacionario viscoso de Burgers discretizado",
-                summary:
-                    "Presentó una familia con funciones peso que conserva el orden cinco y permite ajustar el operador principal del error en sistemas no lineales, con aplicación al problema estacionario viscoso de Burgers.",
-                image: congreso8
-            },
-            {
-                order: 2,
-                speaker: "Natanael Ureña Castillo",
-                title:
-                    "Eficiencia y estabilidad de nuevos algoritmos híbridos cuasi-Newton con correctores de alto orden tipo Singh–Sharma",
-                subtitle:
-                    "Optimización sin restricciones",
-                summary:
-                    "Presentó nuevos algoritmos híbridos cuasi-Newton orientados a mejorar la eficiencia, estabilidad y desempeño computacional en problemas de optimización.",
-                image: congreso5
-            },
-            {
-                order: 3,
-                speaker: "Antmel Rodríguez Cabral, Ph.D.",
-                title:
-                    "Generalized Traub Family for Solving Nonlinear Systems",
-                subtitle:
-                    "Fourth-Order Optimal Method and Dynamical Analysis",
-                summary:
-                    "Presentó resultados sobre una familia generalizada de Traub para sistemas no lineales, con orden óptimo cuatro y análisis dinámico.",
-                image: congreso9
-            }
-        ],
-        gallery: [
-            {
-                src: congreso1,
-                caption:
-                    "Integrantes del Grupo Kernel en el XXI Congreso Internacional de Investigación Científica."
-            },
-            {
-                src: congreso2,
-                caption:
-                    "Participantes del grupo junto a la pantalla de presentación de resultados."
-            },
-            {
-                src: congreso3,
-                caption:
-                    "Vista general de los asistentes al simposio académico."
-            },
-            {
-                src: congreso4,
-                caption:
-                    "Exposición sobre algoritmos híbridos cuasi-Newton."
-            },
-            {
-                src: congreso5,
-                caption:
-                    "Presentación sobre eficiencia y estabilidad de nuevos algoritmos híbridos."
-            },
-            {
-                src: congreso6,
-                caption:
-                    "Presentación sobre solución numérica y error en el problema de Burgers."
-            },
-            {
-                src: congreso7,
-                caption:
-                    "Exposición sobre familias con funciones peso para sistemas no lineales."
-            },
-            {
-                src: congreso8,
-                caption:
-                    "Presentación sobre optimalidad para sistemas no lineales."
-            },
-            {
-                src: congreso9,
-                caption:
-                    "Análisis dinámico del método clásico de Traub."
-            }
-        ],
-        tags: [
-            "Congreso",
-            "MESCYT",
-            "Métodos iterativos",
-            "Optimización",
-            "Sistemas no lineales"
-        ],
         articleURL: null
     },
 
     {
         id: "nw1",
-        category: "Logros académicos",
         title: "Antmel Rodríguez Cabral defiende exitosamente su tesis doctoral",
         date: "2025",
         image: antmelPhd,
-        imageFit: "contain",
         excerpt:
             "El Dr. Antmel Rodríguez Cabral defendió exitosamente su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -172,11 +79,9 @@ export const newsData = [
 
     {
         id: "nw2",
-        category: "Logros académicos",
         title: "Marc-Kelly Jean Philippe Jean culmina su defensa doctoral con la máxima calificación",
         date: "2025",
         image: markPhd,
-        imageFit: "contain",
         excerpt:
             "El Dr. Marc-Kelly Jean Philippe Jean culminó exitosamente su defensa doctoral, alcanzando la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -196,11 +101,9 @@ export const newsData = [
 
     {
         id: "nw3",
-        category: "Logros académicos",
         title: "José Alberto Reyes Reyes obtiene el grado de Doctor en Matemática",
         date: "2025",
         image: jos,
-        imageFit: "contain",
         excerpt:
             "El Dr. José Alberto Reyes Reyes defendió exitosamente su tesis doctoral, obteniendo la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -220,11 +123,9 @@ export const newsData = [
 
     {
         id: "nw4",
-        category: "Logros académicos",
         title: "Natanael Ureña Castillo presentará próximamente su tesis doctoral",
         date: "Próximamente",
         image: natanael,
-        imageFit: "contain",
         excerpt:
             "En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, cerrando un ciclo académico relevante para el Grupo Kernel.",
         content: {
@@ -244,11 +145,9 @@ export const newsData = [
 
     {
         id: "nw5",
-        category: "Publicaciones",
         title: "Miguel Leonardo, Antmel Rodríguez y Natanael Ureña alcanzan su tercer artículo publicado en 2026",
         date: "2026",
         image: sepulveda,
-        imageFit: "contain",
         excerpt:
             "Los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo alcanzan su tercer artículo científico publicado durante el año 2026.",
         content: {
@@ -269,11 +168,9 @@ export const newsData = [
 
     {
         id: "nw6",
-        category: "Publicaciones",
         title: "Sobre la estabilidad de los parámetros de autoaceleración",
         date: "2025",
         image: antmel,
-        imageFit: "contain",
         excerpt:
             "Se publicó un artículo sobre la estabilidad de parámetros autoacelerados en métodos iterativos vectoriales sin memoria usando herramientas de dinámica discreta.",
         content: {
@@ -293,11 +190,9 @@ export const newsData = [
 
     {
         id: "nw7",
-        category: "Formación",
         title: "Guía Didáctica de Lógica Matemática y Teoría de Conjuntos",
         date: "17 de junio de 2025",
         image: libroLogica,
-        imageFit: "contain",
         excerpt:
             "Se lanzó la Guía Didáctica de Lógica Matemática y Teoría de Conjuntos, con ejercicios, actividades y recursos para bachillerato y nivel universitario inicial.",
         content: {
@@ -318,11 +213,9 @@ export const newsData = [
 
     {
         id: "nw8",
-        category: "Publicaciones",
         title: "Stability Analysis of a New Fourth-Order Optimal Iterative Scheme",
         date: "2024",
         image: jos,
-        imageFit: "contain",
         excerpt:
             "Artículo publicado en Axioms sobre análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.",
         content: {
@@ -342,11 +235,9 @@ export const newsData = [
 
     {
         id: "nw9",
-        category: "Publicaciones",
         title: "Groups with Triangle-Free Graphs on p-Regular Classes",
         date: "2025",
         image: marc,
-        imageFit: "contain",
         excerpt:
             "Artículo en teoría de grupos finitos sobre propiedades combinatorias de clases p-regulares y grafos asociados.",
         content: {
