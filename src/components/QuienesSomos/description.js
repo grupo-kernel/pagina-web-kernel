@@ -52,13 +52,13 @@ export function getPublicacionesStats() {
         .map(pub => Number(pub.year))
         .filter(Boolean);
 
-    const q1 = publicacionesUnicas.filter(pub =>
+    const totalQ1 = publicacionesUnicas.filter(pub =>
         String(pub?.q || "").trim().toUpperCase() === "Q1"
     ).length;
 
     return {
         totalPublicaciones: publicacionesUnicas.length,
-        totalQ1: q1,
+        totalQ1,
         primerYear: years.length ? Math.min(...years) : "—",
         ultimoYear: years.length ? Math.max(...years) : "—"
     };
