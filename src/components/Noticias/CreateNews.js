@@ -1,5 +1,7 @@
 import { newsData } from "../../data/newsData.js";
-import { newsModal } from "../../components/Noticias/NewsModal.js";
+import { newsHero } from "./NewsHero.js";
+import { newsGrid } from "./NewsGrid.js";
+import { newsCTA } from "./NewsCTA.js";
 
 function ordenarNoticias(newsList = []) {
     return [...newsList].sort((a, b) => {
@@ -9,75 +11,23 @@ function ordenarNoticias(newsList = []) {
     });
 }
 
-export function initNewsModalController(rootElement) {
-    if (!rootElement) {
-        return;
-    }
+export function createNews() {
+    const section = document.createElement("section");
+
+    section.className = `
+        w-full
+        tabletBig:w-7xl
+        xl:w-full
+    `;
 
     const orderedNews = ordenarNoticias(newsData);
+    const featuredNews = orderedNews.find(news => news.featured) || orderedNews[0];
 
-    rootElement.addEventListener("click", event => {
-        const trigger = event.target.closest("[data-news-btn], [data-news-card]");
+    section.innerHTML = `
+        ${newsHero(featuredNews)}
+        ${newsGrid(orderedNews)}
+        ${newsCTA()}
+    `;
 
-        if (!trigger || !rootElement.contains(trigger)) {
-            return;
-        }
-
-        const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
-
-        const selectedNews = orderedNews.find(
-            news => String(news.id) === String(newsId)
-        );
-
-        if (!selectedNews) {
-            console.warn("No se encontró la noticia con id:", newsId);
-            return;
-        }
-
-        openNewsModal(selectedNews);
-    });
-}
-
-function openNewsModal(news) {
-    const previousModal = document.querySelector("#newsModal");
-
-    if (previousModal) {
-        previousModal.remove();
-    }
-
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = newsModal(news);
-
-    const modal = wrapper.firstElementChild;
-
-    if (!modal) {
-        return;
-    }
-
-    document.body.appendChild(modal);
-    document.body.style.overflow = "hidden";
-
-    function closeModal() {
-        modal.remove();
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", handleEscape);
-    }
-
-    function handleEscape(event) {
-        if (event.key === "Escape") {
-            closeModal();
-        }
-    }
-
-    modal.querySelectorAll("[data-close-modal]").forEach(button => {
-        button.addEventListener("click", closeModal);
-    });
-
-    modal.addEventListener("click", event => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-
-    document.addEventListener("keydown", handleEscape);
+    return section;
 }
