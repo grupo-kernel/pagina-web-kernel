@@ -1,6 +1,47 @@
 import heroQuienes from "../../assets/QuienesSomos.png";
+import { publicacionesContenido } from "../../data/publicacionesContenido.js";
+
+function getDOI(pub) {
+    return String(pub?.DOI || pub?.doi || "")
+        .trim()
+        .toLowerCase();
+}
+
+function getPublicationKey(pub) {
+    const doi = getDOI(pub);
+
+    if (doi) {
+        return doi;
+    }
+
+    return [
+        pub?.year || "",
+        pub?.title || pub?.journal || pub?.tile || "",
+        pub?.contenido || pub?.articleTitle || ""
+    ]
+        .join("-")
+        .trim()
+        .toLowerCase();
+}
+
+function getTotalPublicacionesUnicas() {
+    const map = new Map();
+
+    publicacionesContenido.forEach(investigador => {
+        (investigador.publicaciones || []).forEach(pub => {
+            const key = getPublicationKey(pub);
+
+            if (key && !map.has(key)) {
+                map.set(key, pub);
+            }
+        });
+    });
+
+    return map.size;
+}
 
 export function createHero() {
+    const totalPublicaciones = getTotalPublicacionesUnicas();
 
     const heroContent = `
         <section 
@@ -72,7 +113,9 @@ export function createHero() {
                         </div>
 
                         <div class="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-4">
-                            <p class="text-3xl font-black text-white">15+</p>
+                            <p class="text-3xl font-black text-white">
+                                ${totalPublicaciones}
+                            </p>
                             <p class="text-white/75 text-xs md:text-sm font-semibold">
                                 Publicaciones
                             </p>
