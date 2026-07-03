@@ -1,92 +1,83 @@
 import { newsData } from "../../data/newsData.js";
-import { newsHero } from "./NewsHero.js";
-import { newsGrid } from "./NewsGrid.js";
-import { newsCTA } from "./NewsCTA.js";
-import { newsModal } from "./NewsModal.js";
+import { newsModal } from "../../components/Noticias/NewsModal.js";
 
-export function createNews() {
-    const section = document.createElement("section");
-
-    section.className = `
-        w-full
-        tabletBig:w-7xl
-        xl:w-full
-    `;
-
-    const orderedNews = [...newsData].sort((a, b) => {
+function ordenarNoticias(newsList = []) {
+    return [...newsList].sort((a, b) => {
         if (a.featured && !b.featured) return -1;
         if (!a.featured && b.featured) return 1;
         return 0;
     });
+}
 
-    const featuredNews = orderedNews.find(news => news.featured) || orderedNews[0];
+export function initNewsModalController(rootElement) {
+    if (!rootElement) {
+        return;
+    }
 
-    section.innerHTML = `
-        ${newsHero(featuredNews)}
-        ${newsGrid(orderedNews)}
-        ${newsCTA()}
-    `;
+    const orderedNews = ordenarNoticias(newsData);
 
-    section.addEventListener("click", event => {
+    rootElement.addEventListener("click", event => {
         const trigger = event.target.closest("[data-news-btn], [data-news-card]");
 
-        if (!trigger) {
+        if (!trigger || !rootElement.contains(trigger)) {
             return;
         }
 
         const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
-        const selectedNews = orderedNews.find(news => String(news.id) === String(newsId));
+
+        const selectedNews = orderedNews.find(
+            news => String(news.id) === String(newsId)
+        );
 
         if (!selectedNews) {
+            console.warn("No se encontró la noticia con id:", newsId);
             return;
         }
 
-        openModal(selectedNews);
+        openNewsModal(selectedNews);
     });
+}
 
-    function openModal(news) {
-        const previousModal = document.querySelector("#newsModal");
+function openNewsModal(news) {
+    const previousModal = document.querySelector("#newsModal");
 
-        if (previousModal) {
-            previousModal.remove();
-        }
-
-        const wrapper = document.createElement("div");
-        wrapper.innerHTML = newsModal(news);
-
-        const modal = wrapper.firstElementChild;
-
-        if (!modal) {
-            return;
-        }
-
-        document.body.appendChild(modal);
-        document.body.style.overflow = "hidden";
-
-        function closeModal() {
-            modal.remove();
-            document.body.style.overflow = "";
-            document.removeEventListener("keydown", handleEscape);
-        }
-
-        function handleEscape(event) {
-            if (event.key === "Escape") {
-                closeModal();
-            }
-        }
-
-        modal.querySelectorAll("[data-close-modal]").forEach(button => {
-            button.addEventListener("click", closeModal);
-        });
-
-        modal.addEventListener("click", event => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener("keydown", handleEscape);
+    if (previousModal) {
+        previousModal.remove();
     }
 
-    return section;
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = newsModal(news);
+
+    const modal = wrapper.firstElementChild;
+
+    if (!modal) {
+        return;
+    }
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = "hidden";
+
+    function closeModal() {
+        modal.remove();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscape);
+    }
+
+    function handleEscape(event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    }
+
+    modal.querySelectorAll("[data-close-modal]").forEach(button => {
+        button.addEventListener("click", closeModal);
+    });
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", handleEscape);
 }
