@@ -1,3 +1,44 @@
+import { publicacionesContenido } from "../../data/publicacionesContenido.js";
+
+function getDOI(pub) {
+    return String(pub?.DOI || pub?.doi || "")
+        .trim()
+        .toLowerCase();
+}
+
+function getPublicationKey(pub) {
+    const doi = getDOI(pub);
+
+    if (doi) {
+        return doi;
+    }
+
+    return [
+        pub?.year || "",
+        pub?.title || pub?.journal || pub?.tile || "",
+        pub?.contenido || pub?.articleTitle || ""
+    ]
+        .join("-")
+        .trim()
+        .toLowerCase();
+}
+
+function getTotalPublicacionesUnicas() {
+    const map = new Map();
+
+    publicacionesContenido.forEach(investigador => {
+        (investigador.publicaciones || []).forEach(pub => {
+            const key = getPublicationKey(pub);
+
+            if (key && !map.has(key)) {
+                map.set(key, pub);
+            }
+        });
+    });
+
+    return map.size;
+}
+
 export function createDescription(
     paragraphs = [
         "El Grupo de Investigación Kernel es una comunidad académica multidisciplinaria dedicada a la investigación, la innovación y la transferencia de conocimiento en matemática aplicada, análisis numérico, ecuaciones diferenciales parciales no lineales, optimización, álgebra, modelización matemática y educación matemática.",
@@ -5,6 +46,7 @@ export function createDescription(
         "Nuestra identidad se fundamenta en la rigurosidad matemática, la computación científica, la investigación colaborativa y la aplicación de modelos matemáticos a problemas relevantes en ciencias, tecnología, educación, procesos biológicos, optimización y sistemas complejos."
     ]
 ) {
+    const totalPublicaciones = getTotalPublicacionesUnicas();
 
     const descriptionContent = `
         <section class="w-full py-12 overflow-x-hidden">
@@ -41,7 +83,9 @@ export function createDescription(
                         </div>
 
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
-                            <p class="text-2xl font-black text-slate-900">15+</p>
+                            <p class="text-2xl font-black text-slate-900">
+                                ${totalPublicaciones}
+                            </p>
                             <p class="text-xs text-slate-500 font-semibold">Publicaciones</p>
                         </div>
 
