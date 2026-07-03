@@ -43,7 +43,7 @@ export function newsCard({
                     image
                         ? `
                             <img
-                                src="${image}"
+                                src="${safeText(image)}"
                                 alt="${safeText(imageAlt || title)}"
                                 class="w-full h-full ${imgClass} rounded-xl"
                                 loading="lazy"
@@ -85,6 +85,7 @@ export function newsCard({
                 <button
                     type="button"
                     data-news-btn="${safeText(id)}"
+                    aria-label="Ver detalles de la noticia ${safeText(title)}"
                     class="
                         mt-auto self-start lg:text-base 2xl:text-xl
                         font-bold text-blue-600
