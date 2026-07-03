@@ -1,6 +1,48 @@
 // Tarjeta principal de portada
 
+import { publicacionesContenido } from "./publicacionesContenido.js";
+
+function getDOI(pub) {
+    return String(pub?.DOI || pub?.doi || "")
+        .trim()
+        .toLowerCase();
+}
+
+function getPublicationKey(pub) {
+    const doi = getDOI(pub);
+
+    if (doi) {
+        return doi;
+    }
+
+    return [
+        pub?.year || "",
+        pub?.title || pub?.journal || pub?.tile || "",
+        pub?.contenido || pub?.articleTitle || ""
+    ]
+        .join("-")
+        .trim()
+        .toLowerCase();
+}
+
+function getTotalPublicacionesUnicas() {
+    const map = new Map();
+
+    publicacionesContenido.forEach(investigador => {
+        (investigador.publicaciones || []).forEach(pub => {
+            const key = getPublicationKey(pub);
+
+            if (key && !map.has(key)) {
+                map.set(key, pub);
+            }
+        });
+    });
+
+    return map.size;
+}
+
 export function CreateCardFirstHome() {
+    const totalPublicaciones = getTotalPublicacionesUnicas();
 
     const card = `
         <div class="
@@ -87,7 +129,7 @@ export function CreateCardFirstHome() {
 
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
                             <p class="text-2xl md:text-3xl font-black text-slate-900">
-                                16+
+                                ${totalPublicaciones}
                             </p>
                             <p class="text-xs md:text-sm text-slate-500 font-semibold leading-tight">
                                 Publicaciones
