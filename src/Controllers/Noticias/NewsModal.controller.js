@@ -1,59 +1,83 @@
 import { newsData } from "../../data/newsData.js";
 import { newsModal } from "../../components/Noticias/NewsModal.js";
 
-export function initNewsModalController(container) {
-    if (!container) return;
-
-    container.addEventListener("click", handleOpenClick);
-
-    document.addEventListener("click", handleCloseClick);
-    document.addEventListener("keydown", handleKeydown);
+function ordenarNoticias(newsList = []) {
+    return [...newsList].sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+    });
 }
 
-
-function handleOpenClick(event) {
-    const openButton = event.target.closest("[data-news-btn]");
-    if (!openButton) return;
-
-    const id = openButton.dataset.newsBtn;
-    const news = newsData.find(n => n.id === id);
-    if (!news) return;
-
-    openModal(news);
-}
-
-function handleCloseClick(event) {
-    const closeButton = event.target.closest("[data-close-modal]");
-    const overlayClick = event.target.id === "newsModal";
-
-    if (closeButton || overlayClick) {
-        closeModal();
+export function initNewsModalController(rootElement) {
+    if (!rootElement) {
+        return;
     }
+
+    const orderedNews = ordenarNoticias(newsData);
+
+    rootElement.addEventListener("click", event => {
+        const trigger = event.target.closest("[data-news-btn], [data-news-card]");
+
+        if (!trigger || !rootElement.contains(trigger)) {
+            return;
+        }
+
+        const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
+
+        const selectedNews = orderedNews.find(
+            news => String(news.id) === String(newsId)
+        );
+
+        if (!selectedNews) {
+            console.warn("No se encontró la noticia con id:", newsId);
+            return;
+        }
+
+        openNewsModal(selectedNews);
+    });
 }
 
-function handleKeydown(event) {
-    if (event.key === "Escape") {
-        closeModal();
+function openNewsModal(news) {
+    const previousModal = document.querySelector("#newsModal");
+
+    if (previousModal) {
+        previousModal.remove();
     }
-}
 
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = newsModal(news);
 
+    const modal = wrapper.firstElementChild;
 
-function openModal(news) {
-    closeModal();
+    if (!modal) {
+        return;
+    }
 
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        newsModal(news)
-    );
+    document.body.appendChild(modal);
+    document.body.style.overflow = "hidden";
 
-    document.body.classList.add("overflow-hidden");
-}
+    function closeModal() {
+        modal.remove();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscape);
+    }
 
-function closeModal() {
-    const modal = document.getElementById("newsModal");
-    if (!modal) return;
+    function handleEscape(event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    }
 
-    modal.remove();
-    document.body.classList.remove("overflow-hidden");
+    modal.querySelectorAll("[data-close-modal]").forEach(button => {
+        button.addEventListener("click", closeModal);
+    });
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", handleEscape);
 }
