@@ -7,16 +7,40 @@ export function publicacionesComponent() {
     let resizeTimer = null;
 
     const container = document.createElement("section");
-    container.className = "publicaciones-shell w-full max-w-7xl mx-auto px-4 py-8 rounded-3xl";
+    container.className =
+        "publicaciones-shell w-full max-w-7xl mx-auto px-4 py-8 rounded-3xl";
+
+    function getDOI(pub) {
+        return String(pub?.DOI || pub?.doi || "").trim().toLowerCase();
+    }
+
+    function getRevista(pub) {
+        return String(pub?.journal || pub?.title || pub?.tile || "").trim();
+    }
+
+    function getTituloArticulo(pub) {
+        return String(pub?.articleTitle || pub?.contenido || "").trim();
+    }
+
+    function getCuartil(pub) {
+        return String(pub?.q || pub?.quartile || "")
+            .trim()
+            .toUpperCase();
+    }
 
     function getPublicationKey(pub) {
-        const doi = String(pub.DOI || pub.doi || "").trim().toLowerCase();
+        const doi = getDOI(pub);
 
         if (doi) {
             return doi;
         }
 
-        return `${pub.year || ""}-${pub.title || pub.tile || ""}-${pub.contenido || ""}`
+        return [
+            pub?.year || "",
+            getRevista(pub),
+            getTituloArticulo(pub)
+        ]
+            .join("-")
             .trim()
             .toLowerCase();
     }
@@ -28,7 +52,7 @@ export function publicacionesComponent() {
             (profesor.publicaciones || []).forEach(pub => {
                 const key = getPublicationKey(pub);
 
-                if (!map.has(key)) {
+                if (key && !map.has(key)) {
                     map.set(key, pub);
                 }
             });
@@ -47,7 +71,7 @@ export function publicacionesComponent() {
         const ultimoYear = years.length ? Math.max(...years) : "—";
         const primerYear = years.length ? Math.min(...years) : "—";
 
-        const q1 = publicacionesUnicas.filter(pub => pub.q === "Q1").length;
+        const q1 = publicacionesUnicas.filter(pub => getCuartil(pub) === "Q1").length;
 
         return {
             totalPublicaciones: publicacionesUnicas.length,
@@ -58,11 +82,15 @@ export function publicacionesComponent() {
         };
     }
 
-    const updateView = () => {
-        const profesor =
-            publicacionesContenido.find(p => p.id === selectedId) ||
-            publicacionesContenido[0];
+    function getProfesorSeleccionado() {
+        return (
+            publicacionesContenido.find(p => Number(p.id) === Number(selectedId)) ||
+            publicacionesContenido[0]
+        );
+    }
 
+    const updateView = () => {
+        const profesor = getProfesorSeleccionado();
         const stats = getStats();
 
         const ocultarDetalleMobile = window.innerWidth < 768 && !isModalOpen;
@@ -137,7 +165,7 @@ export function publicacionesComponent() {
                     </div>
 
                     ${publicacionesContenido
-                        .map(p => renderProfesorItem(p, p.id === selectedId))
+                        .map(p => renderProfesorItem(p, Number(p.id) === Number(selectedId)))
                         .join("")}
                 </aside>
 
@@ -155,7 +183,7 @@ export function publicacionesComponent() {
 
         container.querySelectorAll("[data-id]").forEach(item => {
             item.onclick = () => {
-                selectedId = parseInt(item.dataset.id);
+                selectedId = Number(item.dataset.id);
 
                 if (window.innerWidth < 768) {
                     isModalOpen = true;
