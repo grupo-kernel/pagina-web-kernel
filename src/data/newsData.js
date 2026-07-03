@@ -8,7 +8,7 @@ import jos from "../assets/jos.png";
 import marc from "../assets/marc.png";
 import natanael from "../assets/nat.png";
 
-// Imágenes Congreso MESCYT 2026
+// Imágenes del XXI Congreso Internacional de Investigación Científica
 import congreso1 from "../assets/congreso1.jpeg";
 import congreso2 from "../assets/congreso2.jpeg";
 import congreso3 from "../assets/congreso3.jpeg";
@@ -148,9 +148,11 @@ export const newsData = [
 
     {
         id: "nw1",
+        category: "Logros académicos",
         title: "Antmel Rodríguez Cabral defiende exitosamente su tesis doctoral",
         date: "2025",
         image: antmelPhd,
+        imageFit: "contain",
         excerpt:
             "El Dr. Antmel Rodríguez Cabral defendió exitosamente su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -170,9 +172,11 @@ export const newsData = [
 
     {
         id: "nw2",
+        category: "Logros académicos",
         title: "Marc-Kelly Jean Philippe Jean culmina su defensa doctoral con la máxima calificación",
         date: "2025",
         image: markPhd,
+        imageFit: "contain",
         excerpt:
             "El Dr. Marc-Kelly Jean Philippe Jean culminó exitosamente su defensa doctoral, alcanzando la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -192,9 +196,11 @@ export const newsData = [
 
     {
         id: "nw3",
+        category: "Logros académicos",
         title: "José Alberto Reyes Reyes obtiene el grado de Doctor en Matemática",
         date: "2025",
         image: jos,
+        imageFit: "contain",
         excerpt:
             "El Dr. José Alberto Reyes Reyes defendió exitosamente su tesis doctoral, obteniendo la calificación más alta otorgada por el jurado evaluador.",
         content: {
@@ -214,9 +220,11 @@ export const newsData = [
 
     {
         id: "nw4",
+        category: "Logros académicos",
         title: "Natanael Ureña Castillo presentará próximamente su tesis doctoral",
         date: "Próximamente",
         image: natanael,
+        imageFit: "contain",
         excerpt:
             "En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, cerrando un ciclo académico relevante para el Grupo Kernel.",
         content: {
@@ -236,9 +244,11 @@ export const newsData = [
 
     {
         id: "nw5",
+        category: "Publicaciones",
         title: "Miguel Leonardo, Antmel Rodríguez y Natanael Ureña alcanzan su tercer artículo publicado en 2026",
         date: "2026",
         image: sepulveda,
+        imageFit: "contain",
         excerpt:
             "Los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo alcanzan su tercer artículo científico publicado durante el año 2026.",
         content: {
@@ -259,9 +269,11 @@ export const newsData = [
 
     {
         id: "nw6",
+        category: "Publicaciones",
         title: "Sobre la estabilidad de los parámetros de autoaceleración",
         date: "2025",
         image: antmel,
+        imageFit: "contain",
         excerpt:
             "Se publicó un artículo sobre la estabilidad de parámetros autoacelerados en métodos iterativos vectoriales sin memoria usando herramientas de dinámica discreta.",
         content: {
@@ -281,9 +293,11 @@ export const newsData = [
 
     {
         id: "nw7",
+        category: "Formación",
         title: "Guía Didáctica de Lógica Matemática y Teoría de Conjuntos",
         date: "17 de junio de 2025",
         image: libroLogica,
+        imageFit: "contain",
         excerpt:
             "Se lanzó la Guía Didáctica de Lógica Matemática y Teoría de Conjuntos, con ejercicios, actividades y recursos para bachillerato y nivel universitario inicial.",
         content: {
@@ -304,9 +318,11 @@ export const newsData = [
 
     {
         id: "nw8",
+        category: "Publicaciones",
         title: "Stability Analysis of a New Fourth-Order Optimal Iterative Scheme",
         date: "2024",
         image: jos,
+        imageFit: "contain",
         excerpt:
             "Artículo publicado en Axioms sobre análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.",
         content: {
@@ -326,9 +342,11 @@ export const newsData = [
 
     {
         id: "nw9",
+        category: "Publicaciones",
         title: "Groups with Triangle-Free Graphs on p-Regular Classes",
         date: "2025",
         image: marc,
+        imageFit: "contain",
         excerpt:
             "Artículo en teoría de grupos finitos sobre propiedades combinatorias de clases p-regulares y grafos asociados.",
         content: {
