@@ -1,20 +1,10 @@
 import { newsData } from "../../data/newsData.js";
 import { newsModal } from "../../components/Noticias/NewsModal.js";
 
-function ordenarNoticias(newsList = []) {
-    return [...newsList].sort((a, b) => {
-        if (a.featured && !b.featured) return -1;
-        if (!a.featured && b.featured) return 1;
-        return 0;
-    });
-}
-
 export function initNewsModalController(rootElement) {
     if (!rootElement) {
         return;
     }
-
-    const orderedNews = ordenarNoticias(newsData);
 
     rootElement.addEventListener("click", event => {
         const trigger = event.target.closest("[data-news-btn], [data-news-card]");
@@ -25,7 +15,7 @@ export function initNewsModalController(rootElement) {
 
         const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
 
-        const selectedNews = orderedNews.find(
+        const selectedNews = newsData.find(
             news => String(news.id) === String(newsId)
         );
 
@@ -51,6 +41,7 @@ function openNewsModal(news) {
     const modal = wrapper.firstElementChild;
 
     if (!modal) {
+        console.warn("No se pudo crear el modal de noticia.");
         return;
     }
 
