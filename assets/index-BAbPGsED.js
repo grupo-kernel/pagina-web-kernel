@@ -171,7 +171,7 @@
 
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
                             <p class="text-2xl md:text-3xl font-black text-slate-900">
-                                15+
+                                16+
                             </p>
                             <p class="text-xs md:text-sm text-slate-500 font-semibold leading-tight">
                                 Publicaciones
