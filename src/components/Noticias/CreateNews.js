@@ -2,6 +2,7 @@ import { newsData } from "../../data/newsData.js";
 import { newsHero } from "./NewsHero.js";
 import { newsGrid } from "./NewsGrid.js";
 import { newsCTA } from "./NewsCTA.js";
+import { newsModal } from "./NewsModal.js";
 
 export function createNews() {
     const section = document.createElement("section");
@@ -25,6 +26,67 @@ export function createNews() {
         ${newsGrid(orderedNews)}
         ${newsCTA()}
     `;
+
+    section.addEventListener("click", event => {
+        const trigger = event.target.closest("[data-news-btn], [data-news-card]");
+
+        if (!trigger) {
+            return;
+        }
+
+        const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
+        const selectedNews = orderedNews.find(news => String(news.id) === String(newsId));
+
+        if (!selectedNews) {
+            return;
+        }
+
+        openModal(selectedNews);
+    });
+
+    function openModal(news) {
+        const previousModal = document.querySelector("#newsModal");
+
+        if (previousModal) {
+            previousModal.remove();
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = newsModal(news);
+
+        const modal = wrapper.firstElementChild;
+
+        if (!modal) {
+            return;
+        }
+
+        document.body.appendChild(modal);
+        document.body.style.overflow = "hidden";
+
+        function closeModal() {
+            modal.remove();
+            document.body.style.overflow = "";
+            document.removeEventListener("keydown", handleEscape);
+        }
+
+        function handleEscape(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        }
+
+        modal.querySelectorAll("[data-close-modal]").forEach(button => {
+            button.addEventListener("click", closeModal);
+        });
+
+        modal.addEventListener("click", event => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener("keydown", handleEscape);
+    }
 
     return section;
 }
