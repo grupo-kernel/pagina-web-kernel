@@ -1,6 +1,7 @@
 // Tarjeta principal de portada
 
-import { publicacionesContenido } from "./publicacionesContenido.js";
+import kernelLogo from "../../assets/ElKernel.png";
+import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 
 function getDOI(pub) {
     return String(pub?.DOI || pub?.doi || "")
@@ -63,9 +64,30 @@ export function CreateCardFirstHome() {
 
                 <div class="flex-1 flex flex-col justify-center">
 
-                    <p class="text-[#0D6EFD] font-black uppercase tracking-widest text-xs md:text-sm mb-4">
-                        Grupo de Investigación Kernel
-                    </p>
+                    <div class="flex items-center gap-3 mb-5">
+    <div class="
+        w-14 h-14 md:w-16 md:h-16
+        rounded-2xl bg-white border border-slate-200
+        shadow-md flex items-center justify-center p-2
+    ">
+        <img
+            src="${kernelLogo}"
+            alt="Logo del Grupo de Investigación Kernel"
+            class="w-full h-full object-contain"
+            loading="lazy"
+        />
+    </div>
+
+    <div>
+        <p class="text-[#0D6EFD] font-black uppercase tracking-widest text-xs md:text-sm">
+            Grupo de Investigación
+        </p>
+
+        <p class="text-slate-900 font-black text-lg md:text-xl leading-tight">
+            El Kernel
+        </p>
+    </div>
+</div>
 
                     <h1 class="
                         text-4xl md:text-5xl lg:text-6xl
