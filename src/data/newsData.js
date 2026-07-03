@@ -8,7 +8,144 @@ import jos from "../assets/jos.png";
 import marc from "../assets/marc.png";
 import natanael from "../assets/nat.png";
 
+// Imágenes Congreso MESCYT 2026
+import congreso1 from "../assets/congreso1.jpeg";
+import congreso2 from "../assets/congreso2.jpeg";
+import congreso3 from "../assets/congreso3.jpeg";
+import congreso4 from "../assets/congreso4.jpeg";
+import congreso5 from "../assets/congreso5.jpeg";
+import congreso6 from "../assets/congreso6.jpeg";
+import congreso7 from "../assets/congreso7.jpeg";
+import congreso8 from "../assets/congreso8.jpeg";
+import congreso9 from "../assets/congreso9.jpeg";
+
 export const newsData = [
+    {
+        id: "nw10",
+        featured: true,
+        category: "Congresos",
+        title: "El Kernel presenta tres ponencias en el XXI Congreso Internacional de Investigación Científica",
+        date: "1 de julio de 2026",
+        image: congreso3,
+        imageAlt:
+            "Asistentes al simposio del Grupo de Investigación El Kernel en el XXI Congreso Internacional de Investigación Científica",
+        imageFit: "contain",
+        excerpt:
+            "El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica con tres ponencias en formato de simposio, presentando resultados recientes en análisis numérico, sistemas no lineales y optimización.",
+        content: {
+            paragraphs: [
+                "El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica, en el marco de la Semana Dominicana de Ciencia y Tecnología 2026, con una sesión académica organizada en formato de simposio.",
+                "Durante aproximadamente una hora se presentaron tres ponencias articuladas alrededor de las líneas de análisis numérico, métodos iterativos, sistemas no lineales, optimización y matemática aplicada.",
+                "La primera ponencia estuvo a cargo de Miguel Antonio Leonardo Sepúlveda, quien presentó resultados asociados a una generalización con funciones peso del método Singh–Sharma de quinto orden para sistemas de ecuaciones no lineales, con aplicación a un problema estacionario viscoso de Burgers discretizado.",
+                "La segunda ponencia fue presentada por Natanael Ureña Castillo, como continuación natural de los trabajos previos del grupo, abordando nuevos algoritmos híbridos cuasi-Newton con correctores de alto orden tipo Singh–Sharma para optimización sin restricciones.",
+                "La tercera ponencia estuvo a cargo de Antmel Rodríguez Cabral, quien presentó resultados relacionados con la familia generalizada de Traub para sistemas no lineales, un método óptimo de cuarto orden y su análisis dinámico.",
+                "La actividad contó con la asistencia aproximada de 50 personas, en su mayoría estudiantes de la Maestría en Matemática Superior del Instituto Superior de Formación Docente Salomé Ureña.",
+                "Varios de los asistentes se encuentran orientados hacia tesis relacionadas con matemática pura, matemática aplicada y computacional, álgebra, análisis matricial, didáctica de la matemática y otras áreas de interés académico e institucional.",
+                "La sesión fue coordinada por Miguel Antonio Leonardo Sepúlveda y representa una acción relevante para fortalecer la visibilidad científica del grupo, promover la formación de nuevos investigadores y conectar la producción académica del Kernel con programas de posgrado en matemática."
+            ],
+            list: [
+                "Evento: XXI Congreso Internacional de Investigación Científica.",
+                "Marco institucional: Semana Dominicana de Ciencia y Tecnología 2026.",
+                "Formato: simposio de tres ponencias.",
+                "Duración aproximada: una hora.",
+                "Asistencia estimada: alrededor de 50 personas.",
+                "Público principal: estudiantes de la Maestría en Matemática Superior.",
+                "Áreas abordadas: análisis numérico, métodos iterativos, sistemas no lineales, optimización, álgebra, análisis matricial, matemática aplicada y didáctica de la matemática.",
+                "Coordinación académica: Miguel Antonio Leonardo Sepúlveda."
+            ]
+        },
+        talks: [
+            {
+                order: 1,
+                speaker: "Miguel Antonio Leonardo Sepúlveda, Ph.D.",
+                title:
+                    "Generalización con funciones peso del método Singh–Sharma de quinto orden para sistemas de ecuaciones no lineales",
+                subtitle:
+                    "Aplicación a un problema estacionario viscoso de Burgers discretizado",
+                summary:
+                    "Presentó una familia con funciones peso que conserva el orden cinco y permite ajustar el operador principal del error en sistemas no lineales, con aplicación al problema estacionario viscoso de Burgers.",
+                image: congreso8
+            },
+            {
+                order: 2,
+                speaker: "Natanael Ureña Castillo",
+                title:
+                    "Eficiencia y estabilidad de nuevos algoritmos híbridos cuasi-Newton con correctores de alto orden tipo Singh–Sharma",
+                subtitle:
+                    "Optimización sin restricciones",
+                summary:
+                    "Presentó nuevos algoritmos híbridos cuasi-Newton orientados a mejorar la eficiencia, estabilidad y desempeño computacional en problemas de optimización.",
+                image: congreso5
+            },
+            {
+                order: 3,
+                speaker: "Antmel Rodríguez Cabral, Ph.D.",
+                title:
+                    "Generalized Traub Family for Solving Nonlinear Systems",
+                subtitle:
+                    "Fourth-Order Optimal Method and Dynamical Analysis",
+                summary:
+                    "Presentó resultados sobre una familia generalizada de Traub para sistemas no lineales, con orden óptimo cuatro y análisis dinámico.",
+                image: congreso9
+            }
+        ],
+        gallery: [
+            {
+                src: congreso1,
+                caption:
+                    "Integrantes del Grupo Kernel en el XXI Congreso Internacional de Investigación Científica."
+            },
+            {
+                src: congreso2,
+                caption:
+                    "Participantes del grupo junto a la pantalla de presentación de resultados."
+            },
+            {
+                src: congreso3,
+                caption:
+                    "Vista general de los asistentes al simposio académico."
+            },
+            {
+                src: congreso4,
+                caption:
+                    "Exposición sobre algoritmos híbridos cuasi-Newton."
+            },
+            {
+                src: congreso5,
+                caption:
+                    "Presentación sobre eficiencia y estabilidad de nuevos algoritmos híbridos."
+            },
+            {
+                src: congreso6,
+                caption:
+                    "Presentación sobre solución numérica y error en el problema de Burgers."
+            },
+            {
+                src: congreso7,
+                caption:
+                    "Exposición sobre familias con funciones peso para sistemas no lineales."
+            },
+            {
+                src: congreso8,
+                caption:
+                    "Presentación sobre optimalidad para sistemas no lineales."
+            },
+            {
+                src: congreso9,
+                caption:
+                    "Análisis dinámico del método clásico de Traub."
+            }
+        ],
+        tags: [
+            "Congreso",
+            "MESCYT",
+            "Métodos iterativos",
+            "Optimización",
+            "Sistemas no lineales"
+        ],
+        articleURL: null
+    },
+
     {
         id: "nw1",
         title: "Antmel Rodríguez Cabral defiende exitosamente su tesis doctoral",
