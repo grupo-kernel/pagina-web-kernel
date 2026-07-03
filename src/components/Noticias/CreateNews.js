@@ -23,6 +23,11 @@ export function createNews() {
     const orderedNews = ordenarNoticias(newsData);
     const featuredNews = orderedNews.find(news => news.featured) || orderedNews[0];
 
+    console.log("Total noticias:", newsData.length);
+    console.log("Primera noticia original:", newsData[0]?.id, newsData[0]?.title);
+    console.log("Primera noticia ordenada:", orderedNews[0]?.id, orderedNews[0]?.title);
+    console.log("Noticia destacada:", featuredNews?.id, featuredNews?.title);
+
     section.innerHTML = `
         ${newsHero(featuredNews)}
         ${newsGrid(orderedNews)}
