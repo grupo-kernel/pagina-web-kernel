@@ -4,14 +4,27 @@ import { newsGrid } from "./NewsGrid.js";
 import { newsCTA } from "./NewsCTA.js";
 
 export function createNews() {
-  const section = document.createElement('section');
-  section.classList.add('w-full', 'tabletBig:w-7xl', 'xl:w-full');
+    const section = document.createElement("section");
 
-  section.innerHTML = `
-    ${newsHero()}
-    ${newsGrid(newsData)}
-    ${newsCTA()}
-    
+    section.className = `
+        w-full
+        tabletBig:w-7xl
+        xl:w-full
     `;
-  return section;
+
+    const orderedNews = [...newsData].sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+    });
+
+    const featuredNews = orderedNews.find(news => news.featured) || orderedNews[0];
+
+    section.innerHTML = `
+        ${newsHero(featuredNews)}
+        ${newsGrid(orderedNews)}
+        ${newsCTA()}
+    `;
+
+    return section;
 }
