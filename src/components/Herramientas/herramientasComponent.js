@@ -7,34 +7,35 @@ export function herramientasComponent() {
 
     container.innerHTML = `
         <div class="mb-8 text-center">
-            <p class="text-sky-600 font-bold uppercase tracking-wide text-sm mb-2">
+            <p class="mb-2 text-sm font-bold uppercase tracking-wide text-sky-600">
                 Grupo de Investigación Kernel
             </p>
 
-            <h1 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight">
+            <h1 class="text-3xl font-black leading-tight text-slate-800 md:text-4xl">
                 Herramientas Académicas
             </h1>
 
-            <p class="text-slate-500 max-w-3xl mx-auto mt-3 text-sm md:text-base leading-relaxed">
+            <p class="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-slate-500 md:text-base">
                 Utilidades digitales para facilitar tareas docentes, académicas
                 y administrativas.
             </p>
         </div>
 
-        <div class="bg-white rounded-3xl shadow-xl border border-sky-100 p-6 md:p-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+        <div class="rounded-3xl border border-sky-100 bg-white p-6 shadow-xl md:p-8">
+            <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <p class="text-sky-600 text-sm font-bold uppercase tracking-wide mb-2">
-                        Primera herramienta
+                    <p class="mb-2 text-sm font-bold uppercase tracking-wide text-sky-600">
+                        ITLA · Xmera
                     </p>
 
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-800">
+                    <h2 class="text-2xl font-black text-slate-800 md:text-3xl">
                         Generador de calificaciones para Xmera
                     </h2>
 
-                    <p class="text-slate-500 mt-3 max-w-3xl leading-relaxed">
-                        Pega las matrículas y calificaciones desde Excel o escríbelas
-                        manualmente. Cada estudiante debe ocupar una línea.
+                    <p class="mt-3 max-w-3xl leading-relaxed text-slate-500">
+                        Pega las matrículas y calificaciones desde Excel o
+                        escríbelas manualmente. Cada estudiante debe ocupar
+                        una línea.
                     </p>
                 </div>
 
@@ -43,37 +44,37 @@ export function herramientasComponent() {
                 </div>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5">
+            <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
                     <label
                         for="xmera-input"
-                        class="block text-sm font-black text-slate-800 mb-2"
+                        class="mb-2 block text-sm font-black text-slate-800"
                     >
                         Matrículas y calificaciones
                     </label>
 
-                    <p class="text-sm text-slate-500 mb-4">
+                    <p class="mb-4 text-sm text-slate-500">
                         Ejemplo: matrícula, primera nota y segunda nota.
-                        Puedes separar los valores con espacios, tabulaciones, comas
-                        o punto y coma.
+                        Puedes separar los valores con espacios,
+                        tabulaciones, comas o punto y coma.
                     </p>
 
                     <textarea
                         id="xmera-input"
                         rows="14"
                         spellcheck="false"
-                        class="w-full rounded-xl border border-slate-300 bg-white p-4 font-mono text-sm text-slate-800 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 resize-y"
+                        class="w-full resize-y rounded-xl border border-slate-300 bg-white p-4 font-mono text-sm text-slate-800 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                         placeholder="20250893    18    4
 20212267    13    5
 202010828    19
 20252000     0"
                     ></textarea>
 
-                    <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                    <div class="mt-4 flex flex-col gap-3 sm:flex-row">
                         <button
                             id="xmera-generate"
                             type="button"
-                            class="flex-1 rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700 transition"
+                            class="flex-1 rounded-xl bg-sky-600 px-5 py-3 font-bold text-white transition hover:bg-sky-700"
                         >
                             Generar código
                         </button>
@@ -81,7 +82,7 @@ export function herramientasComponent() {
                         <button
                             id="xmera-clear"
                             type="button"
-                            class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-100 transition"
+                            class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 transition hover:bg-slate-100"
                         >
                             Limpiar
                         </button>
@@ -89,18 +90,18 @@ export function herramientasComponent() {
 
                     <div
                         id="xmera-message"
-                        class="hidden mt-4 rounded-xl px-4 py-3 text-sm font-semibold"
+                        class="mt-4 hidden rounded-xl px-4 py-3 text-sm font-semibold"
                     ></div>
                 </div>
 
-                <div class="rounded-2xl bg-slate-900 border border-slate-800 p-5">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                    <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <p class="text-sm font-black text-white">
                                 Código generado
                             </p>
 
-                            <p class="text-xs text-slate-400 mt-1">
+                            <p class="mt-1 text-xs text-slate-400">
                                 Copia este código y pégalo en Xmera.
                             </p>
                         </div>
@@ -109,7 +110,7 @@ export function herramientasComponent() {
                             id="xmera-copy"
                             type="button"
                             disabled
-                            class="rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                            class="rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                             Copiar código
                         </button>
@@ -128,9 +129,10 @@ export function herramientasComponent() {
                     Formato admitido
                 </p>
 
-                <p class="text-sm text-amber-800 mt-2">
-                    Cada línea debe comenzar con una matrícula y contener al menos
-                    una calificación numérica. Las filas vacías serán ignoradas.
+                <p class="mt-2 text-sm text-amber-800">
+                    Cada línea debe comenzar con una matrícula y contener al
+                    menos una calificación numérica. Las filas vacías serán
+                    ignoradas.
                 </p>
             </div>
         </div>
@@ -143,32 +145,38 @@ export function herramientasComponent() {
     const clearButton = container.querySelector("#xmera-clear");
     const message = container.querySelector("#xmera-message");
 
+    function resetOutput() {
+        output.textContent = "var data_todo = {\n};";
+        copyButton.disabled = true;
+    }
+
     function showMessage(text, type = "success") {
         message.textContent = text;
+
         message.classList.remove(
             "hidden",
-            "bg-emerald-50",
-            "text-emerald-800",
             "border",
             "border-emerald-200",
+            "bg-emerald-50",
+            "text-emerald-800",
+            "border-red-200",
             "bg-red-50",
-            "text-red-800",
-            "border-red-200"
+            "text-red-800"
         );
 
         message.classList.add("border");
 
         if (type === "error") {
             message.classList.add(
+                "border-red-200",
                 "bg-red-50",
-                "text-red-800",
-                "border-red-200"
+                "text-red-800"
             );
         } else {
             message.classList.add(
+                "border-emerald-200",
                 "bg-emerald-50",
-                "text-emerald-800",
-                "border-emerald-200"
+                "text-emerald-800"
             );
         }
     }
@@ -194,7 +202,9 @@ export function herramientasComponent() {
             const grades = values.slice(1);
 
             if (!matricula) {
-                errors.push(`Línea ${lineNumber}: falta la matrícula.`);
+                errors.push(
+                    `Línea ${lineNumber}: falta la matrícula.`
+                );
                 return;
             }
 
@@ -221,7 +231,11 @@ export function herramientasComponent() {
 
             const numericGrades = grades.map(value => Number(value));
 
-            if (numericGrades.some(value => !Number.isFinite(value))) {
+            if (
+                numericGrades.some(
+                    value => !Number.isFinite(value)
+                )
+            ) {
                 errors.push(
                     `Línea ${lineNumber}: existe una calificación no numérica.`
                 );
@@ -236,15 +250,18 @@ export function herramientasComponent() {
             });
         });
 
-        return { records, errors };
+        return {
+            records,
+            errors
+        };
     }
 
-   function generateCode(records) {
-    const rows = records.map(({ matricula, grades }) => {
-        return `  "${matricula}":[${grades.join(",")}]`;
-    });
+    function generateCode(records) {
+        const rows = records.map(({ matricula, grades }) => {
+            return `  "${matricula}":[${grades.join(",")}]`;
+        });
 
-    return `var data_todo = {
+        return `var data_todo = {
 ${rows.join(",\n")}
 };
 
@@ -273,9 +290,17 @@ if (!contenedor) {
       input.value = valor;
     }
 
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-    input.dispatchEvent(new Event("change", { bubbles: true }));
-    input.dispatchEvent(new Event("blur", { bubbles: true }));
+    input.dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
+
+    input.dispatchEvent(
+      new Event("change", { bubbles: true })
+    );
+
+    input.dispatchEvent(
+      new Event("blur", { bubbles: true })
+    );
   }
 
   filas.forEach(function(fila) {
@@ -294,49 +319,70 @@ if (!contenedor) {
         return;
       }
 
-      if (Object.prototype.hasOwnProperty.call(data_todo, matricula)) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          data_todo,
+          matricula
+        )
+      ) {
         var notas = data_todo[matricula];
 
         var inputs = fila.querySelectorAll(
           "input[type='number'], input[type='text']"
         );
 
-        for (var i = 0; i < notas.length && i < inputs.length; i++) {
+        for (
+          var i = 0;
+          i < notas.length && i < inputs.length;
+          i++
+        ) {
           asignarValor(inputs[i], notas[i]);
         }
 
-        console.log(matricula + " aplicada correctamente");
+        console.log(
+          matricula + " aplicada correctamente"
+        );
       } else {
-        console.log(matricula + " sin notas");
+        console.log(
+          matricula + " sin notas"
+        );
       }
     } catch (error) {
-      console.log("Problema con una fila:", error);
+      console.log(
+        "Problema con una fila:",
+        error
+      );
     }
   });
 
   console.log("Proceso de asignación finalizado.");
 }`;
-}
+    }
 
     generateButton.addEventListener("click", () => {
         const text = input.value.trim();
 
         if (!text) {
-            output.textContent = "var data_todo = {\n};";
-            copyButton.disabled = true;
+            resetOutput();
+
             showMessage(
                 "Debes introducir al menos una matrícula con sus calificaciones.",
                 "error"
             );
+
             return;
         }
 
         const { records, errors } = parseRows(text);
 
         if (errors.length > 0) {
-            output.textContent = "var data_todo = {\n};";
-            copyButton.disabled = true;
-            showMessage(errors.join(" "), "error");
+            resetOutput();
+
+            showMessage(
+                errors.join(" "),
+                "error"
+            );
+
             return;
         }
 
@@ -352,9 +398,19 @@ if (!contenedor) {
 
     copyButton.addEventListener("click", async () => {
         try {
-            await navigator.clipboard.writeText(output.textContent);
-            showMessage("El código fue copiado al portapapeles.");
+            await navigator.clipboard.writeText(
+                output.textContent
+            );
+
+            showMessage(
+                "El código fue copiado al portapapeles."
+            );
         } catch (error) {
+            console.error(
+                "No fue posible copiar el código:",
+                error
+            );
+
             showMessage(
                 "No fue posible copiar automáticamente. Selecciona el código y cópialo manualmente.",
                 "error"
@@ -362,18 +418,52 @@ if (!contenedor) {
         }
     });
 
-        clearButton.addEventListener("click", () => {
+    clearButton.addEventListener("click", () => {
         input.value = "";
-        output.textContent = "var data_todo = {\n};";
-        copyButton.disabled = true;
+
+        resetOutput();
+
+        message.textContent = "";
         message.classList.add("hidden");
+
         input.focus();
     });
 
-    const bannerSection = bannerComponent();
-    bannerSection.classList.add("mt-14");
+    try {
+        const bannerSection = bannerComponent();
 
-    container.appendChild(bannerSection);
+        if (bannerSection instanceof HTMLElement) {
+            bannerSection.classList.add("mt-14");
+            container.appendChild(bannerSection);
+        } else {
+            console.error(
+                "bannerComponent() no devolvió un elemento HTML válido."
+            );
+        }
+    } catch (error) {
+        console.error(
+            "No fue posible cargar el módulo Banner:",
+            error
+        );
+
+        const bannerError = document.createElement("div");
+
+        bannerError.className =
+            "mt-14 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800";
+
+        bannerError.innerHTML = `
+            <p class="font-black">
+                No fue posible cargar el módulo Banner
+            </p>
+
+            <p class="mt-2 text-sm">
+                Revisa la consola del navegador para identificar
+                el componente que produjo el error.
+            </p>
+        `;
+
+        container.appendChild(bannerError);
+    }
 
     return container;
 }
