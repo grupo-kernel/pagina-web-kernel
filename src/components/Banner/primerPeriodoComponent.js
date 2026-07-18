@@ -38,8 +38,8 @@ export function primerPeriodoComponent() {
 
                 <p class="mb-4 text-sm leading-relaxed text-slate-500">
                     Copia tres columnas desde Excel en este orden:
-                    matrícula Banner, acumulado del primer parcial y primer parcial.
-                    La matrícula debe tener el formato A00108671.
+                    matrícula Banner, acumulado del primer parcial y primer
+                    parcial. La matrícula debe tener el formato A00108671.
                     No es necesario incluir encabezados.
                 </p>
 
@@ -192,11 +192,21 @@ A00116736    13    7"
     `;
 
     const input = section.querySelector("#banner-primer-input");
-    const processButton = section.querySelector("#banner-primer-process");
-    const clearButton = section.querySelector("#banner-primer-clear");
-    const message = section.querySelector("#banner-primer-message");
-    const preview = section.querySelector("#banner-primer-preview");
-    const count = section.querySelector("#banner-primer-count");
+    const processButton = section.querySelector(
+        "#banner-primer-process"
+    );
+    const clearButton = section.querySelector(
+        "#banner-primer-clear"
+    );
+    const message = section.querySelector(
+        "#banner-primer-message"
+    );
+    const preview = section.querySelector(
+        "#banner-primer-preview"
+    );
+    const count = section.querySelector(
+        "#banner-primer-count"
+    );
     const download1AC = section.querySelector(
         "#banner-primer-download-1ac"
     );
@@ -239,8 +249,49 @@ A00116736    13    7"
         message.classList.add("hidden");
     }
 
+    function normalizeMatricula(value) {
+        return String(value)
+            .normalize("NFKC")
+            .replace(/[\u200B-\u200D\u2060\uFEFF]/g, "")
+            .replace(/\u00A0/g, "")
+            .replace(/\s+/g, "")
+            .trim()
+            .toUpperCase();
+    }
+
     function normalizeGrade(value) {
-        return value.replace(",", ".");
+        return String(value)
+            .normalize("NFKC")
+            .replace(/[\u200B-\u200D\u2060\uFEFF]/g, "")
+            .replace(/\u00A0/g, "")
+            .replace(",", ".")
+            .trim();
+    }
+
+    function splitRow(line) {
+        const cleanLine = String(line)
+            .normalize("NFKC")
+            .replace(/[\u200B-\u200D\u2060\uFEFF]/g, "")
+            .trim();
+
+        if (cleanLine.includes("\t")) {
+            return cleanLine
+                .split("\t")
+                .map(value => value.trim())
+                .filter(value => value !== "");
+        }
+
+        if (cleanLine.includes(";")) {
+            return cleanLine
+                .split(";")
+                .map(value => value.trim())
+                .filter(value => value !== "");
+        }
+
+        return cleanLine
+            .split(/\s+/)
+            .map(value => value.trim())
+            .filter(value => value !== "");
     }
 
     function parseRows(text) {
@@ -255,11 +306,7 @@ A00116736    13    7"
 
         lines.forEach((line, index) => {
             const lineNumber = index + 1;
-
-            const values = line
-                .split(/\t|;|,(?=\s)|\s{2,}/)
-                .map(value => value.trim())
-                .filter(Boolean);
+            const values = splitRow(line);
 
             if (values.length !== 3) {
                 errors.push(
@@ -268,16 +315,16 @@ A00116736    13    7"
                 return;
             }
 
-            const matricula = values[0].trim().toUpperCase();
+            const matricula = normalizeMatricula(values[0]);
             const grade1AC = Number(normalizeGrade(values[1]));
             const grade2PP = Number(normalizeGrade(values[2]));
 
-            if (!/^A\d{8}$/.test(matricula)) {
-    errors.push(
-        `Línea ${lineNumber}: la matrícula "${matricula}" no es válida. Debe comenzar con A y contener ocho dígitos, por ejemplo A00108671.`
-    );
-    return;
-}
+            if (!/^A[0-9]{8}$/.test(matricula)) {
+                errors.push(
+                    `Línea ${lineNumber}: la matrícula "${matricula}" no es válida. Debe tener el formato A00108671.`
+                );
+                return;
+            }
 
             if (matriculas.has(matricula)) {
                 errors.push(
@@ -314,13 +361,22 @@ A00116736    13    7"
                 return;
             }
 
+            const total = grade1AC + grade2PP;
+
+            if (total > 35) {
+                errors.push(
+                    `Línea ${lineNumber}: la suma de 1AC y 2PP no puede superar 35 puntos.`
+                );
+                return;
+            }
+
             matriculas.add(matricula);
 
             records.push({
                 matricula,
                 grade1AC,
                 grade2PP,
-                total: grade1AC + grade2PP
+                total
             });
         });
 
@@ -333,7 +389,19 @@ A00116736    13    7"
     function formatGrade(value) {
         return Number.isInteger(value)
             ? String(value)
-            : value.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+            : value
+                  .toFixed(2)
+                  .replace(/0+$/, "")
+                  .replace(/\.$/, "");
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     function renderPreview(records) {
@@ -362,7 +430,7 @@ A00116736    13    7"
                         </td>
 
                         <td class="px-4 py-3 font-mono font-bold text-slate-800">
-                            ${record.matricula}
+                            ${escapeHtml(record.matricula)}
                         </td>
 
                         <td class="px-4 py-3 text-center text-slate-700">
@@ -404,6 +472,7 @@ A00116736    13    7"
 
     function downloadCsv(content, fileName) {
         const bom = "\uFEFF";
+
         const blob = new Blob(
             [bom + content],
             {
@@ -421,7 +490,9 @@ A00116736    13    7"
         link.click();
         link.remove();
 
-        URL.revokeObjectURL(url);
+        window.setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
     }
 
     function resetTool() {
