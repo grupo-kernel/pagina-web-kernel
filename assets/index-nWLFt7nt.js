@@ -253,7 +253,7 @@
 
                     <div
                         class="
-                            grid grid-cols-1 sm:grid-cols-3
+                            grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4
                             gap-3
                             w-full max-w-3xl
                         "
@@ -344,6 +344,35 @@
                                 text-slate-500 font-semibold
                             ">
                                 Últimos 7 días
+                            </p>
+                        </div>
+
+                        <div class="
+                            bg-sky-50
+                            border border-sky-100
+                            rounded-2xl
+                            p-4 text-center
+                        ">
+                            <i class="
+                                bx bx-calendar-check
+                                text-2xl text-[#0D6EFD]
+                            "></i>
+
+                            <p
+                                id="analytics-mes"
+                                class="
+                                    text-2xl md:text-3xl
+                                    font-black text-slate-900
+                                "
+                            >
+                                —
+                            </p>
+
+                            <p class="
+                                text-xs md:text-sm
+                                text-slate-500 font-semibold
+                            ">
+                                Últimos 30 días
                             </p>
                         </div>
 
