@@ -3010,7 +3010,7 @@ A00116736    20"
                 >
                     <div class="mb-6 flex items-center justify-between">
                         <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
-                            <i class="bx bx-spreadsheet text-4xl text-emerald-600"></i>
+                            <i class="bx bx-bar-chart-alt-2 text-4xl text-emerald-600"></i>
                         </div>
 
                         <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-emerald-700">
