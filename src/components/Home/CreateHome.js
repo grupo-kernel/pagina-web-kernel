@@ -27,12 +27,14 @@ async function cargarEstadisticasAnalytics(section) {
     const totalElement = section.querySelector("#analytics-total");
     const hoyElement = section.querySelector("#analytics-hoy");
     const semanaElement = section.querySelector("#analytics-semana");
+    const mesElement = section.querySelector("#analytics-mes");
     const actualizadoElement = section.querySelector("#analytics-actualizado");
 
     if (
         !totalElement ||
         !hoyElement ||
         !semanaElement ||
+        !mesElement ||
         !actualizadoElement
     ) {
         console.warn(
@@ -49,8 +51,13 @@ async function cargarEstadisticasAnalytics(section) {
 
         totalElement.textContent = formatearNumero(estadisticas.total);
         hoyElement.textContent = formatearNumero(estadisticas.hoy);
+
         semanaElement.textContent = formatearNumero(
             estadisticas.ultimos7Dias
+        );
+
+        mesElement.textContent = formatearNumero(
+            estadisticas.ultimos30Dias
         );
 
         const fechaActualizacion = formatearFecha(
@@ -69,6 +76,7 @@ async function cargarEstadisticasAnalytics(section) {
         totalElement.textContent = "—";
         hoyElement.textContent = "—";
         semanaElement.textContent = "—";
+        mesElement.textContent = "—";
 
         actualizadoElement.textContent =
             "No fue posible cargar las estadísticas";
