@@ -1,4 +1,4 @@
-import { publicacionesContenido } from "../data/publicacionesContenido.js";
+import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 
 function getDOI(pub) {
     return String(pub?.DOI || pub?.doi || "")
