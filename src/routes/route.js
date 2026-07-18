@@ -8,6 +8,7 @@ import { publicaciones } from "../pages/publicaciones.js";
 import { lineas } from "../pages/lineas.js";
 import { proyectos } from "../pages/proyectos.js";
 import { Contacto } from "../pages/Contacto.js";
+import { herramientas } from "../pages/herramientas.js";
 
 
 const routes = {
@@ -20,6 +21,10 @@ const routes = {
   proyectos: { page: proyectos, layout: "default" },
   lineas: { page: lineas, layout: "default" },
   contacto: { page: Contacto, layout: "default" },
+  herramientas: {
+    page: herramientas,
+    layout: "default"
+  }
 };
 
 export function navigate(route) {
