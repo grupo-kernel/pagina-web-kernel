@@ -59,7 +59,6 @@ export function createNavBar() {
                         <span>Publicaciones</span>
                     </li>
 
-                    <!-- NUEVA OPCIÓN -->
                     <li data-route="herramientas"
                         class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
                         <span>Herramientas</span>
