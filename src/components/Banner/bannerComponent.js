@@ -31,8 +31,8 @@ export function bannerComponent() {
                     class="group flex h-full flex-col rounded-3xl border border-blue-100 bg-white p-7 shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
                 >
                     <div class="mb-6 flex items-center justify-between">
-                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50">
-                            <i class="bx bx-book-open text-4xl text-[#5580C1]"></i>
+                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
+                        <i class="bx bx-book-open text-4xl text-emerald-600"></i>
                         </div>
 
                         <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#5580C1]">
