@@ -11,44 +11,111 @@ import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 
 const routes = {
-  home: { page: CreatePageHome, layout: "default" },
-  quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
-  equipment: { page: Equipment, layout: "default" },
-  FormacionAcademica: { page: FormacionAcademica, layout: "default" },
-  noticias: { page: CreatePageNews, layout: "full" },
-  publicaciones: { page: publicaciones, layout: "default" },
-  proyectos: { page: proyectos, layout: "default" },
-  lineas: { page: lineas, layout: "default" },
-  contacto: { page: Contacto, layout: "default" },
-  herramientas: { page: herramientas, layout: "default" },
+    home: {
+        page: CreatePageHome,
+        layout: "default",
+        title: "Portada | El Kernel"
+    },
+    quienesSomos: {
+        page: CreatePageQuienesSomos,
+        layout: "full",
+        title: "Quiénes somos | El Kernel"
+    },
+    equipment: {
+        page: Equipment,
+        layout: "default",
+        title: "Equipo de investigación | El Kernel"
+    },
+    FormacionAcademica: {
+        page: FormacionAcademica,
+        layout: "default",
+        title: "Formación académica | El Kernel"
+    },
+    noticias: {
+        page: CreatePageNews,
+        layout: "full",
+        title: "Noticias | El Kernel"
+    },
+    publicaciones: {
+        page: publicaciones,
+        layout: "default",
+        title: "Publicaciones | El Kernel"
+    },
+    proyectos: {
+        page: proyectos,
+        layout: "default",
+        title: "Proyectos | El Kernel"
+    },
+    lineas: {
+        page: lineas,
+        layout: "default",
+        title: "Líneas de investigación | El Kernel"
+    },
+    contacto: {
+        page: Contacto,
+        layout: "default",
+        title: "Contacto | El Kernel"
+    },
+    herramientas: {
+        page: herramientas,
+        layout: "default",
+        title: "Herramientas | El Kernel"
+    }
 };
 
+let previousPageLocation = document.referrer || "";
+
 export function navigate(route) {
-  window.location.hash = `/${route}`;
+    window.location.hash = `/${route}`;
 }
 
 export function routerInit() {
-  const handleRouteChange = () => {
-    const route = window.location.hash.replace("#/", "") || "home";
-    loadRoute(route);
-  };
+    const handleRouteChange = () => {
+        const route = window.location.hash.replace("#/", "") || "home";
+        loadRoute(route);
+    };
 
-  window.addEventListener("hashchange", handleRouteChange);
-  handleRouteChange();
+    window.addEventListener("hashchange", handleRouteChange);
+    handleRouteChange();
+}
+
+function trackPageView(route, title) {
+    const pageLocation =
+        `${window.location.origin}${window.location.pathname}#/${route}`;
+
+    if (typeof window.gtag === "function") {
+        window.gtag("event", "page_view", {
+            page_title: title,
+            page_location: pageLocation,
+            page_referrer: previousPageLocation
+        });
+    }
+
+    previousPageLocation = pageLocation;
 }
 
 function loadRoute(route) {
-  const content = document.querySelector("main");
-  const page = routes[route];
+    const content = document.querySelector("main");
+    const page = routes[route];
 
-  if (!content) return;
+    if (!content) return;
 
-  content.innerHTML = "";
+    content.innerHTML = "";
 
-  if (!page) {
-    return;
-  }
+    if (!page) {
+        navigate("home");
+        return;
+    }
 
-  setMainLayout(page.layout);
-  content.appendChild(page.page());
+    setMainLayout(page.layout);
+    document.title = page.title;
+
+    content.appendChild(page.page());
+
+    window.scrollTo({
+        top: 0,
+        behavior: "auto"
+    });
+
+    trackPageView(route, page.title);
 }
