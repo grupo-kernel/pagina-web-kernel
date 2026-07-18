@@ -38,7 +38,8 @@ export function primerPeriodoComponent() {
 
                 <p class="mb-4 text-sm leading-relaxed text-slate-500">
                     Copia tres columnas desde Excel en este orden:
-                    matrícula, acumulado del primer parcial y primer parcial.
+                    matrícula Banner, acumulado del primer parcial y primer parcial.
+                    La matrícula debe tener el formato A00108671.
                     No es necesario incluir encabezados.
                 </p>
 
@@ -47,9 +48,9 @@ export function primerPeriodoComponent() {
                     rows="14"
                     spellcheck="false"
                     class="w-full resize-y rounded-xl border border-slate-300 bg-white p-4 font-mono text-sm text-slate-800 outline-none focus:border-[#5580C1] focus:ring-2 focus:ring-blue-100"
-                    placeholder="20250893    14    18
-20212267    12    17
-202010828   15    20"
+                    placeholder="A00108671    8    2
+A00122336    9    19
+A00116736    13    7"
                 ></textarea>
 
                 <div class="mt-4 flex flex-col gap-3 sm:flex-row">
@@ -267,16 +268,16 @@ export function primerPeriodoComponent() {
                 return;
             }
 
-            const matricula = values[0];
+            const matricula = values[0].trim().toUpperCase();
             const grade1AC = Number(normalizeGrade(values[1]));
             const grade2PP = Number(normalizeGrade(values[2]));
 
-            if (!/^\d+$/.test(matricula)) {
-                errors.push(
-                    `Línea ${lineNumber}: la matrícula "${matricula}" no es válida.`
-                );
-                return;
-            }
+            if (!/^A\d{8}$/.test(matricula)) {
+    errors.push(
+        `Línea ${lineNumber}: la matrícula "${matricula}" no es válida. Debe comenzar con A y contener ocho dígitos, por ejemplo A00108671.`
+    );
+    return;
+}
 
             if (matriculas.has(matricula)) {
                 errors.push(
