@@ -237,13 +237,84 @@ export function herramientasComponent() {
         return { records, errors };
     }
 
-    function generateCode(records) {
-        const rows = records.map(({ matricula, grades }) => {
-            return `  "${matricula}":[${grades.join(",")}]`;
-        });
+   function generateCode(records) {
+    const rows = records.map(({ matricula, grades }) => {
+        return `  "${matricula}":[${grades.join(",")}]`;
+    });
 
-        return `var data_todo = {\n${rows.join(",\n")}\n};`;
+    return `var data_todo = {
+${rows.join(",\n")}
+};
+
+var contenedor = document.querySelector(
+  ".standardTable, form.form-table-special, table"
+);
+
+if (!contenedor) {
+  console.log("No se encontró la tabla de calificaciones.");
+} else {
+  var filas = contenedor.querySelectorAll("tbody tr");
+
+  if (filas.length === 0) {
+    filas = contenedor.querySelectorAll("tr");
+  }
+
+  function asignarValor(input, valor) {
+    var descriptor = Object.getOwnPropertyDescriptor(
+      Object.getPrototypeOf(input),
+      "value"
+    );
+
+    if (descriptor && descriptor.set) {
+      descriptor.set.call(input, valor);
+    } else {
+      input.value = valor;
     }
+
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    input.dispatchEvent(new Event("blur", { bubbles: true }));
+  }
+
+  filas.forEach(function(fila) {
+    try {
+      var celdas = fila.querySelectorAll("td");
+
+      if (celdas.length === 0) {
+        return;
+      }
+
+      var matricula = celdas[0].innerText
+        .trim()
+        .replace(/[^0-9]/g, "");
+
+      if (!matricula) {
+        return;
+      }
+
+      if (Object.prototype.hasOwnProperty.call(data_todo, matricula)) {
+        var notas = data_todo[matricula];
+
+        var inputs = fila.querySelectorAll(
+          "input[type='number'], input[type='text']"
+        );
+
+        for (var i = 0; i < notas.length && i < inputs.length; i++) {
+          asignarValor(inputs[i], notas[i]);
+        }
+
+        console.log(matricula + " aplicada correctamente");
+      } else {
+        console.log(matricula + " sin notas");
+      }
+    } catch (error) {
+      console.log("Problema con una fila:", error);
+    }
+  });
+
+  console.log("Proceso de asignación finalizado.");
+}`;
+}
 
     generateButton.addEventListener("click", () => {
         const text = input.value.trim();
