@@ -115,7 +115,7 @@
         <div class="max-w-7xl mx-auto px-3 text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5">
                 <h5>© 2025 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
         </div>
-        `}function te(e){e.querySelectorAll('[data-action ="open-subMenu"]').forEach(t=>{const i=t.querySelector("ul"),o=t.querySelector("i");let s=!i.classList.contains("hidden");t.addEventListener("click",n=>{n.preventDefault(),s?(o.classList.replace("bx-caret-up","bx-caret-down"),i.classList.replace("flex","hidden"),s=!1):(o.classList.replace("bx-caret-down","bx-caret-up"),i.classList.replace("hidden","flex"),s=!0)})})}function ye(e,a){e.addEventListener("click",()=>{a.classList.replace("hidden","block"),document.body.style.overflow="hidden"})}function Ae(e){e.querySelector('[data-action="close-navBar"]').addEventListener("click",()=>{e.classList.replace("block","hidden"),document.body.style.overflow="scroll"})}const Q=""+new URL("sep-BCMURSaM.png",import.meta.url).href,_=""+new URL("ant-D2J2W27b.png",import.meta.url).href,Y=""+new URL("marc-D-jKwb4F.png",import.meta.url).href,K=""+new URL("jos-BToFZdIf.png",import.meta.url).href,W=""+new URL("nat-CaDYa76I.png",import.meta.url).href,P=[{id:1,img:Q,name:"Miguel Antonio Leonardo Sepúlveda, Ph.D",area:"Métodos iterativos, sistemas no lineales, análisis numérico y EDPs",publicaciones:[{year:2026,title:"Numerical Algorithms",q:"Q1",contenido:"Increasing the Order of Convergence in Jacobian-Free Iterative Schemes: Applications to Real-Life Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.1007/s11075-026-02417-5",url:"https://doi.org/10.1007/s11075-026-02417-5"},{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",DOI:"10.3390/math14071161",url:"https://doi.org/10.3390/math14071161",pdf:"https://www.mdpi.com/2227-7390/14/7/1161/pdf"},{year:2024,title:"Mathematics and Computers in Simulation",q:"Q1",contenido:"Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",autores:"Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.1016/j.matcom.2024.05.001",url:"https://doi.org/10.1016/j.matcom.2024.05.001"},{year:2023,title:"Mathematics",q:"Q1",contenido:"Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",autores:"Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.3390/math11204238",url:"https://doi.org/10.3390/math11204238",pdf:"https://www.mdpi.com/2227-7390/11/20/4238/pdf"},{year:2022,title:"Algorithms",q:"Q2",contenido:"Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa",DOI:"10.3390/a15100387",url:"https://doi.org/10.3390/a15100387",pdf:"https://www.mdpi.com/1999-4893/15/10/387/pdf"}]},{id:2,img:_,name:"Antmel Rodríguez Cabral, Ph.D",area:"Métodos iterativos, estabilidad dinámica y métodos libres de Jacobiano",publicaciones:[{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",DOI:"10.3390/math14071161",url:"https://doi.org/10.3390/math14071161",pdf:"https://www.mdpi.com/2227-7390/14/7/1161/pdf"},{year:2025,title:"Journal of Computational Methods in Sciences and Engineering",q:"Q4",contenido:"About the Stability of Self-Accelerating Parameters in Vectorial Iterative Methods without Memory",autores:"Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.1177/14727978251361407",url:"https://doi.org/10.1177/14727978251361407"},{year:2024,title:"Mathematics",q:"Q1",contenido:"Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems",autores:"Alicia Cordero, Javier García Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.3390/math12213341",url:"https://doi.org/10.3390/math12213341",pdf:"https://www.mdpi.com/2227-7390/12/21/3341/pdf"},{year:2023,title:"Algorithms",q:"Q2",contenido:"Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems",autores:"Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.3390/a16030163",url:"https://doi.org/10.3390/a16030163",pdf:"https://www.mdpi.com/1999-4893/16/3/163/pdf"}]},{id:3,img:W,name:"Natanael Ureña Castillo",area:"Optimización numérica, métodos híbridos y aplicaciones computacionales",publicaciones:[{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Efficiency and Stability of a New Hybrid Unconstrained Optimization Algorithm with Quasi-Newton Updates and Higher-Order Methods",autores:"Alicia Cordero, Javier G. Maimó, Juan R. Torregrosa, Natanael Ureña Castillo",DOI:"10.3390/math14101746",url:"https://doi.org/10.3390/math14101746",pdf:"https://www.mdpi.com/2227-7390/14/10/1746/pdf"}]},{id:4,img:Y,name:"Marc-Kelly Jean Philippe Jean, Ph.D",area:"Teoría de grupos, caracteres y estructuras algebraicas",publicaciones:[{year:2025,title:"Mathematische Nachrichten",q:"Q2",contenido:"Groups with Triangle-Free Graphs on p-Regular Classes",autores:"M. J. Felipe, M. K. Jean-Philippe, V. Sotomayor",DOI:"10.1002/mana.202400554",url:"https://doi.org/10.1002/mana.202400554"},{year:2025,title:"Mediterranean Journal of Mathematics",q:"Q2",contenido:"Groups Whose Common Divisor Graph on p-Regular Classes Has Diameter Three",autores:"M. J. Felipe, M. K. Jean-Philippe, V. Sotomayor",DOI:"10.1007/s00009-024-02782-2",url:"https://doi.org/10.1007/s00009-024-02782-2"},{year:2024,title:"Bulletin of the Malaysian Mathematical Sciences Society",q:"Q2",contenido:"Some Properties of Normal Subgroups Determined from Character Tables",autores:"Z. Akhlaghi, M. J. Felipe, M. K. Jean-Philippe",DOI:"10.1007/s40840-024-01684-6",url:"https://doi.org/10.1007/s40840-024-01684-6"}]},{id:5,img:K,name:"José Alberto Reyes Reyes, Ph.D",area:"Métodos iterativos libres de derivadas, estabilidad y convergencia local",publicaciones:[{year:2025,title:"Computation",q:"Q2",contenido:"Stability Analysis and Local Convergence of a New Fourth-Order Optimal Jarratt-Type Iterative Scheme",autores:"Eulalia Martínez, José A. Reyes, Alicia Cordero, Juan R. Torregrosa",DOI:"10.3390/computation13060142",url:"https://doi.org/10.3390/computation13060142",pdf:"https://www.mdpi.com/2079-3197/13/6/142/pdf"},{year:2024,title:"Axioms",q:"Q2",contenido:"Stability Analysis of a New Fourth-Order Optimal Iterative Scheme for Nonlinear Equations",autores:"Alicia Cordero, José A. Reyes, Juan R. Torregrosa, María P. Vassileva",DOI:"10.3390/axioms13010034",url:"https://doi.org/10.3390/axioms13010034",pdf:"https://www.mdpi.com/2075-1680/13/1/34/pdf"}]}];function ke(e){return String(e?.DOI||e?.doi||"").trim().toLowerCase()}function Ce(e){const a=ke(e);return a||[e?.year||"",e?.title||e?.journal||e?.tile||"",e?.contenido||e?.articleTitle||""].join("-").trim().toLowerCase()}function Ee(){const e=new Map;return P.forEach(a=>{(a.publicaciones||[]).forEach(t=>{const i=Ce(t);i&&!e.has(i)&&e.set(i,t)})}),e.size}function Se(){const e=Ee();return`
+        `}function te(e){e.querySelectorAll('[data-action ="open-subMenu"]').forEach(t=>{const i=t.querySelector("ul"),o=t.querySelector("i");let s=!i.classList.contains("hidden");t.addEventListener("click",n=>{n.preventDefault(),s?(o.classList.replace("bx-caret-up","bx-caret-down"),i.classList.replace("flex","hidden"),s=!1):(o.classList.replace("bx-caret-down","bx-caret-up"),i.classList.replace("hidden","flex"),s=!0)})})}function ye(e,a){e.addEventListener("click",()=>{a.classList.replace("hidden","block"),document.body.style.overflow="hidden"})}function Ae(e){e.querySelector('[data-action="close-navBar"]').addEventListener("click",()=>{e.classList.replace("block","hidden"),document.body.style.overflow="scroll"})}const Q=""+new URL("sep-BCMURSaM.png",import.meta.url).href,_=""+new URL("ant-D2J2W27b.png",import.meta.url).href,Y=""+new URL("marc-D-jKwb4F.png",import.meta.url).href,H=""+new URL("jos-BToFZdIf.png",import.meta.url).href,W=""+new URL("nat-CaDYa76I.png",import.meta.url).href,T=[{id:1,img:Q,name:"Miguel Antonio Leonardo Sepúlveda, Ph.D",area:"Métodos iterativos, sistemas no lineales, análisis numérico y EDPs",publicaciones:[{year:2026,title:"Numerical Algorithms",q:"Q1",contenido:"Increasing the Order of Convergence in Jacobian-Free Iterative Schemes: Applications to Real-Life Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.1007/s11075-026-02417-5",url:"https://doi.org/10.1007/s11075-026-02417-5"},{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",DOI:"10.3390/math14071161",url:"https://doi.org/10.3390/math14071161",pdf:"https://www.mdpi.com/2227-7390/14/7/1161/pdf"},{year:2024,title:"Mathematics and Computers in Simulation",q:"Q1",contenido:"Increasing in Three Units the Order of Convergence of Iterative Methods for Solving Nonlinear Systems",autores:"Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.1016/j.matcom.2024.05.001",url:"https://doi.org/10.1016/j.matcom.2024.05.001"},{year:2023,title:"Mathematics",q:"Q1",contenido:"Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",autores:"Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva",DOI:"10.3390/math11204238",url:"https://doi.org/10.3390/math11204238",pdf:"https://www.mdpi.com/2227-7390/11/20/4238/pdf"},{year:2022,title:"Algorithms",q:"Q2",contenido:"Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa",DOI:"10.3390/a15100387",url:"https://doi.org/10.3390/a15100387",pdf:"https://www.mdpi.com/1999-4893/15/10/387/pdf"}]},{id:2,img:_,name:"Antmel Rodríguez Cabral, Ph.D",area:"Métodos iterativos, estabilidad dinámica y métodos libres de Jacobiano",publicaciones:[{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, María P. Vassileva",DOI:"10.3390/math14071161",url:"https://doi.org/10.3390/math14071161",pdf:"https://www.mdpi.com/2227-7390/14/7/1161/pdf"},{year:2025,title:"Journal of Computational Methods in Sciences and Engineering",q:"Q4",contenido:"About the Stability of Self-Accelerating Parameters in Vectorial Iterative Methods without Memory",autores:"Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.1177/14727978251361407",url:"https://doi.org/10.1177/14727978251361407"},{year:2024,title:"Mathematics",q:"Q1",contenido:"Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems",autores:"Alicia Cordero, Javier García Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.3390/math12213341",url:"https://doi.org/10.3390/math12213341",pdf:"https://www.mdpi.com/2227-7390/12/21/3341/pdf"},{year:2023,title:"Algorithms",q:"Q2",contenido:"Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems",autores:"Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa",DOI:"10.3390/a16030163",url:"https://doi.org/10.3390/a16030163",pdf:"https://www.mdpi.com/1999-4893/16/3/163/pdf"}]},{id:3,img:W,name:"Natanael Ureña Castillo",area:"Optimización numérica, métodos híbridos y aplicaciones computacionales",publicaciones:[{year:2026,title:"Mathematics",q:"Q1",contenido:"First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems",autores:"Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14122114",url:"https://doi.org/10.3390/math14122114",pdf:"https://www.mdpi.com/2227-7390/14/12/2114/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"A Weight Function Generalization of Singh–Sharma Fifth-Order Method for Systems of Nonlinear Equations, with Application to a Discretized Stationary Viscous Burgers Problem",autores:"Javier G. Maimó, Miguel A. Leonardo Sepúlveda, Antmel Rodríguez Cabral, Natanael Ureña Castillo",DOI:"10.3390/math14111944",url:"https://doi.org/10.3390/math14111944",pdf:"https://www.mdpi.com/2227-7390/14/11/1944/pdf"},{year:2026,title:"Mathematics",q:"Q1",contenido:"Efficiency and Stability of a New Hybrid Unconstrained Optimization Algorithm with Quasi-Newton Updates and Higher-Order Methods",autores:"Alicia Cordero, Javier G. Maimó, Juan R. Torregrosa, Natanael Ureña Castillo",DOI:"10.3390/math14101746",url:"https://doi.org/10.3390/math14101746",pdf:"https://www.mdpi.com/2227-7390/14/10/1746/pdf"}]},{id:4,img:Y,name:"Marc-Kelly Jean Philippe Jean, Ph.D",area:"Teoría de grupos, caracteres y estructuras algebraicas",publicaciones:[{year:2025,title:"Mathematische Nachrichten",q:"Q2",contenido:"Groups with Triangle-Free Graphs on p-Regular Classes",autores:"M. J. Felipe, M. K. Jean-Philippe, V. Sotomayor",DOI:"10.1002/mana.202400554",url:"https://doi.org/10.1002/mana.202400554"},{year:2025,title:"Mediterranean Journal of Mathematics",q:"Q2",contenido:"Groups Whose Common Divisor Graph on p-Regular Classes Has Diameter Three",autores:"M. J. Felipe, M. K. Jean-Philippe, V. Sotomayor",DOI:"10.1007/s00009-024-02782-2",url:"https://doi.org/10.1007/s00009-024-02782-2"},{year:2024,title:"Bulletin of the Malaysian Mathematical Sciences Society",q:"Q2",contenido:"Some Properties of Normal Subgroups Determined from Character Tables",autores:"Z. Akhlaghi, M. J. Felipe, M. K. Jean-Philippe",DOI:"10.1007/s40840-024-01684-6",url:"https://doi.org/10.1007/s40840-024-01684-6"}]},{id:5,img:H,name:"José Alberto Reyes Reyes, Ph.D",area:"Métodos iterativos libres de derivadas, estabilidad y convergencia local",publicaciones:[{year:2025,title:"Computation",q:"Q2",contenido:"Stability Analysis and Local Convergence of a New Fourth-Order Optimal Jarratt-Type Iterative Scheme",autores:"Eulalia Martínez, José A. Reyes, Alicia Cordero, Juan R. Torregrosa",DOI:"10.3390/computation13060142",url:"https://doi.org/10.3390/computation13060142",pdf:"https://www.mdpi.com/2079-3197/13/6/142/pdf"},{year:2024,title:"Axioms",q:"Q2",contenido:"Stability Analysis of a New Fourth-Order Optimal Iterative Scheme for Nonlinear Equations",autores:"Alicia Cordero, José A. Reyes, Juan R. Torregrosa, María P. Vassileva",DOI:"10.3390/axioms13010034",url:"https://doi.org/10.3390/axioms13010034",pdf:"https://www.mdpi.com/2075-1680/13/1/34/pdf"}]}];function ke(e){return String(e?.DOI||e?.doi||"").trim().toLowerCase()}function Ce(e){const a=ke(e);return a||[e?.year||"",e?.title||e?.journal||e?.tile||"",e?.contenido||e?.articleTitle||""].join("-").trim().toLowerCase()}function Ee(){const e=new Map;return T.forEach(a=>{(a.publicaciones||[]).forEach(t=>{const i=Ce(t);i&&!e.has(i)&&e.set(i,t)})}),e.size}function Se(){const e=Ee();return`
         <div class="
             relative bg-white shadow-2xl border border-slate-200
             w-full min-h-[520px]
@@ -316,19 +316,19 @@
 
             </div>
         </div>
-    `}function ne(e,a){e.addEventListener("click",t=>{const i=t.target.closest(["[data-route]"]);i&&(t.preventDefault(),a(i.dataset.route))})}function Me(e){ne(e,ee)}const re=""+new URL("apec-ConmXkrT.png",import.meta.url).href,De=""+new URL("isfodosu-C3sCRZT7.png",import.meta.url).href,Le=""+new URL("uasd-D9oiqsNN.png",import.meta.url).href,ie=[{content:`<div class="relative flex flex-col justify-center items-center w-full h-full">
+    `}function ne(e,a){e.addEventListener("click",t=>{const i=t.target.closest(["[data-route]"]);i&&(t.preventDefault(),a(i.dataset.route))})}function Me(e){ne(e,ee)}const re=""+new URL("apec-ConmXkrT.png",import.meta.url).href,Le=""+new URL("isfodosu-C3sCRZT7.png",import.meta.url).href,De=""+new URL("uasd-D9oiqsNN.png",import.meta.url).href,ie=[{content:`<div class="relative flex flex-col justify-center items-center w-full h-full">
         <img src="${re}" alt="UNAPEC" title="UNAPEC" 
         class="w-70.5 h-32.5 md:w-142.5 md:h-38.5  rounded-3xl object-cover lg:w-137.75 lg:h-64.5   ">
         <span class="md:border md:border-footer-contacto w-fit px-6 py-1 md:px-8  text-center   rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2 ">UNAPEC</span>
         </div>`},{content:`<div  class="relative flex flex-col justify-center items-center w-full h-full">
-        <img src="${De}" alt="ISFODOSU" title="ISFODOSU" 
+        <img src="${Le}" alt="ISFODOSU" title="ISFODOSU" 
         class="w-70.5 h-32.5 md:w-142.5 md:h-38.5  rounded-3xl object-cover lg:w-137.75 lg:h-64.5   ">
         <span class="md:border md:border-footer-contacto w-fit px-6 py-1 md:px-8 text-center  rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2 ">ISFODOSU</span>
         </div>`},{content:`<div  class="relative flex flex-col justify-center items-center w-full h-full">
-        <img src="${Le}" alt="UASD" title="UASD" 
+        <img src="${De}" alt="UASD" title="UASD" 
         class="w-70.5 h-32.5 md:w-142.5 md:h-38.5  rounded-3xl object-cover lg:w-137.75 lg:h-64.5   ">
         <span class="md:border md:border-footer-contacto md:px-2.5 text-center w-fit  rounded-3xl text-white text-lg  md:text-2xl font-bold lg:text-4xl lg:mt-2 ">UASD</span>
-        </div>`}];function Pe(e){const a=e.querySelector("#arrowR"),t=e.querySelector("#arrowL"),i=e.querySelector("#contenedorSlide");if(!a||!t||!i)return;const o=ie.length,s=1500;let n=0,p=null;function b(r){return(r%o+o)%o}function d(){i.innerHTML=ie[n].content}function l(r){n=b(n+r),d()}function y(){u(),p=setInterval(()=>l(1),s)}function u(){p&&(clearInterval(p),p=null)}function c(){y()}d(),y(),a.addEventListener("click",()=>{l(1),c()}),t.addEventListener("click",()=>{l(-1),c()})}function Ie(){const e=`
+        </div>`}];function Pe(e){const a=e.querySelector("#arrowR"),t=e.querySelector("#arrowL"),i=e.querySelector("#contenedorSlide");if(!a||!t||!i)return;const o=ie.length,s=1500;let n=0,d=null;function x(l){return(l%o+o)%o}function m(){i.innerHTML=ie[n].content}function c(l){n=x(n+l),m()}function A(){g(),d=setInterval(()=>c(1),s)}function g(){d&&(clearInterval(d),d=null)}function u(){A()}m(),A(),a.addEventListener("click",()=>{c(1),u()}),t.addEventListener("click",()=>{c(-1),u()})}function je(){const e=`
         <section class="
             relative bg-slider-primary overflow-hidden
             w-full min-h-[520px]
@@ -429,7 +429,7 @@
 
             </div>
         </section>
-    `,a=document.createElement("div");a.innerHTML=e;const t=a.firstElementChild;return Pe(t.querySelector("#containerFather")),Me(t.querySelector("#btnsGroup")),t}function je(){const e=document.createElement("section");e.className=`
+    `,a=document.createElement("div");a.innerHTML=e;const t=a.firstElementChild;return Pe(t.querySelector("#containerFather")),Me(t.querySelector("#btnsGroup")),t}function Ie(){const e=document.createElement("section");e.className=`
         relative w-full max-w-7xl mx-auto px-4 py-10
         flex flex-col tabletBig:flex-row
         items-stretch justify-center
@@ -438,7 +438,7 @@
         tabletBig:px-20
         xl:px-0
         2xl:max-w-[1800px]
-    `,e.innerHTML=`${Se()}`;const a=Ie();return e.appendChild(a),e}function $e(){return je()}const ze=""+new URL("QuienesSomos-DS8enKgt.png",import.meta.url).href;function Te(){return`
+    `,e.innerHTML=`${Se()}`;const a=je();return e.appendChild(a),e}function $e(){return Ie()}const ze=""+new URL("QuienesSomos-DS8enKgt.png",import.meta.url).href;function Te(){return`
         <section 
             role="banner" 
             class="relative w-full min-h-[560px] md:min-h-[640px] overflow-hidden rounded-3xl shadow-2xl mb-10"
@@ -533,7 +533,7 @@
             </div>
 
         </section>
-    `}function Be(e){return String(e?.DOI||e?.doi||"").trim().toLowerCase()}function Ue(e){const a=Be(e);return a||[e?.year||"",e?.title||e?.journal||e?.tile||"",e?.contenido||e?.articleTitle||""].join("-").trim().toLowerCase()}function Ne(){const e=new Map;return Array.isArray(P)?(P.forEach(a=>{(a?.publicaciones||[]).forEach(i=>{const o=Ue(i);o&&!e.has(o)&&e.set(o,i)})}),Array.from(e.values())):[]}function qe(){const e=Ne(),a=e.map(i=>Number(i.year)).filter(Boolean),t=e.filter(i=>String(i?.q||i?.quartile||"").trim().toUpperCase()==="Q1").length;return{totalPublicaciones:e.length,totalQ1:t,primerYear:a.length?Math.min(...a):"—",ultimoYear:a.length?Math.max(...a):"—"}}function Oe(e=["El Grupo de Investigación Kernel es una comunidad académica multidisciplinaria dedicada a la investigación, la innovación y la transferencia de conocimiento en matemática aplicada, análisis numérico, ecuaciones diferenciales parciales no lineales, optimización, álgebra, modelización matemática y educación matemática.","El grupo está integrado por docentes e investigadores vinculados a instituciones de educación superior de la República Dominicana, con una agenda científica orientada al desarrollo de métodos numéricos avanzados, producción académica de alto impacto, formación de capital humano y colaboración nacional e internacional.","Nuestra identidad se fundamenta en la rigurosidad matemática, la computación científica, la investigación colaborativa y la aplicación de modelos matemáticos a problemas relevantes en ciencias, tecnología, educación, procesos biológicos, optimización y sistemas complejos."]){const a=qe();return`
+    `}function Be(e){return String(e?.DOI||e?.doi||"").trim().toLowerCase()}function Ue(e){const a=Be(e);return a||[e?.year||"",e?.title||e?.journal||e?.tile||"",e?.contenido||e?.articleTitle||""].join("-").trim().toLowerCase()}function Ne(){const e=new Map;return Array.isArray(T)?(T.forEach(a=>{(a?.publicaciones||[]).forEach(i=>{const o=Ue(i);o&&!e.has(o)&&e.set(o,i)})}),Array.from(e.values())):[]}function qe(){const e=Ne(),a=e.map(i=>Number(i.year)).filter(Boolean),t=e.filter(i=>String(i?.q||i?.quartile||"").trim().toUpperCase()==="Q1").length;return{totalPublicaciones:e.length,totalQ1:t,primerYear:a.length?Math.min(...a):"—",ultimoYear:a.length?Math.max(...a):"—"}}function Re(e=["El Grupo de Investigación Kernel es una comunidad académica multidisciplinaria dedicada a la investigación, la innovación y la transferencia de conocimiento en matemática aplicada, análisis numérico, ecuaciones diferenciales parciales no lineales, optimización, álgebra, modelización matemática y educación matemática.","El grupo está integrado por docentes e investigadores vinculados a instituciones de educación superior de la República Dominicana, con una agenda científica orientada al desarrollo de métodos numéricos avanzados, producción académica de alto impacto, formación de capital humano y colaboración nacional e internacional.","Nuestra identidad se fundamenta en la rigurosidad matemática, la computación científica, la investigación colaborativa y la aplicación de modelos matemáticos a problemas relevantes en ciencias, tecnología, educación, procesos biológicos, optimización y sistemas complejos."]){const a=qe();return`
         <section class="w-full py-12 overflow-x-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
 
@@ -564,7 +564,7 @@
                     <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
                             <p class="text-2xl font-black text-slate-900">
-                                ${P.length}
+                                ${T.length}
                             </p>
                             <p class="text-xs text-slate-500 font-semibold">
                                 Investigadores
@@ -656,7 +656,7 @@
 
             </div>
         </section>
-    `}const Re="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADA0lEQVR4nO2Xy05UQRCGQVlAFDE6bmQ0xCsRRWMAEdBXAF2J7ri4A4K+goS45bIUBx9hhBDiKyCCKzHCRkwMF7kGXUA+U8N/kspkZjhHMNGEP+mkq091V3XV39V98vIO8b8BKADqgCdAt5r179q3v2n4JjAMLJMdS9KpPEjDMeANsCPjr4BG4CpwTM36TcAQ8EO6CeD0fo1fB+aALeAFcCLEnBKgR3O+ABX7Mb4GfAVuu/H7wCDwUSFfUn8AaHB6VcA8sBrZCXbDPifjpRq7ALxTrjeAJNCnltSYYRwo05y4nJiNlA52c74V7ByoBRbFgQ6gMMOcQqBTHFgA7rhI/DRORGH7juXc7dyMf7K+xo6YAeCpWg2Qr2+XgBk5EUSiV2veCOPAsHaaIpzCvuyM3wI+ZDiCk+a8c8IiMeaIafLrMEVm2Y6aI5yhwxnfUERajB9qrRpbd050aW6KmGZchM1erNitcIZGyYNa1PKbr50vBsRMmxvXt/fSLQI2gX59f6C1a3M58FhKVyTb8Uqqbzk3tDj9M9ac3CadaslvgWn1rVgZHuVy4LmUiiVbyPrUN7IZzjrjazrnMRcFQ7vkfltD/WJ9e7ZfB0pdrVg9aAeaQ6SgNS0FMSe3p6VgBJiKkoI6KTVJHhDrAxJOimjxDHPjithEGgmDCD4MQ8ICLTIk+Z4mdboitS4n2mQ0rp0v6VvqKtY7wVAvOaF5R7M64BStFpRIHlcRueicsKOWjgln/DKwAoxKPik5tbGcACpVNnskl6mszjgnLMTV2nm7+vnO+GfgO3BeYy+Bbbth93TARcEukCpHwAVFoivLZVSksK/IeEDEGq219+4D2NWpx8R8QDhFYkzh3hTDg+t4RGOGUbfzc8A3rXUqLwqACp3x+SASGm/Q+Z4WqaxNyZF6p1cj49EfJGlOzCqEvQExc0GEs5z/0s6v7TUnTDoSImbqStUDtBw4rlauyyYhDmzrgRot7Llgjwl3pWbDonTCsf1PYIVET7Rm92PSrJOSu8gc4l/Eb4NmAhVRMMkBAAAAAElFTkSuQmCC",Fe="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWElEQVR4nO2WWUoDQRCGx8mjuYULqAfIGdxREPEKLg9qtgsIkYhnES/hGgMxHkG9gb4YPyksIUymOp2ZPEToDxqGnv7/qqneJooCgcB/ApgHysA10AbetbW17xSYG3fQKWATeMSfe2BDtHmDLwEPZOdOPLIGPwI+DeMOUAFWtMnzszFWPA5HLfmlYfalayBO0cVAFegZ2guvKQGajpKWPfSShEVjmHjPIe6kfXmKRwHoOnx2LWFRt5RFJTG+BDxpKyXe1Rw+bxIrLYFt3CwnxkvgP1qJd7IwXWxNZAJFLY9FdUxT8ApMDyQgyAJxCGWfFyK/RfhieHwDO8MMGr5VMPR1h/7M9yBqGgY93eex8eV1x0F0PtLdABw4juKuJrKqreYo+wew7x24H2ARuCU7N8BClAd+p2RdbzZfJOm13NdxEmAWOAGuZO/3/ZC0tO8YmBkQBgKBSeYHV9zHsqN2OYEAAAAASUVORK5CYII=",Ge="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA4ElEQVR4nO3XsUkEQRSA4Scam4sYKxoYCkZGYiBocgVYgA1YgBWIHRgYGF0ggqAVmBlagCgqFuAnAyvKuXK7x+4lvg8GFoaZ+Zlk2Ig0AoMyqu8ZLGET+9jCYvTJtzM8qnePQ8y32HcO220CmnjHCVZq9im3t4wDnOOlLOg64KcHXGKIO7yq0WdAIxkQGTCODOhZBkQGjOO38iTf4AK3eJtWwDHWa+ZnsYdrfLQ8/7lxQDSAVZz+9fTiCVc4wkaJ7zRg5FbWsIPd6rCFmIQJAjolAyoZEP85YPD1a5ZiCj4BYOiv20hvAWcAAAAASUVORK5CYII=",Je="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACLklEQVR4nO3XTYiOURQH8JnGx6gxjIVMIl87hFIWQkSSjYWtSFGy0EzJwmDjs0k2Qo18f2RQUnaz0LCxYCWJZu8zkZCJn27Ok9vLaN555x2Jfz117r3nnvN/7j33f5+npuZvBjZjJ2qHItl4bMJ8jEC7HziDYZiGtWiuBoH9WcLPfsaHzO6oBoEnWYI36MSBeDqjr8Bz1A1G0josxbEI/B4tGIkGzImnIfpawyfhCGZXSuBe9lavMBeTcAGfsrGPOI+JmBe+Be5WQuBOBPmKZZiFZ/pGGpuJ5TEn4VElBA5HkM6o/LwO+sLj8L0e7VOV7P+NCLIK6/Uf67A67MsDJXA8CzgWl8ogkGqkKWvvKjf5jGxyb/R1lUGgK+b0RjvVw/RKhGdMWsoyCFyMVStwumy5Ri2uRYCV2FgGgQ1RNwm3kkyXlbwATkaQtP/16OlH8qchSlei3V4zUOBhBPmCRSFEuciU4mUo45JMB25XQuD+L0RmapzxosCEfRVTQqzSXVDgQSUEarEAJyLYO2zBcIzDwniaom9r+BRXdNKC+gETKBB3fb706Q3PYjf24BxeZOM9NYMN349SvuSlKPY84VA1CEwOiU17PCqr8oSjGI3F2IYJ1SCwJj639mJ73BX74vsg2W1hp1tzRTUIdJcseUeoXTNulox1DwWB0n3/IwT6wn8C3f8Egddx9NrCHjICb3EwHcFsLP0X7MiIVIVAa/yINv7GpzF8WgadQLXwDe1FSba7VbeUAAAAAElFTkSuQmCC",Ke="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABJklEQVR4nO3SvyuFUQDG8TeEFKUMEhZJWZRS9muwyKYMBv/A3fwJyr+gDAZlZsNgMsjNJCWLJJuU8qPcfHTz3rw4vfe67pX0fuvUGZ7n+Z7hRFFGRkbGXwIDmEFTA7ab4u3+tNCeN7bQWUd5Z7xZYjctWPDOGUbqIB/CSWK3kBY+8pEb5H4gz8UbSY7SCku+8ox8DfJ83P3MUqXiPB4CxQ20VyFuxVqg/4TFal8/jsvAyAF6U3o92A/0rjFZlbwM+nAYGLvCRCA/hotA/hiDUS2gDeuB0UcsJHJzuA/kNtFRkzzwOYufxl+wHJ/SPUmx4mf7LpjGrcrcYbau8jIYxmmK/ByjUSNBF7YD8h10N1ReBs1YSchX0RL9NpgqnV8XZ2Rk/CteAXE6akimJUGuAAAAAElFTkSuQmCC",He=[{icon:Re,title:"Misión",content:"Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados y la implementación de soluciones innovadoras para problemas complejos en ámbitos académicos, científicos y tecnológicos, con un fuerte enfoque en el impacto educativo."},{icon:Fe,title:"Visión",content:"Ser un referente nacional e internacional en investigación matemática, matemática pura y aplicada, con especial énfasis en Métodos iterativos, Optimización, Álgebra abstracta, Análisis matricial y Educación Matemática. Distinguirnos por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de las matemáticas."},{icon:Ge,title:"Objetivos",content:`
+    `}const Oe="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADA0lEQVR4nO2Xy05UQRCGQVlAFDE6bmQ0xCsRRWMAEdBXAF2J7ri4A4K+goS45bIUBx9hhBDiKyCCKzHCRkwMF7kGXUA+U8N/kspkZjhHMNGEP+mkq091V3XV39V98vIO8b8BKADqgCdAt5r179q3v2n4JjAMLJMdS9KpPEjDMeANsCPjr4BG4CpwTM36TcAQ8EO6CeD0fo1fB+aALeAFcCLEnBKgR3O+ABX7Mb4GfAVuu/H7wCDwUSFfUn8AaHB6VcA8sBrZCXbDPifjpRq7ALxTrjeAJNCnltSYYRwo05y4nJiNlA52c74V7ByoBRbFgQ6gMMOcQqBTHFgA7rhI/DRORGH7juXc7dyMf7K+xo6YAeCpWg2Qr2+XgBk5EUSiV2veCOPAsHaaIpzCvuyM3wI+ZDiCk+a8c8IiMeaIafLrMEVm2Y6aI5yhwxnfUERajB9qrRpbd050aW6KmGZchM1erNitcIZGyYNa1PKbr50vBsRMmxvXt/fSLQI2gX59f6C1a3M58FhKVyTb8Uqqbzk3tDj9M9ac3CadaslvgWn1rVgZHuVy4LmUiiVbyPrUN7IZzjrjazrnMRcFQ7vkfltD/WJ9e7ZfB0pdrVg9aAeaQ6SgNS0FMSe3p6VgBJiKkoI6KTVJHhDrAxJOimjxDHPjithEGgmDCD4MQ8ICLTIk+Z4mdboitS4n2mQ0rp0v6VvqKtY7wVAvOaF5R7M64BStFpRIHlcRueicsKOWjgln/DKwAoxKPik5tbGcACpVNnskl6mszjgnLMTV2nm7+vnO+GfgO3BeYy+Bbbth93TARcEukCpHwAVFoivLZVSksK/IeEDEGq219+4D2NWpx8R8QDhFYkzh3hTDg+t4RGOGUbfzc8A3rXUqLwqACp3x+SASGm/Q+Z4WqaxNyZF6p1cj49EfJGlOzCqEvQExc0GEs5z/0s6v7TUnTDoSImbqStUDtBw4rlauyyYhDmzrgRot7Llgjwl3pWbDonTCsf1PYIVET7Rm92PSrJOSu8gc4l/Eb4NmAhVRMMkBAAAAAElFTkSuQmCC",Fe="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWElEQVR4nO2WWUoDQRCGx8mjuYULqAfIGdxREPEKLg9qtgsIkYhnES/hGgMxHkG9gb4YPyksIUymOp2ZPEToDxqGnv7/qqneJooCgcB/ApgHysA10AbetbW17xSYG3fQKWATeMSfe2BDtHmDLwEPZOdOPLIGPwI+DeMOUAFWtMnzszFWPA5HLfmlYfalayBO0cVAFegZ2guvKQGajpKWPfSShEVjmHjPIe6kfXmKRwHoOnx2LWFRt5RFJTG+BDxpKyXe1Rw+bxIrLYFt3CwnxkvgP1qJd7IwXWxNZAJFLY9FdUxT8ApMDyQgyAJxCGWfFyK/RfhieHwDO8MMGr5VMPR1h/7M9yBqGgY93eex8eV1x0F0PtLdABw4juKuJrKqreYo+wew7x24H2ARuCU7N8BClAd+p2RdbzZfJOm13NdxEmAWOAGuZO/3/ZC0tO8YmBkQBgKBSeYHV9zHsqN2OYEAAAAASUVORK5CYII=",Ge="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA4ElEQVR4nO3XsUkEQRSA4Scam4sYKxoYCkZGYiBocgVYgA1YgBWIHRgYGF0ggqAVmBlagCgqFuAnAyvKuXK7x+4lvg8GFoaZ+Zlk2Ig0AoMyqu8ZLGET+9jCYvTJtzM8qnePQ8y32HcO220CmnjHCVZq9im3t4wDnOOlLOg64KcHXGKIO7yq0WdAIxkQGTCODOhZBkQGjOO38iTf4AK3eJtWwDHWa+ZnsYdrfLQ8/7lxQDSAVZz+9fTiCVc4wkaJ7zRg5FbWsIPd6rCFmIQJAjolAyoZEP85YPD1a5ZiCj4BYOiv20hvAWcAAAAASUVORK5CYII=",Je="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACLklEQVR4nO3XTYiOURQH8JnGx6gxjIVMIl87hFIWQkSSjYWtSFGy0EzJwmDjs0k2Qo18f2RQUnaz0LCxYCWJZu8zkZCJn27Ok9vLaN555x2Jfz117r3nnvN/7j33f5+npuZvBjZjJ2qHItl4bMJ8jEC7HziDYZiGtWiuBoH9WcLPfsaHzO6oBoEnWYI36MSBeDqjr8Bz1A1G0josxbEI/B4tGIkGzImnIfpawyfhCGZXSuBe9lavMBeTcAGfsrGPOI+JmBe+Be5WQuBOBPmKZZiFZ/pGGpuJ5TEn4VElBA5HkM6o/LwO+sLj8L0e7VOV7P+NCLIK6/Uf67A67MsDJXA8CzgWl8ogkGqkKWvvKjf5jGxyb/R1lUGgK+b0RjvVw/RKhGdMWsoyCFyMVStwumy5Ri2uRYCV2FgGgQ1RNwm3kkyXlbwATkaQtP/16OlH8qchSlei3V4zUOBhBPmCRSFEuciU4mUo45JMB25XQuD+L0RmapzxosCEfRVTQqzSXVDgQSUEarEAJyLYO2zBcIzDwniaom9r+BRXdNKC+gETKBB3fb706Q3PYjf24BxeZOM9NYMN349SvuSlKPY84VA1CEwOiU17PCqr8oSjGI3F2IYJ1SCwJj639mJ73BX74vsg2W1hp1tzRTUIdJcseUeoXTNulox1DwWB0n3/IwT6wn8C3f8Egddx9NrCHjICb3EwHcFsLP0X7MiIVIVAa/yINv7GpzF8WgadQLXwDe1FSba7VbeUAAAAAElFTkSuQmCC",Ke="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABJklEQVR4nO3SvyuFUQDG8TeEFKUMEhZJWZRS9muwyKYMBv/A3fwJyr+gDAZlZsNgMsjNJCWLJJuU8qPcfHTz3rw4vfe67pX0fuvUGZ7n+Z7hRFFGRkbGXwIDmEFTA7ab4u3+tNCeN7bQWUd5Z7xZYjctWPDOGUbqIB/CSWK3kBY+8pEb5H4gz8UbSY7SCku+8ox8DfJ83P3MUqXiPB4CxQ20VyFuxVqg/4TFal8/jsvAyAF6U3o92A/0rjFZlbwM+nAYGLvCRCA/hotA/hiDUS2gDeuB0UcsJHJzuA/kNtFRkzzwOYufxl+wHJ/SPUmx4mf7LpjGrcrcYbau8jIYxmmK/ByjUSNBF7YD8h10N1ReBs1YSchX0RL9NpgqnV8XZ2Rk/CteAXE6akimJUGuAAAAAElFTkSuQmCC",He=[{icon:Oe,title:"Misión",content:"Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados y la implementación de soluciones innovadoras para problemas complejos en ámbitos académicos, científicos y tecnológicos, con un fuerte enfoque en el impacto educativo."},{icon:Fe,title:"Visión",content:"Ser un referente nacional e internacional en investigación matemática, matemática pura y aplicada, con especial énfasis en Métodos iterativos, Optimización, Álgebra abstracta, Análisis matricial y Educación Matemática. Distinguirnos por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de las matemáticas."},{icon:Ge,title:"Objetivos",content:`
       <ul class="list-disc pl-5 space-y-2">
         <li>Diseñar y analizar nuevos métodos numéricos para la resolución eficiente de EDP´s y sistemas no lineales.</li>
           <li>Realizar investigaciones en el ámbito del álgebra, de manera especial en problemas matriciales, matrices combinadas y teoría de grupos finitos.</li>
@@ -714,23 +714,23 @@
         xl:px-0
     `,e.innerHTML=`
         ${Te()}
-        ${Oe()}
+        ${Re()}
         ${Ve()}
-    `,e}function We(e){e.querySelectorAll("[data-accordion-header]").forEach(t=>{t.addEventListener("click",()=>{const i=t.nextElementSibling,o=t.querySelector("[data-accordion-icon]"),s=i.classList.contains("max-h-[1000px]");e.querySelectorAll("[data-accordion-content]").forEach(n=>{n.classList.remove("max-h-[1000px]"),n.classList.add("max-h-0")}),e.querySelectorAll("[data-accordion-icon]").forEach(n=>{n.classList.remove("rotate-180")}),s||(i.classList.remove("max-h-0"),i.classList.add("max-h-[1000px]"),o.classList.add("rotate-180"))})})}function Xe(e){const a=e.querySelector("[data-description-text]"),t=e.querySelector("[data-description-btn]");if(!a||!t)return;let i=!1;t.addEventListener("click",()=>{i=!i,a.classList.toggle("line-clamp-4",!i),t.textContent=i?"Leer menos":"Leer más"})}function Ze(){const e=Ye();return We(e),Xe(e),e}function L(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function _e(e=[]){return!e||e.length===0?`
+    `,e}function We(e){e.querySelectorAll("[data-accordion-header]").forEach(t=>{t.addEventListener("click",()=>{const i=t.nextElementSibling,o=t.querySelector("[data-accordion-icon]"),s=i.classList.contains("max-h-[1000px]");e.querySelectorAll("[data-accordion-content]").forEach(n=>{n.classList.remove("max-h-[1000px]"),n.classList.add("max-h-0")}),e.querySelectorAll("[data-accordion-icon]").forEach(n=>{n.classList.remove("rotate-180")}),s||(i.classList.remove("max-h-0"),i.classList.add("max-h-[1000px]"),o.classList.add("rotate-180"))})})}function Xe(e){const a=e.querySelector("[data-description-text]"),t=e.querySelector("[data-description-btn]");if(!a||!t)return;let i=!1;t.addEventListener("click",()=>{i=!i,a.classList.toggle("line-clamp-4",!i),t.textContent=i?"Leer menos":"Leer más"})}function Ze(){const e=Ye();return We(e),Xe(e),e}function z(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function _e(e=[]){return!e||e.length===0?`
             <span class="text-xs text-gray-400 italic">
                 Enlaces académicos no registrados
             </span>
         `:e.map(a=>`
-        <a href="${L(a.url)}" 
+        <a href="${z(a.url)}" 
            target="_blank"
            rel="noopener noreferrer"
            class="w-10 h-10 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white transition-all duration-300 flex items-center justify-center shadow-sm"
-           title="${L(a.name)}">
-            <i class="${L(a.icon)} text-xl"></i>
+           title="${z(a.name)}">
+            <i class="${z(a.icon)} text-xl"></i>
         </a>
     `).join("")}function ea(e){return e?String(e).split(",").map(t=>t.trim()).filter(Boolean).slice(0,4).map(t=>`
         <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/50 px-2.5 py-1 rounded-full text-[11px] font-bold">
-            ${L(t)}
+            ${z(t)}
         </span>
     `).join(""):""}function aa(e){const a=document.createElement("article");a.className=`
         team-card bg-white border border-slate-200 rounded-[24px] shadow-xl 
@@ -743,21 +743,21 @@
                 <div class="w-36 h-36 rounded-full bg-gradient-to-br from-sky-100 to-slate-100 p-1 shadow-md">
                     <img 
                         src="${e.img}" 
-                        alt="${L(e.title)}"
+                        alt="${z(e.title)}"
                         class="w-full h-full border-4 border-white rounded-full object-cover object-center">
                 </div>
 
                 <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wide shadow-md whitespace-nowrap">
-                    ${L(o)}
+                    ${z(o)}
                 </span>
             </div>
 
             <h2 class="text-lg md:text-xl font-black text-slate-800 leading-tight mt-2">
-                ${L(e.title)}
+                ${z(e.title)}
             </h2>
 
             <p class="font-semibold text-xs text-sky-700 mt-1 leading-snug">
-                ${L(e.subtitle||"")}
+                ${z(e.subtitle||"")}
             </p>
         </div>
 
@@ -775,7 +775,7 @@
                 <div class="flex flex-wrap gap-2">
                     ${i||`
                                 <p class="text-sm text-slate-500 leading-relaxed">
-                                    ${L(e.areas||"Área no especificada")}
+                                    ${z(e.areas||"Área no especificada")}
                                 </p>
                               `}
                 </div>
@@ -787,7 +787,7 @@
                 </p>
 
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    ${L(e.afilaciones||e.afiliaciones||"No especificadas")}
+                    ${z(e.afilaciones||e.afiliaciones||"No especificadas")}
                 </p>
             </div>
 
@@ -797,19 +797,19 @@
                 </p>
 
                 <p class="text-slate-600 text-sm leading-relaxed line-clamp-5">
-                    ${L(e.description||"Perfil académico en proceso de actualización.")}
+                    ${z(e.description||"Perfil académico en proceso de actualización.")}
                 </p>
             </div>
         </div>
-    `,a}const le=""+new URL("rad-B3ff1btG.png",import.meta.url).href,ce=""+new URL("mar-Cru0HERG.png",import.meta.url).href,q=[{img:Q,title:"Miguel A. Leonardo Sepúlveda, Ph.D.",subtitle:"Investigador en Métodos Numéricos, EDPs y Educación Matemática",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Métodos iterativos de alto orden, métodos libres de Jacobiano, EDPs no lineales, optimización, diseño curricular, educación matemática, formación docente",afilaciones:"ITLA, ISFODOSU, UNAPEC",redes:[{name:"email",url:"mailto:miguel.leonardo@isfodosu.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-4199-6484",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda",icon:"fa-brands fa-researchgate"},{name:"google scholar",url:"https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es",icon:"fa-brands fa-google"}],description:"Doctor en Matemática con líneas de investigación en análisis numérico, métodos iterativos de alto orden, métodos libres de Jacobiano y resolución de sistemas no lineales y EDPs no lineales. Docente universitario, asesor de tesis y diseñador curricular de programas académicos."},{img:W,title:"Natanael Ureña Castillo, M.Sc.",subtitle:"Optimización numérica, métodos híbridos y ciencias actuariales",estado:"Próxima defensa doctoral",grado:"Candidato doctoral",areas:"Métodos iterativos, optimización numérica, métodos híbridos, redes neuronales, ciencias actuariales, matemática computacional, modelización financiera",afilaciones:"ISFODOSU, ITLA, INTEC",redes:[{name:"email",url:"mailto:natanael.urena@isfodosu.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0001-9186-1778",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Natanael-Urena-Castillox",icon:"fa-brands fa-researchgate"}],description:"Investigador en optimización numérica, métodos híbridos cuasi-Newton, estabilidad algorítmica y aplicaciones computacionales. Actualmente se encuentra en la etapa final de su doctorado y estará defendiendo su tesis doctoral en las próximas semanas."},{img:le,title:"Randy Leonardo, M.Sc.",subtitle:"Álgebra Lineal, Matrices Combinadas y Educación Matemática",estado:"Investigador",grado:"M.Sc.",areas:"Álgebra lineal, matriz combinada, formación docente, innovación educativa, matemática superior",afilaciones:"UASD, ISFODOSU",redes:[{name:"email",url:"mailto:rleonardo36@uasd.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0002-9493-7165",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Randy-Leonardo",icon:"fa-brands fa-researchgate"}],description:"Investigador y docente universitario en áreas vinculadas al álgebra lineal, matrices combinadas y formación matemática. Ha participado como ponente en congresos y seminarios nacionales."},{img:_,title:"Antmel Rodríguez Cabral, Ph.D.",subtitle:"Métodos Iterativos, Sistemas no Lineales y Dinámica Discreta",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Métodos iterativos, sistemas no lineales, métodos libres de Jacobiano, dinámica compleja, dinámica real, análisis numérico, educación matemática",afilaciones:"UASD, ISFODOSU",redes:[{name:"email",url:"mailto:arodriguez05@uasd.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-4502-0307",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral",icon:"fa-brands fa-researchgate"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Investiga métodos iterativos para sistemas no lineales, estabilidad de parámetros autoacelerados y dinámica discreta."},{img:ce,title:"Marino Brito Guillén, M.Sc.",subtitle:"Gestión Universitaria, Matemática Educativa y Formación Docente",estado:"Académico",grado:"M.Sc.",areas:"Educación matemática, gestión universitaria, álgebra, cálculo, formación docente, desarrollo curricular",afilaciones:"ISFODOSU",redes:[{name:"email",url:"mailto:marinobg@gmail.com",icon:"bx bx-envelope"}],description:"Académico con amplia trayectoria en gestión universitaria, formación docente, desarrollo curricular y enseñanza de la matemática. Ha contribuido al fortalecimiento de procesos educativos e institucionales."},{img:Y,title:"Marc-Kelly Jean Philippe Jean, Ph.D.",subtitle:"Álgebra Abstracta, Grupos Finitos y Caracteres",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Teoría de grupos, álgebra, matemática pura, caracteres, clases p-regulares, grafos asociados, educación matemática",afilaciones:"UASD",redes:[{name:"email",url:"mailto:marckelly21@gmail.com",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-2278-5315",icon:"fa-brands fa-orcid"},{name:"linkedin",url:"https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/",icon:"fa-brands fa-linkedin"},{name:"google scholar",url:"https://scholar.google.com/citations?hl=es&user=KDxk4vYAAAAJ",icon:"fa-brands fa-google"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Su línea de investigación se centra en teoría de grupos, caracteres, clases p-regulares y grafos asociados."},{img:K,title:"José Alberto Reyes Reyes, Ph.D.",subtitle:"Métodos Iterativos, Estabilidad y Educación Matemática",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Matemática pura, métodos iterativos, métodos libres de derivadas, análisis de estabilidad, convergencia local, innovación educativa",afilaciones:"UASD",redes:[{name:"email",url:"mailto:Josereyes0187@gmail.com",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0001-9397-7571",icon:"fa-brands fa-orcid"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Investiga métodos iterativos, estabilidad, convergencia local y esquemas numéricos libres de derivadas."}];function ta(){let e=0,a=null,t=null;const i=document.createElement("section");i.className="w-full max-w-7xl mx-auto px-4 py-10 flex flex-col gap-8 items-center font-sans";const o=()=>window.innerWidth>=1280?3:window.innerWidth>=768?2:1,s=()=>{const c=o();return Math.max(q.length-c,0)},n=()=>{const c=s();e>c&&(e=0),e<0&&(e=c)},p=()=>{const c=s();e>=c?e=0:e++,u()},b=()=>{const c=s();e<=0?e=c:e--,u()},d=()=>{l(),q.length>o()&&(a=setInterval(p,4500))},l=()=>{a&&(clearInterval(a),a=null)},y=()=>{const c=o(),r=Math.max(q.length-c+1,1);return Array.from({length:r}).map((f,m)=>`
+    `,a}const le=""+new URL("rad-B3ff1btG.png",import.meta.url).href,ce=""+new URL("mar-Cru0HERG.png",import.meta.url).href,F=[{img:Q,title:"Miguel A. Leonardo Sepúlveda, Ph.D.",subtitle:"Investigador en Métodos Numéricos, EDPs y Educación Matemática",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Métodos iterativos de alto orden, métodos libres de Jacobiano, EDPs no lineales, optimización, diseño curricular, educación matemática, formación docente",afilaciones:"ITLA, ISFODOSU, UNAPEC",redes:[{name:"email",url:"mailto:miguel.leonardo@isfodosu.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-4199-6484",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda",icon:"fa-brands fa-researchgate"},{name:"google scholar",url:"https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es",icon:"fa-brands fa-google"}],description:"Doctor en Matemática con líneas de investigación en análisis numérico, métodos iterativos de alto orden, métodos libres de Jacobiano y resolución de sistemas no lineales y EDPs no lineales. Docente universitario, asesor de tesis y diseñador curricular de programas académicos."},{img:W,title:"Natanael Ureña Castillo, M.Sc.",subtitle:"Optimización numérica, métodos híbridos y ciencias actuariales",estado:"Próxima defensa doctoral",grado:"Candidato doctoral",areas:"Métodos iterativos, optimización numérica, métodos híbridos, redes neuronales, ciencias actuariales, matemática computacional, modelización financiera",afilaciones:"ISFODOSU, ITLA, INTEC",redes:[{name:"email",url:"mailto:natanael.urena@isfodosu.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0001-9186-1778",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Natanael-Urena-Castillox",icon:"fa-brands fa-researchgate"}],description:"Investigador en optimización numérica, métodos híbridos cuasi-Newton, estabilidad algorítmica y aplicaciones computacionales. Actualmente se encuentra en la etapa final de su doctorado y estará defendiendo su tesis doctoral en las próximas semanas."},{img:le,title:"Randy Leonardo, M.Sc.",subtitle:"Álgebra Lineal, Matrices Combinadas y Educación Matemática",estado:"Investigador",grado:"M.Sc.",areas:"Álgebra lineal, matriz combinada, formación docente, innovación educativa, matemática superior",afilaciones:"UASD, ISFODOSU",redes:[{name:"email",url:"mailto:rleonardo36@uasd.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0002-9493-7165",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Randy-Leonardo",icon:"fa-brands fa-researchgate"}],description:"Investigador y docente universitario en áreas vinculadas al álgebra lineal, matrices combinadas y formación matemática. Ha participado como ponente en congresos y seminarios nacionales."},{img:_,title:"Antmel Rodríguez Cabral, Ph.D.",subtitle:"Métodos Iterativos, Sistemas no Lineales y Dinámica Discreta",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Métodos iterativos, sistemas no lineales, métodos libres de Jacobiano, dinámica compleja, dinámica real, análisis numérico, educación matemática",afilaciones:"UASD, ISFODOSU",redes:[{name:"email",url:"mailto:arodriguez05@uasd.edu.do",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-4502-0307",icon:"fa-brands fa-orcid"},{name:"researchgate",url:"https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral",icon:"fa-brands fa-researchgate"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Investiga métodos iterativos para sistemas no lineales, estabilidad de parámetros autoacelerados y dinámica discreta."},{img:ce,title:"Marino Brito Guillén, M.Sc.",subtitle:"Gestión Universitaria, Matemática Educativa y Formación Docente",estado:"Académico",grado:"M.Sc.",areas:"Educación matemática, gestión universitaria, álgebra, cálculo, formación docente, desarrollo curricular",afilaciones:"ISFODOSU",redes:[{name:"email",url:"mailto:marinobg@gmail.com",icon:"bx bx-envelope"}],description:"Académico con amplia trayectoria en gestión universitaria, formación docente, desarrollo curricular y enseñanza de la matemática. Ha contribuido al fortalecimiento de procesos educativos e institucionales."},{img:Y,title:"Marc-Kelly Jean Philippe Jean, Ph.D.",subtitle:"Álgebra Abstracta, Grupos Finitos y Caracteres",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Teoría de grupos, álgebra, matemática pura, caracteres, clases p-regulares, grafos asociados, educación matemática",afilaciones:"UASD",redes:[{name:"email",url:"mailto:marckelly21@gmail.com",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0003-2278-5315",icon:"fa-brands fa-orcid"},{name:"linkedin",url:"https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/",icon:"fa-brands fa-linkedin"},{name:"google scholar",url:"https://scholar.google.com/citations?hl=es&user=KDxk4vYAAAAJ",icon:"fa-brands fa-google"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Su línea de investigación se centra en teoría de grupos, caracteres, clases p-regulares y grafos asociados."},{img:H,title:"José Alberto Reyes Reyes, Ph.D.",subtitle:"Métodos Iterativos, Estabilidad y Educación Matemática",estado:"Doctor en Matemática",grado:"Ph.D.",areas:"Matemática pura, métodos iterativos, métodos libres de derivadas, análisis de estabilidad, convergencia local, innovación educativa",afilaciones:"UASD",redes:[{name:"email",url:"mailto:Josereyes0187@gmail.com",icon:"bx bx-envelope"},{name:"orcid",url:"https://orcid.org/0000-0001-9397-7571",icon:"fa-brands fa-orcid"}],description:"Doctor en Matemática. Defendió exitosamente su tesis doctoral en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador. Investiga métodos iterativos, estabilidad, convergencia local y esquemas numéricos libres de derivadas."}];function ta(){let e=0,a=null,t=null;const i=document.createElement("section");i.className="w-full max-w-7xl mx-auto px-4 py-10 flex flex-col gap-8 items-center font-sans";const o=()=>window.innerWidth>=1280?3:window.innerWidth>=768?2:1,s=()=>{const u=o();return Math.max(F.length-u,0)},n=()=>{const u=s();e>u&&(e=0),e<0&&(e=u)},d=()=>{const u=s();e>=u?e=0:e++,g()},x=()=>{const u=s();e<=0?e=u:e--,g()},m=()=>{c(),F.length>o()&&(a=setInterval(d,4500))},c=()=>{a&&(clearInterval(a),a=null)},A=()=>{const u=o(),l=Math.max(F.length-u+1,1);return Array.from({length:l}).map((h,p)=>`
             <button
                 type="button"
-                data-dot-index="${m}"
-                aria-label="Ir al grupo ${m+1}"
+                data-dot-index="${p}"
+                aria-label="Ir al grupo ${p+1}"
                 class="w-3 h-3 rounded-full transition-all duration-300
-                ${m===e?"bg-[#5580C1] w-8":"bg-slate-300 hover:bg-[#96B4E1]"}">
+                ${p===e?"bg-[#5580C1] w-8":"bg-slate-300 hover:bg-[#96B4E1]"}">
             </button>
-        `).join("")},u=()=>{if(!q||q.length===0){i.innerHTML=`
+        `).join("")},g=()=>{if(!F||F.length===0){i.innerHTML=`
                 <div class="w-full bg-white rounded-3xl p-8 shadow-md border border-slate-100 text-center">
                     <h2 class="text-2xl font-black text-slate-800 mb-2">
                         Equipo de investigación
@@ -819,7 +819,7 @@
                         No hay investigadores registrados en este momento.
                     </p>
                 </div>
-            `;return}n();const c=o(),r=q.slice(e,e+c);i.innerHTML=`
+            `;return}n();const u=o(),l=F.slice(e,e+u);i.innerHTML=`
             <div class="w-full text-center">
                 <p class="text-[#5580C1] font-black uppercase tracking-wide text-sm mb-2">
                     Grupo de Investigación Kernel
@@ -865,7 +865,7 @@
             </div>
 
             <div class="flex items-center justify-center gap-2">
-                ${y()}
+                ${A()}
             </div>
 
             <div class="w-full bg-[#1E1E1E] rounded-3xl p-6 md:p-8 text-center text-white shadow-2xl relative overflow-hidden">
@@ -892,7 +892,7 @@
                     </a>
                 </div>
             </div>
-        `;const f=i.querySelector("#cards-wrapper");r.forEach(h=>{f.appendChild(aa(h))});const m=i.querySelector("#prev-btn"),v=i.querySelector("#next-btn");m&&(m.onclick=()=>{b(),d()}),v&&(v.onclick=()=>{p(),d()}),i.querySelectorAll("[data-dot-index]").forEach(h=>{h.onclick=()=>{e=parseInt(h.dataset.dotIndex),u(),d()}})};return i.addEventListener("mouseenter",l),i.addEventListener("mouseleave",d),document.addEventListener("visibilitychange",()=>{document.hidden?l():d()}),window.addEventListener("resize",()=>{clearTimeout(t),t=setTimeout(()=>{e=0,u(),d()},150)}),u(),d(),i}function ia(e){e.addEventListener("click",a=>{const t=a.target.closest("[data-route]");if(!t)return;const i=window.location.hash.replace("#/","")||"equipment";t.dataset.route!==i&&ee(t.dataset.route)})}function de(){const e=window.location.hash.replace(/^#\/?/,"")||"equipment",a=document.createElement("nav"),t="bg-sky-800 text-white border-sky-800 shadow-md",i="bg-white text-slate-700 border-slate-200 hover:bg-sky-50 hover:text-sky-800 hover:border-sky-200";return a.className="w-full flex justify-center mb-6",a.innerHTML=`
+        `;const h=i.querySelector("#cards-wrapper");l.forEach(y=>{h.appendChild(aa(y))});const p=i.querySelector("#prev-btn"),w=i.querySelector("#next-btn");p&&(p.onclick=()=>{x(),m()}),w&&(w.onclick=()=>{d(),m()}),i.querySelectorAll("[data-dot-index]").forEach(y=>{y.onclick=()=>{e=parseInt(y.dataset.dotIndex),g(),m()}})};return i.addEventListener("mouseenter",c),i.addEventListener("mouseleave",m),document.addEventListener("visibilitychange",()=>{document.hidden?c():m()}),window.addEventListener("resize",()=>{clearTimeout(t),t=setTimeout(()=>{e=0,g(),m()},150)}),g(),m(),i}function ia(e){e.addEventListener("click",a=>{const t=a.target.closest("[data-route]");if(!t)return;const i=window.location.hash.replace("#/","")||"equipment";t.dataset.route!==i&&ee(t.dataset.route)})}function de(){const e=window.location.hash.replace(/^#\/?/,"")||"equipment",a=document.createElement("nav"),t="bg-sky-800 text-white border-sky-800 shadow-md",i="bg-white text-slate-700 border-slate-200 hover:bg-sky-50 hover:text-sky-800 hover:border-sky-200";return a.className="w-full flex justify-center mb-6",a.innerHTML=`
         <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-sm p-2 w-full max-w-xl">
             <ul class="grid grid-cols-2 gap-2 text-center">
 
@@ -914,7 +914,7 @@
 
             </ul>
         </div>
-    `,ia(a),a}function oa(){const e=document.createElement("section");e.id="equipo-investigacion",e.className="w-full max-w-7xl mx-auto px-4 py-8 mb-20 font-sans tabletBig:px-20 xl:px-0";const a=document.createElement("div");a.className="mb-6",a.appendChild(de());const t=ta();return e.appendChild(a),e.appendChild(t),e}function sa(){return oa()}function na(e="default"){const a=document.getElementById("main");a.classList.remove("p-2","mt-8","md:mt-12"),e=="full"?(a.classList.add("mt-0","pt-0"),a.classList.remove("max-w-7xl")):e=="left"?(a.classList.add("p-2","mt-8","md:mt-12"),a.classList.remove("m-auto")):(a.classList.add("p-2","mt-8","md:mt-12"),a.classList.add("m-auto"))}function D(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function pe(e){return e.formacion?.length||0}function me(e){return e.experiencia?.length||0}function ra(e,a=!1){const t=pe(e),i=me(e);return`
+    `,ia(a),a}function oa(){const e=document.createElement("section");e.id="equipo-investigacion",e.className="w-full max-w-7xl mx-auto px-4 py-8 mb-20 font-sans tabletBig:px-20 xl:px-0";const a=document.createElement("div");a.className="mb-6",a.appendChild(de());const t=ta();return e.appendChild(a),e.appendChild(t),e}function sa(){return oa()}function na(e="default"){const a=document.getElementById("main");a.classList.remove("p-2","mt-8","md:mt-12"),e=="full"?(a.classList.add("mt-0","pt-0"),a.classList.remove("max-w-7xl")):e=="left"?(a.classList.add("p-2","mt-8","md:mt-12"),a.classList.remove("m-auto")):(a.classList.add("p-2","mt-8","md:mt-12"),a.classList.add("m-auto"))}function $(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function pe(e){return e.formacion?.length||0}function ue(e){return e.experiencia?.length||0}function ra(e,a=!1){const t=pe(e),i=ue(e);return`
         <button 
             type="button"
             data-id="${e.id}" 
@@ -924,7 +924,7 @@
             <div class="relative shrink-0">
                 <img 
                     src="${e.img}" 
-                    alt="${D(e.name)}"
+                    alt="${$(e.name)}"
                     class="w-16 h-16 rounded-full border-2 object-cover
                     ${a?"border-white shadow-md":"border-sky-100"}">
 
@@ -935,7 +935,7 @@
 
             <div class="min-w-0 flex-1">
                 <h3 class="font-bold text-sm md:text-base leading-tight mb-1">
-                    ${D(e.name)}
+                    ${$(e.name)}
                 </h3>
 
                 <p class="text-xs leading-snug ${a?"text-sky-50":"text-gray-500"}">
@@ -945,12 +945,12 @@
 
                 ${e.area?`
                             <p class="text-xs mt-1 line-clamp-2 ${a?"text-white/80":"text-gray-400"}">
-                                ${D(e.area)}
+                                ${$(e.area)}
                             </p>
                           `:""}
             </div>
         </button>
-    `}function la(e){const a=e.formacion||[],t=e.experiencia||[],i=a.length?a.map(p=>`
+    `}function la(e){const a=e.formacion||[],t=e.experiencia||[],i=a.length?a.map(d=>`
             <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100 mb-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
@@ -959,16 +959,16 @@
 
                     <div>
                         <p class="font-black text-gray-800 text-sm md:text-base leading-tight mb-1">
-                            ${D(p.name)}
+                            ${$(d.name)}
                         </p>
 
                         <p class="text-sm text-gray-500 leading-relaxed">
-                            ${D(p.descripcion)}
+                            ${$(d.descripcion)}
                         </p>
 
-                        ${p.institucion?`
+                        ${d.institucion?`
                                     <p class="text-xs text-sky-600 font-bold mt-2 uppercase tracking-wide">
-                                        ${D(p.institucion)}
+                                        ${$(d.institucion)}
                                     </p>
                                   `:""}
                     </div>
@@ -978,23 +978,23 @@
             <div class="bg-white rounded-2xl p-5 text-gray-500 text-sm">
                 No hay formación académica registrada.
             </div>
-          `,o=t.length?t.map(p=>`
+          `,o=t.length?t.map(d=>`
             <li class="flex gap-3 text-sm text-gray-300 leading-relaxed mb-3">
                 <span class="mt-2 w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-                <span>${D(p.contenido)}</span>
+                <span>${$(d.contenido)}</span>
             </li>
         `).join(""):`
             <p class="text-sm text-gray-400">
                 No hay experiencia relevante registrada.
             </p>
-          `,s=pe(e),n=me(e);return`
+          `,s=pe(e),n=ue(e);return`
         <div class="flex flex-col h-full text-white">
 
             <div class="flex justify-between items-start gap-4 mb-5 border-b border-gray-700 pb-4">
                 <div class="flex items-start gap-4">
                     <img 
                         src="${e.img}" 
-                        alt="${D(e.name)}"
+                        alt="${$(e.name)}"
                         class="hidden sm:block w-16 h-16 rounded-2xl object-cover border-2 border-sky-400 shadow-lg">
 
                     <div>
@@ -1003,12 +1003,12 @@
                         </p>
 
                         <h2 class="text-xl md:text-2xl font-bold leading-tight">
-                            ${D(e.name)}
+                            ${$(e.name)}
                         </h2>
 
                         ${e.area?`
                                     <p class="text-gray-300 text-sm mt-2 leading-relaxed">
-                                        ${D(e.area)}
+                                        ${$(e.area)}
                                     </p>
                                   `:""}
                     </div>
@@ -1055,7 +1055,7 @@
                         Área
                     </p>
                     <p class="text-sm font-bold leading-tight mt-1">
-                        ${D(e.area||"No especificada")}
+                        ${$(e.area||"No especificada")}
                     </p>
                 </div>
             </div>
@@ -1082,7 +1082,7 @@
 
             </div>
         </div>
-    `}const z=[{id:1,name:"Miguel A. Leonardo Sepúlveda, Ph.D.",img:Q,area:"Análisis numérico, métodos iterativos de alto orden, EDPs no lineales y matemática aplicada",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC (2019-2024). Estancias doctorales en la Universitat Politècnica de València, España. Tesis doctoral defendida con éxito en 2024."},{name:"Maestría en Matemática",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC, 2017)."},{name:"Especialidad en Planificación y Desarrollo Curricular",descripcion:"Universitat de Barcelona (2019)."},{name:"Licenciatura en Educación, Mención Matemática y Física",descripcion:"Universidad Dominicana O&M (2011)."},{name:"Diplomado en Formación Lasallista",descripcion:"Universidad La Salle, México (2016)."},{name:"Investigador",descripcion:"Carrera Nacional de Investigadores, área de Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Diseñador, rediseñador y coordinador curricular de programas de Maestría en Matemática Superior y Licenciatura en Matemática y Física en ISFODOSU."},{id:2,contenido:"Docente de Matemática en ITLA e ISFODOSU desde 2016."},{id:3,contenido:"Docente universitario de matemática, cálculo, ecuaciones diferenciales y Variable Compleja en INTEC."},{id:4,contenido:"Investigador en métodos iterativos de alto orden, sistemas no lineales, métodos libres de Jacobiano y aplicaciones a EDPs no lineales."}]},{id:2,name:"Natanael Ureña Castillo",img:W,area:"Optimización numérica, métodos híbridos, métodos cuasi-Newton y aplicaciones computacionales",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. En etapa final; estará defendiendo su tesis doctoral en las próximas semanas."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2005-2008)."},{name:"Especialidad en Cálculo Actuarial",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC)."},{name:"Licenciatura en Educación, Mención Matemáticas",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2000-2004)."},{name:"Certificado de Estudios Superiores en Educación",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2000-2003)."}],experiencia:[{id:1,contenido:"Docente universitario de matemática, cálculo y ecuaciones diferenciales en INTEC y UASD."},{id:2,contenido:"Investigador en optimización numérica, métodos híbridos cuasi-Newton, análisis de estabilidad y eficiencia algorítmica."},{id:3,contenido:"Especialista en áreas actuariales y financieras, con aplicaciones a modelización cuantitativa."},{id:4,contenido:"Ponente en congresos nacionales e internacionales y colaborador en proyectos de investigación en matemática aplicada."}]},{id:3,name:"Antmel Rodríguez Cabral, Ph.D.",img:_,area:"Métodos iterativos, estabilidad dinámica, sistemas no lineales y métodos libres de Jacobiano",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2015-2017)."},{name:"Ingeniería Civil",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC)."},{name:"Investigador Adscrito",descripcion:"Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Profesor universitario de matemáticas en UASD, UFHEC, UAPA, UTESA y UTESUR."},{id:2,contenido:"Investigador en métodos iterativos para sistemas no lineales, estabilidad de parámetros autoacelerados y dinámica discreta."},{id:3,contenido:"Ponente y colaborador en congresos nacionales e internacionales, incluyendo actividades académicas vinculadas a MESCyT y UASD."},{id:4,contenido:"Especialista en dinámica compleja y dinámica real de métodos iterativos para sistemas no lineales."}]},{id:4,name:"Randy Leonardo",img:le,area:"Álgebra lineal, matemática superior, docencia universitaria e investigación matemática",formacion:[{name:"Maestría en Matemática",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC, 2011)."},{name:"Licenciatura en Matemática",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2008)."},{name:"Diplomados en Educación en Línea y Modelos SCORM",descripcion:"Instituto Latinoamericano de la Comunicación Educativa, ILCE (2013, 2014)."},{name:"Investigador Titular",descripcion:"Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Docente de matemática en INTEC, UASD e ISFODOSU desde 2009."},{id:2,contenido:"Co-investigador en líneas vinculadas a Álgebra Lineal y Matriz Combinada."},{id:3,contenido:"Ponente en congresos y seminarios nacionales e internacionales."}]},{id:5,name:"Marino Brito Guillén",img:ce,area:"Gestión universitaria, matemática, educación superior y formación docente",formacion:[{name:"Máster Internacional de Gestión Universitaria",descripcion:"Universidades de Alcalá de Henares, La Rioja, Castilla-La Mancha y Rey Juan Carlos."},{name:"Maestría en Matemática",descripcion:"Pontificia Universidad Católica Madre y Maestra (PUCMM, 1996)."},{name:"Postgrado en Matemática",descripcion:"Pontificia Universidad Católica Madre y Maestra (PUCMM, 1995)."},{name:"Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas",descripcion:"Universidad Eugenio María de Hostos (1991)."},{name:"Maestro Normal Primario",descripcion:"Escuela Normal Américo Lugo (1984)."},{name:"Diplomado en Gerencia Social Ignaciana",descripcion:"Pontificia Universidad Javeriana, Colombia (2009)."}],experiencia:[{id:1,contenido:"Académico con trayectoria en gestión universitaria, formación docente y enseñanza de la matemática."},{id:2,contenido:"Experiencia en procesos institucionales de educación superior y desarrollo académico."},{id:3,contenido:"Aportes a la formación matemática y a la gestión educativa en contextos universitarios."}]},{id:6,name:"Marc-Kelly Jean Philippe Jean, Ph.D.",img:Y,area:"Teoría de grupos, caracteres, grafos asociados a clases p-regulares y estructuras algebraicas",formacion:[{name:"Doctorado en Matemática",descripcion:"Programa interuniversitario UASD-INTEC-PUCMM. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2023)."},{name:"Maestría en Matemática",descripcion:"Universidad Tecnológica de Santiago (UTESA, 2015)."},{name:"Licenciatura en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2011)."},{name:"Diplomado en Desarrollo de Competencias Didácticas",descripcion:"Universidad Santander, España (2024)."},{name:"Bachillerato Humanístico",descripcion:"Colegio Mi Hogar Cristiano, La Romana (2004)."}],experiencia:[{id:1,contenido:"Profesor adjunto y monitor en la Escuela de Matemáticas de la UASD desde 2012."},{id:2,contenido:"Investigador en teoría de grupos, caracteres, clases p-regulares y grafos asociados a estructuras algebraicas."},{id:3,contenido:"Tutor virtual y profesor en UCE y Loyola."},{id:4,contenido:"Asesor, árbitro y conferencista en investigación en álgebra y educación matemática."},{id:5,contenido:"Ponente en congresos nacionales e internacionales vinculados a MESCyT, UASD, APEC y REDOME."}]},{id:7,name:"José Alberto Reyes Reyes, Ph.D.",img:K,area:"Análisis numérico, métodos iterativos libres de derivadas, estabilidad y convergencia local",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2014-2016)."},{name:"Magíster en Matemáticas",descripcion:"Universidad Tecnológica de Santiago (UTESA, 2013-2015)."},{name:"Máster en Educación y Nuevas Tecnologías",descripcion:"Universidad a Distancia de Madrid (UDIMA), España (2012-2013)."},{name:"Licenciatura en Matemáticas",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2007-2011)."},{name:"Diplomado en Fundamentos del Análisis de Variable Real",descripcion:"Universidad Central del Este (UCE, 2011-2012)."},{name:"Diplomado en Competencias Digitales",descripcion:"Red Qualitas/Microsoft (2020)."}],experiencia:[{id:1,contenido:"Docente universitario y de postgrado en matemáticas en la UASD."},{id:2,contenido:"Investigador en métodos iterativos, análisis de estabilidad, convergencia local y métodos libres de derivadas."},{id:3,contenido:"Autor de trabajos recientes sobre estabilidad de esquemas iterativos óptimos para ecuaciones no lineales."},{id:4,contenido:"Consultor en innovación educativa y tecnologías aplicadas a la educación matemática."}]}];function ca(){let e=z[0]?.id||1,a=!1,t=null;const i=document.createElement("section");i.className="w-full max-w-7xl mx-auto px-4 py-8 mb-20 font-sans tabletBig:px-20 xl:px-0";function o(){return z.find(b=>b.id===e)||z[0]}function s(){const b=z.length,d=z.reduce((u,c)=>u+(c.formacion?.length||0),0),l=z.reduce((u,c)=>u+(c.experiencia?.length||0),0),y=z.filter(u=>{const c=String(u.name||"").toLowerCase(),r=(u.formacion||[]).map(f=>`${f.name||""} ${f.descripcion||""}`).join(" ").toLowerCase();return c.includes("ph.d")||c.includes("phd")||c.includes("doctor")||r.includes("doctor")}).length;return{totalProfesores:b,totalFormacion:d,totalExperiencia:l,doctores:y}}const n=()=>{const b=o(),d=s(),l=window.innerWidth<768&&!a;i.innerHTML="",i.appendChild(de());const y=document.createElement("div");y.innerHTML=`
+    `}const N=[{id:1,name:"Miguel A. Leonardo Sepúlveda, Ph.D.",img:Q,area:"Análisis numérico, métodos iterativos de alto orden, EDPs no lineales y matemática aplicada",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC (2019-2024). Estancias doctorales en la Universitat Politècnica de València, España. Tesis doctoral defendida con éxito en 2024."},{name:"Maestría en Matemática",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC, 2017)."},{name:"Especialidad en Planificación y Desarrollo Curricular",descripcion:"Universitat de Barcelona (2019)."},{name:"Licenciatura en Educación, Mención Matemática y Física",descripcion:"Universidad Dominicana O&M (2011)."},{name:"Diplomado en Formación Lasallista",descripcion:"Universidad La Salle, México (2016)."},{name:"Investigador",descripcion:"Carrera Nacional de Investigadores, área de Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Diseñador, rediseñador y coordinador curricular de programas de Maestría en Matemática Superior y Licenciatura en Matemática y Física en ISFODOSU."},{id:2,contenido:"Docente de Matemática en ITLA e ISFODOSU desde 2016."},{id:3,contenido:"Docente universitario de matemática, cálculo, ecuaciones diferenciales y Variable Compleja en INTEC."},{id:4,contenido:"Investigador en métodos iterativos de alto orden, sistemas no lineales, métodos libres de Jacobiano y aplicaciones a EDPs no lineales."}]},{id:2,name:"Natanael Ureña Castillo",img:W,area:"Optimización numérica, métodos híbridos, métodos cuasi-Newton y aplicaciones computacionales",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. En etapa final; estará defendiendo su tesis doctoral en las próximas semanas."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2005-2008)."},{name:"Especialidad en Cálculo Actuarial",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC)."},{name:"Licenciatura en Educación, Mención Matemáticas",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2000-2004)."},{name:"Certificado de Estudios Superiores en Educación",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2000-2003)."}],experiencia:[{id:1,contenido:"Docente universitario de matemática, cálculo y ecuaciones diferenciales en INTEC y UASD."},{id:2,contenido:"Investigador en optimización numérica, métodos híbridos cuasi-Newton, análisis de estabilidad y eficiencia algorítmica."},{id:3,contenido:"Especialista en áreas actuariales y financieras, con aplicaciones a modelización cuantitativa."},{id:4,contenido:"Ponente en congresos nacionales e internacionales y colaborador en proyectos de investigación en matemática aplicada."}]},{id:3,name:"Antmel Rodríguez Cabral, Ph.D.",img:_,area:"Métodos iterativos, estabilidad dinámica, sistemas no lineales y métodos libres de Jacobiano",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2015-2017)."},{name:"Ingeniería Civil",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC)."},{name:"Investigador Adscrito",descripcion:"Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Profesor universitario de matemáticas en UASD, UFHEC, UAPA, UTESA y UTESUR."},{id:2,contenido:"Investigador en métodos iterativos para sistemas no lineales, estabilidad de parámetros autoacelerados y dinámica discreta."},{id:3,contenido:"Ponente y colaborador en congresos nacionales e internacionales, incluyendo actividades académicas vinculadas a MESCyT y UASD."},{id:4,contenido:"Especialista en dinámica compleja y dinámica real de métodos iterativos para sistemas no lineales."}]},{id:4,name:"Randy Leonardo",img:le,area:"Álgebra lineal, matemática superior, docencia universitaria e investigación matemática",formacion:[{name:"Maestría en Matemática",descripcion:"Instituto Tecnológico de Santo Domingo (INTEC, 2011)."},{name:"Licenciatura en Matemática",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2008)."},{name:"Diplomados en Educación en Línea y Modelos SCORM",descripcion:"Instituto Latinoamericano de la Comunicación Educativa, ILCE (2013, 2014)."},{name:"Investigador Titular",descripcion:"Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas."}],experiencia:[{id:1,contenido:"Docente de matemática en INTEC, UASD e ISFODOSU desde 2009."},{id:2,contenido:"Co-investigador en líneas vinculadas a Álgebra Lineal y Matriz Combinada."},{id:3,contenido:"Ponente en congresos y seminarios nacionales e internacionales."}]},{id:5,name:"Marino Brito Guillén",img:ce,area:"Gestión universitaria, matemática, educación superior y formación docente",formacion:[{name:"Máster Internacional de Gestión Universitaria",descripcion:"Universidades de Alcalá de Henares, La Rioja, Castilla-La Mancha y Rey Juan Carlos."},{name:"Maestría en Matemática",descripcion:"Pontificia Universidad Católica Madre y Maestra (PUCMM, 1996)."},{name:"Postgrado en Matemática",descripcion:"Pontificia Universidad Católica Madre y Maestra (PUCMM, 1995)."},{name:"Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas",descripcion:"Universidad Eugenio María de Hostos (1991)."},{name:"Maestro Normal Primario",descripcion:"Escuela Normal Américo Lugo (1984)."},{name:"Diplomado en Gerencia Social Ignaciana",descripcion:"Pontificia Universidad Javeriana, Colombia (2009)."}],experiencia:[{id:1,contenido:"Académico con trayectoria en gestión universitaria, formación docente y enseñanza de la matemática."},{id:2,contenido:"Experiencia en procesos institucionales de educación superior y desarrollo académico."},{id:3,contenido:"Aportes a la formación matemática y a la gestión educativa en contextos universitarios."}]},{id:6,name:"Marc-Kelly Jean Philippe Jean, Ph.D.",img:Y,area:"Teoría de grupos, caracteres, grafos asociados a clases p-regulares y estructuras algebraicas",formacion:[{name:"Doctorado en Matemática",descripcion:"Programa interuniversitario UASD-INTEC-PUCMM. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2023)."},{name:"Maestría en Matemática",descripcion:"Universidad Tecnológica de Santiago (UTESA, 2015)."},{name:"Licenciatura en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2011)."},{name:"Diplomado en Desarrollo de Competencias Didácticas",descripcion:"Universidad Santander, España (2024)."},{name:"Bachillerato Humanístico",descripcion:"Colegio Mi Hogar Cristiano, La Romana (2004)."}],experiencia:[{id:1,contenido:"Profesor adjunto y monitor en la Escuela de Matemáticas de la UASD desde 2012."},{id:2,contenido:"Investigador en teoría de grupos, caracteres, clases p-regulares y grafos asociados a estructuras algebraicas."},{id:3,contenido:"Tutor virtual y profesor en UCE y Loyola."},{id:4,contenido:"Asesor, árbitro y conferencista en investigación en álgebra y educación matemática."},{id:5,contenido:"Ponente en congresos nacionales e internacionales vinculados a MESCyT, UASD, APEC y REDOME."}]},{id:7,name:"José Alberto Reyes Reyes, Ph.D.",img:H,area:"Análisis numérico, métodos iterativos libres de derivadas, estabilidad y convergencia local",formacion:[{name:"Doctorado en Matemática",descripcion:"INTEC. Tesis doctoral defendida con éxito en 2025, obteniendo la calificación más alta otorgada por el jurado evaluador."},{name:"Maestría en Matemática Pura",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2014-2016)."},{name:"Magíster en Matemáticas",descripcion:"Universidad Tecnológica de Santiago (UTESA, 2013-2015)."},{name:"Máster en Educación y Nuevas Tecnologías",descripcion:"Universidad a Distancia de Madrid (UDIMA), España (2012-2013)."},{name:"Licenciatura en Matemáticas",descripcion:"Universidad Autónoma de Santo Domingo (UASD, 2007-2011)."},{name:"Diplomado en Fundamentos del Análisis de Variable Real",descripcion:"Universidad Central del Este (UCE, 2011-2012)."},{name:"Diplomado en Competencias Digitales",descripcion:"Red Qualitas/Microsoft (2020)."}],experiencia:[{id:1,contenido:"Docente universitario y de postgrado en matemáticas en la UASD."},{id:2,contenido:"Investigador en métodos iterativos, análisis de estabilidad, convergencia local y métodos libres de derivadas."},{id:3,contenido:"Autor de trabajos recientes sobre estabilidad de esquemas iterativos óptimos para ecuaciones no lineales."},{id:4,contenido:"Consultor en innovación educativa y tecnologías aplicadas a la educación matemática."}]}];function ca(){let e=N[0]?.id||1,a=!1,t=null;const i=document.createElement("section");i.className="w-full max-w-7xl mx-auto px-4 py-8 mb-20 font-sans tabletBig:px-20 xl:px-0";function o(){return N.find(x=>x.id===e)||N[0]}function s(){const x=N.length,m=N.reduce((g,u)=>g+(u.formacion?.length||0),0),c=N.reduce((g,u)=>g+(u.experiencia?.length||0),0),A=N.filter(g=>{const u=String(g.name||"").toLowerCase(),l=(g.formacion||[]).map(h=>`${h.name||""} ${h.descripcion||""}`).join(" ").toLowerCase();return u.includes("ph.d")||u.includes("phd")||u.includes("doctor")||l.includes("doctor")}).length;return{totalProfesores:x,totalFormacion:m,totalExperiencia:c,doctores:A}}const n=()=>{const x=o(),m=s(),c=window.innerWidth<768&&!a;i.innerHTML="",i.appendChild(de());const A=document.createElement("div");A.innerHTML=`
             <div class="mt-8 mb-8">
                 <p class="text-[#5580C1] font-black uppercase tracking-wide text-sm mb-2">
                     Grupo de Investigación Kernel
@@ -1104,7 +1104,7 @@
                         Investigadores
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${d.totalProfesores}
+                        ${m.totalProfesores}
                     </p>
                 </div>
 
@@ -1113,7 +1113,7 @@
                         Doctores
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${d.doctores}
+                        ${m.doctores}
                     </p>
                 </div>
 
@@ -1122,7 +1122,7 @@
                         Registros formativos
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${d.totalFormacion}
+                        ${m.totalFormacion}
                     </p>
                 </div>
 
@@ -1131,7 +1131,7 @@
                         Experiencias
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${d.totalExperiencia}
+                        ${m.totalExperiencia}
                     </p>
                 </div>
             </div>
@@ -1151,21 +1151,21 @@
                         </p>
                     </div>
 
-                    ${z.map(c=>ra(c,c.id===e)).join("")}
+                    ${N.map(u=>ra(u,u.id===e)).join("")}
                 </aside>
 
                 <div id="detalle-container" class="
                     fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4
                     md:relative md:inset-auto md:z-0 md:bg-transparent md:flex md:w-2/3 md:p-0
-                    ${l?"hidden":"flex"}
+                    ${c?"hidden":"flex"}
                 ">
                     <div class="bg-[#1e293b] w-full max-w-lg md:max-w-none h-[90%] md:h-full rounded-3xl shadow-2xl p-6 relative border border-slate-700 animate-fade-in">
-                        ${la(b)}
+                        ${la(x)}
                     </div>
                 </div>
 
             </div>
-        `,i.appendChild(y),i.querySelectorAll("[data-id]").forEach(c=>{c.onclick=()=>{e=parseInt(c.dataset.id),window.innerWidth<768&&(a=!0),n()}});const u=i.querySelector("#close-modal");u&&(u.onclick=()=>{a=!1,n()})},p=()=>{clearTimeout(t),t=setTimeout(()=>{window.innerWidth>=768&&(a=!1),n()},120)};return window.addEventListener("resize",p),n(),i}function da(){return ca()}const pa=""+new URL("antmel_rodriguez-Bg9WDtoT.jpg",import.meta.url).href,ma=""+new URL("antmelphd-CVFA8nvm.jpg",import.meta.url).href,ua=""+new URL("mark2-DsoQRqwr.jpg",import.meta.url).href,xa=""+new URL("libro_logica_matematica-C9AWaaqM.jpg",import.meta.url).href,ba=""+new URL("congreso3-qKU-9t8-.jpeg",import.meta.url).href,ue=[{id:"nw10",title:"El Kernel presenta tres ponencias en el XXI Congreso Internacional de Investigación Científica",date:"1 de julio de 2026",image:ba,excerpt:"El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica con tres ponencias en formato de simposio, presentando resultados recientes en análisis numérico, sistemas no lineales y optimización.",content:{paragraphs:["El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica, en el marco de la Semana Dominicana de Ciencia y Tecnología 2026, con una sesión académica organizada en formato de simposio.","Durante aproximadamente una hora se presentaron tres ponencias articuladas alrededor de las líneas de análisis numérico, métodos iterativos, sistemas no lineales, optimización y matemática aplicada.","La primera ponencia estuvo a cargo de Miguel Antonio Leonardo Sepúlveda, quien presentó resultados asociados a una generalización con funciones peso del método Singh–Sharma de quinto orden para sistemas de ecuaciones no lineales, con aplicación a un problema estacionario viscoso de Burgers discretizado.","La segunda ponencia fue presentada por Natanael Ureña Castillo, como continuación natural de los trabajos previos del grupo, abordando nuevos algoritmos híbridos cuasi-Newton con correctores de alto orden tipo Singh–Sharma para optimización sin restricciones.","La tercera ponencia estuvo a cargo de Antmel Rodríguez Cabral, quien presentó resultados relacionados con la familia generalizada de Traub para sistemas no lineales, un método óptimo de cuarto orden y su análisis dinámico.","La actividad contó con la asistencia aproximada de 50 personas, en su mayoría estudiantes de la Maestría en Matemática Superior del Instituto Superior de Formación Docente Salomé Ureña.","Varios de los asistentes se encuentran orientados hacia tesis relacionadas con matemática pura, matemática aplicada y computacional, álgebra, análisis matricial, didáctica de la matemática y otras áreas de interés académico e institucional.","La sesión fue coordinada por Miguel Antonio Leonardo Sepúlveda y representa una acción relevante para fortalecer la visibilidad científica del grupo, promover la formación de nuevos investigadores y conectar la producción académica del Kernel con programas de posgrado en matemática."],list:["Evento: XXI Congreso Internacional de Investigación Científica.","Marco institucional: Semana Dominicana de Ciencia y Tecnología 2026.","Formato: simposio de tres ponencias.","Duración aproximada: una hora.","Asistencia estimada: alrededor de 50 personas.","Público principal: estudiantes de la Maestría en Matemática Superior.","Primera ponencia: Miguel Antonio Leonardo Sepúlveda.","Segunda ponencia: Natanael Ureña Castillo.","Tercera ponencia: Antmel Rodríguez Cabral.","Áreas abordadas: análisis numérico, métodos iterativos, sistemas no lineales, optimización, álgebra, análisis matricial, matemática aplicada y didáctica de la matemática.","Coordinación académica: Miguel Antonio Leonardo Sepúlveda."]},articleURL:null},{id:"nw1",title:"Antmel Rodríguez Cabral defiende exitosamente su tesis doctoral",date:"2025",image:ma,excerpt:"El Dr. Antmel Rodríguez Cabral defendió exitosamente su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel felicita al Dr. Antmel Rodríguez Cabral por la defensa exitosa de su tesis doctoral titulada “Estabilidad de métodos iterativos para resolver sistemas de ecuaciones no lineales”.","Este logro representa un aporte significativo al fortalecimiento de la investigación matemática en análisis numérico, métodos iterativos, estabilidad de procesos y resolución de sistemas no lineales. La defensa recibió la calificación más alta otorgada por el jurado evaluador, reflejando la calidad académica, el rigor metodológico y la pertinencia científica del trabajo presentado."],list:["Área principal: análisis numérico y métodos iterativos.","Tema central: estabilidad de métodos iterativos para sistemas no lineales.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: fortalecimiento de la producción científica del Grupo Kernel."]},articleURL:null},{id:"nw2",title:"Marc-Kelly Jean Philippe Jean culmina su defensa doctoral con la máxima calificación",date:"2025",image:ua,excerpt:"El Dr. Marc-Kelly Jean Philippe Jean culminó exitosamente su defensa doctoral, alcanzando la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel celebra el logro académico del Dr. Marc-Kelly Jean Philippe Jean, quien culminó exitosamente la defensa de su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.","Su trayectoria investigadora se vincula con la teoría de grupos, estructuras algebraicas, caracteres, clases p-regulares y grafos asociados a problemas de álgebra. Este logro fortalece la diversidad científica del grupo y consolida una línea especializada en matemática pura dentro de Kernel."],list:["Área principal: teoría de grupos y estructuras algebraicas.","Línea asociada: grafos, caracteres y clases p-regulares.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: fortalecimiento de la línea de álgebra del Grupo Kernel."]},articleURL:null},{id:"nw3",title:"José Alberto Reyes Reyes obtiene el grado de Doctor en Matemática",date:"2025",image:K,excerpt:"El Dr. José Alberto Reyes Reyes defendió exitosamente su tesis doctoral, obteniendo la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel felicita al Dr. José Alberto Reyes Reyes por la defensa exitosa de su tesis doctoral, la cual recibió la calificación más alta otorgada por el jurado evaluador.","Su trabajo se vincula con el análisis numérico, los métodos iterativos libres de derivadas, la convergencia local y la estabilidad de esquemas numéricos para ecuaciones no lineales. Este logro fortalece la producción científica del grupo y consolida una línea de investigación con proyección nacional e internacional."],list:["Área principal: análisis numérico.","Línea asociada: métodos iterativos libres de derivadas.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: consolidación de la línea de métodos numéricos para ecuaciones no lineales."]},articleURL:null},{id:"nw4",title:"Natanael Ureña Castillo presentará próximamente su tesis doctoral",date:"Próximamente",image:W,excerpt:"En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, cerrando un ciclo académico relevante para el Grupo Kernel.",content:{paragraphs:["En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, con lo cual se cerrará un ciclo académico de gran relevancia para el Grupo de Investigación Kernel.","Su trabajo se vincula con la optimización numérica, los métodos híbridos, las estructuras cuasi-Newton, la estabilidad algorítmica y las aplicaciones computacionales. Esta próxima defensa representa un paso importante en la consolidación de una nueva generación de investigadores dominicanos en matemática aplicada, análisis numérico y computación científica."],list:["Área principal: optimización numérica.","Línea asociada: métodos híbridos y cuasi-Newton.","Estado: defensa doctoral próxima.","Impacto esperado: cierre de un ciclo de defensas doctorales vinculadas al Grupo Kernel."]},articleURL:null},{id:"nw5",title:"Miguel Leonardo, Antmel Rodríguez y Natanael Ureña alcanzan su tercer artículo publicado en 2026",date:"2026",image:Q,excerpt:"Los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo alcanzan su tercer artículo científico publicado durante el año 2026.",content:{paragraphs:["El Grupo de Investigación Kernel celebra que los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo han alcanzado su tercer artículo científico publicado durante el año 2026, consolidando una etapa de alta productividad académica en análisis numérico, métodos iterativos, optimización y matemática aplicada.","Según los investigadores, 2026 apunta a ser un año especialmente relevante para la producción científica del grupo, con una amplia cantidad de artículos proyectados en revistas de alto impacto. Este avance evidencia la madurez de las líneas de investigación desarrolladas, la solidez de las colaboraciones nacionales e internacionales y el fortalecimiento del Grupo Kernel como espacio de producción matemática avanzada."],list:["Año destacado: 2026.","Investigadores vinculados: Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo.","Áreas principales: análisis numérico, métodos iterativos, optimización y matemática aplicada.","Proyección: incremento de publicaciones científicas en revistas de alto impacto.","Impacto: consolidación del Grupo Kernel como núcleo activo de investigación matemática."]},articleURL:null},{id:"nw6",title:"Sobre la estabilidad de los parámetros de autoaceleración",date:"2025",image:pa,excerpt:"Se publicó un artículo sobre la estabilidad de parámetros autoacelerados en métodos iterativos vectoriales sin memoria usando herramientas de dinámica discreta.",content:{paragraphs:["El trabajo analiza la estabilidad de parámetros de autoaceleración en métodos iterativos vectoriales sin memoria para sistemas no lineales, evaluando el comportamiento dinámico de distintas subfamilias paramétricas.","El estudio utiliza herramientas de dinámica discreta, incluyendo planos dinámicos y análisis de comportamiento numérico, para identificar regiones de estabilidad, órbitas periódicas y zonas con comportamiento caótico."],list:["Análisis de estabilidad frente al orden de convergencia.","Uso de herramientas de dinámica discreta.","Aplicación a métodos iterativos para sistemas no lineales.","Recomendaciones para escoger parámetros estables según el problema."]},articleURL:"https://doi.org/10.1177/14727978251361407"},{id:"nw7",title:"Guía Didáctica de Lógica Matemática y Teoría de Conjuntos",date:"17 de junio de 2025",image:xa,excerpt:"Se lanzó la Guía Didáctica de Lógica Matemática y Teoría de Conjuntos, con ejercicios, actividades y recursos para bachillerato y nivel universitario inicial.",content:{paragraphs:["La guía constituye un recurso didáctico con enfoque práctico y gradual. Incluye explicaciones claras, actividades guiadas, problemas con soluciones y secciones orientadas a la evaluación formativa.","El material está pensado para apoyar tanto a docentes en la planificación de clases como a estudiantes que requieren reforzar contenidos fundamentales de lógica, demostración y teoría de conjuntos."],list:["Temas: lógica proposicional, cuantificadores, pruebas, conjuntos y aplicaciones.","Dirigido a docentes y estudiantes.","Incluye actividades guiadas y problemas de práctica.","Aporta recursos para la enseñanza inicial de la matemática formal."]},articleURL:"https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view?usp=share_link"},{id:"nw8",title:"Stability Analysis of a New Fourth-Order Optimal Iterative Scheme",date:"2024",image:K,excerpt:"Artículo publicado en Axioms sobre análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.",content:{paragraphs:["El artículo presenta el análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.","El trabajo se enmarca en la línea de métodos iterativos, convergencia local, estabilidad dinámica y resolución numérica de ecuaciones no lineales."],list:["Revista: Axioms.","Área: métodos iterativos para ecuaciones no lineales.","Línea asociada: estabilidad y convergencia local.","Contribución: análisis de un esquema óptimo de cuarto orden."]},articleURL:"https://www.mdpi.com/2075-1680/13/1/34"},{id:"nw9",title:"Groups with Triangle-Free Graphs on p-Regular Classes",date:"2025",image:Y,excerpt:"Artículo en teoría de grupos finitos sobre propiedades combinatorias de clases p-regulares y grafos asociados.",content:{paragraphs:["El trabajo estudia grafos asociados a clases p-regulares en teoría de grupos finitos, analizando condiciones bajo las cuales dichos grafos son libres de triángulos.","Estos resultados aportan a la comprensión de propiedades estructurales de grupos finitos desde una perspectiva algebraica y combinatoria."],list:["Área: teoría de grupos.","Tema: clases p-regulares.","Objeto de estudio: grafos libres de triángulos.","Línea asociada: álgebra y estructuras algebraicas."]},articleURL:"https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554"}];function T(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function ga(e=null){const a=!!e,t=e?.imageFit==="cover"?"object-cover":"object-contain";return`    
+        `,i.appendChild(A),i.querySelectorAll("[data-id]").forEach(u=>{u.onclick=()=>{e=parseInt(u.dataset.id),window.innerWidth<768&&(a=!0),n()}});const g=i.querySelector("#close-modal");g&&(g.onclick=()=>{a=!1,n()})},d=()=>{clearTimeout(t),t=setTimeout(()=>{window.innerWidth>=768&&(a=!1),n()},120)};return window.addEventListener("resize",d),n(),i}function da(){return ca()}const pa=""+new URL("antmel_rodriguez-Bg9WDtoT.jpg",import.meta.url).href,ua=""+new URL("antmelphd-CVFA8nvm.jpg",import.meta.url).href,ma=""+new URL("mark2-DsoQRqwr.jpg",import.meta.url).href,xa=""+new URL("libro_logica_matematica-C9AWaaqM.jpg",import.meta.url).href,ba=""+new URL("congreso3-qKU-9t8-.jpeg",import.meta.url).href,me=[{id:"nw10",title:"El Kernel presenta tres ponencias en el XXI Congreso Internacional de Investigación Científica",date:"1 de julio de 2026",image:ba,excerpt:"El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica con tres ponencias en formato de simposio, presentando resultados recientes en análisis numérico, sistemas no lineales y optimización.",content:{paragraphs:["El Grupo de Investigación El Kernel participó en el XXI Congreso Internacional de Investigación Científica, en el marco de la Semana Dominicana de Ciencia y Tecnología 2026, con una sesión académica organizada en formato de simposio.","Durante aproximadamente una hora se presentaron tres ponencias articuladas alrededor de las líneas de análisis numérico, métodos iterativos, sistemas no lineales, optimización y matemática aplicada.","La primera ponencia estuvo a cargo de Miguel Antonio Leonardo Sepúlveda, quien presentó resultados asociados a una generalización con funciones peso del método Singh–Sharma de quinto orden para sistemas de ecuaciones no lineales, con aplicación a un problema estacionario viscoso de Burgers discretizado.","La segunda ponencia fue presentada por Natanael Ureña Castillo, como continuación natural de los trabajos previos del grupo, abordando nuevos algoritmos híbridos cuasi-Newton con correctores de alto orden tipo Singh–Sharma para optimización sin restricciones.","La tercera ponencia estuvo a cargo de Antmel Rodríguez Cabral, quien presentó resultados relacionados con la familia generalizada de Traub para sistemas no lineales, un método óptimo de cuarto orden y su análisis dinámico.","La actividad contó con la asistencia aproximada de 50 personas, en su mayoría estudiantes de la Maestría en Matemática Superior del Instituto Superior de Formación Docente Salomé Ureña.","Varios de los asistentes se encuentran orientados hacia tesis relacionadas con matemática pura, matemática aplicada y computacional, álgebra, análisis matricial, didáctica de la matemática y otras áreas de interés académico e institucional.","La sesión fue coordinada por Miguel Antonio Leonardo Sepúlveda y representa una acción relevante para fortalecer la visibilidad científica del grupo, promover la formación de nuevos investigadores y conectar la producción académica del Kernel con programas de posgrado en matemática."],list:["Evento: XXI Congreso Internacional de Investigación Científica.","Marco institucional: Semana Dominicana de Ciencia y Tecnología 2026.","Formato: simposio de tres ponencias.","Duración aproximada: una hora.","Asistencia estimada: alrededor de 50 personas.","Público principal: estudiantes de la Maestría en Matemática Superior.","Primera ponencia: Miguel Antonio Leonardo Sepúlveda.","Segunda ponencia: Natanael Ureña Castillo.","Tercera ponencia: Antmel Rodríguez Cabral.","Áreas abordadas: análisis numérico, métodos iterativos, sistemas no lineales, optimización, álgebra, análisis matricial, matemática aplicada y didáctica de la matemática.","Coordinación académica: Miguel Antonio Leonardo Sepúlveda."]},articleURL:null},{id:"nw1",title:"Antmel Rodríguez Cabral defiende exitosamente su tesis doctoral",date:"2025",image:ua,excerpt:"El Dr. Antmel Rodríguez Cabral defendió exitosamente su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel felicita al Dr. Antmel Rodríguez Cabral por la defensa exitosa de su tesis doctoral titulada “Estabilidad de métodos iterativos para resolver sistemas de ecuaciones no lineales”.","Este logro representa un aporte significativo al fortalecimiento de la investigación matemática en análisis numérico, métodos iterativos, estabilidad de procesos y resolución de sistemas no lineales. La defensa recibió la calificación más alta otorgada por el jurado evaluador, reflejando la calidad académica, el rigor metodológico y la pertinencia científica del trabajo presentado."],list:["Área principal: análisis numérico y métodos iterativos.","Tema central: estabilidad de métodos iterativos para sistemas no lineales.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: fortalecimiento de la producción científica del Grupo Kernel."]},articleURL:null},{id:"nw2",title:"Marc-Kelly Jean Philippe Jean culmina su defensa doctoral con la máxima calificación",date:"2025",image:ma,excerpt:"El Dr. Marc-Kelly Jean Philippe Jean culminó exitosamente su defensa doctoral, alcanzando la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel celebra el logro académico del Dr. Marc-Kelly Jean Philippe Jean, quien culminó exitosamente la defensa de su tesis doctoral y obtuvo la calificación más alta otorgada por el jurado evaluador.","Su trayectoria investigadora se vincula con la teoría de grupos, estructuras algebraicas, caracteres, clases p-regulares y grafos asociados a problemas de álgebra. Este logro fortalece la diversidad científica del grupo y consolida una línea especializada en matemática pura dentro de Kernel."],list:["Área principal: teoría de grupos y estructuras algebraicas.","Línea asociada: grafos, caracteres y clases p-regulares.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: fortalecimiento de la línea de álgebra del Grupo Kernel."]},articleURL:null},{id:"nw3",title:"José Alberto Reyes Reyes obtiene el grado de Doctor en Matemática",date:"2025",image:H,excerpt:"El Dr. José Alberto Reyes Reyes defendió exitosamente su tesis doctoral, obteniendo la calificación más alta otorgada por el jurado evaluador.",content:{paragraphs:["El Grupo de Investigación Kernel felicita al Dr. José Alberto Reyes Reyes por la defensa exitosa de su tesis doctoral, la cual recibió la calificación más alta otorgada por el jurado evaluador.","Su trabajo se vincula con el análisis numérico, los métodos iterativos libres de derivadas, la convergencia local y la estabilidad de esquemas numéricos para ecuaciones no lineales. Este logro fortalece la producción científica del grupo y consolida una línea de investigación con proyección nacional e internacional."],list:["Área principal: análisis numérico.","Línea asociada: métodos iterativos libres de derivadas.","Logro académico: defensa doctoral con la máxima calificación otorgada por el jurado.","Impacto: consolidación de la línea de métodos numéricos para ecuaciones no lineales."]},articleURL:null},{id:"nw4",title:"Natanael Ureña Castillo presentará próximamente su tesis doctoral",date:"Próximamente",image:W,excerpt:"En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, cerrando un ciclo académico relevante para el Grupo Kernel.",content:{paragraphs:["En las próximas semanas, Natanael Ureña Castillo estará presentando su tesis doctoral, con lo cual se cerrará un ciclo académico de gran relevancia para el Grupo de Investigación Kernel.","Su trabajo se vincula con la optimización numérica, los métodos híbridos, las estructuras cuasi-Newton, la estabilidad algorítmica y las aplicaciones computacionales. Esta próxima defensa representa un paso importante en la consolidación de una nueva generación de investigadores dominicanos en matemática aplicada, análisis numérico y computación científica."],list:["Área principal: optimización numérica.","Línea asociada: métodos híbridos y cuasi-Newton.","Estado: defensa doctoral próxima.","Impacto esperado: cierre de un ciclo de defensas doctorales vinculadas al Grupo Kernel."]},articleURL:null},{id:"nw5",title:"Miguel Leonardo, Antmel Rodríguez y Natanael Ureña alcanzan su tercer artículo publicado en 2026",date:"2026",image:Q,excerpt:"Los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo alcanzan su tercer artículo científico publicado durante el año 2026.",content:{paragraphs:["El Grupo de Investigación Kernel celebra que los investigadores Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo han alcanzado su tercer artículo científico publicado durante el año 2026, consolidando una etapa de alta productividad académica en análisis numérico, métodos iterativos, optimización y matemática aplicada.","Según los investigadores, 2026 apunta a ser un año especialmente relevante para la producción científica del grupo, con una amplia cantidad de artículos proyectados en revistas de alto impacto. Este avance evidencia la madurez de las líneas de investigación desarrolladas, la solidez de las colaboraciones nacionales e internacionales y el fortalecimiento del Grupo Kernel como espacio de producción matemática avanzada."],list:["Año destacado: 2026.","Investigadores vinculados: Miguel Antonio Leonardo Sepúlveda, Antmel Rodríguez Cabral y Natanael Ureña Castillo.","Áreas principales: análisis numérico, métodos iterativos, optimización y matemática aplicada.","Proyección: incremento de publicaciones científicas en revistas de alto impacto.","Impacto: consolidación del Grupo Kernel como núcleo activo de investigación matemática."]},articleURL:null},{id:"nw6",title:"Sobre la estabilidad de los parámetros de autoaceleración",date:"2025",image:pa,excerpt:"Se publicó un artículo sobre la estabilidad de parámetros autoacelerados en métodos iterativos vectoriales sin memoria usando herramientas de dinámica discreta.",content:{paragraphs:["El trabajo analiza la estabilidad de parámetros de autoaceleración en métodos iterativos vectoriales sin memoria para sistemas no lineales, evaluando el comportamiento dinámico de distintas subfamilias paramétricas.","El estudio utiliza herramientas de dinámica discreta, incluyendo planos dinámicos y análisis de comportamiento numérico, para identificar regiones de estabilidad, órbitas periódicas y zonas con comportamiento caótico."],list:["Análisis de estabilidad frente al orden de convergencia.","Uso de herramientas de dinámica discreta.","Aplicación a métodos iterativos para sistemas no lineales.","Recomendaciones para escoger parámetros estables según el problema."]},articleURL:"https://doi.org/10.1177/14727978251361407"},{id:"nw7",title:"Guía Didáctica de Lógica Matemática y Teoría de Conjuntos",date:"17 de junio de 2025",image:xa,excerpt:"Se lanzó la Guía Didáctica de Lógica Matemática y Teoría de Conjuntos, con ejercicios, actividades y recursos para bachillerato y nivel universitario inicial.",content:{paragraphs:["La guía constituye un recurso didáctico con enfoque práctico y gradual. Incluye explicaciones claras, actividades guiadas, problemas con soluciones y secciones orientadas a la evaluación formativa.","El material está pensado para apoyar tanto a docentes en la planificación de clases como a estudiantes que requieren reforzar contenidos fundamentales de lógica, demostración y teoría de conjuntos."],list:["Temas: lógica proposicional, cuantificadores, pruebas, conjuntos y aplicaciones.","Dirigido a docentes y estudiantes.","Incluye actividades guiadas y problemas de práctica.","Aporta recursos para la enseñanza inicial de la matemática formal."]},articleURL:"https://drive.google.com/file/d/1zeu3C-RypV4Y30pwMkHNGPsomucYBCD8/view?usp=share_link"},{id:"nw8",title:"Stability Analysis of a New Fourth-Order Optimal Iterative Scheme",date:"2024",image:H,excerpt:"Artículo publicado en Axioms sobre análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.",content:{paragraphs:["El artículo presenta el análisis de estabilidad de un nuevo esquema iterativo óptimo de cuarto orden para ecuaciones no lineales.","El trabajo se enmarca en la línea de métodos iterativos, convergencia local, estabilidad dinámica y resolución numérica de ecuaciones no lineales."],list:["Revista: Axioms.","Área: métodos iterativos para ecuaciones no lineales.","Línea asociada: estabilidad y convergencia local.","Contribución: análisis de un esquema óptimo de cuarto orden."]},articleURL:"https://www.mdpi.com/2075-1680/13/1/34"},{id:"nw9",title:"Groups with Triangle-Free Graphs on p-Regular Classes",date:"2025",image:Y,excerpt:"Artículo en teoría de grupos finitos sobre propiedades combinatorias de clases p-regulares y grafos asociados.",content:{paragraphs:["El trabajo estudia grafos asociados a clases p-regulares en teoría de grupos finitos, analizando condiciones bajo las cuales dichos grafos son libres de triángulos.","Estos resultados aportan a la comprensión de propiedades estructurales de grupos finitos desde una perspectiva algebraica y combinatoria."],list:["Área: teoría de grupos.","Tema: clases p-regulares.","Objeto de estudio: grafos libres de triángulos.","Línea asociada: álgebra y estructuras algebraicas."]},articleURL:"https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554"}];function q(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function ga(e=null){const a=!!e,t=e?.imageFit==="cover"?"object-cover":"object-contain";return`    
         <section role="news-hero" class="w-full py-16 md:py-20 px-6 sm:px-12 lg:px-24">
 
             <div class="max-w-4xl mx-auto text-center space-y-6 mb-12">
@@ -1201,8 +1201,8 @@
                             ">
                                 ${e.image?`
                                             <img
-                                                src="${T(e.image)}"
-                                                alt="${T(e.imageAlt||e.title)}"
+                                                src="${q(e.image)}"
+                                                alt="${q(e.imageAlt||e.title)}"
                                                 class="w-full h-full max-h-[500px] ${t} rounded-2xl"
                                                 loading="lazy"
                                             >
@@ -1224,11 +1224,11 @@
                                         bg-sky-50 text-sky-700 border border-sky-100
                                         px-3 py-1 text-xs font-black uppercase tracking-wide
                                     ">
-                                        ${T(e.category||"Noticia destacada")}
+                                        ${q(e.category||"Noticia destacada")}
                                     </span>
 
                                     <span class="text-slate-400 font-bold text-sm">
-                                        ${T(e.date)}
+                                        ${q(e.date)}
                                     </span>
                                 </div>
 
@@ -1237,14 +1237,14 @@
                                     font-black text-slate-900
                                     leading-tight mb-5
                                 ">
-                                    ${T(e.title)}
+                                    ${q(e.title)}
                                 </h2>
 
                                 <p class="
                                     text-slate-600 text-base md:text-lg
                                     leading-relaxed mb-7
                                 ">
-                                    ${T(e.excerpt)}
+                                    ${q(e.excerpt)}
                                 </p>
 
                                 ${Array.isArray(e.tags)&&e.tags.length?`
@@ -1256,7 +1256,7 @@
                                                         px-3 py-1 rounded-full
                                                         text-xs font-bold
                                                     ">
-                                                        ${T(o)}
+                                                        ${q(o)}
                                                     </span>
                                                 `).join("")}
                                             </div>
@@ -1264,7 +1264,7 @@
 
                                 <button
                                     type="button"
-                                    data-news-btn="${T(e.id)}"
+                                    data-news-btn="${q(e.id)}"
                                     class="
                                         self-start inline-flex items-center justify-center gap-2
                                         bg-sky-600 hover:bg-sky-700
@@ -1282,9 +1282,9 @@
                       `:""}
 
         </section>
-    `}function j(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function fa({id:e,title:a,date:t,image:i,imageAlt:o,excerpt:s,category:n="Noticia",imageFit:p="contain"}){const b=p==="cover"?"object-cover":"object-contain";return`
+    `}function U(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function fa({id:e,title:a,date:t,image:i,imageAlt:o,excerpt:s,category:n="Noticia",imageFit:d="contain"}){const x=d==="cover"?"object-cover":"object-contain";return`
         <article
-            data-news-card="${j(e)}"
+            data-news-card="${U(e)}"
             class="
                 bg-white rounded-2xl overflow-hidden shadow-sm
                 hover:shadow-xl transition duration-300 cursor-pointer
@@ -1301,9 +1301,9 @@
             ">
                 ${i?`
                             <img
-                                src="${j(i)}"
-                                alt="${j(o||a)}"
-                                class="w-full h-full ${b} rounded-xl"
+                                src="${U(i)}"
+                                alt="${U(o||a)}"
+                                class="w-full h-full ${x} rounded-xl"
                                 loading="lazy"
                             />
                           `:`
@@ -1322,26 +1322,26 @@
                         px-3 py-1 text-xs 2xl:text-lg
                         font-black uppercase tracking-wide
                     ">
-                        ${j(n)}
+                        ${U(n)}
                     </span>
 
                     <span class="text-sm 2xl:text-2xl text-gray-500 font-semibold">
-                        ${j(t)}
+                        ${U(t)}
                     </span>
                 </div>
 
                 <h3 class="text-lg 2xl:text-2xl font-black text-gray-800 leading-tight">
-                    ${j(a)}
+                    ${U(a)}
                 </h3>
 
                 <p class="text-sm 2xl:text-xl text-gray-600 leading-relaxed">
-                    ${j(s)}
+                    ${U(s)}
                 </p>
 
                 <button
                     type="button"
-                    data-news-btn="${j(e)}"
-                    aria-label="Ver detalles de la noticia ${j(a)}"
+                    data-news-btn="${U(e)}"
+                    aria-label="Ver detalles de la noticia ${U(a)}"
                     class="
                         mt-auto self-start lg:text-base 2xl:text-xl
                         font-bold text-blue-600
@@ -1460,7 +1460,7 @@ Gracias.`);return`
         w-full
         tabletBig:w-7xl
         xl:w-full
-    `;const a=wa(ue),t=a.find(i=>i.featured)||a[0];return e.innerHTML=`
+    `;const a=wa(me),t=a.find(i=>i.featured)||a[0];return e.innerHTML=`
         ${ga(t)}
         ${va(a)}
         ${ha()}
@@ -1516,7 +1516,7 @@ Gracias.`);return`
                 </div>
             </div>
         </div>
-    `}function ka(e){e&&e.addEventListener("click",a=>{const t=a.target.closest("[data-news-btn], [data-news-card]");if(!t||!e.contains(t))return;const i=t.dataset.newsBtn||t.dataset.newsCard,o=ue.find(s=>String(s.id)===String(i));if(!o){console.warn("No se encontró la noticia con id:",i);return}Ca(o)})}function Ca(e){const a=document.querySelector("#newsModal");a&&a.remove();const t=document.createElement("div");t.innerHTML=Aa(e);const i=t.firstElementChild;if(!i){console.warn("No se pudo crear el modal de noticia.");return}document.body.appendChild(i),document.body.style.overflow="hidden";function o(){i.remove(),document.body.style.overflow="",document.removeEventListener("keydown",s)}function s(n){n.key==="Escape"&&o()}i.querySelectorAll("[data-close-modal]").forEach(n=>{n.addEventListener("click",o)}),i.addEventListener("click",n=>{n.target===i&&o()}),document.addEventListener("keydown",s)}function Ea(){const e=ya();return ka(e),e}function S(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function xe(e){return e?.name||e?.title||"Investigador"}function oe(e){return e?.title||e?.tile||"Revista no especificada"}function be(e){return String(e?.DOI||e?.doi||"").trim()}function Sa(e){const a=be(e);return e?.url?e.url:a?a.startsWith("http")?a:`https://doi.org/${a}`:"#"}function Ma(e){return[...e?.publicaciones||[]].sort((a,t)=>{const i=Number(a.year||0),o=Number(t.year||0);return i!==o?o-i:String(a.contenido||"").localeCompare(String(t.contenido||""))})}function Da(e,a=!1){const t=xe(e),i=e.publicaciones||[],o=i.length,s=i.map(p=>Number(p.year)).filter(Boolean),n=s.length?Math.max(...s):"";return`
+    `}function ka(e){e&&e.addEventListener("click",a=>{const t=a.target.closest("[data-news-btn], [data-news-card]");if(!t||!e.contains(t))return;const i=t.dataset.newsBtn||t.dataset.newsCard,o=me.find(s=>String(s.id)===String(i));if(!o){console.warn("No se encontró la noticia con id:",i);return}Ca(o)})}function Ca(e){const a=document.querySelector("#newsModal");a&&a.remove();const t=document.createElement("div");t.innerHTML=Aa(e);const i=t.firstElementChild;if(!i){console.warn("No se pudo crear el modal de noticia.");return}document.body.appendChild(i),document.body.style.overflow="hidden";function o(){i.remove(),document.body.style.overflow="",document.removeEventListener("keydown",s)}function s(n){n.key==="Escape"&&o()}i.querySelectorAll("[data-close-modal]").forEach(n=>{n.addEventListener("click",o)}),i.addEventListener("click",n=>{n.target===i&&o()}),document.addEventListener("keydown",s)}function Ea(){const e=ya();return ka(e),e}function D(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function xe(e){return e?.name||e?.title||"Investigador"}function oe(e){return e?.title||e?.tile||"Revista no especificada"}function be(e){return String(e?.DOI||e?.doi||"").trim()}function Sa(e){const a=be(e);return e?.url?e.url:a?a.startsWith("http")?a:`https://doi.org/${a}`:"#"}function Ma(e){return[...e?.publicaciones||[]].sort((a,t)=>{const i=Number(a.year||0),o=Number(t.year||0);return i!==o?o-i:String(a.contenido||"").localeCompare(String(t.contenido||""))})}function La(e,a=!1){const t=xe(e),i=e.publicaciones||[],o=i.length,s=i.map(d=>Number(d.year)).filter(Boolean),n=s.length?Math.max(...s):"";return`
         <button data-id="${e.id}"
             type="button"
             class="group w-full text-left flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-300 border-2
@@ -1524,7 +1524,7 @@ Gracias.`);return`
 
             <div class="relative shrink-0">
                 <img src="${e.img}"
-                    alt="${S(t)}"
+                    alt="${D(t)}"
                     class="w-16 h-16 rounded-full border-2 object-cover
                     ${a?"border-white shadow-md":"border-sky-100"}">
 
@@ -1535,7 +1535,7 @@ Gracias.`);return`
 
             <div class="min-w-0 flex-1">
                 <h3 class="font-bold text-sm leading-tight mb-1">
-                    ${S(t)}
+                    ${D(t)}
                 </h3>
 
                 <p class="text-xs leading-snug ${a?"text-sky-50":"text-gray-500"}">
@@ -1545,46 +1545,46 @@ Gracias.`);return`
 
                 ${e.area?`
                             <p class="text-xs mt-1 line-clamp-2 ${a?"text-white/80":"text-gray-400"}">
-                                ${S(e.area)}
+                                ${D(e.area)}
                             </p>
                           `:""}
             </div>
         </button>
-    `}function La(e){if(!e)return`
+    `}function Da(e){if(!e)return`
             <div class="flex h-full items-center justify-center text-white">
                 No hay investigador seleccionado.
             </div>
-        `;const a=xe(e),t=Ma(e),i=t.length,o=t.map(l=>Number(l.year)).filter(Boolean),s=o.length?Math.min(...o):"",n=o.length?Math.max(...o):"",p=[...new Set(t.map(l=>l.q).filter(Boolean))],b=[...new Set(t.map(l=>oe(l)).filter(Boolean))],d=t.map(l=>{const y=oe(l),u=be(l),c=Sa(l);return`
+        `;const a=xe(e),t=Ma(e),i=t.length,o=t.map(c=>Number(c.year)).filter(Boolean),s=o.length?Math.min(...o):"",n=o.length?Math.max(...o):"",d=[...new Set(t.map(c=>c.q).filter(Boolean))],x=[...new Set(t.map(c=>oe(c)).filter(Boolean))],m=t.map(c=>{const A=oe(c),g=be(c),u=Sa(c);return`
             <article class="publicacion-card bg-white rounded-2xl p-5 mb-5 relative shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in">
 
                 <div class="flex flex-wrap items-center gap-2 mb-4 pr-12">
                     <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm md:text-base font-bold">
-                        ${S(l.year)}
+                        ${D(c.year)}
                     </span>
 
                     <span class="bg-sky-600 text-white px-3 py-1 rounded-full text-sm md:text-base font-medium italic">
-                        ${S(y)}
+                        ${D(A)}
                     </span>
                 </div>
 
                 <div class="absolute top-4 right-4 bg-emerald-600 text-white w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
-                    ${S(l.q||"S/C")}
+                    ${D(c.q||"S/C")}
                 </div>
 
                 <h4 class="text-gray-800 font-bold text-sm md:text-base mb-3 leading-snug">
-                    ${S(l.contenido)}
+                    ${D(c.contenido)}
                 </h4>
 
                 <p class="text-sky-700 text-sm md:text-base font-semibold mb-4 leading-relaxed">
                     Autores:
                     <span class="text-gray-500 font-normal">
-                        ${S(l.autores)}
+                        ${D(c.autores)}
                     </span>
                 </p>
 
                 <div class="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-3">
-                    ${u?`
-                                <a href="${S(c)}"
+                    ${g?`
+                                <a href="${D(u)}"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="inline-flex items-center gap-2 text-sky-500 hover:text-sky-700 transition-colors text-sm md:text-base font-mono font-bold">
@@ -1601,7 +1601,7 @@ Gracias.`);return`
                                     </svg>
 
                                     <span class="pub-doi-text">
-                                        DOI: ${S(u)}
+                                        DOI: ${D(g)}
                                     </span>
                                 </a>
                               `:`
@@ -1610,8 +1610,8 @@ Gracias.`);return`
                                 </span>
                               `}
 
-                    ${l.pdf?`
-                                <a href="${S(l.pdf)}"
+                    ${c.pdf?`
+                                <a href="${D(c.pdf)}"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-bold transition-colors">
@@ -1626,7 +1626,7 @@ Gracias.`);return`
             <div class="flex justify-between items-start gap-4 mb-5 border-b border-gray-700 pb-4">
                 <div class="flex items-start gap-4">
                     <img src="${e.img}"
-                         alt="${S(a)}"
+                         alt="${D(a)}"
                          class="hidden sm:block w-16 h-16 rounded-2xl object-cover border-2 border-sky-400 shadow-lg">
 
                     <div>
@@ -1635,12 +1635,12 @@ Gracias.`);return`
                         </p>
 
                         <h2 class="text-xl md:text-2xl font-bold leading-tight">
-                            ${S(a)}
+                            ${D(a)}
                         </h2>
 
                         ${e.area?`
                                     <p class="text-gray-300 text-sm mt-2 leading-relaxed">
-                                        ${S(e.area)}
+                                        ${D(e.area)}
                                     </p>
                                   `:""}
                     </div>
@@ -1677,34 +1677,34 @@ Gracias.`);return`
                         Cuartiles
                     </p>
                     <p class="text-2xl font-bold">
-                        ${p.length?p.join(" · "):"—"}
+                        ${d.length?d.join(" · "):"—"}
                     </p>
                 </div>
             </div>
 
             <div class="mb-4 flex flex-wrap gap-2">
-                ${b.slice(0,4).map(l=>`
+                ${x.slice(0,4).map(c=>`
                     <span class="bg-sky-500/20 text-sky-200 border border-sky-400/30 px-3 py-1 rounded-full text-xs font-semibold">
-                        ${S(l)}
+                        ${D(c)}
                     </span>
                 `).join("")}
 
-                ${b.length>4?`
+                ${x.length>4?`
                             <span class="bg-white/10 text-gray-300 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold">
-                                +${b.length-4} revistas
+                                +${x.length-4} revistas
                             </span>
                           `:""}
             </div>
 
             <div class="overflow-y-auto pr-2 custom-scrollbar flex-1">
-                ${d||`
+                ${m||`
                             <div class="bg-white rounded-2xl p-6 text-gray-600 text-center">
                                 No hay publicaciones registradas para este investigador.
                             </div>
                           `}
             </div>
         </div>
-    `}function Pa(){let e=P[0]?.id||1,a=!1,t=null;const i=document.createElement("section");i.className="publicaciones-shell w-full max-w-7xl mx-auto px-4 py-8 rounded-3xl";function o(r){return String(r?.DOI||r?.doi||"").trim().toLowerCase()}function s(r){return String(r?.journal||r?.title||r?.tile||"").trim()}function n(r){return String(r?.articleTitle||r?.contenido||"").trim()}function p(r){return String(r?.q||r?.quartile||"").trim().toUpperCase()}function b(r){const f=o(r);return f||[r?.year||"",s(r),n(r)].join("-").trim().toLowerCase()}function d(){const r=new Map;return P.forEach(f=>{(f.publicaciones||[]).forEach(m=>{const v=b(m);v&&!r.has(v)&&r.set(v,m)})}),Array.from(r.values())}function l(){const r=d(),f=r.map(E=>Number(E.year)).filter(Boolean),m=f.length?Math.max(...f):"—",v=f.length?Math.min(...f):"—",h=r.filter(E=>p(E)==="Q1").length;return{totalPublicaciones:r.length,investigadores:P.length,q1:h,primerYear:v,ultimoYear:m}}function y(){return P.find(r=>Number(r.id)===Number(e))||P[0]}const u=()=>{const r=y(),f=l(),m=window.innerWidth<768&&!a;i.innerHTML=`
+    `}function Pa(){let e=T[0]?.id||1,a=!1,t=null;const i=document.createElement("section");i.className="publicaciones-shell w-full max-w-7xl mx-auto px-4 py-8 rounded-3xl";function o(l){return String(l?.DOI||l?.doi||"").trim().toLowerCase()}function s(l){return String(l?.journal||l?.title||l?.tile||"").trim()}function n(l){return String(l?.articleTitle||l?.contenido||"").trim()}function d(l){return String(l?.q||l?.quartile||"").trim().toUpperCase()}function x(l){const h=o(l);return h||[l?.year||"",s(l),n(l)].join("-").trim().toLowerCase()}function m(){const l=new Map;return T.forEach(h=>{(h.publicaciones||[]).forEach(p=>{const w=x(p);w&&!l.has(w)&&l.set(w,p)})}),Array.from(l.values())}function c(){const l=m(),h=l.map(M=>Number(M.year)).filter(Boolean),p=h.length?Math.max(...h):"—",w=h.length?Math.min(...h):"—",y=l.filter(M=>d(M)==="Q1").length;return{totalPublicaciones:l.length,investigadores:T.length,q1:y,primerYear:w,ultimoYear:p}}function A(){return T.find(l=>Number(l.id)===Number(e))||T[0]}const g=()=>{const l=A(),h=c(),p=window.innerWidth<768&&!a;i.innerHTML=`
             <div class="mb-8 text-center">
                 <p class="text-sky-600 font-bold uppercase tracking-wide text-sm mb-2">
                     Grupo de Investigación Kernel
@@ -1726,7 +1726,7 @@ Gracias.`);return`
                         Artículos únicos
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${f.totalPublicaciones}
+                        ${h.totalPublicaciones}
                     </p>
                 </div>
 
@@ -1735,7 +1735,7 @@ Gracias.`);return`
                         Investigadores
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${f.investigadores}
+                        ${h.investigadores}
                     </p>
                 </div>
 
@@ -1744,7 +1744,7 @@ Gracias.`);return`
                         Artículos Q1
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${f.q1}
+                        ${h.q1}
                     </p>
                 </div>
 
@@ -1753,7 +1753,7 @@ Gracias.`);return`
                         Periodo
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${f.primerYear}–${f.ultimoYear}
+                        ${h.primerYear}–${h.ultimoYear}
                     </p>
                 </div>
             </div>
@@ -1773,31 +1773,31 @@ Gracias.`);return`
                         </p>
                     </div>
 
-                    ${P.map(h=>Da(h,Number(h.id)===Number(e))).join("")}
+                    ${T.map(y=>La(y,Number(y.id)===Number(e))).join("")}
                 </aside>
 
                 <div id="detalle-container" class="
                     fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4
                     md:relative md:inset-auto md:z-0 md:bg-transparent md:flex md:w-2/3 md:p-0
-                    ${m?"hidden":"flex"}
+                    ${p?"hidden":"flex"}
                 ">
                     <div class="bg-[#1e293b] w-full max-w-lg md:max-w-none h-[85%] md:h-full rounded-3xl shadow-2xl p-6 relative border border-slate-700">
-                        ${La(r)}
+                        ${Da(l)}
                     </div>
                 </div>
             </div>
-        `,i.querySelectorAll("[data-id]").forEach(h=>{h.onclick=()=>{e=Number(h.dataset.id),window.innerWidth<768&&(a=!0),u()}});const v=i.querySelector("#close-modal");v&&(v.onclick=()=>{a=!1,u()})},c=()=>{clearTimeout(t),t=setTimeout(()=>{window.innerWidth>=768&&(a=!1),u()},120)};return window.addEventListener("resize",c),u(),i}function Ia(){return Pa()}const B=[{id:1,title:" Diseño de nuevos algoritmos cuasi-Newton híbridos de optimización",desarrollo:"Desarrollo y análisis de métodos híbridos cuasi-Newton, incluyendo variantes paramétricas y de memoria limitada, orientados a la optimización de problemas no lineales y al análisis de su comportamiento dinámico según parámetros."},{id:2,title:" Optimización y modelado en finanzas y ciencias actuariales",desarrollo:"Diseño y estudio de modelos matemáticos para problemas financieros yactuariales, empleando técnicas de optimización numérica para toma de decisiones y análisis de riesgo.."},{id:3,title:" Métodos numéricos y entrenamiento de redes neuronales profundas",desarrollo:"Desarrollo de algoritmos de memoria limitada y estrategias de regiones de confianza para el entrenamiento eficiente de redes neuronales profundas, incluyendo arquitecturas convolucionales y experimentos con base de datos de gran escala."},{id:4,title:"  Métodos híbridos y metaheurísticos para problemas complejos",desarrollo:"Investigación en métodos híbridos que integran algoritmos cuasi-Newton con metaheurísticas, dirigidos a la solución de problemas complejos y multidimensionales."},{id:5,title:" Educación matemática y transferencia de conocimiento",desarrollo:"Desarrollo de estrategias, recursos y modelos para la mejora de la enseñanza de la matemática y la transferencia efectiva de los avances científicos hacia la educación y la sociedad."},{id:6,title:"  Dinámica en métodos iterativos para sistemas",desarrollo:"Profundización en el estudio de la dinámica real y compleja de métodos iterativos para sistemas no lineales."},{id:7,title:"   Aproximación de la matriz Jacobiana",desarrollo:"Desarrollo de técnicas alternativas para la aproximación de la matriz Jacobiana, explorando representaciones mediante diferencias divididas, y esquemas con memoria para retener información previa y mejorar la eficiencia computacional."},{id:8,title:"Adaptación de principios variacionales en ecuaciones semilineales y cuasilineales",desarrollo:"Adaptación y aplicación de la teoría variacional al análisis y resolución de ecuaciones diferenciales semilineales y cuasilineales."},{id:9,title:"Conjetura de Optimalidad para sistemas",desarrollo:"Investigación sobre métodos óptimos para sistemas de ecuaciones, enfocándose en el desarrollo de esquemas que aumenten el orden de convergencia hasta alcanzar el nivel óptimo."}];function M(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function ja(e){return B.find(a=>a.id===e)||B[0]}function X(e=[]){return e.map(a=>`
+        `,i.querySelectorAll("[data-id]").forEach(y=>{y.onclick=()=>{e=Number(y.dataset.id),window.innerWidth<768&&(a=!0),g()}});const w=i.querySelector("#close-modal");w&&(w.onclick=()=>{a=!1,g()})},u=()=>{clearTimeout(t),t=setTimeout(()=>{window.innerWidth>=768&&(a=!1),g()},120)};return window.addEventListener("resize",u),g(),i}function ja(){return Pa()}const R=[{id:1,title:" Diseño de nuevos algoritmos cuasi-Newton híbridos de optimización",desarrollo:"Desarrollo y análisis de métodos híbridos cuasi-Newton, incluyendo variantes paramétricas y de memoria limitada, orientados a la optimización de problemas no lineales y al análisis de su comportamiento dinámico según parámetros."},{id:2,title:" Optimización y modelado en finanzas y ciencias actuariales",desarrollo:"Diseño y estudio de modelos matemáticos para problemas financieros yactuariales, empleando técnicas de optimización numérica para toma de decisiones y análisis de riesgo.."},{id:3,title:" Métodos numéricos y entrenamiento de redes neuronales profundas",desarrollo:"Desarrollo de algoritmos de memoria limitada y estrategias de regiones de confianza para el entrenamiento eficiente de redes neuronales profundas, incluyendo arquitecturas convolucionales y experimentos con base de datos de gran escala."},{id:4,title:"  Métodos híbridos y metaheurísticos para problemas complejos",desarrollo:"Investigación en métodos híbridos que integran algoritmos cuasi-Newton con metaheurísticas, dirigidos a la solución de problemas complejos y multidimensionales."},{id:5,title:" Educación matemática y transferencia de conocimiento",desarrollo:"Desarrollo de estrategias, recursos y modelos para la mejora de la enseñanza de la matemática y la transferencia efectiva de los avances científicos hacia la educación y la sociedad."},{id:6,title:"  Dinámica en métodos iterativos para sistemas",desarrollo:"Profundización en el estudio de la dinámica real y compleja de métodos iterativos para sistemas no lineales."},{id:7,title:"   Aproximación de la matriz Jacobiana",desarrollo:"Desarrollo de técnicas alternativas para la aproximación de la matriz Jacobiana, explorando representaciones mediante diferencias divididas, y esquemas con memoria para retener información previa y mejorar la eficiencia computacional."},{id:8,title:"Adaptación de principios variacionales en ecuaciones semilineales y cuasilineales",desarrollo:"Adaptación y aplicación de la teoría variacional al análisis y resolución de ecuaciones diferenciales semilineales y cuasilineales."},{id:9,title:"Conjetura de Optimalidad para sistemas",desarrollo:"Investigación sobre métodos óptimos para sistemas de ecuaciones, enfocándose en el desarrollo de esquemas que aumenten el orden de convergencia hasta alcanzar el nivel óptimo."}];function P(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Ia(e){return R.find(a=>a.id===e)||R[0]}function X(e=[]){return e.map(a=>`
         <li class="flex gap-3 text-sm md:text-base text-slate-600 leading-relaxed">
             <span class="mt-2 w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-            <span>${M(a)}</span>
+            <span>${P(a)}</span>
         </li>
     `).join("")}function $a(e=[]){return e.map(a=>`
         <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/60 px-3 py-1 rounded-full text-xs font-bold">
-            ${M(a)}
+            ${P(a)}
         </span>
     `).join("")}function za(e=[]){return e.map(a=>`
         <span class="inline-flex items-center bg-white/10 text-white border border-white/10 px-3 py-1 rounded-full text-xs font-semibold">
-            ${M(a)}
+            ${P(a)}
         </span>
     `).join("")}function Ta(e,a=!1){return`
         <button 
@@ -1808,20 +1808,20 @@ Gracias.`);return`
 
             <div class="flex flex-wrap items-center gap-2 mb-3">
                 <span class="inline-block bg-orange-500 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${M(e.categoria)}
+                    ${P(e.categoria)}
                 </span>
 
                 <span class="inline-block ${a?"bg-white/20 text-white":"bg-[#96B4E1]/30 text-[#1A2B49]"} text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${M(e.prioridad)}
+                    ${P(e.prioridad)}
                 </span>
             </div>
 
             <h3 class="font-black text-base md:text-lg leading-tight mb-3">
-                ${M(e.title)}
+                ${P(e.title)}
             </h3>
 
             <p class="text-sm leading-relaxed ${a?"text-white/90":"text-slate-500"}">
-                ${M(e.desarrollo).slice(0,185)}${String(e.desarrollo).length>185?"...":""}
+                ${P(e.desarrollo).slice(0,185)}${String(e.desarrollo).length>185?"...":""}
             </p>
         </button>
     `}function Ba(e){const a=e.proyectosAsociados&&e.proyectosAsociados.length>0,t=e.publicacionesClave&&e.publicacionesClave.length>0;return`
@@ -1834,20 +1834,20 @@ Gracias.`);return`
                 <div class="relative z-10">
                     <div class="flex flex-wrap items-center gap-2 mb-4">
                         <span class="inline-block bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${M(e.categoria)}
+                            ${P(e.categoria)}
                         </span>
 
                         <span class="inline-block bg-[#5580C1] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${M(e.prioridad)}
+                            ${P(e.prioridad)}
                         </span>
                     </div>
 
                     <h2 class="text-2xl md:text-3xl font-black leading-tight max-w-4xl">
-                        ${M(e.title)}
+                        ${P(e.title)}
                     </h2>
 
                     <p class="mt-4 text-white/80 leading-relaxed max-w-4xl">
-                        ${M(e.desarrollo)}
+                        ${P(e.desarrollo)}
                     </p>
                 </div>
             </div>
@@ -1856,12 +1856,12 @@ Gracias.`);return`
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Categoría</p>
-                        <p class="text-slate-800 font-bold mt-1">${M(e.categoria)}</p>
+                        <p class="text-slate-800 font-bold mt-1">${P(e.categoria)}</p>
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Prioridad</p>
-                        <p class="text-slate-800 font-bold mt-1">${M(e.prioridad)}</p>
+                        <p class="text-slate-800 font-bold mt-1">${P(e.prioridad)}</p>
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
@@ -1929,7 +1929,7 @@ Gracias.`);return`
                 </div>
             </div>
         </article>
-    `}function Ua(){const e=new Set(B.map(i=>i.categoria)),a=B.filter(i=>i.proyectosAsociados?.length>0).length,t=B.filter(i=>i.publicacionesClave?.length>0).length;return{total:B.length,categorias:e.size,conProyectos:a,conPublicaciones:t}}function Na(){let e=B[0]?.id||1;const a=document.createElement("section");a.className="lineas-shell w-full max-w-7xl mx-auto px-4 py-10 mb-20 font-sans tabletBig:px-20 xl:px-0";const t=()=>{const i=ja(e),o=Ua();a.innerHTML=`
+    `}function Ua(){const e=new Set(R.map(i=>i.categoria)),a=R.filter(i=>i.proyectosAsociados?.length>0).length,t=R.filter(i=>i.publicacionesClave?.length>0).length;return{total:R.length,categorias:e.size,conProyectos:a,conPublicaciones:t}}function Na(){let e=R[0]?.id||1;const a=document.createElement("section");a.className="lineas-shell w-full max-w-7xl mx-auto px-4 py-10 mb-20 font-sans tabletBig:px-20 xl:px-0";const t=()=>{const i=Ia(e),o=Ua();a.innerHTML=`
             <div class="mb-8">
                 <p class="text-[#5580C1] font-black uppercase tracking-wide text-sm mb-2">
                     Grupo de Investigación Kernel
@@ -1996,7 +1996,7 @@ Gracias.`);return`
                     </div>
 
                     <div class="space-y-4">
-                        ${B.map(s=>Ta(s,s.id===e)).join("")}
+                        ${R.map(s=>Ta(s,s.id===e)).join("")}
                     </div>
                 </aside>
 
@@ -2004,18 +2004,18 @@ Gracias.`);return`
                     ${Ba(i)}
                 </div>
             </div>
-        `,a.querySelectorAll("[data-linea-id]").forEach(s=>{s.onclick=()=>{e=parseInt(s.dataset.lineaId),t()}})};return t(),a}function qa(){return Na()}const J=[{id:1,title:"Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",estado:"Posible propuesta sometida a FONDOCyT",convocatoria:"FONDOCyT 2025–2026",tipo:"Investigación aplicada",institucion:"Universidad APEC (UNAPEC)",programa:"Ciencias Básicas (Matemática Aplicada)",linea:"Ciencias Básicas con aplicación a procesos biológicos y ambientales",duracion:"30 meses",fechaInicio:"1 de enero de 2027",fechaFinalizacion:"30 de junio de 2030",enfoque:"Métodos iterativos de alto orden, EDPs no lineales y modelización agrobiológica",contenido:"Esta posible propuesta se orienta al desarrollo y análisis de métodos iterativos de alto orden para la resolución numérica de ecuaciones en derivadas parciales no lineales asociadas a la difusión y transporte de nutrientes en sustratos biológicos. La propuesta articula modelización matemática, análisis numérico, implementación computacional, validación experimental controlada e interpretación interdisciplinaria.",contexto:"La propuesta busca conectar el desarrollo de métodos numéricos avanzados con problemas de interés agrobiológico, especialmente la comprensión de la distribución de nutrientes en sustratos biológicos y el análisis de esquemas de fertirrigación que favorezcan un mejor aprovechamiento nutricional y contribuyan al fortalecimiento de la producción de tomate.",equipo:["Dr. Neel Lobatchewski Báez Ureña","Dr. Miguel Antonio Leonardo Sepúlveda","Dr. Antmel Rodríguez Cabral","Natanael Ureña Castillo, MSc."],serviciosProfesionalesEspecializados:[{rol:"Asesoría científica internacional en análisis numérico",nombre:"Dr. Juan R. Torregrosa Sánchez",descripcion:"Asesoría especializada para fortalecer el rigor teórico del componente numérico, validar el análisis de convergencia y eficiencia, y orientar la preparación de productos científicos de alto nivel."},{rol:"Asesoría nacional en biotecnología",nombre:"M.Sc. Yaset Rodríguez Rodríguez",descripcion:"Asesoría nacional orientada al diseño, acompañamiento y fortalecimiento de la fase experimental, incluyendo la selección, preparación y caracterización de sustratos biológicos."},{rol:"Asesoría nacional en agronomía",nombre:"Dr. Luis De Francisco",descripcion:"Asesoría nacional para contribuir a la interpretación aplicada de los resultados matemáticos, numéricos y experimentales desde una perspectiva agronómica."}],objetivos:["Formular modelos matemáticos basados en EDPs no lineales para describir la difusión de nutrientes en sustratos biológicos.","Delimitar condiciones de frontera y de contorno consistentes con escenarios experimentales reales.","Diseñar métodos iterativos de alto orden para resolver los sistemas no lineales derivados de los modelos.","Analizar convergencia, estabilidad, robustez y eficiencia computacional de los métodos propuestos.","Validar el modelo mediante ensayos controlados con sustratos biológicos y plántulas."],resultados:["Modelos matemáticos para difusión y transporte de nutrientes en sustratos biológicos.","Nuevos esquemas iterativos de alto orden aplicables a EDPs no lineales.","Implementaciones computacionales eficientes y reproducibles.","Validación experimental controlada del modelo.","Producción científica y formación de capital humano en análisis numérico y modelización matemática aplicada."],etiquetas:["FONDOCyT","EDPs no lineales","Métodos iterativos","Análisis numérico","Matemática aplicada","Sustratos biológicos","Fertirrigación","Biotecnología","Agronomía"]},{id:2,title:"Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",estado:"Posible propuesta sometida a FONDOCyT",convocatoria:"FONDOCyT 2025–2026",tipo:"Investigación aplicada",institucion:"Universidad Autónoma de Santo Domingo (UASD)",programa:"Ciencias Básicas, Ingeniería, Tecnologías de la Información, Software e Inteligencia Artificial",linea:"Optimización numérica, inteligencia artificial, ciencia de datos y modelización matemática aplicada a sistemas complejos y finanzas cuantitativas",duracion:"30 meses",fechaInicio:"31 de marzo de 2026",fechaFinalizacion:"29 de septiembre de 2029",enfoque:"Optimización híbrida, aprendizaje profundo y modelización econométrico-financiera",contenido:"Esta posible propuesta se centra en el diseño, análisis, implementación y validación de métodos híbridos de optimización para problemas de alta dimensionalidad. La propuesta combina estructuras cuasi-Newton multipaso, pasos tipo Newton o de alto orden, búsquedas lineales sucesivas, actualizaciones BFGS y DFP, estrategias de región de confianza, funciones peso y variantes de memoria limitada.",contexto:"Las aplicaciones previstas incluyen el entrenamiento de redes neuronales convolucionales, la modelización econométrica vinculada a la tasa de interés nominal de política monetaria, el análisis de mecanismos de transmisión al mercado y la proyección de variables actuariales del sector asegurador.",equipo:["Dr. Antmel Rodríguez Cabral","Dr. Miguel Antonio Leonardo Sepúlveda","Natanael Ureña Castillo, MSc."],asesores:[{rol:"Asesora científica internacional",nombre:"Dra. Alicia Cordero Barbero",descripcion:"Asesoría científica para fortalecer el rigor teórico del componente numérico, orientar el diseño y análisis de los métodos híbridos propuestos, validar la consistencia matemática de los resultados y apoyar la producción científica derivada del proyecto."},{rol:"Asesor científico internacional",nombre:"Dr. Juan Ramón Torregrosa Sánchez",descripcion:"Asesoría científica para orientar el diseño y análisis de los métodos híbridos, fortalecer la validación del estudio de convergencia y estabilidad, y acompañar la proyección internacional de los resultados científicos."}],objetivos:["Formular problemas de optimización no lineal de alta dimensionalidad vinculados a inteligencia artificial, econometría y análisis actuarial.","Diseñar métodos híbridos basados en estructuras cuasi-Newton, pasos de alto orden y estrategias de estabilización.","Incorporar funciones peso dependientes de parámetros aceleradores y analizar su impacto numérico.","Desarrollar variantes de memoria limitada para problemas de gran escala.","Validar los métodos en redes neuronales convolucionales y compararlos con optimizadores de referencia como L-BFGS, SGD, Adam y RMSProp."],resultados:["Nuevos métodos híbridos de optimización formalizados y documentados.","Software reproducible para experimentación computacional.","Evidencia experimental en clasificación de imágenes y modelización cuantitativa.","Modelos aplicados a política monetaria, finanzas cuantitativas y análisis actuarial.","Producción científica y fortalecimiento de capacidades en optimización, inteligencia artificial y modelización matemática aplicada."],etiquetas:["FONDOCyT","Optimización híbrida","Cuasi-Newton","Redes neuronales convolucionales","Econometría","Finanzas cuantitativas","Análisis actuarial","Inteligencia artificial"]}];function k(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Oa(e){return J.find(a=>a.id===e)||J[0]}function se(e=[]){return e.map(a=>`
+        `,a.querySelectorAll("[data-linea-id]").forEach(s=>{s.onclick=()=>{e=parseInt(s.dataset.lineaId),t()}})};return t(),a}function qa(){return Na()}const K=[{id:1,title:"Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",estado:"Posible propuesta sometida a FONDOCyT",convocatoria:"FONDOCyT 2025–2026",tipo:"Investigación aplicada",institucion:"Universidad APEC (UNAPEC)",programa:"Ciencias Básicas (Matemática Aplicada)",linea:"Ciencias Básicas con aplicación a procesos biológicos y ambientales",duracion:"30 meses",fechaInicio:"1 de enero de 2027",fechaFinalizacion:"30 de junio de 2030",enfoque:"Métodos iterativos de alto orden, EDPs no lineales y modelización agrobiológica",contenido:"Esta posible propuesta se orienta al desarrollo y análisis de métodos iterativos de alto orden para la resolución numérica de ecuaciones en derivadas parciales no lineales asociadas a la difusión y transporte de nutrientes en sustratos biológicos. La propuesta articula modelización matemática, análisis numérico, implementación computacional, validación experimental controlada e interpretación interdisciplinaria.",contexto:"La propuesta busca conectar el desarrollo de métodos numéricos avanzados con problemas de interés agrobiológico, especialmente la comprensión de la distribución de nutrientes en sustratos biológicos y el análisis de esquemas de fertirrigación que favorezcan un mejor aprovechamiento nutricional y contribuyan al fortalecimiento de la producción de tomate.",equipo:["Dr. Neel Lobatchewski Báez Ureña","Dr. Miguel Antonio Leonardo Sepúlveda","Dr. Antmel Rodríguez Cabral","Natanael Ureña Castillo, MSc."],serviciosProfesionalesEspecializados:[{rol:"Asesoría científica internacional en análisis numérico",nombre:"Dr. Juan R. Torregrosa Sánchez",descripcion:"Asesoría especializada para fortalecer el rigor teórico del componente numérico, validar el análisis de convergencia y eficiencia, y orientar la preparación de productos científicos de alto nivel."},{rol:"Asesoría nacional en biotecnología",nombre:"M.Sc. Yaset Rodríguez Rodríguez",descripcion:"Asesoría nacional orientada al diseño, acompañamiento y fortalecimiento de la fase experimental, incluyendo la selección, preparación y caracterización de sustratos biológicos."},{rol:"Asesoría nacional en agronomía",nombre:"Dr. Luis De Francisco",descripcion:"Asesoría nacional para contribuir a la interpretación aplicada de los resultados matemáticos, numéricos y experimentales desde una perspectiva agronómica."}],objetivos:["Formular modelos matemáticos basados en EDPs no lineales para describir la difusión de nutrientes en sustratos biológicos.","Delimitar condiciones de frontera y de contorno consistentes con escenarios experimentales reales.","Diseñar métodos iterativos de alto orden para resolver los sistemas no lineales derivados de los modelos.","Analizar convergencia, estabilidad, robustez y eficiencia computacional de los métodos propuestos.","Validar el modelo mediante ensayos controlados con sustratos biológicos y plántulas."],resultados:["Modelos matemáticos para difusión y transporte de nutrientes en sustratos biológicos.","Nuevos esquemas iterativos de alto orden aplicables a EDPs no lineales.","Implementaciones computacionales eficientes y reproducibles.","Validación experimental controlada del modelo.","Producción científica y formación de capital humano en análisis numérico y modelización matemática aplicada."],etiquetas:["FONDOCyT","EDPs no lineales","Métodos iterativos","Análisis numérico","Matemática aplicada","Sustratos biológicos","Fertirrigación","Biotecnología","Agronomía"]},{id:2,title:"Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",estado:"Posible propuesta sometida a FONDOCyT",convocatoria:"FONDOCyT 2025–2026",tipo:"Investigación aplicada",institucion:"Universidad Autónoma de Santo Domingo (UASD)",programa:"Ciencias Básicas, Ingeniería, Tecnologías de la Información, Software e Inteligencia Artificial",linea:"Optimización numérica, inteligencia artificial, ciencia de datos y modelización matemática aplicada a sistemas complejos y finanzas cuantitativas",duracion:"30 meses",fechaInicio:"31 de marzo de 2026",fechaFinalizacion:"29 de septiembre de 2029",enfoque:"Optimización híbrida, aprendizaje profundo y modelización econométrico-financiera",contenido:"Esta posible propuesta se centra en el diseño, análisis, implementación y validación de métodos híbridos de optimización para problemas de alta dimensionalidad. La propuesta combina estructuras cuasi-Newton multipaso, pasos tipo Newton o de alto orden, búsquedas lineales sucesivas, actualizaciones BFGS y DFP, estrategias de región de confianza, funciones peso y variantes de memoria limitada.",contexto:"Las aplicaciones previstas incluyen el entrenamiento de redes neuronales convolucionales, la modelización econométrica vinculada a la tasa de interés nominal de política monetaria, el análisis de mecanismos de transmisión al mercado y la proyección de variables actuariales del sector asegurador.",equipo:["Dr. Antmel Rodríguez Cabral","Dr. Miguel Antonio Leonardo Sepúlveda","Natanael Ureña Castillo, MSc."],asesores:[{rol:"Asesora científica internacional",nombre:"Dra. Alicia Cordero Barbero",descripcion:"Asesoría científica para fortalecer el rigor teórico del componente numérico, orientar el diseño y análisis de los métodos híbridos propuestos, validar la consistencia matemática de los resultados y apoyar la producción científica derivada del proyecto."},{rol:"Asesor científico internacional",nombre:"Dr. Juan Ramón Torregrosa Sánchez",descripcion:"Asesoría científica para orientar el diseño y análisis de los métodos híbridos, fortalecer la validación del estudio de convergencia y estabilidad, y acompañar la proyección internacional de los resultados científicos."}],objetivos:["Formular problemas de optimización no lineal de alta dimensionalidad vinculados a inteligencia artificial, econometría y análisis actuarial.","Diseñar métodos híbridos basados en estructuras cuasi-Newton, pasos de alto orden y estrategias de estabilización.","Incorporar funciones peso dependientes de parámetros aceleradores y analizar su impacto numérico.","Desarrollar variantes de memoria limitada para problemas de gran escala.","Validar los métodos en redes neuronales convolucionales y compararlos con optimizadores de referencia como L-BFGS, SGD, Adam y RMSProp."],resultados:["Nuevos métodos híbridos de optimización formalizados y documentados.","Software reproducible para experimentación computacional.","Evidencia experimental en clasificación de imágenes y modelización cuantitativa.","Modelos aplicados a política monetaria, finanzas cuantitativas y análisis actuarial.","Producción científica y fortalecimiento de capacidades en optimización, inteligencia artificial y modelización matemática aplicada."],etiquetas:["FONDOCyT","Optimización híbrida","Cuasi-Newton","Redes neuronales convolucionales","Econometría","Finanzas cuantitativas","Análisis actuarial","Inteligencia artificial"]}];function S(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Ra(e){return K.find(a=>a.id===e)||K[0]}function se(e=[]){return e.map(a=>`
         <li class="flex gap-3 text-sm md:text-base text-slate-600 leading-relaxed">
             <span class="mt-2 w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-            <span>${k(a)}</span>
+            <span>${S(a)}</span>
         </li>
-    `).join("")}function Ra(e=[]){return e.map(a=>`
+    `).join("")}function Oa(e=[]){return e.map(a=>`
         <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/60 px-3 py-1 rounded-full text-xs font-bold">
-            ${k(a)}
+            ${S(a)}
         </span>
     `).join("")}function Fa(e=[]){return e.map(a=>`
         <span class="inline-flex items-center bg-white/10 text-white border border-white/10 px-3 py-1 rounded-full text-xs font-semibold">
-            ${k(a)}
+            ${S(a)}
         </span>
     `).join("")}function Ga(e,a=!1){return`
         <button 
@@ -2026,28 +2026,28 @@ Gracias.`);return`
 
             <div class="flex flex-wrap items-center gap-2 mb-3">
                 <span class="inline-block bg-orange-500 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${k(e.estado)}
+                    ${S(e.estado)}
                 </span>
 
                 <span class="inline-block ${a?"bg-white/20 text-white":"bg-[#96B4E1]/30 text-[#1A2B49]"} text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${k(e.convocatoria)}
+                    ${S(e.convocatoria)}
                 </span>
             </div>
 
             <h3 class="font-black text-base md:text-lg leading-tight mb-3">
-                ${k(e.title)}
+                ${S(e.title)}
             </h3>
 
             <p class="text-sm leading-relaxed ${a?"text-white/90":"text-slate-500"}">
-                ${k(e.enfoque)}
+                ${S(e.enfoque)}
             </p>
 
             <div class="mt-4 flex flex-wrap gap-2">
                 <span class="text-xs font-bold ${a?"text-white/90":"text-slate-500"}">
-                    ${k(e.institucion)}
+                    ${S(e.institucion)}
                 </span>
                 <span class="text-xs font-bold ${a?"text-white/90":"text-slate-500"}">
-                    · ${k(e.duracion)}
+                    · ${S(e.duracion)}
                 </span>
             </div>
         </button>
@@ -2061,20 +2061,20 @@ Gracias.`);return`
                 <div class="relative z-10">
                     <div class="flex flex-wrap items-center gap-2 mb-4">
                         <span class="inline-block bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${k(e.estado)}
+                            ${S(e.estado)}
                         </span>
 
                         <span class="inline-block bg-[#5580C1] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${k(e.convocatoria)}
+                            ${S(e.convocatoria)}
                         </span>
                     </div>
 
                     <h2 class="text-2xl md:text-3xl font-black leading-tight max-w-4xl">
-                        ${k(e.title)}
+                        ${S(e.title)}
                     </h2>
 
                     <p class="mt-4 text-white/80 leading-relaxed max-w-4xl">
-                        ${k(e.contenido)}
+                        ${S(e.contenido)}
                     </p>
                 </div>
             </div>
@@ -2083,29 +2083,29 @@ Gracias.`);return`
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Institución</p>
-                        <p class="text-slate-800 font-bold mt-1">${k(e.institucion)}</p>
+                        <p class="text-slate-800 font-bold mt-1">${S(e.institucion)}</p>
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Tipo</p>
-                        <p class="text-slate-800 font-bold mt-1">${k(e.tipo)}</p>
+                        <p class="text-slate-800 font-bold mt-1">${S(e.tipo)}</p>
                     </div>
 
                     <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Duración estimada</p>
-                        <p class="text-slate-800 font-bold mt-1">${k(e.duracion)}</p>
+                        <p class="text-slate-800 font-bold mt-1">${S(e.duracion)}</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha inicial prevista</p>
-                        <p class="text-slate-700 font-semibold mt-1">${k(e.fechaInicio)}</p>
+                        <p class="text-slate-700 font-semibold mt-1">${S(e.fechaInicio)}</p>
                     </div>
 
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                         <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha final prevista</p>
-                        <p class="text-slate-700 font-semibold mt-1">${k(e.fechaFinalizacion)}</p>
+                        <p class="text-slate-700 font-semibold mt-1">${S(e.fechaFinalizacion)}</p>
                     </div>
                 </div>
 
@@ -2115,7 +2115,7 @@ Gracias.`);return`
                     </h3>
 
                     <p class="text-slate-600 leading-relaxed">
-                        ${k(e.contexto)}
+                        ${S(e.contexto)}
                     </p>
                 </div>
 
@@ -2125,7 +2125,7 @@ Gracias.`);return`
                     </h3>
 
                     <p class="text-slate-600 leading-relaxed">
-                        ${k(e.linea)}
+                        ${S(e.linea)}
                     </p>
                 </div>
 
@@ -2167,12 +2167,12 @@ Gracias.`);return`
                     </p>
 
                     <div class="flex flex-wrap gap-2">
-                        ${Ra(e.etiquetas)}
+                        ${Oa(e.etiquetas)}
                     </div>
                 </div>
             </div>
         </article>
-    `}function Ka(){let e=J[0]?.id||1;const a=document.createElement("section");a.className="w-full max-w-7xl mx-auto px-4 py-10 mb-20 font-sans tabletBig:px-20 xl:px-0";const t=()=>{const i=Oa(e);a.innerHTML=`
+    `}function Ka(){let e=K[0]?.id||1;const a=document.createElement("section");a.className="w-full max-w-7xl mx-auto px-4 py-10 mb-20 font-sans tabletBig:px-20 xl:px-0";const t=()=>{const i=Ra(e);a.innerHTML=`
             <div class="mb-8">
                 <p class="text-[#5580C1] font-black uppercase tracking-wide text-sm mb-2">
                     Grupo de Investigación Kernel
@@ -2194,7 +2194,7 @@ Gracias.`);return`
                         Posibles propuestas
                     </p>
                     <p class="text-3xl font-black text-slate-800">
-                        ${J.length}
+                        ${K.length}
                     </p>
                 </div>
 
@@ -2230,7 +2230,7 @@ Gracias.`);return`
                     </div>
 
                     <div class="space-y-4">
-                        ${J.map(o=>Ga(o,o.id===e)).join("")}
+                        ${K.map(o=>Ga(o,o.id===e)).join("")}
                     </div>
                 </aside>
 
@@ -2563,7 +2563,7 @@ A00116736    13    7"
                 </p>
             </div>
         </div>
-    `;const a=e.querySelector("#banner-primer-input"),t=e.querySelector("#banner-primer-process"),i=e.querySelector("#banner-primer-clear"),o=e.querySelector("#banner-primer-message"),s=e.querySelector("#banner-primer-preview"),n=e.querySelector("#banner-primer-count"),p=e.querySelector("#banner-primer-download-1ac"),b=e.querySelector("#banner-primer-download-2pp");let d=[];function l(x,w="success"){o.textContent=x,o.classList.remove("hidden","border-red-200","bg-red-50","text-red-800","border-emerald-200","bg-emerald-50","text-emerald-800"),w==="error"?o.classList.add("border-red-200","bg-red-50","text-red-800"):o.classList.add("border-emerald-200","bg-emerald-50","text-emerald-800")}function y(){o.textContent="",o.classList.add("hidden")}function u(x){return String(x).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(/\s+/g,"").trim().toUpperCase()}function c(x){return String(x).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(",",".").trim()}function r(x){const w=String(x).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").trim();return w.includes("	")?w.split("	").map(g=>g.trim()).filter(g=>g!==""):w.includes(";")?w.split(";").map(g=>g.trim()).filter(g=>g!==""):w.split(/\s+/).map(g=>g.trim()).filter(g=>g!=="")}function f(x){const w=x.split(/\r?\n/).map(C=>C.trim()).filter(Boolean),g=[],A=[],I=new Set;return w.forEach((C,U)=>{const $=U+1,H=r(C);if(H.length!==3){A.push(`Línea ${$}: deben existir exactamente tres columnas: matrícula, 1AC y 2PP.`);return}const N=u(H[0]),F=Number(c(H[1])),G=Number(c(H[2]));if(!/^A[0-9]{8}$/.test(N)){A.push(`Línea ${$}: la matrícula "${N}" no es válida. Debe tener el formato A00108671.`);return}if(I.has(N)){A.push(`Línea ${$}: la matrícula ${N} está repetida.`);return}if(!Number.isFinite(F)){A.push(`Línea ${$}: la calificación 1AC no es numérica.`);return}if(!Number.isFinite(G)){A.push(`Línea ${$}: la calificación 2PP no es numérica.`);return}if(F<0||F>15){A.push(`Línea ${$}: 1AC debe estar entre 0 y 15.`);return}if(G<0||G>20){A.push(`Línea ${$}: 2PP debe estar entre 0 y 20.`);return}const ae=F+G;if(ae>35){A.push(`Línea ${$}: la suma de 1AC y 2PP no puede superar 35 puntos.`);return}I.add(N),g.push({matricula:N,grade1AC:F,grade2PP:G,total:ae})}),{records:g,errors:A}}function m(x){return Number.isInteger(x)?String(x):x.toFixed(2).replace(/0+$/,"").replace(/\.$/,"")}function v(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function h(x){if(x.length===0){s.innerHTML=`
+    `;const a=e.querySelector("#banner-primer-input"),t=e.querySelector("#banner-primer-process"),i=e.querySelector("#banner-primer-clear"),o=e.querySelector("#banner-primer-message"),s=e.querySelector("#banner-primer-preview"),n=e.querySelector("#banner-primer-count"),d=e.querySelector("#banner-primer-download-1ac"),x=e.querySelector("#banner-primer-download-2pp");let m=[];function c(r,f="success"){o.textContent=r,o.classList.remove("hidden","border-red-200","bg-red-50","text-red-800","border-emerald-200","bg-emerald-50","text-emerald-800"),f==="error"?o.classList.add("border-red-200","bg-red-50","text-red-800"):o.classList.add("border-emerald-200","bg-emerald-50","text-emerald-800")}function A(){o.textContent="",o.classList.add("hidden")}function g(r){return String(r).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(/\s+/g,"").trim().toUpperCase()}function u(r){return String(r).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(",",".").trim()}function l(r){const f=String(r).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").trim();return f.includes("	")?f.split("	").map(b=>b.trim()).filter(b=>b!==""):f.includes(";")?f.split(";").map(b=>b.trim()).filter(b=>b!==""):f.split(/\s+/).map(b=>b.trim()).filter(b=>b!=="")}function h(r){const f=r.split(/\r?\n/).map(E=>E.trim()).filter(Boolean),b=[],C=[],j=new Set;return f.forEach((E,I)=>{const L=I+1,B=l(E);if(B.length!==3){C.push(`Línea ${L}: deben existir exactamente tres columnas: matrícula, 1AC y 2PP.`);return}const O=g(B[0]),G=Number(u(B[1])),J=Number(u(B[2]));if(!/^A[0-9]{8}$/.test(O)){C.push(`Línea ${L}: la matrícula "${O}" no es válida. Debe tener el formato A00108671.`);return}if(j.has(O)){C.push(`Línea ${L}: la matrícula ${O} está repetida.`);return}if(!Number.isFinite(G)){C.push(`Línea ${L}: la calificación 1AC no es numérica.`);return}if(!Number.isFinite(J)){C.push(`Línea ${L}: la calificación 2PP no es numérica.`);return}if(G<0||G>15){C.push(`Línea ${L}: 1AC debe estar entre 0 y 15.`);return}if(J<0||J>20){C.push(`Línea ${L}: 2PP debe estar entre 0 y 20.`);return}const ae=G+J;if(ae>35){C.push(`Línea ${L}: la suma de 1AC y 2PP no puede superar 35 puntos.`);return}j.add(O),b.push({matricula:O,grade1AC:G,grade2PP:J,total:ae})}),{records:b,errors:C}}function p(r){return Number.isInteger(r)?String(r):r.toFixed(2).replace(/0+$/,"").replace(/\.$/,"")}function w(r){return String(r).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function y(r){if(r.length===0){s.innerHTML=`
                 <tr>
                     <td
                         colspan="5"
@@ -2572,45 +2572,197 @@ A00116736    13    7"
                         Todavía no se han procesado datos.
                     </td>
                 </tr>
-            `,n.textContent="0 estudiantes";return}s.innerHTML=x.map((w,g)=>`
+            `,n.textContent="0 estudiantes";return}s.innerHTML=r.map((f,b)=>`
                     <tr class="border-b border-slate-100 last:border-b-0">
                         <td class="px-4 py-3 text-slate-500">
-                            ${g+1}
+                            ${b+1}
                         </td>
 
                         <td class="px-4 py-3 font-mono font-bold text-slate-800">
-                            ${v(w.matricula)}
+                            ${w(f.matricula)}
                         </td>
 
                         <td class="px-4 py-3 text-center text-slate-700">
-                            ${m(w.grade1AC)}
+                            ${p(f.grade1AC)}
                         </td>
 
                         <td class="px-4 py-3 text-center text-slate-700">
-                            ${m(w.grade2PP)}
+                            ${p(f.grade2PP)}
                         </td>
 
                         <td class="px-4 py-3 text-center font-black text-slate-800">
-                            ${m(w.total)}
+                            ${p(f.total)}
                         </td>
                     </tr>
-                `).join(""),n.textContent=`${x.length} estudiante${x.length===1?"":"s"}`}function E(x,w,g){return[["MATRICULA",g],...x.map(C=>[C.matricula,m(C[w])])].map(C=>C.join(";")).join(`\r
-`)}function O(x,w){const A=new Blob(["\uFEFF"+x],{type:"text/csv;charset=utf-8;"}),I=URL.createObjectURL(A),C=document.createElement("a");C.href=I,C.download=w,document.body.appendChild(C),C.click(),C.remove(),window.setTimeout(()=>{URL.revokeObjectURL(I)},1e3)}function R(){d=[],a.value="",h([]),p.disabled=!0,b.disabled=!0,y(),a.focus()}return t.addEventListener("click",()=>{const x=a.value.trim();if(!x){d=[],h([]),p.disabled=!0,b.disabled=!0,l("Debes pegar al menos una fila con matrícula, 1AC y 2PP.","error");return}const{records:w,errors:g}=f(x);if(g.length>0){d=[],h([]),p.disabled=!0,b.disabled=!0,l(g.join(" "),"error");return}d=w,h(d),p.disabled=!1,b.disabled=!1,l(`Los datos de ${w.length} estudiante${w.length===1?"":"s"} fueron validados correctamente.`)}),i.addEventListener("click",R),p.addEventListener("click",()=>{if(d.length===0)return;const x=E(d,"grade1AC","1AC");O(x,"Banner_APEC_Primer_Periodo_1AC.csv")}),b.addEventListener("click",()=>{if(d.length===0)return;const x=E(d,"grade2PP","2PP");O(x,"Banner_APEC_Primer_Periodo_2PP.csv")}),e}function ot(){const e=document.createElement("section");return e.className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8",e.innerHTML=`
-        <div>
-            <p class="mb-2 text-sm font-black uppercase tracking-wide text-[#5580C1]">
-                Segundo período
+                `).join(""),n.textContent=`${r.length} estudiante${r.length===1?"":"s"}`}function M(r,f,b){return[["MATRICULA",b],...r.map(E=>[E.matricula,p(E[f])])].map(E=>E.join(";")).join(`\r
+`)}function v(r,f){const C=new Blob(["\uFEFF"+r],{type:"text/csv;charset=utf-8;"}),j=URL.createObjectURL(C),E=document.createElement("a");E.href=j,E.download=f,document.body.appendChild(E),E.click(),E.remove(),window.setTimeout(()=>{URL.revokeObjectURL(j)},1e3)}function k(){m=[],a.value="",y([]),d.disabled=!0,x.disabled=!0,A(),a.focus()}return t.addEventListener("click",()=>{const r=a.value.trim();if(!r){m=[],y([]),d.disabled=!0,x.disabled=!0,c("Debes pegar al menos una fila con matrícula, 1AC y 2PP.","error");return}const{records:f,errors:b}=h(r);if(b.length>0){m=[],y([]),d.disabled=!0,x.disabled=!0,c(b.join(" "),"error");return}m=f,y(m),d.disabled=!1,x.disabled=!1,c(`Los datos de ${f.length} estudiante${f.length===1?"":"s"} fueron validados correctamente.`)}),i.addEventListener("click",k),d.addEventListener("click",()=>{if(m.length===0)return;const r=M(m,"grade1AC","1AC");v(r,"Banner_APEC_Primer_Periodo_1AC.csv")}),x.addEventListener("click",()=>{if(m.length===0)return;const r=M(m,"grade2PP","2PP");v(r,"Banner_APEC_Primer_Periodo_2PP.csv")}),e}function ot(){const e=document.createElement("section");e.className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8",e.innerHTML=`
+        <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="mb-2 text-sm font-black uppercase tracking-wide text-emerald-600">
+                    Segundo período
+                </p>
+
+                <h3 class="text-2xl font-black text-slate-800 md:text-3xl">
+                    Publicación del segundo corte
+                </h3>
+
+                <p class="mt-3 max-w-3xl leading-relaxed text-slate-500">
+                    Pega desde Excel las matrículas y la calificación total
+                    correspondiente a 3SP. Cada estudiante debe ocupar una fila.
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-emerald-50">
+                <i class="bx bx-book-reader text-4xl text-emerald-600"></i>
+            </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <label
+                    for="banner-segundo-input"
+                    class="mb-2 block text-sm font-black text-slate-800"
+                >
+                    Matrícula y 3SP
+                </label>
+
+                <p class="mb-4 text-sm leading-relaxed text-slate-500">
+                    Copia dos columnas desde Excel: matrícula Banner y
+                    calificación del segundo período. La matrícula debe tener
+                    el formato A00108671. No incluyas encabezados.
+                </p>
+
+                <textarea
+                    id="banner-segundo-input"
+                    rows="14"
+                    spellcheck="false"
+                    class="w-full resize-y rounded-xl border border-slate-300 bg-white p-4 font-mono text-sm text-slate-800 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+                    placeholder="A00108671    28
+A00122336    32
+A00116736    25"
+                ></textarea>
+
+                <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <button
+                        id="banner-segundo-process"
+                        type="button"
+                        class="flex-1 rounded-xl bg-emerald-600 px-5 py-3 font-black text-white transition hover:bg-emerald-700"
+                    >
+                        Procesar datos
+                    </button>
+
+                    <button
+                        id="banner-segundo-clear"
+                        type="button"
+                        class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-black text-slate-700 transition hover:bg-slate-100"
+                    >
+                        Limpiar
+                    </button>
+                </div>
+
+                <div
+                    id="banner-segundo-message"
+                    class="mt-4 hidden rounded-xl border px-4 py-3 text-sm font-semibold"
+                ></div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm font-black text-slate-800">
+                            Vista previa
+                        </p>
+
+                        <p class="mt-1 text-xs text-slate-500">
+                            Comprueba los datos antes de descargar el archivo.
+                        </p>
+                    </div>
+
+                    <span
+                        id="banner-segundo-count"
+                        class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600"
+                    >
+                        0 estudiantes
+                    </span>
+                </div>
+
+                <div class="mt-4 max-h-[420px] overflow-auto rounded-xl border border-slate-200">
+                    <table class="w-full min-w-[420px] border-collapse text-left text-sm">
+                        <thead class="sticky top-0 bg-slate-100 text-slate-700">
+                            <tr>
+                                <th class="border-b border-slate-200 px-4 py-3 font-black">
+                                    #
+                                </th>
+
+                                <th class="border-b border-slate-200 px-4 py-3 font-black">
+                                    Matrícula
+                                </th>
+
+                                <th class="border-b border-slate-200 px-4 py-3 text-center font-black">
+                                    3SP
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="banner-segundo-preview">
+                            <tr>
+                                <td
+                                    colspan="3"
+                                    class="px-4 py-10 text-center text-slate-400"
+                                >
+                                    Todavía no se han procesado datos.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button
+                    id="banner-segundo-download"
+                    type="button"
+                    disabled
+                    class="mt-5 w-full rounded-xl bg-emerald-600 px-5 py-3 font-black text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                    Descargar 3SP
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+            <p class="font-black text-emerald-900">
+                3SP · Segundo Parcial
             </p>
 
-            <h3 class="text-2xl font-black text-slate-800">
-                Publicación del segundo corte
-            </h3>
-
-            <p class="mt-3 max-w-3xl leading-relaxed text-slate-500">
-                Aquí se preparará la publicación del componente
-                3SP correspondiente al segundo período.
+            <p class="mt-2 text-sm leading-relaxed text-emerald-800">
+                Esta calificación ya contiene las prácticas acumuladas y el
+                segundo parcial. Debe estar entre 0 y 35 puntos.
             </p>
         </div>
-    `,e}function st(){const e=document.createElement("section");return e.className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8",e.innerHTML=`
+    `;const a=e.querySelector("#banner-segundo-input"),t=e.querySelector("#banner-segundo-process"),i=e.querySelector("#banner-segundo-clear"),o=e.querySelector("#banner-segundo-message"),s=e.querySelector("#banner-segundo-preview"),n=e.querySelector("#banner-segundo-count"),d=e.querySelector("#banner-segundo-download");let x=[];function m(v){return String(v).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(/\s+/g,"").trim().toUpperCase()}function c(v){return String(v).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").replace(/\u00A0/g,"").replace(",",".").trim()}function A(v){const k=String(v).normalize("NFKC").replace(/[\u200B-\u200D\u2060\uFEFF]/g,"").trim();return k.includes("	")?k.split("	").map(r=>r.trim()).filter(r=>r!==""):k.includes(";")?k.split(";").map(r=>r.trim()).filter(r=>r!==""):k.split(/\s+/).map(r=>r.trim()).filter(r=>r!=="")}function g(v){return Number.isInteger(v)?String(v):v.toFixed(2).replace(/0+$/,"").replace(/\.$/,"")}function u(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function l(v,k="success"){o.textContent=v,o.classList.remove("hidden","border-red-200","bg-red-50","text-red-800","border-emerald-200","bg-emerald-50","text-emerald-800"),k==="error"?o.classList.add("border-red-200","bg-red-50","text-red-800"):o.classList.add("border-emerald-200","bg-emerald-50","text-emerald-800")}function h(v){const k=v.split(/\r?\n/).map(C=>C.trim()).filter(Boolean),r=[],f=[],b=new Set;return k.forEach((C,j)=>{const E=j+1,I=A(C);if(I.length!==2){f.push(`Línea ${E}: deben existir exactamente dos columnas: matrícula y 3SP.`);return}const L=m(I[0]),B=Number(c(I[1]));if(!/^A[0-9]{8}$/.test(L)){f.push(`Línea ${E}: la matrícula "${L}" no es válida. Debe tener el formato A00108671.`);return}if(b.has(L)){f.push(`Línea ${E}: la matrícula ${L} está repetida.`);return}if(!Number.isFinite(B)){f.push(`Línea ${E}: la calificación 3SP no es numérica.`);return}if(B<0||B>35){f.push(`Línea ${E}: 3SP debe estar entre 0 y 35.`);return}b.add(L),r.push({matricula:L,grade3SP:B})}),{records:r,errors:f}}function p(v){if(v.length===0){s.innerHTML=`
+                <tr>
+                    <td
+                        colspan="3"
+                        class="px-4 py-10 text-center text-slate-400"
+                    >
+                        Todavía no se han procesado datos.
+                    </td>
+                </tr>
+            `,n.textContent="0 estudiantes";return}s.innerHTML=v.map((k,r)=>`
+                    <tr class="border-b border-slate-100 last:border-b-0">
+                        <td class="px-4 py-3 text-slate-500">
+                            ${r+1}
+                        </td>
+
+                        <td class="px-4 py-3 font-mono font-bold text-slate-800">
+                            ${u(k.matricula)}
+                        </td>
+
+                        <td class="px-4 py-3 text-center font-black text-slate-800">
+                            ${g(k.grade3SP)}
+                        </td>
+                    </tr>
+                `).join(""),n.textContent=`${v.length} estudiante${v.length===1?"":"s"}`}function w(v){return[["MATRICULA","3SP"],...v.map(r=>[r.matricula,g(r.grade3SP)])].map(r=>r.join(";")).join(`\r
+`)}function y(v,k){const r=new Blob(["\uFEFF"+v],{type:"text/csv;charset=utf-8;"}),f=URL.createObjectURL(r),b=document.createElement("a");b.href=f,b.download=k,document.body.appendChild(b),b.click(),b.remove(),window.setTimeout(()=>{URL.revokeObjectURL(f)},1e3)}function M(){x=[],a.value="",p([]),d.disabled=!0,o.textContent="",o.classList.add("hidden"),a.focus()}return t.addEventListener("click",()=>{const v=a.value.trim();if(!v){x=[],p([]),d.disabled=!0,l("Debes pegar al menos una fila con matrícula y 3SP.","error");return}const{records:k,errors:r}=h(v);if(r.length>0){x=[],p([]),d.disabled=!0,l(r.join(" "),"error");return}x=k,p(k),d.disabled=!1,l(`Los datos de ${k.length} estudiante${k.length===1?"":"s"} fueron validados correctamente.`)}),i.addEventListener("click",M),d.addEventListener("click",()=>{x.length!==0&&y(w(x),"Banner_APEC_Segundo_Periodo_3SP.csv")}),e}function st(){const e=document.createElement("section");return e.className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8",e.innerHTML=`
         <div>
             <p class="mb-2 text-sm font-black uppercase tracking-wide text-[#5580C1]">
                 Calificación final
@@ -2825,7 +2977,7 @@ A00116736    13    7"
 
             <div id="banner-tool-content"></div>
         </div>
-    `;const a=e.querySelector("#banner-menu"),t=e.querySelector("#banner-tool-view"),i=e.querySelector("#banner-tool-content"),o=e.querySelector("#open-primer-periodo"),s=e.querySelector("#open-segundo-periodo"),n=e.querySelector("#open-calificacion-final"),p=e.querySelector("#banner-back");function b(l){i.innerHTML="";try{const y=l();if(!(y instanceof HTMLElement))throw new Error("El componente seleccionado no devolvió un elemento HTML válido.");i.appendChild(y),a.classList.add("hidden"),t.classList.remove("hidden"),e.scrollIntoView({behavior:"smooth",block:"start"})}catch(y){console.error("No fue posible abrir la herramienta de Banner:",y),i.innerHTML=`
+    `;const a=e.querySelector("#banner-menu"),t=e.querySelector("#banner-tool-view"),i=e.querySelector("#banner-tool-content"),o=e.querySelector("#open-primer-periodo"),s=e.querySelector("#open-segundo-periodo"),n=e.querySelector("#open-calificacion-final"),d=e.querySelector("#banner-back");function x(c){i.innerHTML="";try{const A=c();if(!(A instanceof HTMLElement))throw new Error("El componente seleccionado no devolvió un elemento HTML válido.");i.appendChild(A),a.classList.add("hidden"),t.classList.remove("hidden"),e.scrollIntoView({behavior:"smooth",block:"start"})}catch(A){console.error("No fue posible abrir la herramienta de Banner:",A),i.innerHTML=`
                 <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
                     <p class="font-black">
                         No fue posible abrir esta herramienta
@@ -2836,7 +2988,7 @@ A00116736    13    7"
                         y exportado.
                     </p>
                 </div>
-            `,a.classList.add("hidden"),t.classList.remove("hidden")}}function d(){i.innerHTML="",t.classList.add("hidden"),a.classList.remove("hidden"),e.scrollIntoView({behavior:"smooth",block:"start"})}return o.addEventListener("click",()=>{b(it)}),s.addEventListener("click",()=>{b(ot)}),n.addEventListener("click",()=>{b(st)}),p.addEventListener("click",d),e}function rt(){const e=document.createElement("section");e.className="w-full max-w-7xl mx-auto px-4 py-8",e.innerHTML=`
+            `,a.classList.add("hidden"),t.classList.remove("hidden")}}function m(){i.innerHTML="",t.classList.add("hidden"),a.classList.remove("hidden"),e.scrollIntoView({behavior:"smooth",block:"start"})}return o.addEventListener("click",()=>{x(it)}),s.addEventListener("click",()=>{x(ot)}),n.addEventListener("click",()=>{x(st)}),d.addEventListener("click",m),e}function rt(){const e=document.createElement("section");e.className="w-full max-w-7xl mx-auto px-4 py-8",e.innerHTML=`
         <div class="mb-8 text-center">
             <p class="mb-2 text-sm font-bold uppercase tracking-wide text-sky-600">
                 Grupo de Investigación Kernel
@@ -2989,9 +3141,9 @@ A00116736    13    7"
         </div>
 
         <div id="panel-banner" class="hidden"></div>
-    `;const a=e.querySelector("#xmera-input"),t=e.querySelector("#xmera-output"),i=e.querySelector("#xmera-generate"),o=e.querySelector("#xmera-copy"),s=e.querySelector("#xmera-clear"),n=e.querySelector("#xmera-message"),p=e.querySelector("#tab-xmera"),b=e.querySelector("#tab-banner"),d=e.querySelector("#panel-xmera"),l=e.querySelector("#panel-banner");function y(){t.textContent=`var data_todo = {
-};`,o.disabled=!0}function u(m,v="success"){n.textContent=m,n.classList.remove("hidden","border","border-emerald-200","bg-emerald-50","text-emerald-800","border-red-200","bg-red-50","text-red-800"),n.classList.add("border"),v==="error"?n.classList.add("border-red-200","bg-red-50","text-red-800"):n.classList.add("border-emerald-200","bg-emerald-50","text-emerald-800")}function c(m){const v=m.split(/\r?\n/).map(R=>R.trim()).filter(Boolean),h=[],E=[],O=new Set;return v.forEach((R,x)=>{const w=R.split(/[\t,; ]+/).map(U=>U.trim()).filter(Boolean),g=x+1,A=w[0],I=w.slice(1);if(!A){E.push(`Línea ${g}: falta la matrícula.`);return}if(!/^\d+$/.test(A)){E.push(`Línea ${g}: la matrícula "${A}" no es válida.`);return}if(O.has(A)){E.push(`Línea ${g}: la matrícula ${A} está repetida.`);return}if(I.length===0){E.push(`Línea ${g}: falta al menos una calificación.`);return}const C=I.map(U=>Number(U));if(C.some(U=>!Number.isFinite(U))){E.push(`Línea ${g}: existe una calificación no numérica.`);return}O.add(A),h.push({matricula:A,grades:C})}),{records:h,errors:E}}function r(m){return`var data_todo = {
-${m.map(({matricula:h,grades:E})=>`  "${h}":[${E.join(",")}]`).join(`,
+    `;const a=e.querySelector("#xmera-input"),t=e.querySelector("#xmera-output"),i=e.querySelector("#xmera-generate"),o=e.querySelector("#xmera-copy"),s=e.querySelector("#xmera-clear"),n=e.querySelector("#xmera-message"),d=e.querySelector("#tab-xmera"),x=e.querySelector("#tab-banner"),m=e.querySelector("#panel-xmera"),c=e.querySelector("#panel-banner");function A(){t.textContent=`var data_todo = {
+};`,o.disabled=!0}function g(p,w="success"){n.textContent=p,n.classList.remove("hidden","border","border-emerald-200","bg-emerald-50","text-emerald-800","border-red-200","bg-red-50","text-red-800"),n.classList.add("border"),w==="error"?n.classList.add("border-red-200","bg-red-50","text-red-800"):n.classList.add("border-emerald-200","bg-emerald-50","text-emerald-800")}function u(p){const w=p.split(/\r?\n/).map(k=>k.trim()).filter(Boolean),y=[],M=[],v=new Set;return w.forEach((k,r)=>{const f=k.split(/[\t,; ]+/).map(I=>I.trim()).filter(Boolean),b=r+1,C=f[0],j=f.slice(1);if(!C){M.push(`Línea ${b}: falta la matrícula.`);return}if(!/^\d+$/.test(C)){M.push(`Línea ${b}: la matrícula "${C}" no es válida.`);return}if(v.has(C)){M.push(`Línea ${b}: la matrícula ${C} está repetida.`);return}if(j.length===0){M.push(`Línea ${b}: falta al menos una calificación.`);return}const E=j.map(I=>Number(I));if(E.some(I=>!Number.isFinite(I))){M.push(`Línea ${b}: existe una calificación no numérica.`);return}v.add(C),y.push({matricula:C,grades:E})}),{records:y,errors:M}}function l(p){return`var data_todo = {
+${p.map(({matricula:y,grades:M})=>`  "${y}":[${M.join(",")}]`).join(`,
 `)}
 };
 
@@ -3086,7 +3238,7 @@ if (!contenedor) {
   });
 
   console.log("Proceso de asignación finalizado.");
-}`}function f(m){const v=m==="xmera";d.classList.toggle("hidden",!v),l.classList.toggle("hidden",v),p.className=v?"rounded-xl bg-sky-600 px-6 py-3 font-black text-white shadow-md transition":"rounded-xl border border-slate-300 bg-white px-6 py-3 font-black text-slate-700 transition hover:bg-slate-100",b.className=v?"rounded-xl border border-slate-300 bg-white px-6 py-3 font-black text-slate-700 transition hover:bg-slate-100":"rounded-xl bg-[#5580C1] px-6 py-3 font-black text-white shadow-md transition"}i.addEventListener("click",()=>{const m=a.value.trim();if(!m){y(),u("Debes introducir al menos una matrícula con sus calificaciones.","error");return}const{records:v,errors:h}=c(m);if(h.length>0){y(),u(h.join(" "),"error");return}t.textContent=r(v),o.disabled=!1,u(`Código generado correctamente para ${v.length} estudiante${v.length===1?"":"s"}.`)}),o.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(t.textContent),u("El código fue copiado al portapapeles.")}catch(m){console.error("No fue posible copiar el código:",m),u("No fue posible copiar automáticamente. Selecciona el código y cópialo manualmente.","error")}}),s.addEventListener("click",()=>{a.value="",y(),n.textContent="",n.classList.add("hidden"),a.focus()});try{const m=nt();if(m instanceof HTMLElement)l.appendChild(m);else throw new Error("bannerComponent() no devolvió un elemento HTML válido.")}catch(m){console.error("No fue posible cargar el módulo Banner:",m),l.innerHTML=`
+}`}function h(p){const w=p==="xmera";m.classList.toggle("hidden",!w),c.classList.toggle("hidden",w),d.className=w?"rounded-xl bg-sky-600 px-6 py-3 font-black text-white shadow-md transition":"rounded-xl border border-slate-300 bg-white px-6 py-3 font-black text-slate-700 transition hover:bg-slate-100",x.className=w?"rounded-xl border border-slate-300 bg-white px-6 py-3 font-black text-slate-700 transition hover:bg-slate-100":"rounded-xl bg-[#5580C1] px-6 py-3 font-black text-white shadow-md transition"}i.addEventListener("click",()=>{const p=a.value.trim();if(!p){A(),g("Debes introducir al menos una matrícula con sus calificaciones.","error");return}const{records:w,errors:y}=u(p);if(y.length>0){A(),g(y.join(" "),"error");return}t.textContent=l(w),o.disabled=!1,g(`Código generado correctamente para ${w.length} estudiante${w.length===1?"":"s"}.`)}),o.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(t.textContent),g("El código fue copiado al portapapeles.")}catch(p){console.error("No fue posible copiar el código:",p),g("No fue posible copiar automáticamente. Selecciona el código y cópialo manualmente.","error")}}),s.addEventListener("click",()=>{a.value="",A(),n.textContent="",n.classList.add("hidden"),a.focus()});try{const p=nt();if(p instanceof HTMLElement)c.appendChild(p);else throw new Error("bannerComponent() no devolvió un elemento HTML válido.")}catch(p){console.error("No fue posible cargar el módulo Banner:",p),c.innerHTML=`
             <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
                 <p class="font-black">
                     No fue posible cargar el módulo Banner
@@ -3097,4 +3249,4 @@ if (!contenedor) {
                     el componente que produjo el error.
                 </p>
             </div>
-        `}return p.addEventListener("click",()=>{f("xmera")}),b.addEventListener("click",()=>{f("banner")}),f("xmera"),e}function lt(){return rt()}const ct={home:{page:$e,layout:"default"},quienesSomos:{page:Ze,layout:"full"},equipment:{page:sa,layout:"default"},FormacionAcademica:{page:da,layout:"default"},noticias:{page:Ea,layout:"full"},publicaciones:{page:Ia,layout:"default"},proyectos:{page:Ha,layout:"default"},lineas:{page:qa,layout:"default"},contacto:{page:tt,layout:"default"},herramientas:{page:lt,layout:"default"}};function ee(e){window.location.hash=`/${e}`}function dt(){const e=()=>{const a=window.location.hash.replace("#/","")||"home";pt(a)};window.addEventListener("hashchange",e),e()}function pt(e){const a=document.querySelector("main"),t=ct[e];a&&(a.innerHTML="",t&&(na(t.layout),a.appendChild(t.page())))}function mt(e,a){ne(e,ee),dt();const t=window.matchMedia("(max-width: 768px)");let i=!1;function o(n){n.matches&&!i&&(te(e),i=!0)}t.addEventListener("change",o),o(t),te(e);const s=a.querySelector('[data-action ="open-menu"]');ye(s,e),Ae(e)}const ge=document.querySelector("#header");ge.innerHTML=ve();const fe=document.querySelector("#navBar");fe.innerHTML=he();const ut=document.querySelector("#footer");ut.innerHTML=we();mt(fe,ge);
+        `}return d.addEventListener("click",()=>{h("xmera")}),x.addEventListener("click",()=>{h("banner")}),h("xmera"),e}function lt(){return rt()}const ct={home:{page:$e,layout:"default"},quienesSomos:{page:Ze,layout:"full"},equipment:{page:sa,layout:"default"},FormacionAcademica:{page:da,layout:"default"},noticias:{page:Ea,layout:"full"},publicaciones:{page:ja,layout:"default"},proyectos:{page:Ha,layout:"default"},lineas:{page:qa,layout:"default"},contacto:{page:tt,layout:"default"},herramientas:{page:lt,layout:"default"}};function ee(e){window.location.hash=`/${e}`}function dt(){const e=()=>{const a=window.location.hash.replace("#/","")||"home";pt(a)};window.addEventListener("hashchange",e),e()}function pt(e){const a=document.querySelector("main"),t=ct[e];a&&(a.innerHTML="",t&&(na(t.layout),a.appendChild(t.page())))}function ut(e,a){ne(e,ee),dt();const t=window.matchMedia("(max-width: 768px)");let i=!1;function o(n){n.matches&&!i&&(te(e),i=!0)}t.addEventListener("change",o),o(t),te(e);const s=a.querySelector('[data-action ="open-menu"]');ye(s,e),Ae(e)}const ge=document.querySelector("#header");ge.innerHTML=ve();const fe=document.querySelector("#navBar");fe.innerHTML=he();const mt=document.querySelector("#footer");mt.innerHTML=we();ut(fe,ge);
