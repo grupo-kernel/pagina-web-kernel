@@ -10,7 +10,6 @@ import { proyectos } from "../pages/proyectos.js";
 import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 
-
 const routes = {
   home: { page: CreatePageHome, layout: "default" },
   quienesSomos: { page: CreatePageQuienesSomos, layout: "full" },
@@ -21,10 +20,7 @@ const routes = {
   proyectos: { page: proyectos, layout: "default" },
   lineas: { page: lineas, layout: "default" },
   contacto: { page: Contacto, layout: "default" },
-  herramientas: {
-    page: herramientas,
-    layout: "default"
-  }
+  herramientas: { page: herramientas, layout: "default" },
 };
 
 export function navigate(route) {
@@ -33,13 +29,11 @@ export function navigate(route) {
 
 export function routerInit() {
   const handleRouteChange = () => {
-
     const route = window.location.hash.replace("#/", "") || "home";
     loadRoute(route);
   };
 
   window.addEventListener("hashchange", handleRouteChange);
-
   handleRouteChange();
 }
 
@@ -48,10 +42,10 @@ function loadRoute(route) {
   const page = routes[route];
 
   if (!content) return;
+
   content.innerHTML = "";
 
   if (!page) {
-
     return;
   }
 
