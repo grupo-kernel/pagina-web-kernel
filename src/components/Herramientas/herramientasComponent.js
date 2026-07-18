@@ -1,3 +1,5 @@
+import { bannerComponent } from "../Banner/bannerComponent.js";
+
 export function herramientasComponent() {
     const container = document.createElement("section");
 
@@ -360,13 +362,18 @@ if (!contenedor) {
         }
     });
 
-    clearButton.addEventListener("click", () => {
+        clearButton.addEventListener("click", () => {
         input.value = "";
         output.textContent = "var data_todo = {\n};";
         copyButton.disabled = true;
         message.classList.add("hidden");
         input.focus();
     });
+
+    const bannerSection = bannerComponent();
+    bannerSection.classList.add("mt-14");
+
+    container.appendChild(bannerSection);
 
     return container;
 }
