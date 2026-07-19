@@ -14,7 +14,10 @@ export function AsistentePruebas() {
         numeroGrupos: "",
         relacion: "",
         normalidad: "",
-        varianzas: ""
+        varianzas: "",
+        tipoRelacion: "",
+        linealidad: "",
+        empates: ""
     };
 
     section.innerHTML = `
@@ -31,27 +34,48 @@ export function AsistentePruebas() {
     };
 
     const reiniciarEstado = () => {
-        estado.pantalla = "inicio";
-        estado.objetivo = "";
-        estado.tipoVariable = "";
-        estado.numeroGrupos = "";
-        estado.relacion = "";
-        estado.normalidad = "";
-        estado.varianzas = "";
+        Object.assign(estado, {
+            pantalla: "inicio",
+            objetivo: "",
+            tipoVariable: "",
+            numeroGrupos: "",
+            relacion: "",
+            normalidad: "",
+            varianzas: "",
+            tipoRelacion: "",
+            linealidad: "",
+            empates: ""
+        });
+    };
+
+    const mostrarResultadoComparacion = () => {
+        estado.pantalla = "resultado-comparacion";
+        mostrar(crearResultadoComparacion(estado));
+    };
+
+    const mostrarResultadoRelacion = () => {
+        estado.pantalla = "resultado-relacion";
+        mostrar(crearResultadoRelacion(estado));
     };
 
     const avanzar = (valor) => {
         if (estado.pantalla === "objetivo") {
             estado.objetivo = valor;
 
-            if (valor !== "comparar") {
-                mostrar(crearModuloEnDesarrollo(valor));
-                estado.pantalla = "desarrollo";
+            if (valor === "comparar") {
+                estado.pantalla = "tipo-variable";
+                mostrar(crearPreguntaTipoVariable());
                 return;
             }
 
-            estado.pantalla = "tipo-variable";
-            mostrar(crearPreguntaTipoVariable());
+            if (valor === "relacionar") {
+                estado.pantalla = "tipo-relacion";
+                mostrar(crearPreguntaTipoRelacion());
+                return;
+            }
+
+            mostrar(crearModuloEnDesarrollo(valor));
+            estado.pantalla = "desarrollo";
             return;
         }
 
@@ -67,20 +91,32 @@ export function AsistentePruebas() {
 
             if (valor === "uno") {
                 estado.relacion = "una-muestra";
+
+                if (estado.tipoVariable === "categorica") {
+                    mostrarResultadoComparacion();
+                    return;
+                }
+
                 estado.pantalla = "normalidad";
-                mostrar(crearPreguntaNormalidad(estado));
+                mostrar(crearPreguntaNormalidad());
                 return;
             }
 
-            estado.pantalla = "relacion";
-            mostrar(crearPreguntaRelacion(estado));
+            estado.pantalla = "relacion-muestras";
+            mostrar(crearPreguntaRelacionMuestras(estado));
             return;
         }
 
-        if (estado.pantalla === "relacion") {
+        if (estado.pantalla === "relacion-muestras") {
             estado.relacion = valor;
+
+            if (estado.tipoVariable === "categorica") {
+                mostrarResultadoComparacion();
+                return;
+            }
+
             estado.pantalla = "normalidad";
-            mostrar(crearPreguntaNormalidad(estado));
+            mostrar(crearPreguntaNormalidad());
             return;
         }
 
@@ -89,7 +125,7 @@ export function AsistentePruebas() {
 
             const requiereVarianzas =
                 estado.tipoVariable === "cuantitativa" &&
-                estado.normalidad === "si" &&
+                valor === "si" &&
                 estado.relacion === "independientes" &&
                 estado.numeroGrupos !== "uno";
 
@@ -99,56 +135,100 @@ export function AsistentePruebas() {
                 return;
             }
 
-            estado.pantalla = "resultado";
-            mostrar(crearResultado(estado));
+            mostrarResultadoComparacion();
             return;
         }
 
         if (estado.pantalla === "varianzas") {
             estado.varianzas = valor;
-            estado.pantalla = "resultado";
-            mostrar(crearResultado(estado));
+            mostrarResultadoComparacion();
+            return;
+        }
+
+        if (estado.pantalla === "tipo-relacion") {
+            estado.tipoRelacion = valor;
+
+            if (valor === "dicotomica-cuantitativa") {
+                mostrarResultadoRelacion();
+                return;
+            }
+
+            if (valor === "ordinales") {
+                estado.pantalla = "empates";
+                mostrar(crearPreguntaEmpates());
+                return;
+            }
+
+            estado.pantalla = "normalidad-relacion";
+            mostrar(crearPreguntaNormalidadRelacion());
+            return;
+        }
+
+        if (estado.pantalla === "normalidad-relacion") {
+            estado.normalidad = valor;
+
+            if (valor !== "si") {
+                mostrarResultadoRelacion();
+                return;
+            }
+
+            estado.pantalla = "linealidad";
+            mostrar(crearPreguntaLinealidad());
+            return;
+        }
+
+        if (estado.pantalla === "linealidad") {
+            estado.linealidad = valor;
+            mostrarResultadoRelacion();
+            return;
+        }
+
+        if (estado.pantalla === "empates") {
+            estado.empates = valor;
+            mostrarResultadoRelacion();
         }
     };
 
     const volver = () => {
-        if (estado.pantalla === "tipo-variable") {
+        const pantallas = {
+            "tipo-variable": () => ["objetivo", crearPrimeraPregunta()],
+            "numero-grupos": () => ["tipo-variable", crearPreguntaTipoVariable()],
+            "relacion-muestras": () => ["numero-grupos", crearPreguntaNumeroGrupos()],
+            normalidad: () => estado.numeroGrupos === "uno"
+                ? ["numero-grupos", crearPreguntaNumeroGrupos()]
+                : ["relacion-muestras", crearPreguntaRelacionMuestras(estado)],
+            varianzas: () => ["normalidad", crearPreguntaNormalidad()],
+            "tipo-relacion": () => ["objetivo", crearPrimeraPregunta()],
+            "normalidad-relacion": () => ["tipo-relacion", crearPreguntaTipoRelacion()],
+            linealidad: () => ["normalidad-relacion", crearPreguntaNormalidadRelacion()],
+            empates: () => ["tipo-relacion", crearPreguntaTipoRelacion()],
+            "resultado-comparacion": () => estado.varianzas
+                ? ["varianzas", crearPreguntaVarianzas()]
+                : estado.tipoVariable === "categorica"
+                    ? estado.numeroGrupos === "uno"
+                        ? ["numero-grupos", crearPreguntaNumeroGrupos()]
+                        : ["relacion-muestras", crearPreguntaRelacionMuestras(estado)]
+                    : ["normalidad", crearPreguntaNormalidad()],
+            "resultado-relacion": () => estado.tipoRelacion === "ordinales"
+                ? ["empates", crearPreguntaEmpates()]
+                : estado.tipoRelacion === "dicotomica-cuantitativa"
+                    ? ["tipo-relacion", crearPreguntaTipoRelacion()]
+                    : estado.linealidad
+                        ? ["linealidad", crearPreguntaLinealidad()]
+                        : ["normalidad-relacion", crearPreguntaNormalidadRelacion()]
+        };
+
+        const resolver = pantallas[estado.pantalla];
+
+        if (!resolver) {
             estado.pantalla = "objetivo";
             mostrar(crearPrimeraPregunta());
             return;
         }
 
-        if (estado.pantalla === "numero-grupos") {
-            estado.pantalla = "tipo-variable";
-            mostrar(crearPreguntaTipoVariable());
-            return;
-        }
-
-        if (estado.pantalla === "relacion") {
-            estado.pantalla = "numero-grupos";
-            mostrar(crearPreguntaNumeroGrupos());
-            return;
-        }
-
-        if (estado.pantalla === "normalidad") {
-            if (estado.numeroGrupos === "uno") {
-                estado.pantalla = "numero-grupos";
-                mostrar(crearPreguntaNumeroGrupos());
-            } else {
-                estado.pantalla = "relacion";
-                mostrar(crearPreguntaRelacion(estado));
-            }
-            return;
-        }
-
-        if (estado.pantalla === "varianzas") {
-            estado.pantalla = "normalidad";
-            mostrar(crearPreguntaNormalidad(estado));
-            return;
-        }
-
-        estado.pantalla = "objetivo";
-        mostrar(crearPrimeraPregunta());
+        const [pantalla, html] = resolver();
+        estado.pantalla = pantalla;
+        mostrar(html);
     };
 
     contenedor.addEventListener("click", (event) => {
@@ -200,14 +280,8 @@ function crearPantallaInicial() {
                     Volver al laboratorio
                 </button>
 
-                <p class="uppercase tracking-[0.20em] text-sky-300 text-xs md:text-sm font-black mb-4">
-                    Asistente metodológico inteligente
-                </p>
-
-                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6">
-                    ¿Qué prueba estadística debo utilizar?
-                </h1>
-
+                <p class="uppercase tracking-[0.20em] text-sky-300 text-xs md:text-sm font-black mb-4">Asistente metodológico inteligente</p>
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6">¿Qué prueba estadística debo utilizar?</h1>
                 <p class="text-slate-200 text-lg md:text-xl leading-relaxed max-w-3xl">
                     Responda algunas preguntas sobre el objetivo, las variables y el diseño de su investigación. El sistema le orientará hacia la prueba estadística más adecuada.
                 </p>
@@ -215,8 +289,8 @@ function crearPantallaInicial() {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 max-w-4xl">
                     ${crearCaracteristica("1", "Describa su investigación", "Indique qué desea comparar, relacionar, asociar o predecir.")}
                     ${crearCaracteristica("2", "Identifique sus variables", "Seleccione el tipo de variable y la estructura de sus datos.")}
-                    ${crearCaracteristica("3", "Responda sobre el diseño", "Informe el número de grupos y si las muestras son independientes.")}
-                    ${crearCaracteristica("4", "Obtenga una recomendación", "Reciba la prueba sugerida, sus supuestos y su interpretación.")}
+                    ${crearCaracteristica("3", "Responda sobre el diseño", "Informe el número de grupos y los supuestos relevantes.")}
+                    ${crearCaracteristica("4", "Obtenga una recomendación", "Reciba la prueba sugerida, su justificación y el tamaño del efecto.")}
                 </div>
 
                 <button type="button" data-action="iniciar" class="mt-10 inline-flex items-center justify-center bg-white text-blue-700 font-black text-lg rounded-xl px-8 py-4 shadow-lg hover:bg-sky-50 transition-colors">
@@ -228,7 +302,7 @@ function crearPantallaInicial() {
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
             ${crearArea("Comparación de grupos", "Pruebas t, Welch, ANOVA, Mann–Whitney, Wilcoxon, Kruskal–Wallis y Friedman.")}
-            ${crearArea("Relación y asociación", "Correlaciones de Pearson, Spearman y Kendall, chi-cuadrado y otras medidas.")}
+            ${crearArea("Relación entre variables", "Pearson, Spearman, Kendall y correlación punto-biserial.")}
             ${crearArea("Predicción y modelización", "Regresión lineal, múltiple, logística y modelos para variables de conteo.")}
         </section>
     `;
@@ -237,12 +311,13 @@ function crearPantallaInicial() {
 function crearPrimeraPregunta() {
     return crearPantallaPregunta({
         paso: 1,
+        total: 6,
         tituloPaso: "Objetivo del análisis",
         pregunta: "¿Cuál es el objetivo principal de su investigación?",
         descripcion: "Seleccione la opción que mejor describa el análisis que desea realizar.",
         opciones: [
             ["comparar", "Comparar grupos", "Determinar si existen diferencias entre dos o más grupos."],
-            ["relacionar", "Relacionar variables", "Analizar la intensidad y dirección de la relación entre variables."],
+            ["relacionar", "Relacionar variables", "Analizar la intensidad y dirección de la relación entre dos variables."],
             ["asociar", "Medir asociación", "Evaluar si dos variables categóricas están asociadas."],
             ["predecir", "Predecir una variable", "Construir un modelo para explicar o predecir un resultado."],
             ["instrumento", "Evaluar un instrumento", "Analizar fiabilidad, consistencia interna o comportamiento de ítems."],
@@ -255,6 +330,7 @@ function crearPrimeraPregunta() {
 function crearPreguntaTipoVariable() {
     return crearPantallaPregunta({
         paso: 2,
+        total: 6,
         tituloPaso: "Tipo de variable",
         pregunta: "¿Qué tipo de variable desea comparar?",
         descripcion: "Seleccione la escala de medición de la variable resultado o dependiente.",
@@ -269,6 +345,7 @@ function crearPreguntaTipoVariable() {
 function crearPreguntaNumeroGrupos() {
     return crearPantallaPregunta({
         paso: 3,
+        total: 6,
         tituloPaso: "Número de grupos",
         pregunta: "¿Cuántos grupos, condiciones o momentos desea comparar?",
         descripcion: "Considere como grupo cada población, tratamiento, condición o medición diferenciada.",
@@ -280,11 +357,12 @@ function crearPreguntaNumeroGrupos() {
     });
 }
 
-function crearPreguntaRelacion(estado) {
+function crearPreguntaRelacionMuestras(estado) {
     const plural = estado.numeroGrupos === "dos" ? "los dos grupos" : "los grupos";
 
     return crearPantallaPregunta({
         paso: 4,
+        total: 6,
         tituloPaso: "Relación entre observaciones",
         pregunta: `¿Las observaciones de ${plural} son independientes o relacionadas?`,
         descripcion: "La elección depende de si participan personas distintas o las mismas personas son medidas varias veces.",
@@ -295,18 +373,13 @@ function crearPreguntaRelacion(estado) {
     });
 }
 
-function crearPreguntaNormalidad(estado) {
-    const esCategorica = estado.tipoVariable === "categorica";
-
-    if (esCategorica) {
-        return crearResultado(estado);
-    }
-
+function crearPreguntaNormalidad() {
     return crearPantallaPregunta({
         paso: 5,
+        total: 6,
         tituloPaso: "Distribución de los datos",
         pregunta: "¿La variable presenta una distribución aproximadamente normal?",
-        descripcion: "Considere evidencia gráfica y pruebas como Shapiro–Wilk. En muestras grandes, valore también asimetría, valores atípicos y robustez.",
+        descripcion: "Considere evidencia gráfica y pruebas como Shapiro–Wilk. Valore también asimetría y valores atípicos.",
         opciones: [
             ["si", "Sí, aproximadamente normal", "La distribución es razonablemente simétrica y no presenta desviaciones graves."],
             ["no", "No es normal", "Existe asimetría marcada, valores atípicos importantes o evidencia contra la normalidad."],
@@ -318,6 +391,7 @@ function crearPreguntaNormalidad(estado) {
 function crearPreguntaVarianzas() {
     return crearPantallaPregunta({
         paso: 6,
+        total: 6,
         tituloPaso: "Homogeneidad de varianzas",
         pregunta: "¿Las varianzas de los grupos pueden considerarse iguales?",
         descripcion: "Puede apoyarse en la prueba de Levene y en la comparación descriptiva de las dispersiones.",
@@ -329,15 +403,75 @@ function crearPreguntaVarianzas() {
     });
 }
 
-function crearPantallaPregunta({ paso, tituloPaso, pregunta, descripcion, opciones, accionVolver = "volver" }) {
-    const progreso = Math.round((paso / 6) * 100);
+function crearPreguntaTipoRelacion() {
+    return crearPantallaPregunta({
+        paso: 2,
+        total: 4,
+        tituloPaso: "Escala de las variables",
+        pregunta: "¿Qué tipo de variables desea relacionar?",
+        descripcion: "Seleccione la combinación que mejor representa las dos variables del análisis.",
+        opciones: [
+            ["cuantitativas", "Dos variables cuantitativas", "Ambas variables son numéricas continuas o de intervalo/razón."],
+            ["ordinales", "Variables ordinales", "Al menos una variable está medida mediante rangos o categorías ordenadas."],
+            ["dicotomica-cuantitativa", "Una dicotómica y una cuantitativa", "Una variable tiene dos categorías y la otra es numérica continua."]
+        ]
+    });
+}
+
+function crearPreguntaNormalidadRelacion() {
+    return crearPantallaPregunta({
+        paso: 3,
+        total: 4,
+        tituloPaso: "Normalidad bivariada",
+        pregunta: "¿Las dos variables son aproximadamente normales y no presentan valores atípicos graves?",
+        descripcion: "Revise histogramas, diagramas de caja y el diagrama de dispersión. La normalidad es relevante para Pearson.",
+        opciones: [
+            ["si", "Sí, aproximadamente", "Ambas variables son razonablemente normales y no hay valores atípicos influyentes."],
+            ["no", "No", "Existe asimetría, valores atípicos importantes o incumplimiento claro de normalidad."],
+            ["no-se", "No lo sé", "No se ha evaluado o no se dispone de información suficiente."]
+        ]
+    });
+}
+
+function crearPreguntaLinealidad() {
+    return crearPantallaPregunta({
+        paso: 4,
+        total: 4,
+        tituloPaso: "Forma de la relación",
+        pregunta: "¿La relación entre las variables es aproximadamente lineal?",
+        descripcion: "Compruébelo mediante un diagrama de dispersión. Pearson mide asociación lineal.",
+        opciones: [
+            ["si", "Sí, es lineal", "La nube de puntos sigue aproximadamente una línea recta."],
+            ["no", "No, pero es monotónica", "La relación aumenta o disminuye de forma consistente, aunque no sea lineal."],
+            ["no-se", "No lo sé", "Todavía no se ha examinado el diagrama de dispersión."]
+        ]
+    });
+}
+
+function crearPreguntaEmpates() {
+    return crearPantallaPregunta({
+        paso: 3,
+        total: 3,
+        tituloPaso: "Empates y tamaño muestral",
+        pregunta: "¿La muestra es pequeña o existen muchos valores empatados?",
+        descripcion: "Kendall suele ser especialmente útil con muestras pequeñas y numerosos empates.",
+        opciones: [
+            ["si", "Sí", "La muestra es pequeña, hay muchos rangos repetidos o ambas situaciones."],
+            ["no", "No", "La muestra es moderada o grande y los empates no son numerosos."],
+            ["no-se", "No lo sé", "No se ha revisado la frecuencia de empates."]
+        ]
+    });
+}
+
+function crearPantallaPregunta({ paso, total, tituloPaso, pregunta, descripcion, opciones, accionVolver = "volver" }) {
+    const progreso = Math.round((paso / total) * 100);
 
     return `
         <section class="rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-slate-950 text-white px-6 py-8 md:px-10">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <p class="text-sky-300 uppercase tracking-widest text-xs font-black mb-2">Paso ${paso} de 6</p>
+                        <p class="text-sky-300 uppercase tracking-widest text-xs font-black mb-2">Paso ${paso} de ${total}</p>
                         <h1 class="text-3xl md:text-4xl font-black">${tituloPaso}</h1>
                     </div>
                     <span class="inline-flex rounded-full bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Progreso: ${progreso} %</span>
@@ -365,21 +499,21 @@ function crearPantallaPregunta({ paso, tituloPaso, pregunta, descripcion, opcion
     `;
 }
 
-function obtenerRecomendacion(estado) {
+function obtenerRecomendacionComparacion(estado) {
     const { tipoVariable, numeroGrupos, relacion, normalidad, varianzas } = estado;
 
     if (tipoVariable === "categorica") {
         if (numeroGrupos === "uno") {
-            return ficha("Prueba binomial o chi-cuadrado de bondad de ajuste", "Permite contrastar una distribución observada con proporciones teóricas.", "Tamaño del efecto basado en proporciones o w de Cohen.");
+            return ficha("Prueba binomial o chi-cuadrado de bondad de ajuste", "Contrasta frecuencias o proporciones observadas con valores teóricos.", "w de Cohen o diferencia de proporciones.");
         }
 
         if (relacion === "relacionadas") {
             return numeroGrupos === "dos"
-                ? ficha("Prueba de McNemar", "Compara proporciones dicotómicas en muestras relacionadas o mediciones antes-después.", "Diferencia de proporciones pareadas u odds ratio pareada.")
+                ? ficha("Prueba de McNemar", "Compara proporciones dicotómicas en muestras relacionadas o mediciones antes-después.", "Odds ratio pareada o diferencia de proporciones pareadas.")
                 : ficha("Prueba Q de Cochran", "Compara una respuesta dicotómica en tres o más condiciones relacionadas.", "Medida de concordancia o diferencias de proporciones.");
         }
 
-        return ficha("Chi-cuadrado de independencia", "Evalúa la asociación entre variables categóricas en grupos independientes. Si hay frecuencias esperadas pequeñas, considere la prueba exacta de Fisher.", "V de Cramér.");
+        return ficha("Chi-cuadrado de independencia", "Evalúa la asociación entre variables categóricas en grupos independientes. Considere Fisher si hay frecuencias esperadas pequeñas.", "V de Cramér.");
     }
 
     const noParametrica = tipoVariable === "ordinal" || normalidad === "no" || normalidad === "no-se";
@@ -387,51 +521,79 @@ function obtenerRecomendacion(estado) {
     if (numeroGrupos === "uno") {
         return noParametrica
             ? ficha("Prueba de rangos con signo de Wilcoxon", "Compara la mediana de una muestra con un valor de referencia sin asumir normalidad.", "Correlación biserial por rangos o r.")
-            : ficha("t de Student para una muestra", "Compara la media de una muestra con un valor teórico cuando la variable es cuantitativa y aproximadamente normal.", "d de Cohen para una muestra.");
+            : ficha("t de Student para una muestra", "Compara la media de una muestra con un valor teórico bajo normalidad aproximada.", "d de Cohen para una muestra.");
     }
 
     if (numeroGrupos === "dos") {
         if (relacion === "relacionadas") {
             return noParametrica
-                ? ficha("Prueba de rangos con signo de Wilcoxon", "Compara dos mediciones relacionadas cuando los datos son ordinales o no cumplen normalidad.", "Correlación biserial por rangos o r.")
-                : ficha("t de Student para muestras relacionadas", "Compara las medias de dos mediciones pareadas o realizadas sobre los mismos participantes.", "d de Cohen para datos pareados.");
+                ? ficha("Prueba de rangos con signo de Wilcoxon", "Compara dos mediciones relacionadas con datos ordinales o no normales.", "Correlación biserial por rangos o r.")
+                : ficha("t de Student para muestras relacionadas", "Compara las medias de dos mediciones pareadas.", "d de Cohen para datos pareados.");
         }
 
         if (noParametrica) {
-            return ficha("Prueba U de Mann–Whitney", "Compara dos grupos independientes cuando la variable es ordinal o la distribución no es aproximadamente normal.", "Correlación biserial por rangos o delta de Cliff.");
+            return ficha("Prueba U de Mann–Whitney", "Compara dos grupos independientes con datos ordinales o no normales.", "Delta de Cliff o correlación biserial por rangos.");
         }
 
-        if (varianzas === "si") {
-            return ficha("t de Student para muestras independientes", "Compara las medias de dos grupos independientes con normalidad y varianzas homogéneas.", "d de Cohen o g de Hedges.");
-        }
-
-        return ficha("t de Welch para muestras independientes", "Compara dos medias independientes sin exigir igualdad de varianzas; es preferible cuando la homogeneidad es dudosa.", "g de Hedges con intervalo de confianza.");
+        return varianzas === "si"
+            ? ficha("t de Student para muestras independientes", "Compara dos medias independientes con normalidad y varianzas homogéneas.", "d de Cohen o g de Hedges.")
+            : ficha("t de Welch para muestras independientes", "Compara dos medias independientes sin exigir igualdad de varianzas.", "g de Hedges con intervalo de confianza.");
     }
 
     if (relacion === "relacionadas") {
         return noParametrica
-            ? ficha("Prueba de Friedman", "Compara tres o más mediciones relacionadas cuando los datos son ordinales o no cumplen normalidad.", "W de Kendall.")
-            : ficha("ANOVA de medidas repetidas", "Compara tres o más medias relacionadas bajo normalidad y supuestos del modelo. Debe evaluarse la esfericidad.", "Eta cuadrado parcial.");
+            ? ficha("Prueba de Friedman", "Compara tres o más mediciones relacionadas con datos ordinales o no normales.", "W de Kendall.")
+            : ficha("ANOVA de medidas repetidas", "Compara tres o más medias relacionadas. Debe evaluarse la esfericidad.", "Eta cuadrado parcial.");
     }
 
     if (noParametrica) {
-        return ficha("Prueba de Kruskal–Wallis", "Compara tres o más grupos independientes cuando la variable es ordinal o no cumple normalidad.", "Épsilon cuadrado o eta cuadrado basado en rangos.");
+        return ficha("Prueba de Kruskal–Wallis", "Compara tres o más grupos independientes con datos ordinales o no normales.", "Épsilon cuadrado.");
     }
 
-    if (varianzas === "si") {
-        return ficha("ANOVA de un factor", "Compara las medias de tres o más grupos independientes con normalidad y homogeneidad de varianzas.", "Eta cuadrado u omega cuadrado.");
+    return varianzas === "si"
+        ? ficha("ANOVA de un factor", "Compara tres o más medias independientes con normalidad y homogeneidad de varianzas.", "Eta cuadrado u omega cuadrado.")
+        : ficha("ANOVA de Welch", "Compara tres o más medias independientes cuando las varianzas son desiguales o dudosas.", "Omega cuadrado ajustado y Games–Howell.");
+}
+
+function obtenerRecomendacionRelacion(estado) {
+    if (estado.tipoRelacion === "dicotomica-cuantitativa") {
+        return ficha(
+            "Correlación punto-biserial",
+            "Relaciona una variable dicotómica genuina con una variable cuantitativa. Es algebraicamente equivalente a una t de Student para dos grupos.",
+            "Coeficiente r punto-biserial con intervalo de confianza."
+        );
     }
 
-    return ficha("ANOVA de Welch", "Compara tres o más medias independientes cuando las varianzas son desiguales o la homogeneidad es dudosa.", "Omega cuadrado ajustado y comparaciones Games–Howell.");
+    if (estado.tipoRelacion === "ordinales") {
+        return estado.empates === "si" || estado.empates === "no-se"
+            ? ficha("Tau-b de Kendall", "Es adecuada para variables ordinales, muestras pequeñas y situaciones con numerosos empates.", "Tau-b de Kendall con intervalo de confianza.")
+            : ficha("Rho de Spearman", "Evalúa una relación monotónica entre variables ordinales o cuantitativas transformadas en rangos.", "Rho de Spearman con intervalo de confianza.");
+    }
+
+    if (estado.normalidad !== "si") {
+        return ficha("Rho de Spearman", "No exige normalidad y mide relaciones monotónicas mediante rangos.", "Rho de Spearman con intervalo de confianza.");
+    }
+
+    if (estado.linealidad === "si") {
+        return ficha("Correlación de Pearson", "Las variables son cuantitativas, aproximadamente normales y presentan una relación lineal.", "r de Pearson y su intervalo de confianza.");
+    }
+
+    return ficha("Rho de Spearman", "La relación no es claramente lineal o no se ha verificado; Spearman es más apropiada para asociaciones monotónicas.", "Rho de Spearman con intervalo de confianza.");
 }
 
 function ficha(nombre, razon, efecto) {
     return { nombre, razon, efecto };
 }
 
-function crearResultado(estado) {
-    const recomendacion = obtenerRecomendacion(estado);
+function crearResultadoComparacion(estado) {
+    return crearResultado(obtenerRecomendacionComparacion(estado));
+}
 
+function crearResultadoRelacion(estado) {
+    return crearResultado(obtenerRecomendacionRelacion(estado));
+}
+
+function crearResultado(recomendacion) {
     return `
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-emerald-700 text-white px-6 py-8 md:px-10">
@@ -443,13 +605,13 @@ function crearResultado(estado) {
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                     ${crearFichaResultado("¿Por qué?", recomendacion.razon)}
                     ${crearFichaResultado("Tamaño del efecto", recomendacion.efecto)}
-                    ${crearFichaResultado("Decisión estadística", "Reporte el estadístico, los grados de libertad cuando correspondan, el valor p, el intervalo de confianza y el tamaño del efecto.")}
+                    ${crearFichaResultado("Reporte recomendado", "Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva.")}
                 </div>
 
                 <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
                     <h2 class="font-black text-amber-900 mb-2">Advertencia metodológica</h2>
                     <p class="text-amber-900 leading-relaxed">
-                        Esta recomendación orienta la selección inicial. Antes del análisis definitivo deben revisarse el diseño muestral, los valores atípicos, el tamaño de la muestra, los supuestos específicos y la estrategia de comparaciones múltiples.
+                        Esta recomendación orienta la selección inicial. Antes del análisis definitivo deben revisarse el diseño muestral, los valores atípicos, el tamaño de la muestra, los supuestos específicos y la calidad de la medición.
                     </p>
                 </div>
 
@@ -465,7 +627,6 @@ function crearResultado(estado) {
 
 function crearModuloEnDesarrollo(valor) {
     const nombres = {
-        relacionar: "Relación entre variables",
         asociar: "Asociación entre variables",
         predecir: "Predicción y modelización",
         instrumento: "Evaluación de instrumentos",
@@ -477,7 +638,7 @@ function crearModuloEnDesarrollo(valor) {
             <p class="uppercase tracking-widest text-sky-700 text-xs font-black mb-3">Próxima ampliación</p>
             <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">${nombres[valor] || "Módulo metodológico"}</h1>
             <p class="text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto">
-                Esta rama se incorporará en la siguiente fase. La primera versión funcional está dedicada a la comparación de grupos.
+                Esta rama se incorporará en la siguiente fase. Ya están activas la comparación de grupos y la relación entre variables.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-3 mt-8">
                 <button type="button" data-action="volver" class="border border-slate-300 text-slate-700 font-black rounded-xl px-6 py-3 hover:bg-slate-50">← Elegir otro objetivo</button>
