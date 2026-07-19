@@ -10,6 +10,7 @@ import { proyectos } from "../pages/proyectos.js";
 import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 import { LaboratorioKernel } from "../pages/LaboratorioKernel.js";
+import { AsistentePruebas } from "../pages/AsistentePruebas.js";
 
 const routes = {
     home: {
@@ -76,7 +77,14 @@ const routes = {
         page: LaboratorioKernel,
         layout: "default",
         title: "Laboratorio Inteligente de Investigación | El Kernel"
-    }
+    },
+
+    asistentePruebas: {
+    page: AsistentePruebas,
+    layout: "default",
+    title: "¿Qué prueba debo utilizar? | El Kernel"
+}
+
 };
 
 let previousPageLocation = document.referrer || "";
