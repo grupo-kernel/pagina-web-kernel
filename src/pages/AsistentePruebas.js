@@ -1,3 +1,5 @@
+import { obtenerResultadoEstadistico } from "../utils/motorReglas.js";
+
 export function AsistentePruebas() {
     const section = document.createElement("section");
 
