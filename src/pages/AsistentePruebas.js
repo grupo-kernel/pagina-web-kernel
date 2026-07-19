@@ -50,9 +50,7 @@ export function AsistentePruebas() {
             tipoRelacion: "",
             linealidad: "",
             empates: "",
-            tipoAsociacion: "",
-            tipoAsociacion: "",
-            frecuenciasEsperadas: ""
+            tipoAsociacion: ""
         });
     };
 
