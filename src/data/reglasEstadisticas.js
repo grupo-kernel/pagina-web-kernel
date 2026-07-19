@@ -329,5 +329,93 @@ export const reglasEstadisticas = [
             efecto:
                 "Coeficiente r punto-biserial con intervalo de confianza."
         }
+    },
+
+    {
+    id: "chi-cuadrado-independencia",
+    condiciones: {
+        objetivo: "relacionar",
+        tipoRelacion: "categoricas",
+        frecuenciasEsperadas: "adecuadas"
+    },
+    resultado: {
+        prueba: "Prueba chi-cuadrado de independencia",
+        categoria: "Asociación entre variables categóricas",
+        tipo: "No paramétrica",
+        descripcion:
+            "Evalúa si existe asociación entre dos variables categóricas mediante una tabla de contingencia.",
+        efecto:
+            "V de Cramer o coeficiente Phi."
     }
+},
+
+{
+    id: "fisher-exacta",
+    condiciones: {
+        objetivo: "relacionar",
+        tipoRelacion: "categoricas",
+        frecuenciasEsperadas: ["bajas", "no-se"]
+    },
+    resultado: {
+        prueba: "Prueba exacta de Fisher",
+        categoria: "Asociación entre variables categóricas",
+        tipo: "Exacta",
+        descripcion:
+            "Evalúa la asociación entre variables categóricas cuando las frecuencias esperadas son pequeñas.",
+        efecto:
+            "Odds ratio con intervalo de confianza."
+    }
+},
+
+{
+    id: "phi",
+    condiciones: {
+        objetivo: "relacionar",
+        tipoRelacion: "dicotomicas"
+    },
+    resultado: {
+        prueba: "Coeficiente Phi",
+        categoria: "Asociación entre variables dicotómicas",
+        tipo: "Medida de asociación",
+        descripcion:
+            "Cuantifica la fuerza de asociación entre dos variables dicotómicas.",
+        efecto:
+            "Coeficiente Phi."
+    }
+},
+
+{
+    id: "cramer-v",
+    condiciones: {
+        objetivo: "relacionar",
+        tipoRelacion: "categoricas-multinivel"
+    },
+    resultado: {
+        prueba: "V de Cramer",
+        categoria: "Asociación entre variables categóricas",
+        tipo: "Medida de asociación",
+        descripcion:
+            "Cuantifica la intensidad de asociación entre variables categóricas con más de dos categorías.",
+        efecto:
+            "V de Cramer."
+    }
+},
+
+{
+    id: "correlacion-biserial",
+    condiciones: {
+        objetivo: "relacionar",
+        tipoRelacion: "dicotomica-artificial-cuantitativa"
+    },
+    resultado: {
+        prueba: "Correlación biserial",
+        categoria: "Relación entre variables",
+        tipo: "Paramétrica",
+        descripcion:
+            "Relaciona una variable cuantitativa con una variable dicotómica obtenida al dividir artificialmente una variable continua.",
+        efecto:
+            "Coeficiente de correlación biserial."
+    }
+}
+    
 ];
