@@ -477,7 +477,7 @@ export const reglasEstadisticas = [
     },
 
     {
-       
+        id: "chi-cuadrado-independencia-comparacion",
         condiciones: {
             objetivo: "comparar",
             tipoVariable: "categorica",
@@ -620,5 +620,4 @@ export const reglasEstadisticas = [
                 "Índice de dispersión, residuos y criterios de información como AIC."
         }
     }
-];
 ];
