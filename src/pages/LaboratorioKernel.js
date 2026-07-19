@@ -411,6 +411,7 @@ function crearTarjetaModulo(
     bordeIcono,
     ruta = ""
 ) {
+    
     return `
         <article class="
             group h-full bg-white
