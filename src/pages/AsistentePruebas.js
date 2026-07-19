@@ -118,8 +118,6 @@ if (valor === "predecir") {
     mostrar(crearPreguntaTipoResultado());
     return;
 }
-
-mostrar(crearModuloEnDesarrollo(valor));
             
             mostrar(crearModuloEnDesarrollo(valor));
             estado.pantalla = "desarrollo";
