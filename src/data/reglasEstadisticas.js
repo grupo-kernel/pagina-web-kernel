@@ -331,91 +331,93 @@ export const reglasEstadisticas = [
         }
     },
 
+        {
+        id: "chi-cuadrado-independencia-2x2",
+        condiciones: {
+            objetivo: "asociar",
+            tipoAsociacion: "dos-dicotomicas",
+            frecuenciasEsperadas: "adecuadas"
+        },
+        resultado: {
+            prueba: "Prueba chi-cuadrado de independencia",
+            categoria: "Asociación entre dos variables dicotómicas",
+            tipo: "No paramétrica",
+            descripcion:
+                "Evalúa si existe asociación entre dos variables dicotómicas cuando las frecuencias esperadas son adecuadas.",
+            efecto:
+                "Coeficiente Phi y odds ratio con intervalo de confianza."
+        }
+    },
+
     {
-    id: "chi-cuadrado-independencia",
-    condiciones: {
-        objetivo: "relacionar",
-        tipoRelacion: "categoricas",
-        frecuenciasEsperadas: "adecuadas"
+        id: "fisher-exacta-2x2",
+        condiciones: {
+            objetivo: "asociar",
+            tipoAsociacion: "dos-dicotomicas",
+            frecuenciasEsperadas: ["bajas", "no-se"]
+        },
+        resultado: {
+            prueba: "Prueba exacta de Fisher",
+            categoria: "Asociación entre dos variables dicotómicas",
+            tipo: "Exacta",
+            descripcion:
+                "Evalúa la asociación en una tabla 2 × 2 cuando existen frecuencias esperadas pequeñas o dudas sobre la aproximación chi-cuadrado.",
+            efecto:
+                "Odds ratio con intervalo de confianza y coeficiente Phi."
+        }
     },
-    resultado: {
-        prueba: "Prueba chi-cuadrado de independencia",
-        categoria: "Asociación entre variables categóricas",
-        tipo: "No paramétrica",
-        descripcion:
-            "Evalúa si existe asociación entre dos variables categóricas mediante una tabla de contingencia.",
-        efecto:
-            "V de Cramer o coeficiente Phi."
-    }
-},
 
-{
-    id: "fisher-exacta",
-    condiciones: {
-        objetivo: "relacionar",
-        tipoRelacion: "categoricas",
-        frecuenciasEsperadas: ["bajas", "no-se"]
+    {
+        id: "chi-cuadrado-independencia-rxc",
+        condiciones: {
+            objetivo: "asociar",
+            tipoAsociacion: "categoricas-multinivel",
+            frecuenciasEsperadas: "adecuadas"
+        },
+        resultado: {
+            prueba: "Prueba chi-cuadrado de independencia",
+            categoria: "Asociación entre variables categóricas",
+            tipo: "No paramétrica",
+            descripcion:
+                "Evalúa la asociación entre dos variables categóricas en una tabla de contingencia de más de dos filas o columnas.",
+            efecto:
+                "V de Cramer con intervalo de confianza cuando sea posible."
+        }
     },
-    resultado: {
-        prueba: "Prueba exacta de Fisher",
-        categoria: "Asociación entre variables categóricas",
-        tipo: "Exacta",
-        descripcion:
-            "Evalúa la asociación entre variables categóricas cuando las frecuencias esperadas son pequeñas.",
-        efecto:
-            "Odds ratio con intervalo de confianza."
-    }
-},
 
-{
-    id: "phi",
-    condiciones: {
-        objetivo: "relacionar",
-        tipoRelacion: "dicotomicas"
+    {
+        id: "fisher-freeman-halton",
+        condiciones: {
+            objetivo: "asociar",
+            tipoAsociacion: "categoricas-multinivel",
+            frecuenciasEsperadas: ["bajas", "no-se"]
+        },
+        resultado: {
+            prueba: "Prueba exacta de Fisher–Freeman–Halton",
+            categoria: "Asociación entre variables categóricas",
+            tipo: "Exacta",
+            descripcion:
+                "Extiende la prueba exacta de Fisher a tablas de contingencia mayores que 2 × 2 cuando las frecuencias esperadas son pequeñas.",
+            efecto:
+                "V de Cramer y examen de los residuos ajustados."
+        }
     },
-    resultado: {
-        prueba: "Coeficiente Phi",
-        categoria: "Asociación entre variables dicotómicas",
-        tipo: "Medida de asociación",
-        descripcion:
-            "Cuantifica la fuerza de asociación entre dos variables dicotómicas.",
-        efecto:
-            "Coeficiente Phi."
-    }
-},
 
-{
-    id: "cramer-v",
-    condiciones: {
-        objetivo: "relacionar",
-        tipoRelacion: "categoricas-multinivel"
-    },
-    resultado: {
-        prueba: "V de Cramer",
-        categoria: "Asociación entre variables categóricas",
-        tipo: "Medida de asociación",
-        descripcion:
-            "Cuantifica la intensidad de asociación entre variables categóricas con más de dos categorías.",
-        efecto:
-            "V de Cramer."
+    {
+        id: "correlacion-biserial",
+        condiciones: {
+            objetivo: "relacionar",
+            tipoRelacion: "dicotomica-artificial-cuantitativa"
+        },
+        resultado: {
+            prueba: "Correlación biserial",
+            categoria: "Relación entre variables",
+            tipo: "Paramétrica",
+            descripcion:
+                "Relaciona una variable cuantitativa con una variable dicotómica obtenida al dividir artificialmente una variable continua.",
+            efecto:
+                "Coeficiente de correlación biserial con intervalo de confianza."
+        }
     }
-},
-
-{
-    id: "correlacion-biserial",
-    condiciones: {
-        objetivo: "relacionar",
-        tipoRelacion: "dicotomica-artificial-cuantitativa"
-    },
-    resultado: {
-        prueba: "Correlación biserial",
-        categoria: "Relación entre variables",
-        tipo: "Paramétrica",
-        descripcion:
-            "Relaciona una variable cuantitativa con una variable dicotómica obtenida al dividir artificialmente una variable continua.",
-        efecto:
-            "Coeficiente de correlación biserial."
-    }
-}
     
 ];
