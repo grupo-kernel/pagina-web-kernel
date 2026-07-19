@@ -272,7 +272,20 @@ if (valor === "predecir") {
             estado.frecuenciasEsperadas = valor;
             mostrarResultadoAsociacion();
         }
+
+        if (estado.pantalla === "tipo-resultado") {
+    Object.assign(estado, {
+        tipoResultado: valor,
+        numeroPredictores: "",
+        sobredispersion: ""
+    });
+
+    estado.pantalla = "numero-predictores";
+    mostrar(crearPreguntaNumeroPredictores());
+    return;
+}
     };
+    
 
     const volver = () => {
         const pantallas = {
@@ -335,6 +348,11 @@ if (valor === "predecir") {
             "tipo-resultado": () => [
                 "objetivo",
                 crearPrimeraPregunta()
+            ],
+
+            "numero-predictores": () => [
+                "tipo-resultado",
+                crearPreguntaTipoResultado()
             ],
             
             "frecuencias-esperadas": () => [
@@ -837,6 +855,30 @@ function crearPreguntaTipoResultado() {
                 "conteo",
                 "Variable de conteo",
                 "Representa el número de eventos, errores, visitas, publicaciones u otras frecuencias."
+            ]
+        ]
+    });
+}
+
+function crearPreguntaNumeroPredictores() {
+    return crearPantallaPregunta({
+        paso: 3,
+        total: 4,
+        tituloPaso: "Número de predictores",
+        pregunta:
+            "¿Cuántas variables predictoras desea incluir en el modelo?",
+        descripcion:
+            "Considere únicamente las variables independientes o explicativas que formarán parte del modelo.",
+        opciones: [
+            [
+                "uno",
+                "Un predictor",
+                "El modelo incluirá una sola variable independiente o explicativa."
+            ],
+            [
+                "varios",
+                "Dos o más predictores",
+                "El modelo incluirá varias variables independientes, covariables o factores explicativos."
             ]
         ]
     });
