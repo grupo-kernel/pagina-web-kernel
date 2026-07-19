@@ -60,7 +60,17 @@ export function AsistentePruebas() {
 
     const avanzar = (valor) => {
         if (estado.pantalla === "objetivo") {
-            estado.objetivo = valor;
+            Object.assign(estado, {
+                objetivo: valor,
+                tipoVariable: "",
+                numeroGrupos: "",
+                relacion: "",
+                normalidad: "",
+                varianzas: "",
+                tipoRelacion: "",
+                linealidad: "",
+                empates: ""
+            });
 
             if (valor === "comparar") {
                 estado.pantalla = "tipo-variable";
@@ -80,14 +90,25 @@ export function AsistentePruebas() {
         }
 
         if (estado.pantalla === "tipo-variable") {
-            estado.tipoVariable = valor;
+            Object.assign(estado, {
+                tipoVariable: valor,
+                numeroGrupos: "",
+                relacion: "",
+                normalidad: "",
+                varianzas: ""
+            });
             estado.pantalla = "numero-grupos";
             mostrar(crearPreguntaNumeroGrupos());
             return;
         }
 
         if (estado.pantalla === "numero-grupos") {
-            estado.numeroGrupos = valor;
+            Object.assign(estado, {
+                numeroGrupos: valor,
+                relacion: "",
+                normalidad: "",
+                varianzas: ""
+            });
 
             if (valor === "uno") {
                 estado.relacion = "una-muestra";
@@ -108,7 +129,11 @@ export function AsistentePruebas() {
         }
 
         if (estado.pantalla === "relacion-muestras") {
-            estado.relacion = valor;
+            Object.assign(estado, {
+                relacion: valor,
+                normalidad: "",
+                varianzas: ""
+            });
 
             if (estado.tipoVariable === "categorica") {
                 mostrarResultadoComparacion();
@@ -122,6 +147,7 @@ export function AsistentePruebas() {
 
         if (estado.pantalla === "normalidad") {
             estado.normalidad = valor;
+            estado.varianzas = "";
 
             const requiereVarianzas =
                 estado.tipoVariable === "cuantitativa" &&
@@ -146,7 +172,12 @@ export function AsistentePruebas() {
         }
 
         if (estado.pantalla === "tipo-relacion") {
-            estado.tipoRelacion = valor;
+            Object.assign(estado, {
+                tipoRelacion: valor,
+                normalidad: "",
+                linealidad: "",
+                empates: ""
+            });
 
             if (valor === "dicotomica-cuantitativa") {
                 mostrarResultadoRelacion();
@@ -166,6 +197,7 @@ export function AsistentePruebas() {
 
         if (estado.pantalla === "normalidad-relacion") {
             estado.normalidad = valor;
+            estado.linealidad = "";
 
             if (valor !== "si") {
                 mostrarResultadoRelacion();
@@ -422,9 +454,9 @@ function crearPreguntaNormalidadRelacion() {
     return crearPantallaPregunta({
         paso: 3,
         total: 4,
-        tituloPaso: "Normalidad bivariada",
-        pregunta: "¿Las dos variables son aproximadamente normales y no presentan valores atípicos graves?",
-        descripcion: "Revise histogramas, diagramas de caja y el diagrama de dispersión. La normalidad es relevante para Pearson.",
+        tituloPaso: "Supuestos para Pearson",
+        pregunta: "¿Las variables presentan normalidad aproximada y no muestran valores atípicos influyentes?",
+        descripcion: "Revise histogramas, diagramas de caja y el diagrama de dispersión. Para la inferencia con Pearson también debe considerarse la normalidad bivariada.",
         opciones: [
             ["si", "Sí, aproximadamente", "Ambas variables son razonablemente normales y no hay valores atípicos influyentes."],
             ["no", "No", "Existe asimetría, valores atípicos importantes o incumplimiento claro de normalidad."],
@@ -438,11 +470,12 @@ function crearPreguntaLinealidad() {
         paso: 4,
         total: 4,
         tituloPaso: "Forma de la relación",
-        pregunta: "¿La relación entre las variables es aproximadamente lineal?",
-        descripcion: "Compruébelo mediante un diagrama de dispersión. Pearson mide asociación lineal.",
+        pregunta: "¿Qué forma presenta la relación entre las variables?",
+        descripcion: "Compruébelo mediante un diagrama de dispersión. Pearson mide asociación lineal y Spearman asociación monotónica.",
         opciones: [
-            ["si", "Sí, es lineal", "La nube de puntos sigue aproximadamente una línea recta."],
-            ["no", "No, pero es monotónica", "La relación aumenta o disminuye de forma consistente, aunque no sea lineal."],
+            ["si", "Lineal", "La nube de puntos sigue aproximadamente una línea recta."],
+            ["monotonica", "Monotónica, pero no lineal", "La relación aumenta o disminuye de forma consistente, aunque no siga una línea recta."],
+            ["no-monotonica", "No es monotónica", "La relación cambia de dirección o presenta una forma curva compleja."],
             ["no-se", "No lo sé", "Todavía no se ha examinado el diagrama de dispersión."]
         ]
     });
@@ -578,7 +611,15 @@ function obtenerRecomendacionRelacion(estado) {
         return ficha("Correlación de Pearson", "Las variables son cuantitativas, aproximadamente normales y presentan una relación lineal.", "r de Pearson y su intervalo de confianza.");
     }
 
-    return ficha("Rho de Spearman", "La relación no es claramente lineal o no se ha verificado; Spearman es más apropiada para asociaciones monotónicas.", "Rho de Spearman con intervalo de confianza.");
+    if (estado.linealidad === "monotonica") {
+        return ficha("Rho de Spearman", "La relación es monotónica, pero no claramente lineal; Spearman resume adecuadamente asociaciones crecientes o decrecientes mediante rangos.", "Rho de Spearman con intervalo de confianza.");
+    }
+
+    if (estado.linealidad === "no-monotonica") {
+        return ficha("No resumir la relación con un único coeficiente de correlación", "Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.", "Reporte gráfico, R² de un modelo adecuado y medidas de ajuste.");
+    }
+
+    return ficha("Revisión gráfica antes de elegir el coeficiente", "Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.", "Diagrama de dispersión y, después, el coeficiente acorde con la forma observada.");
 }
 
 function ficha(nombre, razon, efecto) {
