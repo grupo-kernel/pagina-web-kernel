@@ -209,19 +209,20 @@ export function LaboratorioKernel() {
                 </div>
 
                 <button
-                    type="button"
-                    class="
-                        shrink-0 inline-flex
-                        items-center justify-center gap-2
-                        bg-white text-blue-700
-                        font-black rounded-xl
-                        px-6 py-4
-                        shadow-lg
-                        hover:bg-sky-50
-                        transition-colors
-                    "
+                type="button"
+                onclick="window.location.hash='/asistentePruebas'"
+                class="
+                    shrink-0 inline-flex
+                    items-center justify-center gap-2
+                    bg-white text-blue-700
+                    font-black rounded-xl
+                    px-6 py-4
+                    shadow-lg
+                    hover:bg-sky-50
+                    transition-colors
+                "
                     aria-label="Iniciar el asistente metodológico"
-                >
+            >
                     ${iconoSVG("decision", "w-6 h-6")}
                     Iniciar asistente
                 </button>
@@ -331,14 +332,15 @@ export function LaboratorioKernel() {
                 )}
 
                 ${crearTarjetaModulo(
-                    "¿Qué prueba debo utilizar?",
+                "¿Qué prueba debo utilizar?",
                     "Asistente guiado para seleccionar la prueba más adecuada según su diseño.",
                     "decision",
                     "bg-blue-100",
                     "text-blue-700",
-                    "border-blue-200"
+                    "border-blue-200",
+                    "asistentePruebas"
                 )}
-
+                
                 ${crearTarjetaModulo(
                     "Biblioteca metodológica",
                     "Definiciones, supuestos, tamaños del efecto, intervalos de confianza y errores frecuentes.",
@@ -406,7 +408,8 @@ function crearTarjetaModulo(
     icono,
     fondoIcono,
     colorIcono,
-    bordeIcono
+    bordeIcono,
+    ruta = ""
 ) {
     return `
         <article class="
@@ -455,6 +458,7 @@ function crearTarjetaModulo(
 
                     <button
                         type="button"
+                        ${ruta ? `onclick="window.location.hash='/${ruta}'"` : ""}
                         class="
                             inline-flex items-center gap-2
                             mt-auto pt-5
