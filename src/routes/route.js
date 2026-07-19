@@ -9,6 +9,7 @@ import { lineas } from "../pages/lineas.js";
 import { proyectos } from "../pages/proyectos.js";
 import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
+import { LaboratorioKernel } from "../pages/LaboratorioKernel.js";
 
 const routes = {
     home: {
@@ -16,50 +17,65 @@ const routes = {
         layout: "default",
         title: "Portada | El Kernel"
     },
+
     quienesSomos: {
         page: CreatePageQuienesSomos,
         layout: "full",
         title: "Quiénes somos | El Kernel"
     },
+
     equipment: {
         page: Equipment,
         layout: "default",
         title: "Equipo de investigación | El Kernel"
     },
+
     FormacionAcademica: {
         page: FormacionAcademica,
         layout: "default",
         title: "Formación académica | El Kernel"
     },
+
     noticias: {
         page: CreatePageNews,
         layout: "full",
         title: "Noticias | El Kernel"
     },
+
     publicaciones: {
         page: publicaciones,
         layout: "default",
         title: "Publicaciones | El Kernel"
     },
+
     proyectos: {
         page: proyectos,
         layout: "default",
         title: "Proyectos | El Kernel"
     },
+
     lineas: {
         page: lineas,
         layout: "default",
         title: "Líneas de investigación | El Kernel"
     },
+
     contacto: {
         page: Contacto,
         layout: "default",
         title: "Contacto | El Kernel"
     },
+
     herramientas: {
         page: herramientas,
         layout: "default",
         title: "Herramientas | El Kernel"
+    },
+
+    laboratorioKernel: {
+        page: LaboratorioKernel,
+        layout: "default",
+        title: "Laboratorio Inteligente de Investigación | El Kernel"
     }
 };
 
@@ -71,17 +87,25 @@ export function navigate(route) {
 
 export function routerInit() {
     const handleRouteChange = () => {
-        const route = window.location.hash.replace("#/", "") || "home";
+        const route =
+            window.location.hash.replace("#/", "") || "home";
+
         loadRoute(route);
     };
 
-    window.addEventListener("hashchange", handleRouteChange);
+    window.addEventListener(
+        "hashchange",
+        handleRouteChange
+    );
+
     handleRouteChange();
 }
 
 function trackPageView(route, title) {
     const pageLocation =
-        `${window.location.origin}${window.location.pathname}#/${route}`;
+        `${window.location.origin}` +
+        `${window.location.pathname}` +
+        `#/${route}`;
 
     if (typeof window.gtag === "function") {
         window.gtag("event", "page_view", {
@@ -98,7 +122,9 @@ function loadRoute(route) {
     const content = document.querySelector("main");
     const page = routes[route];
 
-    if (!content) return;
+    if (!content) {
+        return;
+    }
 
     content.innerHTML = "";
 
