@@ -8,6 +8,7 @@ const ANALYTICS_API_URL =
  *   total: number,
  *   hoy: number,
  *   ultimos7Dias: number,
+ *   ultimos30Dias: number,
  *   actualizadoEn: string | null
  * }>}
  */
@@ -27,13 +28,16 @@ export async function obtenerEstadisticasAnalytics() {
         const data = await response.json();
 
         if (!data.ok || !data.visitantes) {
-            throw new Error("La respuesta de Analytics no tiene el formato esperado");
+            throw new Error(
+                "La respuesta de Analytics no tiene el formato esperado"
+            );
         }
 
         return {
             total: Number(data.visitantes.total) || 0,
             hoy: Number(data.visitantes.hoy) || 0,
             ultimos7Dias: Number(data.visitantes.ultimos7Dias) || 0,
+            ultimos30Dias: Number(data.visitantes.ultimos30Dias) || 0,
             actualizadoEn: data.actualizadoEn || null
         };
     } catch (error) {
@@ -46,6 +50,7 @@ export async function obtenerEstadisticasAnalytics() {
             total: 0,
             hoy: 0,
             ultimos7Dias: 0,
+            ultimos30Dias: 0,
             actualizadoEn: null
         };
     }
