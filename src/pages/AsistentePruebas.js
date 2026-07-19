@@ -51,7 +51,6 @@ export function AsistentePruebas() {
             linealidad: "",
             empates: "",
             tipoAsociacion: "",
-            frecuenciasEsperadas: "",
             tipoAsociacion: "",
             frecuenciasEsperadas: ""
         });
@@ -84,10 +83,6 @@ export function AsistentePruebas() {
                 tipoRelacion: "",
                 linealidad: "",
                 empates: "",
-                tipoAsociacion: "",
-                frecuenciasEsperadas: "",
-                tipoAsociacion: "",
-                frecuenciasEsperadas: "",
                 tipoAsociacion: "",
                 frecuenciasEsperadas: ""
             });
