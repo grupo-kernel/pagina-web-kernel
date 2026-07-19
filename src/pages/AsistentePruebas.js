@@ -1,4 +1,5 @@
 import { obtenerResultadoEstadistico } from "../utils/motorReglas.js";
+import { obtenerFichaMetodologica } from "../data/fichasMetodologicas.js";
 
 export function AsistentePruebas() {
     const section = document.createElement("section");
@@ -399,6 +400,46 @@ export function AsistentePruebas() {
             avanzar(valor);
             return;
         }
+
+        if (accion === "ver-ficha") {
+    const fichaId = boton.dataset.fichaId;
+    const ficha = obtenerFichaMetodologica(fichaId);
+
+    if (!ficha) {
+        return;
+    }
+
+    estado.pantallaAnterior = estado.pantalla;
+    estado.fichaActual = fichaId;
+    estado.pantalla = "ficha-metodologica";
+
+    mostrar(
+        crearFichaMetodologicaCompleta(
+            ficha,
+            fichaId
+        )
+    );
+
+    return;
+}
+
+if (accion === "volver-resultado") {
+    if (estado.objetivo === "comparar") {
+        mostrarResultadoComparacion();
+        return;
+    }
+
+    if (estado.objetivo === "relacionar") {
+        mostrarResultadoRelacion();
+        return;
+    }
+
+    if (estado.objetivo === "asociar") {
+        mostrarResultadoAsociacion();
+    }
+
+    return;
+}
 
         if (accion === "iniciar") {
             estado.pantalla = "objetivo";
@@ -1157,6 +1198,7 @@ function ficha(nombre, razon, efecto) {
 
 function adaptarResultadoMotor(resultado) {
     return {
+        id: resultado.id,
         nombre: resultado.prueba,
         razon:
             `${resultado.descripcion} Categoría: ${resultado.categoria}. Tipo: ${resultado.tipo}.`,
@@ -1208,6 +1250,10 @@ function crearResultadoAsociacion(estado) {
 }
 
 function crearResultado(recomendacion) {
+    const fichaDisponible =
+        recomendacion.id &&
+        obtenerFichaMetodologica(recomendacion.id);
+
     return `
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-emerald-700 text-white px-6 py-8 md:px-10">
@@ -1248,6 +1294,40 @@ function crearResultado(recomendacion) {
                     </p>
                 </div>
 
+                ${
+                    fichaDisponible
+                        ? `
+                            <div class="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
+                                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-blue-700 text-xs font-black mb-2">
+                                            Biblioteca metodológica
+                                        </p>
+
+                                        <h2 class="text-xl font-black text-slate-900 mb-2">
+                                            Consulte la ficha completa de esta prueba
+                                        </h2>
+
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Revise sus hipótesis, supuestos, tamaño del efecto, reporte APA, alternativas, errores frecuentes y referencias.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        data-action="ver-ficha"
+                                        data-ficha-id="${recomendacion.id}"
+                                        class="shrink-0 inline-flex items-center justify-center bg-blue-700 text-white font-black rounded-xl px-6 py-4 hover:bg-blue-800 transition-colors shadow-lg"
+                                    >
+                                        Ver ficha metodológica
+                                        <span class="ml-2" aria-hidden="true">→</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `
+                        : ""
+                }
+
                 <div class="flex flex-col sm:flex-row gap-3 mt-10">
                     <button
                         type="button"
@@ -1275,6 +1355,280 @@ function crearResultado(recomendacion) {
                 </div>
             </div>
         </section>
+    `;
+}
+
+function crearFichaMetodologicaCompleta(ficha, fichaId) {
+    return `
+        <section class="rounded-3xl border border-blue-200 bg-white shadow-xl overflow-hidden">
+            <header class="relative overflow-hidden bg-slate-950 text-white px-6 py-10 md:px-10 md:py-12">
+                <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-blue-500/20"></div>
+
+                <div class="relative z-10">
+                    <button
+                        type="button"
+                        data-action="volver-resultado"
+                        class="inline-flex items-center gap-2 text-sky-300 font-black hover:text-white transition-colors mb-7"
+                    >
+                        ← Volver al resultado
+                    </button>
+
+                    <p class="uppercase tracking-[0.20em] text-sky-300 text-xs font-black mb-3">
+                        Biblioteca metodológica
+                    </p>
+
+                    <h1 class="text-3xl md:text-5xl font-black leading-tight">
+                        ${ficha.nombre}
+                    </h1>
+
+                    <p class="text-slate-300 mt-4 text-sm font-semibold">
+                        Código interno: ${fichaId}
+                    </p>
+                </div>
+            </header>
+
+            <div class="px-6 py-8 md:px-10 md:py-10">
+                ${crearSeccionTextoFicha(
+                    "¿Qué es?",
+                    ficha.definicion
+                )}
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    ${crearSeccionListaFicha(
+                        "¿Cuándo utilizarla?",
+                        ficha.cuandoUsar
+                    )}
+
+                    ${crearSeccionListaFicha(
+                        "Supuestos",
+                        ficha.supuestos
+                    )}
+                </div>
+
+                ${crearHipotesisFicha(ficha.hipotesis)}
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    ${crearSeccionTextoFicha(
+                        "Estadístico de prueba",
+                        ficha.estadistico
+                    )}
+
+                    ${crearSeccionTextoFicha(
+                        "Tamaño del efecto",
+                        ficha.efecto
+                    )}
+                </div>
+
+                ${crearReporteApaFicha(ficha.reporteAPA)}
+
+                ${
+                    ficha.posthoc?.length
+                        ? crearSeccionListaFicha(
+                            "Análisis posteriores",
+                            ficha.posthoc
+                        )
+                        : ""
+                }
+
+                ${
+                    ficha.alternativas?.length
+                        ? crearSeccionListaFicha(
+                            "Pruebas y procedimientos alternativos",
+                            ficha.alternativas
+                        )
+                        : ""
+                }
+
+                ${
+                    ficha.erroresFrecuentes?.length
+                        ? crearSeccionListaFicha(
+                            "Errores frecuentes",
+                            ficha.erroresFrecuentes,
+                            "advertencia"
+                        )
+                        : ""
+                }
+
+                ${crearSeccionTextoFicha(
+                    "Ejemplo de investigación",
+                    ficha.ejemplo
+                )}
+
+                ${
+                    ficha.referencias?.length
+                        ? crearSeccionListaFicha(
+                            "Referencias recomendadas",
+                            ficha.referencias,
+                            "referencias"
+                        )
+                        : ""
+                }
+
+                <div class="flex flex-col sm:flex-row gap-3 mt-10 pt-8 border-t border-slate-200">
+                    <button
+                        type="button"
+                        data-action="volver-resultado"
+                        class="inline-flex items-center justify-center border border-slate-300 text-slate-700 font-black rounded-xl px-6 py-3 hover:bg-slate-50 transition-colors"
+                    >
+                        ← Volver al resultado
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="reiniciar"
+                        class="inline-flex items-center justify-center bg-blue-700 text-white font-black rounded-xl px-6 py-3 hover:bg-blue-800 transition-colors"
+                    >
+                        Iniciar otro análisis
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="volver-laboratorio"
+                        class="inline-flex items-center justify-center bg-slate-950 text-white font-black rounded-xl px-6 py-3 hover:bg-slate-800 transition-colors"
+                    >
+                        Volver al laboratorio
+                    </button>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+function crearSeccionTextoFicha(titulo, contenido) {
+    if (!contenido) {
+        return "";
+    }
+
+    return `
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm mt-6">
+            <h2 class="text-xl font-black text-slate-900 mb-3">
+                ${titulo}
+            </h2>
+
+            <p class="text-slate-600 leading-relaxed">
+                ${contenido}
+            </p>
+        </article>
+    `;
+}
+
+function crearSeccionListaFicha(
+    titulo,
+    elementos = [],
+    tipo = "normal"
+) {
+    if (!elementos.length) {
+        return "";
+    }
+
+    const clases =
+        tipo === "advertencia"
+            ? "border-amber-200 bg-amber-50"
+            : tipo === "referencias"
+                ? "border-sky-200 bg-sky-50"
+                : "border-slate-200 bg-white";
+
+    const claseTitulo =
+        tipo === "advertencia"
+            ? "text-amber-950"
+            : tipo === "referencias"
+                ? "text-sky-950"
+                : "text-slate-900";
+
+    const claseTexto =
+        tipo === "advertencia"
+            ? "text-amber-900"
+            : tipo === "referencias"
+                ? "text-sky-900"
+                : "text-slate-600";
+
+    return `
+        <article class="rounded-2xl border ${clases} p-6 shadow-sm mt-6">
+            <h2 class="text-xl font-black ${claseTitulo} mb-4">
+                ${titulo}
+            </h2>
+
+            <ul class="space-y-3">
+                ${elementos
+                    .map(
+                        (elemento) => `
+                            <li class="flex items-start gap-3 ${claseTexto} leading-relaxed">
+                                <span
+                                    class="shrink-0 mt-2 w-2 h-2 rounded-full bg-blue-600"
+                                    aria-hidden="true"
+                                ></span>
+
+                                <span>${elemento}</span>
+                            </li>
+                        `
+                    )
+                    .join("")}
+            </ul>
+        </article>
+    `;
+}
+
+function crearHipotesisFicha(hipotesis) {
+    if (!hipotesis) {
+        return "";
+    }
+
+    return `
+        <article class="rounded-2xl border border-violet-200 bg-violet-50 p-6 shadow-sm mt-6">
+            <h2 class="text-xl font-black text-violet-950 mb-5">
+                Hipótesis estadísticas
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="rounded-xl bg-white border border-violet-200 p-5">
+                    <p class="font-black text-violet-800 mb-2">
+                        Hipótesis nula, H₀
+                    </p>
+
+                    <p class="text-slate-600 leading-relaxed">
+                        ${hipotesis.h0}
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-white border border-violet-200 p-5">
+                    <p class="font-black text-violet-800 mb-2">
+                        Hipótesis alternativa, H₁
+                    </p>
+
+                    <p class="text-slate-600 leading-relaxed">
+                        ${hipotesis.h1}
+                    </p>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+function crearReporteApaFicha(reporteAPA) {
+    if (!reporteAPA) {
+        return "";
+    }
+
+    return `
+        <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm mt-6">
+            <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">
+                Plantilla de redacción
+            </p>
+
+            <h2 class="text-xl font-black text-emerald-950 mb-4">
+                Reporte según normas APA
+            </h2>
+
+            <div class="rounded-xl border border-emerald-200 bg-white p-5">
+                <p class="font-mono text-slate-800 leading-relaxed">
+                    ${reporteAPA}
+                </p>
+            </div>
+
+            <p class="text-sm text-emerald-900 mt-4 leading-relaxed">
+                Sustituya los marcadores por los resultados reales obtenidos en su análisis.
+            </p>
+        </article>
     `;
 }
 
