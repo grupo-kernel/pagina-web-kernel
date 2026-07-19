@@ -4,7 +4,8 @@
         </div>
         <div class="flex items-center lg:hidden">
             <i data-action="open-menu" class=" text-5xl cursor-pointer bx bx-menu"></i> 
-        </div>`}function ye(){return`<div class="lg:hidden border-b-zinc-500 border-b pb-2.5 w-full flex px-2.5 justify-between items-center mb-7">
+        </div>`}function ye(){return`
+        <div class="lg:hidden border-b-zinc-500 border-b pb-2.5 w-full flex px-2.5 justify-between items-center mb-7">
             <span class="text-4xl font-medium">El Kernel</span>
             <i data-action="close-navBar" class="text-6xl cursor-pointer bx bx-x"></i>
         </div>
@@ -17,6 +18,7 @@
                 <i class="bx bx-home text-3xl"></i>
             </li>
 
+            <!-- Nosotros -->
             <li data-action="open-subMenu"
                 class="gap-1 text-nowrap lg:relative 2xl:text-3xl hover:cursor-pointer font-medium items-center text-lg xl:text-2xl">
 
@@ -26,19 +28,22 @@
                 </div>
 
                 <ul class="flex-col mt-2.5 text-lg lg:text-base hidden w-full lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56 lg:bg-white lg:shadow-2xl">
+
                     <li data-route="quienesSomos"
                         class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
-                        <span>Quienes Somos</span>
+                        <span>Quiénes Somos</span>
                     </li>
 
                     <li data-route="equipment"
                         class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
                         <span>Equipo</span>
                     </li>
+
                 </ul>
 
             </li>
 
+            <!-- Nuestro Trabajo -->
             <li data-action="open-subMenu"
                 class="lg:relative gap-1 2xl:text-3xl text-nowrap hover:cursor-pointer font-medium items-center text-lg xl:text-2xl">
 
@@ -73,19 +78,29 @@
 
             </li>
 
-            <li data-route="noticias"
-                class="flex gap-1 2xl:text-3xl text-nowrap hover:cursor-pointer justify-between font-medium items-center text-lg xl:text-2xl">
-                <span>Noticias</span>
-                <i class="text-3xl bx bx-news"></i>
+            <!-- Laboratorio Inteligente -->
+            <li data-route="laboratorioKernel"
+                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
+                <span>Laboratorio Inteligente de Investigación</span>
+                <i class="bx bx-bar-chart-alt-2 text-3xl"></i>
             </li>
 
+            <!-- Noticias -->
+            <li data-route="noticias"
+                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
+                <span>Noticias</span>
+                <i class="bx bx-news text-3xl"></i>
+            </li>
+
+            <!-- Contacto -->
             <li data-route="contacto"
-                class="flex gap-1 text-nowrap hover:cursor-pointer 2xl:text-3xl justify-between font-medium items-center text-lg xl:text-2xl">
+                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
                 <span>Contacto</span>
                 <i class="bx bx-envelope text-3xl"></i>
             </li>
 
-        </ul>`}function ke(){return`<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
+        </ul>
+    `}function ke(){return`<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
     <div class=" flex items-center gap-4  text-white "> 
                     <div>
                     <img class="object-fill  rounded-full " width="87px" heigth="87px" src="${ee}" alt="Grupo de investigacion dominicano" _blank title="El kernel">
