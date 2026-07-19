@@ -108,11 +108,19 @@ export function AsistentePruebas() {
             }
 
             if (valor === "asociar") {
-                estado.pantalla = "tipo-asociacion";
-                mostrar(crearPreguntaTipoAsociacion());
-                return;
-            }
+    estado.pantalla = "tipo-asociacion";
+    mostrar(crearPreguntaTipoAsociacion());
+    return;
+}
 
+if (valor === "predecir") {
+    estado.pantalla = "tipo-resultado";
+    mostrar(crearPreguntaTipoResultado());
+    return;
+}
+
+mostrar(crearModuloEnDesarrollo(valor));
+            
             mostrar(crearModuloEnDesarrollo(valor));
             estado.pantalla = "desarrollo";
             return;
@@ -326,6 +334,11 @@ export function AsistentePruebas() {
                 crearPrimeraPregunta()
             ],
 
+            "tipo-resultado": () => [
+                "objetivo",
+                crearPrimeraPregunta()
+            ],
+            
             "frecuencias-esperadas": () => [
                 "tipo-asociacion",
                 crearPreguntaTipoAsociacion()
@@ -797,6 +810,35 @@ function crearPreguntaTipoAsociacion() {
                 "categoricas-multinivel",
                 "Variables categóricas con más de dos categorías",
                 "Al menos una de las variables tiene tres o más categorías."
+            ]
+        ]
+    });
+}
+
+function crearPreguntaTipoResultado() {
+    return crearPantallaPregunta({
+        paso: 2,
+        total: 4,
+        tituloPaso: "Variable resultado",
+        pregunta:
+            "¿Qué tipo de variable desea explicar o predecir?",
+        descripcion:
+            "Seleccione la escala de medición de la variable dependiente o resultado del modelo.",
+        opciones: [
+            [
+                "continua",
+                "Cuantitativa continua",
+                "Calificaciones, puntuaciones, ingresos, tiempo, peso u otras medidas numéricas continuas."
+            ],
+            [
+                "dicotomica",
+                "Dicotómica",
+                "La variable resultado tiene dos categorías, como aprobado/reprobado, sí/no o éxito/fracaso."
+            ],
+            [
+                "conteo",
+                "Variable de conteo",
+                "Representa el número de eventos, errores, visitas, publicaciones u otras frecuencias."
             ]
         ]
     });
