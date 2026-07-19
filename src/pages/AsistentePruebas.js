@@ -1200,8 +1200,9 @@ function adaptarResultadoMotor(resultado) {
     return {
         id: resultado.id,
         nombre: resultado.prueba,
-        razon:
-            `${resultado.descripcion} Categoría: ${resultado.categoria}. Tipo: ${resultado.tipo}.`,
+        razon: resultado.descripcion,
+        categoria: resultado.categoria,
+        tipo: resultado.tipo,
         efecto: resultado.efecto
     };
 }
@@ -1264,6 +1265,35 @@ function crearResultado(recomendacion) {
                 <h1 class="text-3xl md:text-4xl font-black">
                     ${recomendacion.nombre}
                 </h1>
+
+                ${
+    recomendacion.categoria || recomendacion.tipo
+        ? `
+            <div class="flex flex-wrap gap-3 mt-5">
+                ${
+                    recomendacion.categoria
+                        ? `
+                            <span class="inline-flex items-center rounded-full bg-white/15 border border-white/20 px-4 py-2 text-sm font-bold text-white">
+                                Categoría: ${recomendacion.categoria}
+                            </span>
+                        `
+                        : ""
+                }
+
+                ${
+                    recomendacion.tipo
+                        ? `
+                            <span class="inline-flex items-center rounded-full bg-sky-300 text-slate-950 px-4 py-2 text-sm font-black">
+                                Tipo: ${recomendacion.tipo}
+                            </span>
+                        `
+                        : ""
+                }
+            </div>
+        `
+        : ""
+}
+
             </header>
 
             <div class="px-6 py-8 md:px-10 md:py-10">
