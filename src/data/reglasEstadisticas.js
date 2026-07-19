@@ -477,7 +477,7 @@ export const reglasEstadisticas = [
     },
 
     {
-        id: "chi-cuadrado-independencia-comparacion",
+       
         condiciones: {
             objetivo: "comparar",
             tipoVariable: "categorica",
@@ -493,5 +493,132 @@ export const reglasEstadisticas = [
             efecto:
                 "V de Cramer o coeficiente Phi para tablas 2 × 2."
         }
-    }    
+    },
+
+        {
+        id: "regresion-lineal-simple",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "continua",
+            numeroPredictores: "uno"
+        },
+        resultado: {
+            prueba: "Regresión lineal simple",
+            categoria: "Predicción de una variable cuantitativa",
+            tipo: "Modelo lineal",
+            descripcion:
+                "Explica o predice una variable cuantitativa continua mediante una sola variable predictora.",
+            efecto:
+                "R², R² ajustado, coeficiente de regresión e intervalo de confianza."
+        }
+    },
+
+    {
+        id: "regresion-lineal-multiple",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "continua",
+            numeroPredictores: "varios"
+        },
+        resultado: {
+            prueba: "Regresión lineal múltiple",
+            categoria: "Predicción de una variable cuantitativa",
+            tipo: "Modelo lineal multivariable",
+            descripcion:
+                "Explica o predice una variable cuantitativa continua mediante dos o más variables predictoras.",
+            efecto:
+                "R², R² ajustado, coeficientes estandarizados e intervalos de confianza."
+        }
+    },
+
+    {
+        id: "regresion-logistica-binaria-simple",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "dicotomica",
+            numeroPredictores: "uno"
+        },
+        resultado: {
+            prueba: "Regresión logística binaria simple",
+            categoria: "Predicción de un resultado dicotómico",
+            tipo: "Modelo lineal generalizado",
+            descripcion:
+                "Modela la probabilidad de un resultado con dos categorías utilizando una sola variable predictora.",
+            efecto:
+                "Odds ratio, intervalo de confianza, AUC y medidas de calibración."
+        }
+    },
+
+    {
+        id: "regresion-logistica-binaria-multiple",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "dicotomica",
+            numeroPredictores: "varios"
+        },
+        resultado: {
+            prueba: "Regresión logística binaria múltiple",
+            categoria: "Predicción de un resultado dicotómico",
+            tipo: "Modelo lineal generalizado multivariable",
+            descripcion:
+                "Modela la probabilidad de un resultado con dos categorías mediante varias variables predictoras.",
+            efecto:
+                "Odds ratios ajustadas, intervalos de confianza, AUC y medidas de calibración."
+        }
+    },
+
+    {
+        id: "regresion-poisson",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "conteo",
+            sobredispersion: "no"
+        },
+        resultado: {
+            prueba: "Regresión de Poisson",
+            categoria: "Modelización de una variable de conteo",
+            tipo: "Modelo lineal generalizado",
+            descripcion:
+                "Modela el número de eventos cuando la dispersión de los datos es compatible con el supuesto de Poisson.",
+            efecto:
+                "Razones de tasas de incidencia e intervalos de confianza."
+        }
+    },
+
+    {
+        id: "regresion-binomial-negativa",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "conteo",
+            sobredispersion: "si"
+        },
+        resultado: {
+            prueba: "Regresión binomial negativa",
+            categoria: "Modelización de una variable de conteo",
+            tipo: "Modelo lineal generalizado",
+            descripcion:
+                "Modela datos de conteo cuando la variabilidad observada es mayor que la esperada bajo un modelo de Poisson.",
+            efecto:
+                "Razones de tasas de incidencia e intervalos de confianza."
+        }
+    },
+
+    {
+        id: "evaluar-sobredispersion",
+        condiciones: {
+            objetivo: "predecir",
+            tipoResultado: "conteo",
+            sobredispersion: "no-se"
+        },
+        resultado: {
+            prueba: "Evaluar la sobredispersión antes de seleccionar el modelo",
+            categoria: "Modelización de una variable de conteo",
+            tipo: "Diagnóstico del modelo",
+            descripcion:
+                "Debe compararse la media con la varianza y examinarse la dispersión antes de elegir entre Poisson y binomial negativa.",
+            efecto:
+                "Índice de dispersión, residuos y criterios de información como AIC."
+        }
+    }
+];
 ];
