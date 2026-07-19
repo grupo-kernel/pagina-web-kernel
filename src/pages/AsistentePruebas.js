@@ -22,6 +22,7 @@ export function AsistentePruebas() {
         empates: ""
     };
 
+
     section.innerHTML = `
         <div id="asistente-pruebas">
             ${crearPantallaInicial()}
