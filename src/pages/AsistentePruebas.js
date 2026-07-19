@@ -22,7 +22,10 @@ export function AsistentePruebas() {
         linealidad: "",
         empates: "",
         tipoAsociacion: "",
-        frecuenciasEsperadas: ""
+        frecuenciasEsperadas: "",
+        tipoResultado: "",
+        numeroPredictores: "",
+        sobredispersion: ""
     };
 
     section.innerHTML = `
@@ -51,7 +54,10 @@ export function AsistentePruebas() {
             linealidad: "",
             empates: "",
             tipoAsociacion: "",
-            frecuenciasEsperadas: ""
+            frecuenciasEsperadas: "",
+            tipoResultado: "",
+            numeroPredictores: "",
+            sobredispersion: ""
         });
     };
 
@@ -83,7 +89,10 @@ export function AsistentePruebas() {
                 linealidad: "",
                 empates: "",
                 tipoAsociacion: "",
-                frecuenciasEsperadas: ""
+                frecuenciasEsperadas: "",
+                tipoResultado: "",
+                numeroPredictores: "",
+                sobredispersion: ""
             });
 
             if (valor === "comparar") {
