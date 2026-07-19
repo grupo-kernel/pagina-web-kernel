@@ -418,6 +418,80 @@ export const reglasEstadisticas = [
             efecto:
                 "Coeficiente de correlación biserial con intervalo de confianza."
         }
-    }
-    
+    },
+
+    {
+        id: "bondad-ajuste-categorica",
+        condiciones: {
+            objetivo: "comparar",
+            tipoVariable: "categorica",
+            numeroGrupos: "uno"
+        },
+        resultado: {
+            prueba: "Prueba binomial o chi-cuadrado de bondad de ajuste",
+            categoria: "Comparación de frecuencias observadas y esperadas",
+            tipo: "Categórica",
+            descripcion:
+                "Contrasta si las frecuencias o proporciones observadas coinciden con una distribución teórica o esperada.",
+            efecto:
+                "w de Cohen o diferencia de proporciones."
+        }
+    },
+
+    {
+        id: "mcnemar",
+        condiciones: {
+            objetivo: "comparar",
+            tipoVariable: "categorica",
+            numeroGrupos: "dos",
+            relacion: "relacionadas"
+        },
+        resultado: {
+            prueba: "Prueba de McNemar",
+            categoria: "Comparación de dos proporciones relacionadas",
+            tipo: "No paramétrica para datos dicotómicos",
+            descripcion:
+                "Compara una respuesta dicotómica en dos mediciones relacionadas, como ocurre en diseños antes-después.",
+            efecto:
+                "Odds ratio pareada o diferencia de proporciones pareadas."
+        }
+    },
+
+    {
+        id: "q-cochran",
+        condiciones: {
+            objetivo: "comparar",
+            tipoVariable: "categorica",
+            numeroGrupos: "tres-mas",
+            relacion: "relacionadas"
+        },
+        resultado: {
+            prueba: "Prueba Q de Cochran",
+            categoria: "Comparación de tres o más proporciones relacionadas",
+            tipo: "No paramétrica para datos dicotómicos",
+            descripcion:
+                "Compara una respuesta dicotómica en tres o más condiciones o mediciones relacionadas.",
+            efecto:
+                "Medida de concordancia o diferencias de proporciones."
+        }
+    },
+
+    {
+        id: "chi-cuadrado-independencia-comparacion",
+        condiciones: {
+            objetivo: "comparar",
+            tipoVariable: "categorica",
+            numeroGrupos: ["dos", "tres-mas"],
+            relacion: "independientes"
+        },
+        resultado: {
+            prueba: "Prueba chi-cuadrado de independencia",
+            categoria: "Comparación de distribuciones categóricas",
+            tipo: "No paramétrica",
+            descripcion:
+                "Evalúa si la distribución de una variable categórica difiere entre dos o más grupos independientes. Si existen frecuencias esperadas pequeñas, debe considerarse una prueba exacta.",
+            efecto:
+                "V de Cramer o coeficiente Phi para tablas 2 × 2."
+        }
+    }    
 ];
