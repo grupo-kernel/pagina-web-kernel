@@ -628,12 +628,34 @@ function ficha(nombre, razon, efecto) {
     return { nombre, razon, efecto };
 }
 
+function adaptarResultadoMotor(resultado) {
+    return {
+        nombre: resultado.prueba,
+        razon: `${resultado.descripcion} Categoría: ${resultado.categoria}. Tipo: ${resultado.tipo}.`,
+        efecto: resultado.efecto
+    };
+}
+
 function crearResultadoComparacion(estado) {
-    return crearResultado(obtenerRecomendacionComparacion(estado));
+    const resultadoMotor = obtenerResultadoEstadistico(estado);
+
+    const recomendacion =
+        resultadoMotor.id === "sin-regla"
+            ? obtenerRecomendacionComparacion(estado)
+            : adaptarResultadoMotor(resultadoMotor);
+
+    return crearResultado(recomendacion);
 }
 
 function crearResultadoRelacion(estado) {
-    return crearResultado(obtenerRecomendacionRelacion(estado));
+    const resultadoMotor = obtenerResultadoEstadistico(estado);
+
+    const recomendacion =
+        resultadoMotor.id === "sin-regla"
+            ? obtenerRecomendacionRelacion(estado)
+            : adaptarResultadoMotor(resultadoMotor);
+
+    return crearResultado(recomendacion);
 }
 
 function crearResultado(recomendacion) {
