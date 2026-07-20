@@ -277,11 +277,6 @@ export function CalculadoraDosGrupos() {
         );
 
     const resultados =
-        section.querySelector(
-            "#resultados-dos-grupos"
-        );
-
-    const resultados =
     section.querySelector(
         "#resultados-dos-grupos"
     );
@@ -448,26 +443,29 @@ const campoGrupo2 =
                 accion ===
                 "cargar-ejemplo"
             ) {
-                if (!formulario.elements.prueba.value) {
-                formulario.elements.prueba.value =
-                "welch";
+            if (
+            !formulario.elements.prueba.value
+            ) {
+            formulario.elements.prueba.value =
+            "welch";
             }
 
-                campoGrupo1.value =
-                    "18\n20\n17.5\n19\n21\n16\n22\n18.5";
+            campoGrupo1.value =
+            "18\n20\n17.5\n19\n21\n16\n22\n18.5";
 
-                campoGrupo2.value =
-                    "14\n15\n17\n13.5\n18\n16\n15.5\n14.5";
+            campoGrupo2.value =
+            "14\n15\n17\n13.5\n18\n16\n15.5\n14.5";
 
-                actualizarContadores();
-                ocultarError(mensajeError);
-                resultados.classList.add(
-                    "hidden"
-                );
+            actualizarContadores();
+            ocultarError(mensajeError);
 
-                return;
+            resultados.classList.add(
+                "hidden"
+            );
+
+            return;
             }
-
+            
             if (accion === "limpiar") {
                 formulario.reset();
 
