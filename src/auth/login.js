@@ -65,29 +65,75 @@ export function crearLogin(onSuccess) {
   `;
 
   const form = section.querySelector("#kernel-login");
-  const error = section.querySelector("#login-error");
+const error = section.querySelector("#login-error");
+const correoInput = section.querySelector("#correo");
+const passwordInput = section.querySelector("#password");
+const botonEnviar = form.querySelector('button[type="submit"]');
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    error.classList.add("hidden");
+  error.classList.add("hidden");
+  error.textContent = "";
 
-    const email = form.correo.value.trim();
-    const password = form.password.value;
+  const email = correoInput.value.trim();
+  const password = passwordInput.value;
 
-    try {
-      await iniciarSesion(email, password);
+  if (!email || !password) {
+    error.textContent =
+      "Introduzca el correo electrónico y la contraseña.";
 
-      if (onSuccess) onSuccess();
+    error.classList.remove("hidden");
+    return;
+  }
 
-    } catch (err) {
+  botonEnviar.disabled = true;
+  botonEnviar.textContent = "Verificando...";
 
-      error.textContent =
-        "Correo o contraseña incorrectos.";
+  try {
+    await iniciarSesion(email, password);
 
-      error.classList.remove("hidden");
+    if (onSuccess) {
+      await onSuccess();
     }
-  });
+  } catch (err) {
+    console.error("Error de autenticación:", err);
 
+    const mensajes = {
+      "auth/invalid-email":
+        "El correo electrónico no tiene un formato válido.",
+
+      "auth/invalid-credential":
+        "El correo o la contraseña son incorrectos.",
+
+      "auth/user-not-found":
+        "El correo no está autorizado.",
+
+      "auth/wrong-password":
+        "El correo o la contraseña son incorrectos.",
+
+      "auth/user-disabled":
+        "Este usuario está deshabilitado.",
+
+      "auth/too-many-requests":
+        "Demasiados intentos. Espere unos minutos e inténtelo nuevamente.",
+
+      "auth/network-request-failed":
+        "No fue posible conectarse con Firebase. Revise su conexión.",
+
+      "auth/unauthorized-domain":
+        "El dominio de Grupo Kernel no está autorizado en Firebase."
+    };
+
+    error.textContent =
+      mensajes[err.code] ||
+      `No fue posible iniciar sesión. Error: ${err.code || "desconocido"}`;
+
+    error.classList.remove("hidden");
+  } finally {
+    botonEnviar.disabled = false;
+    botonEnviar.textContent = "Iniciar sesión";
+  }
+});
   return section;
 }
