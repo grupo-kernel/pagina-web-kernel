@@ -76,6 +76,11 @@ export function AsistentePruebas() {
         mostrar(crearResultadoAsociacion(estado));
     };
 
+    const mostrarResultadoPrediccion = () => {
+        estado.pantalla = "resultado-prediccion";
+        mostrar(crearResultadoPrediccion(estado));
+    };
+
     const avanzar = (valor) => {
         if (estado.pantalla === "objetivo") {
             Object.assign(estado, {
@@ -108,17 +113,17 @@ export function AsistentePruebas() {
             }
 
             if (valor === "asociar") {
-    estado.pantalla = "tipo-asociacion";
-    mostrar(crearPreguntaTipoAsociacion());
-    return;
-}
+                estado.pantalla = "tipo-asociacion";
+                mostrar(crearPreguntaTipoAsociacion());
+                return;
+            }
 
-if (valor === "predecir") {
-    estado.pantalla = "tipo-resultado";
-    mostrar(crearPreguntaTipoResultado());
-    return;
-}
-            
+            if (valor === "predecir") {
+                estado.pantalla = "tipo-resultado";
+                mostrar(crearPreguntaTipoResultado());
+                return;
+            }
+
             mostrar(crearModuloEnDesarrollo(valor));
             estado.pantalla = "desarrollo";
             return;
@@ -271,21 +276,41 @@ if (valor === "predecir") {
         if (estado.pantalla === "frecuencias-esperadas") {
             estado.frecuenciasEsperadas = valor;
             mostrarResultadoAsociacion();
+            return;
         }
 
         if (estado.pantalla === "tipo-resultado") {
-    Object.assign(estado, {
-        tipoResultado: valor,
-        numeroPredictores: "",
-        sobredispersion: ""
-    });
+            Object.assign(estado, {
+                tipoResultado: valor,
+                numeroPredictores: "",
+                sobredispersion: ""
+            });
 
-    estado.pantalla = "numero-predictores";
-    mostrar(crearPreguntaNumeroPredictores());
-    return;
-}
+            estado.pantalla = "numero-predictores";
+            mostrar(crearPreguntaNumeroPredictores());
+            return;
+        }
+
+        if (estado.pantalla === "numero-predictores") {
+            estado.numeroPredictores = valor;
+            estado.sobredispersion = "";
+
+            if (estado.tipoResultado === "conteo") {
+                estado.pantalla = "sobredispersion";
+                mostrar(crearPreguntaSobredispersion());
+                return;
+            }
+
+            mostrarResultadoPrediccion();
+            return;
+        }
+
+        if (estado.pantalla === "sobredispersion") {
+            estado.sobredispersion = valor;
+            mostrarResultadoPrediccion();
+            return;
+        }
     };
-    
 
     const volver = () => {
         const pantallas = {
@@ -354,7 +379,23 @@ if (valor === "predecir") {
                 "tipo-resultado",
                 crearPreguntaTipoResultado()
             ],
-            
+
+            sobredispersion: () => [
+                "numero-predictores",
+                crearPreguntaNumeroPredictores()
+            ],
+
+            "resultado-prediccion": () =>
+                estado.tipoResultado === "conteo"
+                    ? [
+                        "sobredispersion",
+                        crearPreguntaSobredispersion()
+                    ]
+                    : [
+                        "numero-predictores",
+                        crearPreguntaNumeroPredictores()
+                    ],
+
             "frecuencias-esperadas": () => [
                 "tipo-asociacion",
                 crearPreguntaTipoAsociacion()
@@ -440,44 +481,50 @@ if (valor === "predecir") {
         }
 
         if (accion === "ver-ficha") {
-    const fichaId = boton.dataset.fichaId;
-    const ficha = obtenerFichaMetodologica(fichaId);
+            const fichaId = boton.dataset.fichaId;
+            const ficha = obtenerFichaMetodologica(fichaId);
 
-    if (!ficha) {
-        return;
-    }
+            if (!ficha) {
+                return;
+            }
 
-    estado.pantallaAnterior = estado.pantalla;
-    estado.fichaActual = fichaId;
-    estado.pantalla = "ficha-metodologica";
+            estado.pantallaAnterior = estado.pantalla;
+            estado.fichaActual = fichaId;
+            estado.pantalla = "ficha-metodologica";
 
-    mostrar(
-        crearFichaMetodologicaCompleta(
-            ficha,
-            fichaId
-        )
-    );
+            mostrar(
+                crearFichaMetodologicaCompleta(
+                    ficha,
+                    fichaId
+                )
 
-    return;
-}
+                            );
 
-if (accion === "volver-resultado") {
-    if (estado.objetivo === "comparar") {
-        mostrarResultadoComparacion();
-        return;
-    }
+            return;
+        }
 
-    if (estado.objetivo === "relacionar") {
-        mostrarResultadoRelacion();
-        return;
-    }
+        if (accion === "volver-resultado") {
+            if (estado.objetivo === "comparar") {
+                mostrarResultadoComparacion();
+                return;
+            }
 
-    if (estado.objetivo === "asociar") {
-        mostrarResultadoAsociacion();
-    }
+            if (estado.objetivo === "relacionar") {
+                mostrarResultadoRelacion();
+                return;
+            }
 
-    return;
-}
+            if (estado.objetivo === "asociar") {
+                mostrarResultadoAsociacion();
+                return;
+            }
+
+            if (estado.objetivo === "predecir") {
+                mostrarResultadoPrediccion();
+            }
+
+            return;
+        }
 
         if (accion === "iniciar") {
             estado.pantalla = "objetivo";
@@ -884,6 +931,35 @@ function crearPreguntaNumeroPredictores() {
     });
 }
 
+function crearPreguntaSobredispersion() {
+    return crearPantallaPregunta({
+        paso: 4,
+        total: 4,
+        tituloPaso: "Dispersión del conteo",
+        pregunta:
+            "¿Los datos muestran sobredispersión respecto al modelo de Poisson?",
+        descripcion:
+            "La sobredispersión ocurre cuando la variabilidad observada es mayor que la esperada bajo un modelo de Poisson. Puede evaluarse mediante la dispersión residual y otros diagnósticos del modelo.",
+        opciones: [
+            [
+                "no",
+                "No, la dispersión es compatible con Poisson",
+                "Los diagnósticos no muestran una variabilidad sustancialmente mayor que la esperada."
+            ],
+            [
+                "si",
+                "Sí, existe sobredispersión",
+                "La variabilidad observada es claramente mayor que la esperada bajo el modelo de Poisson."
+            ],
+            [
+                "no-se",
+                "No lo sé",
+                "Todavía no se ha evaluado la dispersión ni se han revisado los diagnósticos del modelo."
+            ]
+        ]
+    });
+}
+
 function crearPreguntaFrecuenciasEsperadas() {
     return crearPantallaPregunta({
         paso: 3,
@@ -922,7 +998,8 @@ function crearPreguntaNormalidadRelacion() {
             "¿Las variables presentan normalidad aproximada y no muestran valores atípicos influyentes?",
         descripcion:
             "Revise histogramas, diagramas de caja y el diagrama de dispersión. Para la inferencia con Pearson también debe considerarse la normalidad bivariada.",
-        opciones: [
+
+                opciones: [
             [
                 "si",
                 "Sí, aproximadamente",
@@ -1341,6 +1418,25 @@ function crearResultadoAsociacion(estado) {
     return crearResultado(recomendacion);
 }
 
+function crearResultadoPrediccion(estado) {
+    const resultadoMotor =
+        obtenerResultadoEstadistico(estado);
+
+    const recomendacion =
+        resultadoMotor.id === "sin-regla"
+            ? {
+                nombre:
+                    "Revisión metodológica requerida",
+                razon:
+                    "Las respuestas seleccionadas todavía no coinciden con una regla de predicción disponible.",
+                efecto:
+                    "Las medidas de ajuste dependerán del tipo de variable resultado y del modelo seleccionado."
+            }
+            : adaptarResultadoMotor(resultadoMotor);
+
+    return crearResultado(recomendacion);
+}
+
 function crearResultado(recomendacion) {
     const fichaDisponible =
         recomendacion.id &&
@@ -1358,33 +1454,32 @@ function crearResultado(recomendacion) {
                 </h1>
 
                 ${
-    recomendacion.categoria || recomendacion.tipo
-        ? `
-            <div class="flex flex-wrap gap-3 mt-5">
-                ${
-                    recomendacion.categoria
+                    recomendacion.categoria || recomendacion.tipo
                         ? `
-                            <span class="inline-flex items-center rounded-full bg-white/15 border border-white/20 px-4 py-2 text-sm font-bold text-white">
-                                Categoría: ${recomendacion.categoria}
-                            </span>
+                            <div class="flex flex-wrap gap-3 mt-5">
+                                ${
+                                    recomendacion.categoria
+                                        ? `
+                                            <span class="inline-flex items-center rounded-full bg-white/15 border border-white/20 px-4 py-2 text-sm font-bold text-white">
+                                                Categoría: ${recomendacion.categoria}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                                ${
+                                    recomendacion.tipo
+                                        ? `
+                                            <span class="inline-flex items-center rounded-full bg-sky-300 text-slate-950 px-4 py-2 text-sm font-black">
+                                                Tipo: ${recomendacion.tipo}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+                            </div>
                         `
                         : ""
                 }
-
-                ${
-                    recomendacion.tipo
-                        ? `
-                            <span class="inline-flex items-center rounded-full bg-sky-300 text-slate-950 px-4 py-2 text-sm font-black">
-                                Tipo: ${recomendacion.tipo}
-                            </span>
-                        `
-                        : ""
-                }
-            </div>
-        `
-        : ""
-}
-
             </header>
 
             <div class="px-6 py-8 md:px-10 md:py-10">
@@ -1403,7 +1498,8 @@ function crearResultado(recomendacion) {
                         "Reporte recomendado",
                         "Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva."
                     )}
-                </div>
+
+                                    </div>
 
                 <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
                     <h2 class="font-black text-amber-900 mb-2">
