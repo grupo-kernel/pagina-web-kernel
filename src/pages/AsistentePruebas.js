@@ -464,89 +464,118 @@ export function AsistentePruebas() {
     };
 
     contenedor.addEventListener("click", (event) => {
-        const boton = event.target.closest(
-            "[data-action], [data-value]"
+    const boton = event.target.closest(
+        "[data-action], [data-value]"
+    );
+
+    if (!boton) {
+        return;
+    }
+
+    const accion = boton.dataset.action;
+    const valor = boton.dataset.value;
+
+    if (valor) {
+        avanzar(valor);
+        return;
+    }
+
+    if (accion === "ejecutar-prueba") {
+        const prueba =
+            boton.dataset.prueba;
+
+        if (!prueba) {
+            return;
+        }
+
+        sessionStorage.setItem(
+            "kernel-prueba-dos-grupos",
+            prueba
         );
 
-        if (!boton) {
+        window.location.hash =
+            "/calculadoraDosGrupos";
+
+        return;
+    }
+
+    if (accion === "ver-ficha") {
+        const fichaId =
+            boton.dataset.fichaId;
+
+        const ficha =
+            obtenerFichaMetodologica(
+                fichaId
+            );
+
+        if (!ficha) {
             return;
         }
 
-        const accion = boton.dataset.action;
-        const valor = boton.dataset.value;
+        estado.pantallaAnterior =
+            estado.pantalla;
 
-        if (valor) {
-            avanzar(valor);
+        estado.fichaActual =
+            fichaId;
+
+        estado.pantalla =
+            "ficha-metodologica";
+
+        mostrar(
+            crearFichaMetodologicaCompleta(
+                ficha,
+                fichaId
+            )
+        );
+
+        return;
+    }
+
+    if (accion === "volver-resultado") {
+        if (estado.objetivo === "comparar") {
+            mostrarResultadoComparacion();
             return;
         }
 
-        if (accion === "ver-ficha") {
-            const fichaId = boton.dataset.fichaId;
-            const ficha = obtenerFichaMetodologica(fichaId);
-
-            if (!ficha) {
-                return;
-            }
-
-            estado.pantallaAnterior = estado.pantalla;
-            estado.fichaActual = fichaId;
-            estado.pantalla = "ficha-metodologica";
-
-            mostrar(
-                crearFichaMetodologicaCompleta(
-                    ficha,
-                    fichaId
-                )
-
-                            );
-
+        if (estado.objetivo === "relacionar") {
+            mostrarResultadoRelacion();
             return;
         }
 
-        if (accion === "volver-resultado") {
-            if (estado.objetivo === "comparar") {
-                mostrarResultadoComparacion();
-                return;
-            }
-
-            if (estado.objetivo === "relacionar") {
-                mostrarResultadoRelacion();
-                return;
-            }
-
-            if (estado.objetivo === "asociar") {
-                mostrarResultadoAsociacion();
-                return;
-            }
-
-            if (estado.objetivo === "predecir") {
-                mostrarResultadoPrediccion();
-            }
-
+        if (estado.objetivo === "asociar") {
+            mostrarResultadoAsociacion();
             return;
         }
 
-        if (accion === "iniciar") {
-            estado.pantalla = "objetivo";
-            mostrar(crearPrimeraPregunta());
+        if (estado.objetivo === "predecir") {
+            mostrarResultadoPrediccion();
         }
 
-        if (accion === "volver") {
-            volver();
-        }
+        return;
+    }
 
-        if (
-            accion === "volver-inicio" ||
-            accion === "reiniciar"
-        ) {
-            reiniciarEstado();
-            mostrar(crearPantallaInicial());
-        }
+    if (accion === "iniciar") {
+        estado.pantalla = "objetivo";
+        mostrar(crearPrimeraPregunta());
+    }
 
-        if (accion === "volver-laboratorio") {
-            window.location.hash = "/laboratorioKernel";
-        }
-    });
+    if (accion === "volver") {
+        volver();
+    }
+
+    if (
+        accion === "volver-inicio" ||
+        accion === "reiniciar"
+    ) {
+        reiniciarEstado();
+        mostrar(crearPantallaInicial());
+    }
+
+    if (accion === "volver-laboratorio") {
+        window.location.hash =
+            "/laboratorioKernel";
+    }
+});
 
     return section;
 }
@@ -1437,10 +1466,30 @@ function crearResultadoPrediccion(estado) {
     return crearResultado(recomendacion);
 }
 
+function obtenerPruebaEjecutable(id) {
+    const pruebasDisponibles = {
+        "t-student-independientes":
+            "student",
+        "t-welch-independientes":
+            "welch",
+        "mann-whitney":
+            "mann-whitney"
+    };
+
+    return pruebasDisponibles[id] || "";
+}
+
 function crearResultado(recomendacion) {
     const fichaDisponible =
         recomendacion.id &&
-        obtenerFichaMetodologica(recomendacion.id);
+        obtenerFichaMetodologica(
+            recomendacion.id
+        );
+
+    const pruebaEjecutable =
+        obtenerPruebaEjecutable(
+            recomendacion.id
+        );
 
     return `
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
@@ -1454,7 +1503,8 @@ function crearResultado(recomendacion) {
                 </h1>
 
                 ${
-                    recomendacion.categoria || recomendacion.tipo
+                    recomendacion.categoria ||
+                    recomendacion.tipo
                         ? `
                             <div class="flex flex-wrap gap-3 mt-5">
                                 ${
@@ -1498,8 +1548,7 @@ function crearResultado(recomendacion) {
                         "Reporte recomendado",
                         "Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva."
                     )}
-
-                                    </div>
+                </div>
 
                 <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
                     <h2 class="font-black text-amber-900 mb-2">
@@ -1510,6 +1559,45 @@ function crearResultado(recomendacion) {
                         Esta recomendación orienta la selección inicial. Antes del análisis definitivo deben revisarse el diseño muestral, los valores atípicos, el tamaño de la muestra, los supuestos específicos y la calidad de la medición.
                     </p>
                 </div>
+
+                ${
+                    pruebaEjecutable
+                        ? `
+                            <div class="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+                                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">
+                                            Herramienta de análisis
+                                        </p>
+
+                                        <h2 class="text-xl font-black text-slate-900 mb-2">
+                                            Ejecute esta prueba con sus propios datos
+                                        </h2>
+
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Introduzca los valores de los dos grupos y obtenga el estadístico, el valor p, los descriptivos, el intervalo de confianza y el tamaño del efecto.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        data-action="ejecutar-prueba"
+                                        data-prueba="${pruebaEjecutable}"
+                                        class="shrink-0 inline-flex items-center justify-center bg-emerald-700 text-white font-black rounded-xl px-6 py-4 hover:bg-emerald-800 transition-colors shadow-lg"
+                                    >
+                                        Ejecutar esta prueba
+                                        <span
+                                            class="ml-2"
+                                            aria-hidden="true"
+                                        >
+                                            →
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        `
+                        : ""
+                }
 
                 ${
                     fichaDisponible
@@ -1537,7 +1625,12 @@ function crearResultado(recomendacion) {
                                         class="shrink-0 inline-flex items-center justify-center bg-blue-700 text-white font-black rounded-xl px-6 py-4 hover:bg-blue-800 transition-colors shadow-lg"
                                     >
                                         Ver ficha metodológica
-                                        <span class="ml-2" aria-hidden="true">→</span>
+                                        <span
+                                            class="ml-2"
+                                            aria-hidden="true"
+                                        >
+                                            →
+                                        </span>
                                     </button>
                                 </div>
                             </div>
