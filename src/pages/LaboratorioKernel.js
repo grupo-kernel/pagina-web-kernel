@@ -1,4 +1,15 @@
-export function LaboratorioKernel() {
+import { crearLogin } from "../auth/login.js";
+import { esperarAutenticacion } from "../auth/authGuard.js";
+import { cerrarSesion } from "../auth/authService.js";
+
+export async function LaboratorioKernel() {
+        const user = await esperarAutenticacion();
+
+    if (!user) {
+        return crearLogin(() => {
+            window.location.reload();
+        });
+    }
     const section = document.createElement("section");
 
     section.className = `
@@ -38,6 +49,22 @@ export function LaboratorioKernel() {
             ">
                 ${iconoSVG("analisis", "w-16 h-16")}
             </div>
+
+            <button
+            id="cerrar-sesion-kernel"
+            type="button"
+            class="
+                absolute top-5 right-5 z-20
+                rounded-xl
+                bg-white/10 border border-white/20
+                px-4 py-2
+                text-sm font-bold text-white
+                hover:bg-white/20
+                transition-colors
+            "
+            >
+            Cerrar sesión
+            </button>
 
             <div class="relative z-10 max-w-4xl">
                 <div class="
@@ -353,6 +380,13 @@ export function LaboratorioKernel() {
             </div>
         </section>
     `;
+    
+        const botonCerrarSesion = section.querySelector("#cerrar-sesion-kernel");
+
+    botonCerrarSesion?.addEventListener("click", async () => {
+        await cerrarSesion();
+        window.location.reload();
+    });
 
     return section;
 }
