@@ -283,7 +283,8 @@ export function LaboratorioKernel() {
                     "grupos",
                     "bg-indigo-100",
                     "text-indigo-700",
-                    "border-indigo-200"
+                    "border-indigo-200",
+                    "calculadoraDosGrupos"
                 )}
 
                 ${crearTarjetaModulo(
