@@ -6,10 +6,12 @@ export async function LaboratorioKernel() {
         const user = await esperarAutenticacion();
 
     if (!user) {
-        return crearLogin(() => {
-            window.location.reload();
-        });
-    }
+    return crearLogin(() => {
+        window.dispatchEvent(
+            new HashChangeEvent("hashchange")
+        );
+    });
+}
     const section = document.createElement("section");
 
     section.className = `
