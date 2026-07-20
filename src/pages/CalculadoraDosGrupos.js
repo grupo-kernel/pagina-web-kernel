@@ -281,11 +281,40 @@ export function CalculadoraDosGrupos() {
             "#resultados-dos-grupos"
         );
 
-    const campoGrupo1 =
-        formulario.elements.grupo1;
+    const resultados =
+    section.querySelector(
+        "#resultados-dos-grupos"
+    );
 
-    const campoGrupo2 =
-        formulario.elements.grupo2;
+const pruebasDisponibles = [
+    "student",
+    "welch",
+    "mann-whitney"
+];
+
+const pruebaRecomendada =
+    sessionStorage.getItem(
+        "kernel-prueba-dos-grupos"
+    );
+
+if (
+    pruebasDisponibles.includes(
+        pruebaRecomendada
+    )
+) {
+    formulario.elements.prueba.value =
+        pruebaRecomendada;
+}
+
+sessionStorage.removeItem(
+    "kernel-prueba-dos-grupos"
+);
+
+const campoGrupo1 =
+    formulario.elements.grupo1;
+
+const campoGrupo2 =
+    formulario.elements.grupo2;
 
     const contadorGrupo1 =
         section.querySelector(
@@ -419,8 +448,10 @@ export function CalculadoraDosGrupos() {
                 accion ===
                 "cargar-ejemplo"
             ) {
+                if (!formulario.elements.prueba.value) {
                 formulario.elements.prueba.value =
-                    "welch";
+                "welch";
+            }
 
                 campoGrupo1.value =
                     "18\n20\n17.5\n19\n21\n16\n22\n18.5";
