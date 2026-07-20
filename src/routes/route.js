@@ -11,6 +11,7 @@ import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 import { LaboratorioKernel } from "../pages/LaboratorioKernel.js";
 import { AsistentePruebas } from "../pages/AsistentePruebas.js";
+import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
 
 const routes = {
     home: {
@@ -80,11 +81,16 @@ const routes = {
     },
 
     asistentePruebas: {
-    page: AsistentePruebas,
-    layout: "default",
-    title: "¿Qué prueba debo utilizar? | El Kernel"
-}
+        page: AsistentePruebas,
+        layout: "default",
+        title: "¿Qué prueba debo utilizar? | El Kernel"
+    },
 
+    calculadoraDosGrupos: {
+        page: CalculadoraDosGrupos,
+        layout: "default",
+        title: "Comparación de dos grupos | El Kernel"
+    }
 };
 
 let previousPageLocation = document.referrer || "";
@@ -96,7 +102,8 @@ export function navigate(route) {
 export function routerInit() {
     const handleRouteChange = () => {
         const route =
-            window.location.hash.replace("#/", "") || "home";
+            window.location.hash.replace("#/", "") ||
+            "home";
 
         loadRoute(route);
     };
@@ -127,7 +134,9 @@ function trackPageView(route, title) {
 }
 
 function loadRoute(route) {
-    const content = document.querySelector("main");
+    const content =
+        document.querySelector("main");
+
     const page = routes[route];
 
     if (!content) {
@@ -144,12 +153,17 @@ function loadRoute(route) {
     setMainLayout(page.layout);
     document.title = page.title;
 
-    content.appendChild(page.page());
+    content.appendChild(
+        page.page()
+    );
 
     window.scrollTo({
         top: 0,
         behavior: "auto"
     });
 
-    trackPageView(route, page.title);
+    trackPageView(
+        route,
+        page.title
+    );
 }
