@@ -4,10 +4,18 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  inMemoryPersistence,
 } from "firebase/auth";
 
 export async function iniciarSesion(email, password) {
-  return await signInWithEmailAndPassword(auth, email, password);
+  await setPersistence(auth, inMemoryPersistence);
+
+  return await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
 }
 
 export async function cerrarSesion() {
