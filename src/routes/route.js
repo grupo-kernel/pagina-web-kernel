@@ -133,7 +133,7 @@ function trackPageView(route, title) {
     previousPageLocation = pageLocation;
 }
 
-function loadRoute(route) {
+async function loadRoute(route) {
     const content =
         document.querySelector("main");
 
@@ -153,9 +153,9 @@ function loadRoute(route) {
     setMainLayout(page.layout);
     document.title = page.title;
 
-    content.appendChild(
-        page.page()
-    );
+    const pageElement = await page.page();
+
+    content.appendChild(pageElement);
 
     window.scrollTo({
         top: 0,
