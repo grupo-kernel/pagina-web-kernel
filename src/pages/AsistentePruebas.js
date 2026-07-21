@@ -1,4 +1,6 @@
-import { obtenerResultadoEstadistico } from "../utils/motorReglas.js";
+import {
+    obtenerFichaMetodologica
+} from "../data/obtenerFichaMetodologica.js";
 import { obtenerFichaMetodologica } from "../data/fichasMetodologicas.js";
 
 export function AsistentePruebas() {
@@ -481,23 +483,37 @@ export function AsistentePruebas() {
     }
 
     if (accion === "ejecutar-prueba") {
-        const prueba =
-            boton.dataset.prueba;
+    const prueba =
+        boton.dataset.prueba;
 
-        if (!prueba) {
-            return;
-        }
+    if (!prueba) {
+        return;
+    }
 
-        sessionStorage.setItem(
-            "kernel-prueba-dos-grupos",
+    const pruebasRelacionadas = [
+        "student-pareada",
+        "wilcoxon"
+    ];
+
+    const esPruebaRelacionada =
+        pruebasRelacionadas.includes(
             prueba
         );
 
-        window.location.hash =
-            "/calculadoraDosGrupos";
+    sessionStorage.setItem(
+        esPruebaRelacionada
+            ? "kernel-prueba-dos-relacionadas"
+            : "kernel-prueba-dos-grupos",
+        prueba
+    );
 
-        return;
-    }
+    window.location.hash =
+        esPruebaRelacionada
+            ? "/calculadoraDosMuestrasRelacionadas"
+            : "/calculadoraDosGrupos";
+
+    return;
+}
 
     if (accion === "ver-ficha") {
         const fichaId =
@@ -1470,10 +1486,18 @@ function obtenerPruebaEjecutable(id) {
     const pruebasDisponibles = {
         "t-student-independientes":
             "student",
+
         "t-welch-independientes":
             "welch",
+
         "mann-whitney":
-            "mann-whitney"
+            "mann-whitney",
+
+        "t-student-relacionadas":
+            "student-pareada",
+
+        "wilcoxon-relacionadas":
+            "wilcoxon"
     };
 
     return pruebasDisponibles[id] || "";
