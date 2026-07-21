@@ -45,6 +45,71 @@ const fichaSpearman = {
 };
 
 export const fichasMetodologicasRelacionVariables = {
+    "relacion-no-monotonica": {
+    nombre:
+        "Análisis de una relación no monotónica",
+
+    definicion:
+        "Procedimiento exploratorio y de modelización utilizado cuando la relación entre dos variables cambia de dirección o presenta una forma curva que no puede resumirse adecuadamente mediante Pearson, Spearman o Kendall.",
+
+    cuandoUsar: [
+        "El diagrama de dispersión muestra una relación curva o cambios de dirección.",
+        "La asociación no es aproximadamente lineal ni monotónica.",
+        "Un coeficiente próximo a cero contradice una estructura visible en el gráfico.",
+        "Se desea identificar una función o modelo que represente mejor la relación."
+    ],
+
+    hipotesis: {
+        h0:
+            "La hipótesis nula dependerá del modelo finalmente seleccionado.",
+        h1:
+            "La variable explicativa contribuye a describir una estructura no lineal en la variable resultado."
+    },
+
+    supuestos: [
+        "Correspondencia correcta entre las observaciones de ambas variables.",
+        "Independencia entre los pares de observaciones.",
+        "Selección del modelo basada en teoría, diseño y examen gráfico.",
+        "Revisión de valores atípicos, residuos y observaciones influyentes.",
+        "Evitar elegir un modelo únicamente porque produce el mayor R²."
+    ],
+
+    estadistico:
+        "No existe un único estadístico universal. Según la estructura pueden utilizarse términos polinomiales, regresión segmentada, suavizadores LOESS, splines, modelos aditivos generalizados u otros modelos no lineales.",
+
+    efecto:
+        "R² y R² ajustado cuando sean pertinentes, reducción del error, parámetros del modelo, intervalos de confianza y medidas de ajuste predictivo.",
+
+    reporteAPA:
+        "Describa la forma observada en el diagrama, justifique el modelo utilizado, informe sus coeficientes e intervalos de confianza, medidas de ajuste y diagnóstico de residuos.",
+
+    posthoc: [],
+
+    alternativas: [
+        "Regresión polinómica cuando existe una curvatura simple y teóricamente justificable.",
+        "Regresión segmentada cuando la pendiente cambia a partir de uno o más puntos.",
+        "LOESS o splines para exploración flexible de la forma.",
+        "Modelos aditivos generalizados para estimar relaciones suaves no lineales.",
+        "Transformaciones de variables cuando sean interpretables y estén justificadas."
+    ],
+
+    erroresFrecuentes: [
+        "Concluir que no existe relación porque Pearson o Spearman están próximos a cero.",
+        "Forzar una recta sobre una relación claramente curva.",
+        "Seleccionar polinomios de grado elevado sin justificación.",
+        "Interpretar una relación observacional como causal.",
+        "Informar únicamente R² sin revisar los residuos ni la estabilidad del modelo."
+    ],
+
+    ejemplo:
+        "La relación entre ansiedad y rendimiento puede mostrar un patrón de U invertida: niveles muy bajos y muy altos de ansiedad se asocian con menor rendimiento, mientras que niveles intermedios se relacionan con mejores resultados.",
+
+    referencias: [
+        "Harrell, F. E. (2015). Regression Modeling Strategies.",
+        "Wood, S. N. (2017). Generalized Additive Models.",
+        "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An Introduction to Statistical Learning."
+    ]
+},
     pearson: {
         nombre: "Correlación de Pearson",
         definicion:
