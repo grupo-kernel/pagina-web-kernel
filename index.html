@@ -2,60 +2,149 @@
 <html lang="es">
 
 <head>
-        <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"></script>
+    <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"
+    ></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
 
         function gtag() {
-            dataLayer.push(arguments);
+            window.dataLayer.push(arguments);
         }
 
         gtag("js", new Date());
-        gtag("config", "G-V1BBZYECVK", {
-    send_page_view: false
-});
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Kernel - Grupo de investigación</title>
-    <link rel="shortcut icon" href="./assets/favicon-jkozwFvM.ico" type="image/x-icon">
-    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <script type="module" crossorigin src="./assets/index-BAtUjHU4.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BTjFpMi7.css">
+        gtag("config", "G-V1BBZYECVK", {
+            send_page_view: false
+        });
+    </script>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>El Kernel - Grupo de investigación</title>
+
+    <link
+        rel="shortcut icon"
+        href="./assets/favicon-jkozwFvM.ico"
+        type="image/x-icon"
+    >
+
+    <link
+        href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        rel="stylesheet"
+    >
+  <script type="module" crossorigin src="./assets/index-Cnhy3VgK.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CUAQD5By.css">
 </head>
 
 <body class="min-h-screen flex flex-col">
 
+    <!-- Encabezado y navegación principal -->
+    <div class="w-full static bg-white shadow-lg border-b-[0.4px]">
+        <div
+            class="
+                w-full
+                grid grid-cols-4
+                lg:grid-cols-18
+                items-center
+                px-4 lg:px-6
+            "
+        >
+            <header
+                id="header"
+                class="
+                    col-span-4
+                    lg:col-span-5
+                    xl:col-span-4
+                    flex items-center
+                    py-2
+                "
+            ></header>
 
-    <div class="w-full grid grid-cols-4 lg:grid-cols-18 items-center px-4 lg:px-6">
-    <header
-        class="col-span-4 lg:col-span-5 xl:col-span-4 flex items-center py-2"
-        id="header"
-    ></header>
+            <nav
+                id="navBar"
+                class="
+                    hidden
+                    fixed
+                    top-0 left-0
+                    z-50
+                    h-screen
+                    w-3/4
+                    p-1.5
+                    flex-col
+                    bg-white
+                    transition-transform
+                    duration-300
+                    ease-in-out
 
-        <nav class="hidden 
-         fixed   
-         top-0 left-0 z-50 
-         transition-transform duration-300
-         ease-in-out bg-white
-         h-screen p-1.5 flex-col 
-         w-3/4
-         2xl:text-5xl
-        lg:h-auto lg:flex lg:col-span-13 xl:col-span-14
-         lg:text-lg 
-         lg:relative 
-         lg:flex-row " id="navBar"></nav>
+                    lg:relative
+                    lg:top-auto
+                    lg:left-auto
+                    lg:z-auto
+                    lg:flex
+                    lg:h-auto
+                    lg:w-auto
+                    lg:col-span-13
+                    lg:flex-row
+                    lg:text-lg
+
+                    xl:col-span-14
+                    2xl:text-5xl
+                "
+            ></nav>
         </div>
     </div>
 
-    <main class="flex-1 max-w-7xl 2xl:max-w-500 3xl:max-w-none tabletBig:max-w-6xl xl:max-w-7xl  m-auto p-2 mb-30 lg:mb-0 mt-8 md:mb-0 md:mt-12"
-        id="main"></main>
+    <!-- Contenido dinámico -->
+    <main
+        id="main"
+        class="
+            flex-1
+            max-w-7xl
+            2xl:max-w-500
+            3xl:max-w-none
+            tabletBig:max-w-6xl
+            xl:max-w-7xl
+            m-auto
+            p-2
+            mt-8
+            mb-30
+            md:mt-12
+            md:mb-0
+            lg:mb-0
+        "
+    ></main>
 
-    <footer class="w-full tabletBig:w-7xl xl:w-full p-3 mt-20 md:mt-8 bg-footer-primary h-auto md:h-60 lg:h-60"
-        id="footer"></footer>
+    <!-- Pie de página -->
+    <footer
+        id="footer"
+        class="
+            w-full
+            tabletBig:w-7xl
+            xl:w-full
+            p-3
+            mt-20
+            md:mt-8
+            bg-footer-primary
+            h-auto
+            md:h-60
+            lg:h-60
+        "
+    ></footer>
+
 
 </body>
 
