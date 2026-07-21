@@ -562,6 +562,34 @@ friedman: {
         "kernel-prueba-tres-relacionadas",
     ruta:
         "calculadoraTresOMasMedicionesRelacionadas"
+},
+
+pearson: {
+    almacenamiento:
+        "kernel-prueba-relacion-variables",
+    ruta:
+        "calculadoraRelacionVariables"
+},
+
+spearman: {
+    almacenamiento:
+        "kernel-prueba-relacion-variables",
+    ruta:
+        "calculadoraRelacionVariables"
+},
+
+kendall: {
+    almacenamiento:
+        "kernel-prueba-relacion-variables",
+    ruta:
+        "calculadoraRelacionVariables"
+},
+
+"punto-biserial": {
+    almacenamiento:
+        "kernel-prueba-relacion-variables",
+    ruta:
+        "calculadoraRelacionVariables"
 }
         
     };
@@ -1581,7 +1609,22 @@ function obtenerPruebaEjecutable(id) {
             "anova-medidas-repetidas",
 
         friedman:
-            "friedman"
+            "friedman",
+
+pearson:
+    "pearson",
+
+"spearman-cuantitativas":
+    "spearman",
+
+"spearman-ordinales":
+    "spearman",
+
+kendall:
+    "kendall",
+
+"punto-biserial":
+    "punto-biserial"
     };
 
     return pruebasDisponibles[id] || "";
