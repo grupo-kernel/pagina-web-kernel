@@ -228,7 +228,7 @@ export const reglasEstadisticas = [
             tipoVariable: ["cuantitativa", "ordinal"],
             numeroGrupos: "tres-mas",
             relacion: "relacionadas",
-            normalidad: ["no", "no-se", ""]
+            normalidad: ["si", "no", "no-se", ""]
         },
         resultado: {
             prueba: "Prueba de Friedman",
