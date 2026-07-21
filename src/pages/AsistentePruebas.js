@@ -489,31 +489,86 @@ export function AsistentePruebas() {
     const prueba =
         boton.dataset.prueba;
 
+    if (accion === "ejecutar-prueba") {
+    const prueba =
+        boton.dataset.prueba;
+
     if (!prueba) {
         return;
     }
 
-    const pruebasRelacionadas = [
-        "student-pareada",
-        "wilcoxon"
-    ];
+    const destinos = {
+        student: {
+            almacenamiento:
+                "kernel-prueba-dos-grupos",
+            ruta:
+                "calculadoraDosGrupos"
+        },
 
-    const esPruebaRelacionada =
-        pruebasRelacionadas.includes(
-            prueba
-        );
+        welch: {
+            almacenamiento:
+                "kernel-prueba-dos-grupos",
+            ruta:
+                "calculadoraDosGrupos"
+        },
+
+        "mann-whitney": {
+            almacenamiento:
+                "kernel-prueba-dos-grupos",
+            ruta:
+                "calculadoraDosGrupos"
+        },
+
+        "student-pareada": {
+            almacenamiento:
+                "kernel-prueba-dos-relacionadas",
+            ruta:
+                "calculadoraDosMuestrasRelacionadas"
+        },
+
+        wilcoxon: {
+            almacenamiento:
+                "kernel-prueba-dos-relacionadas",
+            ruta:
+                "calculadoraDosMuestrasRelacionadas"
+        },
+
+        "anova-un-factor": {
+            almacenamiento:
+                "kernel-prueba-tres-grupos",
+            ruta:
+                "calculadoraTresOMasGrupos"
+        },
+
+        "anova-welch": {
+            almacenamiento:
+                "kernel-prueba-tres-grupos",
+            ruta:
+                "calculadoraTresOMasGrupos"
+        },
+
+        "kruskal-wallis": {
+            almacenamiento:
+                "kernel-prueba-tres-grupos",
+            ruta:
+                "calculadoraTresOMasGrupos"
+        }
+    };
+
+    const destino =
+        destinos[prueba];
+
+    if (!destino) {
+        return;
+    }
 
     sessionStorage.setItem(
-        esPruebaRelacionada
-            ? "kernel-prueba-dos-relacionadas"
-            : "kernel-prueba-dos-grupos",
+        destino.almacenamiento,
         prueba
     );
 
     window.location.hash =
-        esPruebaRelacionada
-            ? "/calculadoraDosMuestrasRelacionadas"
-            : "/calculadoraDosGrupos";
+        `/${destino.ruta}`;
 
     return;
 }
@@ -1500,7 +1555,16 @@ function obtenerPruebaEjecutable(id) {
             "student-pareada",
 
         "wilcoxon-relacionadas":
-            "wilcoxon"
+            "wilcoxon",
+
+        "anova-un-factor":
+            "anova-un-factor",
+
+        "anova-welch":
+            "anova-welch",
+
+        "kruskal-wallis":
+            "kruskal-wallis"
     };
 
     return pruebasDisponibles[id] || "";
@@ -1602,7 +1666,7 @@ function crearResultado(recomendacion) {
                                         </h2>
 
                                         <p class="text-slate-600 leading-relaxed">
-                                            Introduzca los valores de los dos grupos y obtenga el estadístico, el valor p, los descriptivos, el intervalo de confianza y el tamaño del efecto.
+                                            Introduzca sus datos y obtenga el estadístico, el valor p, los descriptivos, el tamaño del efecto y, cuando corresponda, las comparaciones posteriores.
                                         </p>
                                     </div>
 
