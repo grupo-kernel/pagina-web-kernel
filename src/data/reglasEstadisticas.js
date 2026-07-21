@@ -86,7 +86,7 @@ export const reglasEstadisticas = [
             tipoVariable: ["cuantitativa", "ordinal"],
             numeroGrupos: "dos",
             relacion: "independientes",
-            normalidad: ["no", "no-se", ""]
+            normalidad: ["si", "no", "no-se", ""]
         },
         resultado: {
             prueba: "Prueba U de Mann–Whitney",
