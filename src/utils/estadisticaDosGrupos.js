@@ -311,7 +311,7 @@ export function pruebaTStudentIndependiente(
 
     return {
         id:
-            "t-student-independiente",
+            "t-student-independientes",
         nombre:
             "t de Student para muestras independientes",
         metodo:
