@@ -17,6 +17,9 @@ import {
 import {
     iniciarCreditosCalculadoras
 } from "./utils/creditosCalculadoras.js";
+import {
+    iniciarIntegracionRegresionLaboratorio
+} from "./utils/integrarRegresionLaboratorio.js";
 
 // GLOBAL COMPONENT RENDERING
 
@@ -34,3 +37,4 @@ initNavBar(navBar, header);
 iniciarGraficosDescriptivosPonderados();
 iniciarExportacionResultadosDescriptivos();
 iniciarCreditosCalculadoras();
+iniciarIntegracionRegresionLaboratorio();
