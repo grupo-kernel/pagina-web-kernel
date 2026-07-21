@@ -87,7 +87,12 @@ function rawSummary(values) {
     const iqr = q3 - q1;
     const lower = q1 - 1.5 * iqr;
     const upper = q3 + 1.5 * iqr;
-    const mom = moments(xs, mean);
+
+    const valoresNoAtipicos = xs.filter(
+    (x) => x >= lower && x <= upper
+    );
+
+const mom = moments(xs, mean);
     const deviations = sort(xs.map((x) => Math.abs(x - median)));
     return {
         n,
@@ -106,8 +111,19 @@ function rawSummary(values) {
         mad: quantile(deviations, 0.5),
         coeficienteVariacion: mom.desviacionMuestral !== null && Math.abs(mean) > EPS
             ? Math.abs(mom.desviacionMuestral / mean) * 100 : null,
-        limitesAtipicos: { inferior: lower, superior: upper },
-        atipicos: xs.filter((x) => x < lower || x > upper),
+        limitesAtipicos: {
+    inferior: lower,
+    superior: upper
+},
+
+bigotesCaja: {
+    inferior: valoresNoAtipicos[0],
+    superior: valoresNoAtipicos.at(-1)
+},
+
+atipicos: xs.filter(
+    (x) => x < lower || x > upper
+),
         ...mom
     };
 }
@@ -199,8 +215,18 @@ function groupedSummary(classes) {
         mad: null,
         coeficienteVariacion: mom.desviacionMuestral !== null && Math.abs(mean) > EPS
             ? Math.abs(mom.desviacionMuestral / mean) * 100 : null,
-        limitesAtipicos: { inferior: q1 - 1.5 * iqr, superior: q3 + 1.5 * iqr },
-        atipicos: [],
+        limitesAtipicos: {
+    inferior: q1 - 1.5 * iqr,
+    superior: q3 + 1.5 * iqr
+},
+
+bigotesCaja: {
+    inferior: classes[0].limiteInferior,
+    superior:
+        classes.at(-1).limiteSuperior
+},
+
+atipicos: [],
         advertenciaAtipicos: "Con datos agrupados no es posible identificar observaciones atípicas individuales; los límites son aproximados.",
         ...mom
     };
