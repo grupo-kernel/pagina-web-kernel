@@ -10,7 +10,7 @@
             <i data-action="close-navBar" class="text-6xl cursor-pointer bx bx-x"></i>
         </div>
 
-        <ul class="flex w-full text-black flex-col lg:flex-row p-4 gap-4 xl:gap-9">
+        <ul class="flex w-full text-black flex-col lg:flex-row lg:items-start p-4 gap-4 xl:gap-9">
 
             <li data-route="home"
                 class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
