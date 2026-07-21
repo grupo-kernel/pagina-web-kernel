@@ -425,7 +425,7 @@ export function pruebaTWelch(
         );
 
     return {
-        id: "t-welch-independiente",
+        id: "t-welch-independientes",
         nombre:
             "t de Welch para muestras independientes",
         metodo:
