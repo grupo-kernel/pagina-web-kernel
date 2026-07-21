@@ -537,9 +537,9 @@ function cargarEjemplo(
         "Evaluación final"
     ];
     const valores = [
-        "12\n15\n11\n14\n13\n16\n10\n15",
-        "15\n17\n14\n16\n16\n18\n13\n17",
-        "18\n20\n17\n19\n19\n21\n16\n20"
+    "12\n15\n11\n14\n13\n16\n10\n15",
+    "15\n17\n14\n16\n16\n18\n13\n17",
+    "18\n21\n17\n19\n20\n21\n15\n20"
     ];
     const tarjetas = [
         ...contenedor.querySelectorAll(
