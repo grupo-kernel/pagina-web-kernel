@@ -4704,7 +4704,7 @@ if (!contenedor) {
                 </div>
             </div>
         </section>
-    `}function Dp(a){const{tipoVariable:e,numeroGrupos:n,relacion:t,normalidad:r,varianzas:u}=a;if(e==="categorica")return n==="uno"?z("Prueba binomial o chi-cuadrado de bondad de ajuste","Contrasta frecuencias o proporciones observadas con valores teóricos.","w de Cohen o diferencia de proporciones."):t==="relacionadas"?n==="dos"?z("Prueba de McNemar","Compara proporciones dicotómicas en muestras relacionadas o mediciones antes-después.","Odds ratio pareada o diferencia de proporciones pareadas."):z("Prueba Q de Cochran","Compara una respuesta dicotómica en tres o más condiciones relacionadas.","Medida de concordancia o diferencias de proporciones."):z("Chi-cuadrado de independencia","Evalúa la asociación entre variables categóricas en grupos independientes. Considere Fisher si hay frecuencias esperadas pequeñas.","V de Cramér.");const d=e==="ordinal"||r==="no"||r==="no-se";return n==="uno"?d?z("Prueba de rangos con signo de Wilcoxon","Compara la mediana de una muestra con un valor de referencia sin asumir normalidad.","Correlación biserial por rangos o r."):z("t de Student para una muestra","Compara la media de una muestra con un valor teórico bajo normalidad aproximada.","d de Cohen para una muestra."):n==="dos"?t==="relacionadas"?d?z("Prueba de rangos con signo de Wilcoxon","Compara dos mediciones relacionadas con datos ordinales o no normales.","Correlación biserial por rangos o r."):z("t de Student para muestras relacionadas","Compara las medias de dos mediciones pareadas.","d de Cohen para datos pareados."):d?z("Prueba U de Mann–Whitney","Compara dos grupos independientes con datos ordinales o no normales.","Delta de Cliff o correlación biserial por rangos."):u==="si"?z("t de Student para muestras independientes","Compara dos medias independientes con normalidad y varianzas homogéneas.","d de Cohen o g de Hedges."):z("t de Welch para muestras independientes","Compara dos medias independientes sin exigir igualdad de varianzas.","g de Hedges con intervalo de confianza."):t==="relacionadas"?d?z("Prueba de Friedman","Compara tres o más mediciones relacionadas con datos ordinales o no normales.","W de Kendall."):z("ANOVA de medidas repetidas","Compara tres o más medias relacionadas. Debe evaluarse la esfericidad.","Eta cuadrado parcial."):d?z("Prueba de Kruskal–Wallis","Compara tres o más grupos independientes con datos ordinales o no normales.","Épsilon cuadrado."):u==="si"?z("ANOVA de un factor","Compara tres o más medias independientes con normalidad y homogeneidad de varianzas.","Eta cuadrado u omega cuadrado."):z("ANOVA de Welch","Compara tres o más medias independientes cuando las varianzas son desiguales o dudosas.","Omega cuadrado ajustado y Games–Howell.")}function Np(a){return a.tipoRelacion==="dicotomica-cuantitativa"?z("Correlación punto-biserial","Relaciona una variable dicotómica genuina con una variable cuantitativa. Es algebraicamente equivalente a una t de Student para dos grupos.","Coeficiente r punto-biserial con intervalo de confianza."):a.tipoRelacion==="ordinales"?a.empates==="si"||a.empates==="no-se"?z("Tau-b de Kendall","Es adecuada para variables ordinales, muestras pequeñas y situaciones con numerosos empates.","Tau-b de Kendall con intervalo de confianza."):z("Rho de Spearman","Evalúa una relación monotónica entre variables ordinales o cuantitativas transformadas en rangos.","Rho de Spearman con intervalo de confianza."):a.linealidad==="no-monotonica"?z("No resumir la relación con un único coeficiente de correlación","Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.","Reporte gráfico, R² de un modelo adecuado y medidas de ajuste."):a.linealidad==="no-se"?z("Revisión gráfica antes de elegir el coeficiente","Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.","Diagrama de dispersión y, después, el coeficiente acorde con la forma observada."):a.normalidad!=="si"?z("Rho de Spearman","No exige normalidad y mide relaciones monotónicas mediante rangos.","Rho de Spearman con intervalo de confianza."):a.linealidad==="si"?z("Correlación de Pearson","Las variables son cuantitativas, aproximadamente normales y presentan una relación lineal.","r de Pearson y su intervalo de confianza."):a.linealidad==="monotonica"?z("Rho de Spearman","La relación es monotónica, pero no claramente lineal; Spearman resume adecuadamente asociaciones crecientes o decrecientes mediante rangos.","Rho de Spearman con intervalo de confianza."):z("Revisión gráfica antes de elegir el coeficiente","Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.","Diagrama de dispersión y, después, el coeficiente acorde con la forma observada.")}function z(a,e,n){return{nombre:a,razon:e,efecto:n}}function gt(a){return{id:a.id,nombre:a.prueba,razon:a.descripcion,categoria:a.categoria,tipo:a.tipo,efecto:a.efecto}}function Sp(a){const e=ft(a),n=e.id==="sin-regla"?Dp(a):gt(e);return bt(n)}function Mp(a){const e=ft(a),n=e.id==="sin-regla"?Np(a):gt(e);return bt(n)}function zp(a){const e=ft(a),n=e.id==="sin-regla"?{nombre:"Revisión metodológica requerida",razon:"Las respuestas no coinciden todavía con una regla de asociación disponible.",efecto:"El tamaño del efecto dependerá de la estructura final de la tabla."}:gt(e);return bt(n)}function Op(a){const e=ft(a),n=e.id==="sin-regla"?{nombre:"Revisión metodológica requerida",razon:"Las respuestas seleccionadas todavía no coinciden con una regla de predicción disponible.",efecto:"Las medidas de ajuste dependerán del tipo de variable resultado y del modelo seleccionado."}:gt(e);return bt(n)}function Fp(a){return{"t-student-independientes":"student","t-welch-independientes":"welch","mann-whitney":"mann-whitney","t-student-relacionadas":"student-pareada","wilcoxon-relacionadas":"wilcoxon","anova-un-factor":"anova-un-factor","anova-welch":"anova-welch","kruskal-wallis":"kruskal-wallis","anova-medidas-repetidas":"anova-medidas-repetidas",friedman:"friedman",pearson:"pearson","spearman-cuantitativas":"spearman","spearman-ordinales":"spearman",kendall:"kendall","punto-biserial":"punto-biserial"}[a]||""}function bt(a){const e=a.id&&Yi(a.id),n=Fp(a.id);return`
+    `}function Dp(a){const{tipoVariable:e,numeroGrupos:n,relacion:t,normalidad:r,varianzas:u}=a;if(e==="categorica")return n==="uno"?O("Prueba binomial o chi-cuadrado de bondad de ajuste","Contrasta frecuencias o proporciones observadas con valores teóricos.","w de Cohen o diferencia de proporciones."):t==="relacionadas"?n==="dos"?O("Prueba de McNemar","Compara proporciones dicotómicas en muestras relacionadas o mediciones antes-después.","Odds ratio pareada o diferencia de proporciones pareadas."):O("Prueba Q de Cochran","Compara una respuesta dicotómica en tres o más condiciones relacionadas.","Medida de concordancia o diferencias de proporciones."):O("Chi-cuadrado de independencia","Evalúa la asociación entre variables categóricas en grupos independientes. Considere Fisher si hay frecuencias esperadas pequeñas.","V de Cramér.");const d=e==="ordinal"||r==="no"||r==="no-se";return n==="uno"?d?O("Prueba de rangos con signo de Wilcoxon","Compara la mediana de una muestra con un valor de referencia sin asumir normalidad.","Correlación biserial por rangos o r."):O("t de Student para una muestra","Compara la media de una muestra con un valor teórico bajo normalidad aproximada.","d de Cohen para una muestra."):n==="dos"?t==="relacionadas"?d?O("Prueba de rangos con signo de Wilcoxon","Compara dos mediciones relacionadas con datos ordinales o no normales.","Correlación biserial por rangos o r."):O("t de Student para muestras relacionadas","Compara las medias de dos mediciones pareadas.","d de Cohen para datos pareados."):d?O("Prueba U de Mann–Whitney","Compara dos grupos independientes con datos ordinales o no normales.","Delta de Cliff o correlación biserial por rangos."):u==="si"?O("t de Student para muestras independientes","Compara dos medias independientes con normalidad y varianzas homogéneas.","d de Cohen o g de Hedges."):O("t de Welch para muestras independientes","Compara dos medias independientes sin exigir igualdad de varianzas.","g de Hedges con intervalo de confianza."):t==="relacionadas"?d?O("Prueba de Friedman","Compara tres o más mediciones relacionadas con datos ordinales o no normales.","W de Kendall."):O("ANOVA de medidas repetidas","Compara tres o más medias relacionadas. Debe evaluarse la esfericidad.","Eta cuadrado parcial."):d?O("Prueba de Kruskal–Wallis","Compara tres o más grupos independientes con datos ordinales o no normales.","Épsilon cuadrado."):u==="si"?O("ANOVA de un factor","Compara tres o más medias independientes con normalidad y homogeneidad de varianzas.","Eta cuadrado u omega cuadrado."):O("ANOVA de Welch","Compara tres o más medias independientes cuando las varianzas son desiguales o dudosas.","Omega cuadrado ajustado y Games–Howell.")}function Np(a){return a.tipoRelacion==="dicotomica-cuantitativa"?O("Correlación punto-biserial","Relaciona una variable dicotómica genuina con una variable cuantitativa. Es algebraicamente equivalente a una t de Student para dos grupos.","Coeficiente r punto-biserial con intervalo de confianza."):a.tipoRelacion==="ordinales"?a.empates==="si"||a.empates==="no-se"?O("Tau-b de Kendall","Es adecuada para variables ordinales, muestras pequeñas y situaciones con numerosos empates.","Tau-b de Kendall con intervalo de confianza."):O("Rho de Spearman","Evalúa una relación monotónica entre variables ordinales o cuantitativas transformadas en rangos.","Rho de Spearman con intervalo de confianza."):a.linealidad==="no-monotonica"?{id:"relacion-no-monotonica",nombre:"No resumir la relación con un único coeficiente de correlación",razon:"Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.",categoria:"Relación entre variables",tipo:"Exploración gráfica y modelización no lineal",efecto:"Reporte gráfico, R² de un modelo adecuado y medidas de ajuste.",reporte:"Presente el diagrama de dispersión, describa la forma observada y ajuste un modelo coherente con esa estructura. Informe los parámetros del modelo, sus intervalos de confianza, R² o medidas de ajuste y el análisis de residuos. No utilice Pearson o Spearman como resumen principal."}:a.linealidad==="no-se"?O("Revisión gráfica antes de elegir el coeficiente","Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.","Diagrama de dispersión y, después, el coeficiente acorde con la forma observada."):a.normalidad!=="si"?O("Rho de Spearman","No exige normalidad y mide relaciones monotónicas mediante rangos.","Rho de Spearman con intervalo de confianza."):a.linealidad==="si"?O("Correlación de Pearson","Las variables son cuantitativas, aproximadamente normales y presentan una relación lineal.","r de Pearson y su intervalo de confianza."):a.linealidad==="monotonica"?O("Rho de Spearman","La relación es monotónica, pero no claramente lineal; Spearman resume adecuadamente asociaciones crecientes o decrecientes mediante rangos.","Rho de Spearman con intervalo de confianza."):O("Revisión gráfica antes de elegir el coeficiente","Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.","Diagrama de dispersión y, después, el coeficiente acorde con la forma observada.")}function O(a,e,n){return{nombre:a,razon:e,efecto:n}}function gt(a){return{id:a.id,nombre:a.prueba,razon:a.descripcion,categoria:a.categoria,tipo:a.tipo,efecto:a.efecto}}function Sp(a){const e=ft(a),n=e.id==="sin-regla"?Dp(a):gt(e);return bt(n)}function Mp(a){const e=ft(a),n=e.id==="sin-regla"?Np(a):gt(e);return bt(n)}function zp(a){const e=ft(a),n=e.id==="sin-regla"?{nombre:"Revisión metodológica requerida",razon:"Las respuestas no coinciden todavía con una regla de asociación disponible.",efecto:"El tamaño del efecto dependerá de la estructura final de la tabla."}:gt(e);return bt(n)}function Op(a){const e=ft(a),n=e.id==="sin-regla"?{nombre:"Revisión metodológica requerida",razon:"Las respuestas seleccionadas todavía no coinciden con una regla de predicción disponible.",efecto:"Las medidas de ajuste dependerán del tipo de variable resultado y del modelo seleccionado."}:gt(e);return bt(n)}function Fp(a){return{"t-student-independientes":"student","t-welch-independientes":"welch","mann-whitney":"mann-whitney","t-student-relacionadas":"student-pareada","wilcoxon-relacionadas":"wilcoxon","anova-un-factor":"anova-un-factor","anova-welch":"anova-welch","kruskal-wallis":"kruskal-wallis","anova-medidas-repetidas":"anova-medidas-repetidas",friedman:"friedman",pearson:"pearson","spearman-cuantitativas":"spearman","spearman-ordinales":"spearman",kendall:"kendall","punto-biserial":"punto-biserial"}[a]||""}function bt(a){const e=a.id&&Yi(a.id),n=Fp(a.id);return`
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-emerald-700 text-white px-6 py-8 md:px-10">
                 <p class="uppercase tracking-widest text-emerald-100 text-xs font-black mb-2">
@@ -4738,7 +4738,7 @@ if (!contenedor) {
 
                     ${zt("Tamaño del efecto",a.efecto)}
 
-                    ${zt("Reporte recomendado","Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva.")}
+                    ${zt("Reporte recomendado",a.reporte||"Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva.")}
                 </div>
 
                 <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
@@ -6214,7 +6214,7 @@ if (!contenedor) {
 89
 86
 91
-88`}];[...e.querySelectorAll("[data-grupo]")].forEach((t,r)=>{t.querySelector("[data-nombre-grupo]").value=n[r].nombre,t.querySelector("[data-valores-grupo]").value=n[r].valores,po(t)}),a.elements.prueba.value||(a.elements.prueba.value="anova-un-factor")}function Dr(a,e){a.textContent=e,a.classList.remove("hidden")}function ua(a){a.textContent="",a.classList.add("hidden")}function ge(a){return String(a).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function O(a,e=4){return a===1/0?"∞":Number.isFinite(a)?new Intl.NumberFormat("es-DO",{minimumFractionDigits:0,maximumFractionDigits:e}).format(a):"—"}function mo(a){return Number.isFinite(a)?a<.001?"< 0.001":O(a,4):"—"}function Hm(a){const e=a.alfa.toFixed(2),n=Math.round(a.nivelConfianza*100),t=a.significativo?`Se observa evidencia estadísticamente significativa de diferencias entre los grupos al nivel α = ${e}, correspondiente a un nivel de confianza del ${n} %.`:`No se observa evidencia estadísticamente significativa de diferencias entre los grupos al nivel α = ${e}, correspondiente a un nivel de confianza del ${n} %.`;return`
+88`}];[...e.querySelectorAll("[data-grupo]")].forEach((t,r)=>{t.querySelector("[data-nombre-grupo]").value=n[r].nombre,t.querySelector("[data-valores-grupo]").value=n[r].valores,po(t)}),a.elements.prueba.value||(a.elements.prueba.value="anova-un-factor")}function Dr(a,e){a.textContent=e,a.classList.remove("hidden")}function ua(a){a.textContent="",a.classList.add("hidden")}function ge(a){return String(a).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function z(a,e=4){return a===1/0?"∞":Number.isFinite(a)?new Intl.NumberFormat("es-DO",{minimumFractionDigits:0,maximumFractionDigits:e}).format(a):"—"}function mo(a){return Number.isFinite(a)?a<.001?"< 0.001":z(a,4):"—"}function Hm(a){const e=a.alfa.toFixed(2),n=Math.round(a.nivelConfianza*100),t=a.significativo?`Se observa evidencia estadísticamente significativa de diferencias entre los grupos al nivel α = ${e}, correspondiente a un nivel de confianza del ${n} %.`:`No se observa evidencia estadísticamente significativa de diferencias entre los grupos al nivel α = ${e}, correspondiente a un nivel de confianza del ${n} %.`;return`
         <section class="rounded-3xl border border-indigo-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-indigo-700 text-white px-6 py-8 md:px-10">
                 <p class="uppercase tracking-widest text-indigo-100 text-xs font-black mb-2">
@@ -6230,7 +6230,7 @@ if (!contenedor) {
 
             <div class="px-6 py-8 md:px-10">
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                    ${qa(a.estadistico.simbolo,O(a.estadistico.valor),"Estadístico global")}
+                    ${qa(a.estadistico.simbolo,z(a.estadistico.valor),"Estadístico global")}
                     ${qa("p",mo(a.valorP),"Valor de significación")}
                     ${qa("k",a.numeroGrupos,"Número de grupos")}
                     ${qa("N",a.nTotal,"Tamaño total")}
@@ -6296,13 +6296,13 @@ if (!contenedor) {
                                             ${ge(n.nombre)}
                                         </td>
                                         <td class="px-4 py-4 text-right">${n.n}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.media)}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.mediana)}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.desviacionEstandar)}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.varianza)}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.minimo)}</td>
-                                        <td class="px-4 py-4 text-right">${O(n.maximo)}</td>
-                                        ${e?`<td class="px-4 py-4 text-right">${O(n.rangoMedio)}</td>`:""}
+                                        <td class="px-4 py-4 text-right">${z(n.media)}</td>
+                                        <td class="px-4 py-4 text-right">${z(n.mediana)}</td>
+                                        <td class="px-4 py-4 text-right">${z(n.desviacionEstandar)}</td>
+                                        <td class="px-4 py-4 text-right">${z(n.varianza)}</td>
+                                        <td class="px-4 py-4 text-right">${z(n.minimo)}</td>
+                                        <td class="px-4 py-4 text-right">${z(n.maximo)}</td>
+                                        ${e?`<td class="px-4 py-4 text-right">${z(n.rangoMedio)}</td>`:""}
                                     </tr>
                                 `).join("")}
                     </tbody>
@@ -6340,10 +6340,10 @@ if (!contenedor) {
                     Ajuste de Welch
                 </h3>
                 <dl class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    ${se("gl del numerador",O(a.gradosLibertad.numerador))}
-                    ${se("gl del denominador",O(a.gradosLibertad.denominador))}
-                    ${se("Media ponderada",O(a.mediaPonderada))}
-                    ${se("Factor de corrección",O(a.componentesWelch.denominadorCorreccion))}
+                    ${se("gl del numerador",z(a.gradosLibertad.numerador))}
+                    ${se("gl del denominador",z(a.gradosLibertad.denominador))}
+                    ${se("Media ponderada",z(a.mediaPonderada))}
+                    ${se("Factor de corrección",z(a.componentesWelch.denominadorCorreccion))}
                 </dl>
             </article>
         `:`
@@ -6352,9 +6352,9 @@ if (!contenedor) {
                 Rangos y corrección por empates
             </h3>
             <dl class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                ${se("Grados de libertad",O(a.gradosLibertad.valor))}
-                ${se("H sin corrección",O(a.estadistico.sinCorreccion))}
-                ${se("Factor por empates",O(a.empates.factorCorreccion))}
+                ${se("Grados de libertad",z(a.gradosLibertad.valor))}
+                ${se("H sin corrección",z(a.estadistico.sinCorreccion))}
+                ${se("Factor por empates",z(a.empates.factorCorreccion))}
                 ${se("Grupos de valores empatados",a.empates.cantidadGruposEmpatados)}
             </dl>
         </article>
@@ -6364,13 +6364,13 @@ if (!contenedor) {
                 ${a}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(e.sumaCuadrados)}
+                ${z(e.sumaCuadrados)}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(e.gradosLibertad)}
+                ${z(e.gradosLibertad)}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(e.cuadradoMedio)}
+                ${z(e.cuadradoMedio)}
             </td>
         </tr>
     `}function Km(a){let e;return a.id==="anova-un-factor"?e=[["Eta cuadrado, η²",a.tamanioEfecto.etaCuadrado],["Omega cuadrado, ω²",a.tamanioEfecto.omegaCuadrado]]:a.id==="anova-welch"?e=[["Omega cuadrado aproximado",a.tamanioEfecto.omegaCuadradoAproximado]]:e=[["Épsilon cuadrado, ε²",a.tamanioEfecto.epsilonCuadrado]],`
@@ -6379,7 +6379,7 @@ if (!contenedor) {
                 Tamaño del efecto
             </h3>
             <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                ${e.map(([n,t])=>se(n,O(t))).join("")}
+                ${e.map(([n,t])=>se(n,z(t))).join("")}
                 ${se("Magnitud orientativa",ge(a.tamanioEfecto.interpretacion))}
             </dl>
             ${a.tamanioEfecto.nota?`<p class="text-sm text-amber-900 mt-4">${ge(a.tamanioEfecto.nota)}</p>`:""}
@@ -6420,19 +6420,19 @@ if (!contenedor) {
                 </table>
             </div>
         </article>
-    `:""}function Ym(a){const e=a.diferenciaMedias??a.diferenciaRangos,n=a.estadisticoQ??a.estadisticoZ,t=a.valorPAjustado??a.valorP,r=a.intervaloConfianza?`${O(a.intervaloConfianza.inferior)} a ${O(a.intervaloConfianza.superior)}`:"—";return`
+    `:""}function Ym(a){const e=a.diferenciaMedias??a.diferenciaRangos,n=a.estadisticoQ??a.estadisticoZ,t=a.valorPAjustado??a.valorP,r=a.intervaloConfianza?`${z(a.intervaloConfianza.inferior)} a ${z(a.intervaloConfianza.superior)}`:"—";return`
         <tr>
             <td class="px-5 py-4 font-bold text-slate-900">
                 ${ge(a.grupo1)} vs. ${ge(a.grupo2)}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(e)}
+                ${z(e)}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(n)}
+                ${z(n)}
             </td>
             <td class="px-4 py-4 text-right">
-                ${O(a.gradosLibertad)}
+                ${z(a.gradosLibertad)}
             </td>
             <td class="px-4 py-4 text-right font-bold">
                 ${mo(t)}
