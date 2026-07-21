@@ -5,6 +5,21 @@ const SELECTOR_CALCULADORAS = [
     "section form"
 ].join(",");
 
+function obtenerTituloPagina() {
+    return document.querySelector("main h1, #app h1, h1")
+        ?.textContent
+        ?.trim()
+        ?.toLowerCase() || "";
+}
+
+function esPaginaPrincipalLaboratorio() {
+    const titulo = obtenerTituloPagina();
+
+    return titulo.includes(
+        "laboratorio inteligente de investigación"
+    );
+}
+
 function esPaginaDeCalculadora() {
     const titulo = document.querySelector("main h1, #app h1, h1");
     const botonVolver = document.querySelector(
@@ -67,7 +82,8 @@ function crearBloqueCreditos() {
 
 function insertarCreditos() {
     if (
-        !esPaginaDeCalculadora() ||
+        (!esPaginaDeCalculadora() &&
+            !esPaginaPrincipalLaboratorio()) ||
         document.querySelector(
             "[data-creditos-calculadoras='true']"
         )
