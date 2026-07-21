@@ -31,17 +31,17 @@ export function ComparacionGrupos() {
                 </h1>
 
                 <p class="text-slate-200 text-lg md:text-xl leading-relaxed max-w-3xl">
-                    Seleccione la estructura de sus datos. La elección depende de si los valores proceden de personas distintas o de las mismas unidades medidas en dos momentos o condiciones.
+                    Seleccione la estructura de sus datos según el número de grupos y si las observaciones proceden de personas distintas o de las mismas unidades medidas varias veces.
                 </p>
             </div>
         </header>
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-7 mt-8">
+        <section class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7 mt-8">
             ${crearTarjeta({
                 etiqueta: "Diseño independiente",
                 titulo: "Dos grupos independientes",
                 descripcion:
-                    "Utilice esta opción cuando cada participante pertenece únicamente a uno de los grupos y no existe emparejamiento entre observaciones.",
+                    "Utilice esta opción cuando cada participante pertenece únicamente a uno de los dos grupos y no existe emparejamiento entre observaciones.",
                 pruebas: [
                     "t de Student para muestras independientes",
                     "t de Welch para muestras independientes",
@@ -75,6 +75,26 @@ export function ComparacionGrupos() {
                     boton: "bg-violet-700 hover:bg-violet-800"
                 }
             })}
+
+            ${crearTarjeta({
+                etiqueta: "Diseño independiente multigrupo",
+                titulo: "Tres o más grupos independientes",
+                descripcion:
+                    "Utilice esta opción cuando se comparan tres o más grupos formados por participantes distintos y cada observación pertenece a un solo grupo.",
+                pruebas: [
+                    "ANOVA de un factor",
+                    "ANOVA de Welch",
+                    "Kruskal–Wallis"
+                ],
+                ruta: "calculadoraTresOMasGrupos",
+                textoBoton: "Abrir calculadora multigrupo",
+                clases: {
+                    borde: "border-emerald-200",
+                    fondo: "bg-emerald-50",
+                    texto: "text-emerald-700",
+                    boton: "bg-emerald-700 hover:bg-emerald-800"
+                }
+            })}
         </section>
 
         <section class="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-6 md:p-8">
@@ -89,7 +109,7 @@ export function ComparacionGrupos() {
                     </h2>
 
                     <p class="text-slate-700 leading-relaxed max-w-3xl">
-                        Utilice el asistente para identificar la prueba según el tipo de variable, la relación entre observaciones, la normalidad y los demás supuestos del análisis.
+                        Utilice el asistente para identificar la prueba según el tipo de variable, el número de grupos, la relación entre observaciones, la normalidad y los demás supuestos del análisis.
                     </p>
                 </div>
 
