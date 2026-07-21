@@ -360,10 +360,75 @@ export const fichasMetodologicas = {
         ejemplo:
             "Se desea comparar la calificación media de estudiantes de dos estrategias didácticas independientes, cuyos grupos presentan tamaños y varianzas diferentes.",
 
-        referencias: [
+                referencias: [
             "Welch, B. L. (1947). The generalization of Student's problem when several different population variances are involved.",
             "Delacre, M., Lakens, D., & Leys, C. (2017). Why psychologists should by default use Welch's t-test instead of Student's t-test.",
             "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics."
+        ]
+    },
+
+    "mann-whitney": {
+        nombre:
+            "Prueba U de Mann–Whitney",
+
+        definicion:
+            "Prueba no paramétrica basada en rangos que permite comparar dos grupos independientes cuando la variable es ordinal o cuantitativa y no resulta adecuado aplicar una prueba paramétrica de comparación de medias.",
+
+        cuandoUsar: [
+            "Se comparan exactamente dos grupos independientes.",
+            "La variable dependiente es ordinal o cuantitativa.",
+            "Las observaciones de un grupo no están relacionadas con las del otro.",
+            "Los datos presentan asimetría, valores atípicos importantes o incumplimiento de la normalidad.",
+            "El análisis pretende comparar la posición o distribución de los valores entre los grupos."
+        ],
+
+        hipotesis: {
+            h0:
+                "Las distribuciones de los dos grupos son iguales.",
+            h1:
+                "Las distribuciones de los dos grupos son diferentes."
+        },
+
+        supuestos: [
+            "Independencia de las observaciones.",
+            "La variable dependiente posee al menos una escala ordinal.",
+            "Los grupos son mutuamente independientes.",
+            "Las observaciones pueden ordenarse mediante rangos.",
+            "Para interpretar el resultado como una diferencia de medianas, las distribuciones deben tener formas semejantes."
+        ],
+
+        estadistico:
+            "El estadístico U se obtiene a partir de los rangos asignados conjuntamente a las observaciones de ambos grupos. Valores extremos de U indican una separación entre las distribuciones.",
+
+        efecto:
+            "Delta de Cliff, correlación biserial de rangos o correlación r basada en el estadístico z. El tamaño del efecto debe interpretarse junto con el valor p.",
+
+        reporteAPA:
+            "U = valor, z = valor, p = valor, delta de Cliff = valor o r = valor.",
+
+        posthoc: [],
+
+        alternativas: [
+            "t de Student cuando existe normalidad aproximada y homogeneidad de varianzas.",
+            "t de Welch cuando existe normalidad aproximada, pero las varianzas son diferentes.",
+            "Pruebas de permutación o métodos robustos cuando se desea comparar otros parámetros poblacionales."
+        ],
+
+        erroresFrecuentes: [
+            "Interpretar automáticamente la prueba como una comparación de medianas cuando las distribuciones tienen formas diferentes.",
+            "Aplicarla a mediciones relacionadas o pareadas.",
+            "Ignorar la presencia de numerosos empates.",
+            "Informar únicamente el valor p sin una medida de tamaño del efecto.",
+            "Concluir que los grupos son iguales cuando el resultado no es estadísticamente significativo."
+        ],
+
+        ejemplo:
+            "Se desea comparar el nivel de satisfacción, medido mediante una escala ordinal, entre estudiantes de dos estrategias didácticas independientes.",
+
+        referencias: [
+            "Mann, H. B., & Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other.",
+            "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics.",
+            "Cliff, N. (1993). Dominance statistics: Ordinal analyses to answer ordinal questions."
         ]
     }
 };
