@@ -62,6 +62,7 @@ export const fichasMetodologicas = {
 
     "fisher-exacta-2x2": {
         nombre: "Prueba exacta de Fisher",
+
         definicion:
             "Prueba exacta para evaluar la asociación entre dos variables dicotómicas en una tabla 2 × 2.",
 
@@ -118,6 +119,7 @@ export const fichasMetodologicas = {
 
     "chi-cuadrado-independencia-rxc": {
         nombre: "Prueba chi-cuadrado de independencia",
+
         definicion:
             "Evalúa la asociación entre variables categóricas organizadas en una tabla de contingencia de dimensión r × c.",
 
@@ -176,7 +178,9 @@ export const fichasMetodologicas = {
     },
 
     "fisher-freeman-halton": {
-        nombre: "Prueba exacta de Fisher–Freeman–Halton",
+        nombre:
+            "Prueba exacta de Fisher–Freeman–Halton",
+
         definicion:
             "Extensión de la prueba exacta de Fisher para tablas de contingencia mayores que 2 × 2.",
 
@@ -231,12 +235,7 @@ export const fichasMetodologicas = {
             "Freeman, G. H., & Halton, J. H. (1951). Note on an exact treatment of contingency.",
             "Agresti, A. (2019). An Introduction to Categorical Data Analysis."
         ]
-    }
-};
-
-export function obtenerFichaMetodologica(id) {
-    return fichasMetodologicas[id] || null;
-},
+    },
 
     "t-student-independientes": {
         nombre:
@@ -302,3 +301,8 @@ export function obtenerFichaMetodologica(id) {
             "Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science."
         ]
     }
+};
+
+export function obtenerFichaMetodologica(id) {
+    return fichasMetodologicas[id] || null;
+}
