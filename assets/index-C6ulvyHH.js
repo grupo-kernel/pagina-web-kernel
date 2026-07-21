@@ -5348,7 +5348,7 @@ if (!contenedor) {
             class="hidden mt-8"
             aria-live="polite"
         ></section>
-    `;const e=t.querySelector("#formulario-dos-grupos"),n=t.querySelector("#mensaje-error"),a=t.querySelector("#resultados-dos-grupos"),o=["student","welch","mann-whitney"],u=sessionStorage.getItem("kernel-prueba-dos-grupos");o.includes(u)&&(e.elements.prueba.value=u),sessionStorage.removeItem("kernel-prueba-dos-grupos");const d=e.elements.grupo1,h=e.elements.grupo2,g=t.querySelector("#contador-grupo-1"),l=t.querySelector("#contador-grupo-2"),r=()=>{g.textContent=vn(bn(d.value)),l.textContent=vn(bn(h.value))};return d.addEventListener("input",r),h.addEventListener("input",r),e.addEventListener("submit",i=>{i.preventDefault(),na(n);try{const s=e.elements.prueba.value;if(!s)throw new Error("Seleccione la prueba estadística que desea ejecutar.");const c=hn(d.value,"El grupo 1"),p=hn(h.value,"El grupo 2"),m=Number(e.elements.nivelConfianza.value),f=cu({grupo1:c,grupo2:p,prueba:s,nivelConfianza:m});a.innerHTML=mu(f),a.classList.remove("hidden"),a.scrollIntoView({behavior:"smooth",block:"start"})}catch(s){a.classList.add("hidden"),uu(n,s instanceof Error?s.message:"No fue posible ejecutar el análisis.")}}),t.addEventListener("click",i=>{const s=i.target.closest("[data-action]");if(!s)return;const c=s.dataset.action;if(c==="volver-laboratorio"){window.location.hash="/laboratorioKernel";return}if(c==="cargar-ejemplo"){e.elements.prueba.value||(e.elements.prueba.value="welch"),d.value=`18
+    `;const e=t.querySelector("#formulario-dos-grupos"),n=t.querySelector("#mensaje-error"),a=t.querySelector("#resultados-dos-grupos"),o=["student","welch","mann-whitney"],u=sessionStorage.getItem("kernel-prueba-dos-grupos");o.includes(u)&&(e.elements.prueba.value=u),sessionStorage.removeItem("kernel-prueba-dos-grupos");const d=e.elements.grupo1,h=e.elements.grupo2,g=t.querySelector("#contador-grupo-1"),l=t.querySelector("#contador-grupo-2"),r=()=>{g.textContent=vn(bn(d.value)),l.textContent=vn(bn(h.value))};return d.addEventListener("input",r),h.addEventListener("input",r),e.addEventListener("submit",i=>{i.preventDefault(),na(n);try{const s=e.elements.prueba.value;if(!s)throw new Error("Seleccione la prueba estadística que desea ejecutar.");const c=hn(d.value,"El grupo 1"),p=hn(h.value,"El grupo 2"),m=Number(e.elements.nivelConfianza.value),f=cu({grupo1:c,grupo2:p,prueba:s,nivelConfianza:m});a.innerHTML=mu(f,m),a.classList.remove("hidden"),a.scrollIntoView({behavior:"smooth",block:"start"})}catch(s){a.classList.add("hidden"),uu(n,s instanceof Error?s.message:"No fue posible ejecutar el análisis.")}}),t.addEventListener("click",i=>{const s=i.target.closest("[data-action]");if(!s)return;const c=s.dataset.action;if(c==="volver-laboratorio"){window.location.hash="/laboratorioKernel";return}if(c==="cargar-ejemplo"){e.elements.prueba.value||(e.elements.prueba.value="welch"),d.value=`18
 20
 17.5
 19
@@ -5362,7 +5362,7 @@ if (!contenedor) {
 18
 16
 15.5
-14.5`,r(),na(n),a.classList.add("hidden");return}c==="limpiar"&&(e.reset(),d.value="",h.value="",r(),na(n),a.innerHTML="",a.classList.add("hidden"))}),t}function hn(t,e){const n=t.trim();if(!n)throw new Error(`${e} no contiene datos.`);const a=n.split(/[\s;]+/).filter(Boolean),o=a.map(d=>Number(d.replace(",","."))),u=o.findIndex(d=>!Number.isFinite(d));if(u!==-1)throw new Error(`${e} contiene un valor no válido: "${a[u]}".`);if(o.length<2)throw new Error(`${e} debe contener al menos dos observaciones.`);return o}function bn(t){return t.trim()?t.trim().split(/[\s;]+/).filter(Boolean).length:0}function vn(t){return t===1?"1 valor":`${t} valores`}function uu(t,e){t.textContent=e,t.classList.remove("hidden")}function na(t){t.textContent="",t.classList.add("hidden")}function O(t,e=4){return Number.isFinite(t)?new Intl.NumberFormat("es-DO",{minimumFractionDigits:0,maximumFractionDigits:e}).format(t):"—"}function pu(t){return Number.isFinite(t)?t<.001?"< 0.001":O(t,4):"—"}function mu(t){const e=t.valorP<.05,n=e?"Se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = 0.05.":"No se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = 0.05.";return`
+14.5`,r(),na(n),a.classList.add("hidden");return}c==="limpiar"&&(e.reset(),d.value="",h.value="",r(),na(n),a.innerHTML="",a.classList.add("hidden"))}),t}function hn(t,e){const n=t.trim();if(!n)throw new Error(`${e} no contiene datos.`);const a=n.split(/[\s;]+/).filter(Boolean),o=a.map(d=>Number(d.replace(",","."))),u=o.findIndex(d=>!Number.isFinite(d));if(u!==-1)throw new Error(`${e} contiene un valor no válido: "${a[u]}".`);if(o.length<2)throw new Error(`${e} debe contener al menos dos observaciones.`);return o}function bn(t){return t.trim()?t.trim().split(/[\s;]+/).filter(Boolean).length:0}function vn(t){return t===1?"1 valor":`${t} valores`}function uu(t,e){t.textContent=e,t.classList.remove("hidden")}function na(t){t.textContent="",t.classList.add("hidden")}function O(t,e=4){return Number.isFinite(t)?new Intl.NumberFormat("es-DO",{minimumFractionDigits:0,maximumFractionDigits:e}).format(t):"—"}function pu(t){return Number.isFinite(t)?t<.001?"< 0.001":O(t,4):"—"}function mu(t,e=.95){const n=1-e,a=t.valorP<n,o=n.toFixed(2),u=Math.round(e*100),d=a?`Se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = ${o}, correspondiente a un nivel de confianza del ${u} %.`:`No se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = ${o}, correspondiente a un nivel de confianza del ${u} %.`;return`
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-emerald-700 text-white px-6 py-8 md:px-10">
                 <p class="uppercase tracking-widest text-emerald-100 text-xs font-black mb-2">
@@ -5397,13 +5397,13 @@ if (!contenedor) {
 
                 ${fu(t)}
 
-                <article class="mt-6 rounded-2xl border ${e?"border-emerald-200 bg-emerald-50":"border-slate-200 bg-slate-50"} p-6">
+                <article class="mt-6 rounded-2xl border ${a?"border-emerald-200 bg-emerald-50":"border-slate-200 bg-slate-50"} p-6">
                     <h3 class="text-xl font-black text-slate-900 mb-3">
                         Interpretación inicial
                     </h3>
 
                     <p class="text-slate-700 leading-relaxed">
-                        ${n}
+                        ${d}
                     </p>
 
                     <p class="text-sm text-slate-600 leading-relaxed mt-3">
