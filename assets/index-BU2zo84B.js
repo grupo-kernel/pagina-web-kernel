@@ -6726,12 +6726,12 @@ if (!contenedor) {
 18
 13
 17`,`18
-20
+21
 17
 19
-19
+20
 21
-16
+15
 20`];[...e.querySelectorAll("[data-medicion]")].forEach((u,d)=>{u.querySelector('[data-campo="nombre"]').value=n[d],u.querySelector('[data-campo="valores"]').value=a[d],Bi(u)})}function Bi(t){const e=t.querySelector('[data-campo="valores"]'),n=t.querySelector("[data-contador]"),a=e.value.trim()?e.value.trim().split(/[\s;]+/).filter(Boolean).length:0;n.textContent=a===1?"1 valor":`${a} valores`}document.addEventListener("input",t=>{const e=t.target.closest('#formulario-mediciones-relacionadas [data-campo="valores"]');if(!e)return;const n=e.closest("[data-medicion]");n&&Bi(n)});function mr(t,e){t.textContent=e,t.classList.remove("hidden")}function Ra(t){t.textContent="",t.classList.add("hidden")}function le(t,e=4){return Number.isFinite(t)?new Intl.NumberFormat("es-DO",{minimumFractionDigits:0,maximumFractionDigits:e}).format(t):t===1/0?"∞":"—"}function jt(t){return Number.isFinite(t)?t<.001?"< 0.001":le(t,4):"—"}function Mm(t){const e=t.id==="anova-medidas-repetidas",n=e?t.esfericidad.greenhouseGeisser.valorP:t.valorP,a=n<t.alfa,i=Math.round(t.nivelConfianza*100),u=e?"Greenhouse–Geisser":"sin corrección adicional",d=a?`Se observa evidencia estadísticamente significativa de diferencias entre las mediciones al nivel α = ${t.alfa.toFixed(2)}. Para la decisión principal se utilizó ${u}.`:`No se observa evidencia estadísticamente significativa de diferencias entre las mediciones al nivel α = ${t.alfa.toFixed(2)}. Para la decisión principal se utilizó ${u}.`;return`
         <section class="rounded-3xl border border-fuchsia-200 bg-white shadow-xl overflow-hidden">
             <header class="bg-fuchsia-700 text-white px-6 py-8 md:px-10">
