@@ -126,7 +126,7 @@ export const reglasEstadisticas = [
             tipoVariable: ["cuantitativa", "ordinal"],
             numeroGrupos: "dos",
             relacion: "relacionadas",
-            normalidad: ["no", "no-se", ""]
+            normalidad: ["si", "no", "no-se", ""]
         },
         resultado: {
             prueba: "Prueba de rangos con signo de Wilcoxon",
