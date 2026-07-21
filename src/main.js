@@ -9,8 +9,8 @@ import { Footer } from "./components/Footer/Footer.js";
 // CONTROLLERS & LOGIC
 import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
 import {
-    iniciarMejoraGraficosDescriptivos
-} from "./utils/mejorarGraficosDescriptivos.js";
+    iniciarGraficosDescriptivosPonderados
+} from "./utils/graficosDescriptivosPonderados.js";
 import {
     iniciarExportacionResultadosDescriptivos
 } from "./utils/exportarResultadosDescriptivos.js";
@@ -28,5 +28,5 @@ footer.innerHTML = Footer();
 
 // COMPONENT INITIALIZATION
 initNavBar(navBar, header);
-iniciarMejoraGraficosDescriptivos();
+iniciarGraficosDescriptivosPonderados();
 iniciarExportacionResultadosDescriptivos();
