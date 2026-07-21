@@ -1,7 +1,10 @@
 import {
+    obtenerResultadoEstadistico
+} from "../utils/motorReglas.js";
+
+import {
     obtenerFichaMetodologica
 } from "../data/obtenerFichaMetodologica.js";
-import { obtenerFichaMetodologica } from "../data/fichasMetodologicas.js";
 
 export function AsistentePruebas() {
     const section = document.createElement("section");
