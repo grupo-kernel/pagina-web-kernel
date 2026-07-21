@@ -265,7 +265,7 @@ export const reglasEstadisticas = [
         condiciones: {
             objetivo: "relacionar",
             tipoRelacion: "cuantitativas",
-            linealidad: "monotonica"
+            linealidad: ["si", "monotonica"]
         },
         resultado: {
             prueba: "Rho de Spearman",
