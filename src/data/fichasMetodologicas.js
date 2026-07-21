@@ -236,4 +236,69 @@ export const fichasMetodologicas = {
 
 export function obtenerFichaMetodologica(id) {
     return fichasMetodologicas[id] || null;
-}
+},
+
+    "t-student-independientes": {
+        nombre:
+            "t de Student para muestras independientes",
+
+        definicion:
+            "Prueba paramétrica utilizada para comparar las medias de dos grupos independientes cuando la variable dependiente es cuantitativa y puede asumirse homogeneidad de varianzas.",
+
+        cuandoUsar: [
+            "La variable dependiente es cuantitativa.",
+            "Se comparan exactamente dos grupos independientes.",
+            "Las observaciones de un grupo no están relacionadas con las del otro.",
+            "La distribución de la variable es aproximadamente normal dentro de cada grupo.",
+            "Las varianzas de los grupos pueden considerarse homogéneas."
+        ],
+
+        hipotesis: {
+            h0:
+                "Las medias poblacionales de los dos grupos son iguales.",
+            h1:
+                "Las medias poblacionales de los dos grupos son diferentes."
+        },
+
+        supuestos: [
+            "Independencia de las observaciones.",
+            "Variable dependiente medida en una escala cuantitativa.",
+            "Normalidad aproximada en cada grupo.",
+            "Ausencia de valores atípicos extremos que distorsionen las medias.",
+            "Homogeneidad de varianzas entre los grupos."
+        ],
+
+        estadistico:
+            "El estadístico t expresa la diferencia entre las medias muestrales en unidades de su error estándar, utilizando una estimación combinada de la varianza.",
+
+        efecto:
+            "d de Cohen y g de Hedges. Se recomienda g de Hedges cuando las muestras son pequeñas, debido a su corrección del sesgo.",
+
+        reporteAPA:
+            "t(gl) = valor, p = valor, diferencia de medias = valor, IC 95 % [LI, LS], d = valor o g = valor.",
+
+        posthoc: [],
+
+        alternativas: [
+            "t de Welch cuando las varianzas no pueden considerarse iguales.",
+            "U de Mann–Whitney cuando los datos son ordinales, presentan desviaciones importantes de la normalidad o contienen valores atípicos problemáticos.",
+            "Modelos lineales cuando se desea incorporar covariables o estructuras de diseño más complejas."
+        ],
+
+        erroresFrecuentes: [
+            "Aplicar la prueba a mediciones relacionadas o pareadas.",
+            "Elegir Student sin revisar la homogeneidad de varianzas.",
+            "Interpretar un valor p no significativo como prueba de igualdad entre las medias.",
+            "Informar únicamente el valor p sin intervalo de confianza ni tamaño del efecto.",
+            "Concluir causalidad cuando el diseño de investigación no la permite."
+        ],
+
+        ejemplo:
+            "Se desea comparar la calificación media de estudiantes que recibieron dos estrategias didácticas diferentes, utilizando grupos independientes.",
+
+        referencias: [
+            "Student. (1908). The probable error of a mean.",
+            "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics.",
+            "Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science."
+        ]
+    }
