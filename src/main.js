@@ -14,6 +14,9 @@ import {
 import {
     iniciarExportacionResultadosDescriptivos
 } from "./utils/exportarResultadosDescriptivos.js";
+import {
+    iniciarCreditosCalculadoras
+} from "./utils/creditosCalculadoras.js";
 
 // GLOBAL COMPONENT RENDERING
 
@@ -30,3 +33,4 @@ footer.innerHTML = Footer();
 initNavBar(navBar, header);
 iniciarGraficosDescriptivosPonderados();
 iniciarExportacionResultadosDescriptivos();
+iniciarCreditosCalculadoras();
