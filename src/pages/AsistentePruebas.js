@@ -489,10 +489,6 @@ export function AsistentePruebas() {
     const prueba =
         boton.dataset.prueba;
 
-    if (accion === "ejecutar-prueba") {
-    const prueba =
-        boton.dataset.prueba;
-
     if (!prueba) {
         return;
     }
