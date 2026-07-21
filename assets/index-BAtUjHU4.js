@@ -79,20 +79,32 @@
             </li>
 
             <!-- Laboratorio Inteligente -->
-            <li data-route="laboratorioKernel"
-            class="flex gap-2 hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl leading-tight">
-    
-            <span class="flex flex-col">
-                <span class="whitespace-nowrap">
-            Laboratorio Inteligente
-                </span>
-
+<li
+    data-route="laboratorioKernel"
+    class="
+        flex items-center justify-center gap-2
+        hover:cursor-pointer
+        font-medium
+        text-base xl:text-xl 2xl:text-2xl
+    "
+>
+    <span class="flex flex-col items-center text-center leading-none">
         <span class="whitespace-nowrap">
+            Laboratorio Inteligente
+        </span>
+
+        <span
+            class="
+                mt-1 whitespace-nowrap
+                text-sm xl:text-base 2xl:text-lg
+                font-semibold text-slate-600
+            "
+        >
             de Investigación
         </span>
     </span>
 
-    <i class="bx bx-bar-chart-alt-2 text-3xl"></i>
+    <i class="bx bx-bar-chart-alt-2 text-2xl shrink-0"></i>
 </li>
 
             <!-- Noticias -->
