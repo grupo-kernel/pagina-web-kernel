@@ -19,6 +19,7 @@ import { CalculadoraTresOMasMedicionesRelacionadas } from "../pages/CalculadoraT
 import { CorrelacionAsociacion } from "../pages/CorrelacionAsociacion.js";
 import { CalculadoraRelacionVariables } from "../pages/CalculadoraRelacionVariables.js";
 import { CalculadoraAsociacionCategorica } from "../pages/CalculadoraAsociacionCategorica.js";
+import { CalculadoraEstadisticaDescriptiva } from "../pages/CalculadoraEstadisticaDescriptiva.js";
 
 const routes = {
     home: {
@@ -139,6 +140,12 @@ const routes = {
         page: CalculadoraAsociacionCategorica,
         layout: "default",
         title: "Asociación entre variables categóricas | El Kernel"
+    },
+
+    calculadoraEstadisticaDescriptiva: {
+        page: CalculadoraEstadisticaDescriptiva,
+        layout: "default",
+        title: "Estadística descriptiva | El Kernel"
     }
 };
 
