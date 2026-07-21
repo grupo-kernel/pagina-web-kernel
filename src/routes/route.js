@@ -16,6 +16,8 @@ import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
 import { CalculadoraDosMuestrasRelacionadas } from "../pages/CalculadoraDosMuestrasRelacionadas.js";
 import { CalculadoraTresOMasGrupos } from "../pages/CalculadoraTresOMasGrupos.js";
 import { CalculadoraTresOMasMedicionesRelacionadas } from "../pages/CalculadoraTresOMasMedicionesRelacionadas.js";
+import { CorrelacionAsociacion } from "../pages/CorrelacionAsociacion.js";
+import { CalculadoraRelacionVariables } from "../pages/CalculadoraRelacionVariables.js";
 
 const routes = {
     home: {
@@ -118,6 +120,18 @@ const routes = {
         page: CalculadoraTresOMasMedicionesRelacionadas,
         layout: "default",
         title: "Comparación de tres o más mediciones relacionadas | El Kernel"
+    },
+
+    correlacionAsociacion: {
+        page: CorrelacionAsociacion,
+        layout: "default",
+        title: "Correlación y asociación | El Kernel"
+    },
+
+    calculadoraRelacionVariables: {
+        page: CalculadoraRelacionVariables,
+        layout: "default",
+        title: "Relación entre variables | El Kernel"
     }
 };
 
