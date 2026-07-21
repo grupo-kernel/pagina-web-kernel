@@ -36,7 +36,7 @@ export function ComparacionGrupos() {
             </div>
         </header>
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7 mt-8">
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-7 mt-8">
             ${crearTarjeta({
                 etiqueta: "Diseño independiente",
                 titulo: "Dos grupos independientes",
@@ -61,7 +61,7 @@ export function ComparacionGrupos() {
                 etiqueta: "Diseño relacionado",
                 titulo: "Dos mediciones relacionadas",
                 descripcion:
-                    "Utilice esta opción para diseños antes-después, mediciones repetidas o pares emparejados, conservando la correspondencia fila por fila.",
+                    "Utilice esta opción para diseños antes-después, dos mediciones repetidas o pares emparejados, conservando la correspondencia fila por fila.",
                 pruebas: [
                     "t de Student para muestras relacionadas",
                     "Rangos con signo de Wilcoxon"
@@ -93,6 +93,25 @@ export function ComparacionGrupos() {
                     fondo: "bg-emerald-50",
                     texto: "text-emerald-700",
                     boton: "bg-emerald-700 hover:bg-emerald-800"
+                }
+            })}
+
+            ${crearTarjeta({
+                etiqueta: "Diseño relacionado multimedición",
+                titulo: "Tres o más mediciones relacionadas",
+                descripcion:
+                    "Utilice esta opción cuando las mismas personas son evaluadas en tres o más momentos, condiciones o tratamientos y cada fila conserva su correspondencia.",
+                pruebas: [
+                    "ANOVA de medidas repetidas",
+                    "Prueba de Friedman"
+                ],
+                ruta: "calculadoraTresOMasMedicionesRelacionadas",
+                textoBoton: "Abrir calculadora de medidas repetidas",
+                clases: {
+                    borde: "border-fuchsia-200",
+                    fondo: "bg-fuchsia-50",
+                    texto: "text-fuchsia-700",
+                    boton: "bg-fuchsia-700 hover:bg-fuchsia-800"
                 }
             })}
         </section>
