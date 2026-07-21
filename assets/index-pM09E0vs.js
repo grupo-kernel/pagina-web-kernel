@@ -6962,7 +6962,7 @@ if (!contenedor) {
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-7 mt-8">
             ${ii({etiqueta:"Disponible",titulo:"Relación entre variables",descripcion:"Analice la intensidad, dirección y significación de la relación entre dos variables mediante Pearson, Spearman, Kendall o correlación punto-biserial.",elementos:["Correlación de Pearson","Rho de Spearman","Tau-b de Kendall","Correlación punto-biserial"],ruta:"calculadoraRelacionVariables",textoBoton:"Abrir calculadora de correlación",clases:{borde:"border-violet-200",fondo:"bg-violet-50",texto:"text-violet-700",boton:"bg-violet-700 hover:bg-violet-800"}})}
 
-            ${ii({etiqueta:"Siguiente fase",titulo:"Asociación entre variables categóricas",descripcion:"Analice tablas de contingencia mediante chi-cuadrado, pruebas exactas, residuos ajustados, Phi, V de Cramer y odds ratio.",elementos:["Chi-cuadrado de independencia","Prueba exacta de Fisher","Phi y V de Cramer","Odds ratio e intervalos"],ruta:"",textoBoton:"Próximamente",deshabilitada:!0,clases:{borde:"border-slate-200",fondo:"bg-slate-50",texto:"text-slate-600",boton:"bg-slate-300 cursor-not-allowed"}})}
+            ${ii({etiqueta:"Disponible",titulo:"Asociación entre variables categóricas",descripcion:"Analice tablas de contingencia mediante chi-cuadrado, pruebas exactas, residuos ajustados, Phi, V de Cramer y odds ratio.",elementos:["Chi-cuadrado de independencia","Fisher y Fisher–Freeman–Halton","Residuos ajustados","Phi, V de Cramer y odds ratio"],ruta:"calculadoraAsociacionCategorica",textoBoton:"Abrir calculadora de asociación",clases:{borde:"border-indigo-200",fondo:"bg-indigo-50",texto:"text-indigo-700",boton:"bg-indigo-700 hover:bg-indigo-800"}})}
         </section>
 
         <section class="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-6 md:p-8">
@@ -6970,7 +6970,7 @@ if (!contenedor) {
                 Seleccione primero la estructura de sus variables
             </h2>
             <p class="text-slate-700 leading-relaxed max-w-4xl">
-                Pearson, Spearman y Kendall requieren observaciones emparejadas fila por fila. La correlación punto-biserial combina una variable dicotómica genuina con una variable cuantitativa. Para dos variables categóricas se utilizará el módulo de asociación.
+                Pearson, Spearman y Kendall requieren observaciones emparejadas fila por fila. La correlación punto-biserial combina una variable dicotómica genuina con una variable cuantitativa. Para dos variables categóricas utilice la calculadora de asociación mediante tablas de contingencia.
             </p>
         </section>
     `,a.addEventListener("click",e=>{const r=e.target.closest("[data-route], [data-action]");if(!r)return;if(r.dataset.action==="volver-laboratorio"){window.location.hash="/laboratorioKernel";return}const t=r.dataset.route;t&&(window.location.hash=`/${t}`)}),a}function ii({etiqueta:a,titulo:e,descripcion:r,elementos:t,ruta:n,textoBoton:u,deshabilitada:c=!1,clases:p}){return`
