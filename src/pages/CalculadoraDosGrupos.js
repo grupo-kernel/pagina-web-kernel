@@ -389,8 +389,9 @@ const campoGrupo2 =
 
                 resultados.innerHTML =
                     crearVistaResultados(
-                        resultado
-                    );
+                    resultado,
+                    nivelConfianza
+                );
 
                 resultados.classList.remove(
                     "hidden"
@@ -602,14 +603,28 @@ function formatearValorP(valorP) {
     );
 }
 
-function crearVistaResultados(resultado) {
+function crearVistaResultados(
+    resultado,
+    nivelConfianza = 0.95
+) {
+    const alfa =
+        1 - nivelConfianza;
+
     const significativo =
-        resultado.valorP < 0.05;
+        resultado.valorP < alfa;
+
+    const alfaTexto =
+        alfa.toFixed(2);
+
+    const confianzaTexto =
+        Math.round(
+            nivelConfianza * 100
+        );
 
     const textoConclusion =
         significativo
-            ? "Se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = 0.05."
-            : "No se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = 0.05.";
+            ? `Se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = ${alfaTexto}, correspondiente a un nivel de confianza del ${confianzaTexto} %.`
+            : `No se observa evidencia estadísticamente significativa de una diferencia entre los grupos al nivel α = ${alfaTexto}, correspondiente a un nivel de confianza del ${confianzaTexto} %.`;
 
     return `
         <section class="rounded-3xl border border-emerald-200 bg-white shadow-xl overflow-hidden">
