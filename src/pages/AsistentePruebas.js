@@ -585,6 +585,34 @@ kendall: {
         "kernel-prueba-relacion-variables",
     ruta:
         "calculadoraRelacionVariables"
+},
+
+"chi-cuadrado-independencia-2x2": {
+    almacenamiento:
+        "kernel-prueba-asociacion-categorica",
+    ruta:
+        "calculadoraAsociacionCategorica"
+},
+
+"fisher-exacta-2x2": {
+    almacenamiento:
+        "kernel-prueba-asociacion-categorica",
+    ruta:
+        "calculadoraAsociacionCategorica"
+},
+
+"chi-cuadrado-independencia-rxc": {
+    almacenamiento:
+        "kernel-prueba-asociacion-categorica",
+    ruta:
+        "calculadoraAsociacionCategorica"
+},
+
+"fisher-freeman-halton": {
+    almacenamiento:
+        "kernel-prueba-asociacion-categorica",
+    ruta:
+        "calculadoraAsociacionCategorica"
 }
         
     };
@@ -1637,7 +1665,19 @@ kendall:
     "kendall",
 
 "punto-biserial":
-    "punto-biserial"
+    "punto-biserial",
+
+"chi-cuadrado-independencia-2x2":
+    "chi-cuadrado-independencia-2x2",
+
+"fisher-exacta-2x2":
+    "fisher-exacta-2x2",
+
+"chi-cuadrado-independencia-rxc":
+    "chi-cuadrado-independencia-rxc",
+
+"fisher-freeman-halton":
+    "fisher-freeman-halton"
     };
 
     return pruebasDisponibles[id] || "";
