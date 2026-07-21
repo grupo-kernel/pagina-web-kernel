@@ -313,7 +313,7 @@ export async function LaboratorioKernel() {
                     "bg-indigo-100",
                     "text-indigo-700",
                     "border-indigo-200",
-                    "calculadoraDosGrupos"
+                    "comparacionGrupos"
                 )}
 
                 ${crearTarjetaModulo(
