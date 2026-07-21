@@ -1454,6 +1454,22 @@ function obtenerRecomendacionRelacion(estado) {
             );
     }
 
+    if (estado.linealidad === "no-monotonica") {
+        return ficha(
+            "No resumir la relación con un único coeficiente de correlación",
+            "Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.",
+            "Reporte gráfico, R² de un modelo adecuado y medidas de ajuste."
+        );
+    }
+
+    if (estado.linealidad === "no-se") {
+        return ficha(
+            "Revisión gráfica antes de elegir el coeficiente",
+            "Sin conocer la forma de la relación no es metodológicamente seguro escoger Pearson o Spearman. Examine primero el diagrama de dispersión.",
+            "Diagrama de dispersión y, después, el coeficiente acorde con la forma observada."
+        );
+    }
+
     if (estado.normalidad !== "si") {
         return ficha(
             "Rho de Spearman",
@@ -1475,14 +1491,6 @@ function obtenerRecomendacionRelacion(estado) {
             "Rho de Spearman",
             "La relación es monotónica, pero no claramente lineal; Spearman resume adecuadamente asociaciones crecientes o decrecientes mediante rangos.",
             "Rho de Spearman con intervalo de confianza."
-        );
-    }
-
-    if (estado.linealidad === "no-monotonica") {
-        return ficha(
-            "No resumir la relación con un único coeficiente de correlación",
-            "Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.",
-            "Reporte gráfico, R² de un modelo adecuado y medidas de ajuste."
         );
     }
 
