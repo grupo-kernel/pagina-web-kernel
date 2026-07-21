@@ -12,6 +12,7 @@ import { herramientas } from "../pages/herramientas.js";
 import { LaboratorioKernel } from "../pages/LaboratorioKernel.js";
 import { AsistentePruebas } from "../pages/AsistentePruebas.js";
 import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
+import { CalculadoraDosMuestrasRelacionadas } from "../pages/CalculadoraDosMuestrasRelacionadas.js";
 
 const routes = {
     home: {
@@ -90,6 +91,12 @@ const routes = {
         page: CalculadoraDosGrupos,
         layout: "default",
         title: "Comparación de dos grupos | El Kernel"
+    },
+
+    calculadoraDosMuestrasRelacionadas: {
+        page: CalculadoraDosMuestrasRelacionadas,
+        layout: "default",
+        title: "Comparación de dos mediciones relacionadas | El Kernel"
     }
 };
 
