@@ -15,6 +15,7 @@ import { ComparacionGrupos } from "../pages/ComparacionGrupos.js";
 import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
 import { CalculadoraDosMuestrasRelacionadas } from "../pages/CalculadoraDosMuestrasRelacionadas.js";
 import { CalculadoraTresOMasGrupos } from "../pages/CalculadoraTresOMasGrupos.js";
+import { CalculadoraTresOMasMedicionesRelacionadas } from "../pages/CalculadoraTresOMasMedicionesRelacionadas.js";
 
 const routes = {
     home: {
@@ -111,6 +112,12 @@ const routes = {
         page: CalculadoraTresOMasGrupos,
         layout: "default",
         title: "Comparación de tres o más grupos independientes | El Kernel"
+    },
+
+    calculadoraTresOMasMedicionesRelacionadas: {
+        page: CalculadoraTresOMasMedicionesRelacionadas,
+        layout: "default",
+        title: "Comparación de tres o más mediciones relacionadas | El Kernel"
     }
 };
 
