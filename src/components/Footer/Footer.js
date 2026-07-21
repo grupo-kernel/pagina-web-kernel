@@ -29,7 +29,7 @@ export function Footer() {
         </div> 
         </div>
         <div class="max-w-7xl mx-auto px-3 text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5">
-                <h5>© 2025 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
+                <h5>© 2026 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
         </div>
         `
 
