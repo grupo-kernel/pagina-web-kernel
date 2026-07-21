@@ -295,10 +295,75 @@ export const fichasMetodologicas = {
         ejemplo:
             "Se desea comparar la calificación media de estudiantes que recibieron dos estrategias didácticas diferentes, utilizando grupos independientes.",
 
-        referencias: [
+                referencias: [
             "Student. (1908). The probable error of a mean.",
             "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics.",
             "Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science."
+        ]
+    },
+
+    "t-welch-independientes": {
+        nombre:
+            "t de Welch para muestras independientes",
+
+        definicion:
+            "Prueba paramétrica utilizada para comparar las medias de dos grupos independientes cuando la variable dependiente es cuantitativa y no puede asumirse igualdad entre las varianzas poblacionales.",
+
+        cuandoUsar: [
+            "La variable dependiente es cuantitativa.",
+            "Se comparan exactamente dos grupos independientes.",
+            "Las observaciones de un grupo no están relacionadas con las del otro.",
+            "La distribución de la variable es aproximadamente normal dentro de cada grupo.",
+            "Las varianzas son diferentes o los tamaños muestrales están desequilibrados."
+        ],
+
+        hipotesis: {
+            h0:
+                "Las medias poblacionales de los dos grupos son iguales.",
+            h1:
+                "Las medias poblacionales de los dos grupos son diferentes."
+        },
+
+        supuestos: [
+            "Independencia de las observaciones.",
+            "Variable dependiente medida en una escala cuantitativa.",
+            "Normalidad aproximada en cada grupo.",
+            "Ausencia de valores atípicos extremos que distorsionen las medias.",
+            "No requiere homogeneidad de varianzas."
+        ],
+
+        estadistico:
+            "El estadístico t de Welch expresa la diferencia entre las medias muestrales en unidades de su error estándar, estimando por separado la contribución de la varianza de cada grupo. Los grados de libertad se calculan mediante la aproximación de Welch–Satterthwaite.",
+
+        efecto:
+            "d de Cohen y g de Hedges, indicando claramente el criterio utilizado para estandarizar la diferencia de medias. Se recomienda informar también el intervalo de confianza de la diferencia.",
+
+        reporteAPA:
+            "t(gl) = valor, p = valor, diferencia de medias = valor, IC 95 % [LI, LS], d = valor o g = valor.",
+
+        posthoc: [],
+
+        alternativas: [
+            "t de Student cuando las varianzas pueden considerarse homogéneas.",
+            "U de Mann–Whitney cuando los datos son ordinales o presentan desviaciones importantes de la normalidad.",
+            "Modelos lineales con errores estándar robustos cuando se desea incorporar covariables."
+        ],
+
+        erroresFrecuentes: [
+            "Aplicar la prueba a mediciones relacionadas o pareadas.",
+            "Redondear los grados de libertad antes de informar el resultado.",
+            "Interpretar un valor p no significativo como demostración de igualdad.",
+            "Informar únicamente el valor p sin intervalo de confianza ni tamaño del efecto.",
+            "Confundir desigualdad de varianzas con ausencia de normalidad."
+        ],
+
+        ejemplo:
+            "Se desea comparar la calificación media de estudiantes de dos estrategias didácticas independientes, cuyos grupos presentan tamaños y varianzas diferentes.",
+
+        referencias: [
+            "Welch, B. L. (1947). The generalization of Student's problem when several different population variances are involved.",
+            "Delacre, M., Lakens, D., & Leys, C. (2017). Why psychologists should by default use Welch's t-test instead of Student's t-test.",
+            "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics."
         ]
     }
 };
