@@ -303,8 +303,9 @@ export async function LaboratorioKernel() {
                     "estadistica",
                     "bg-sky-100",
                     "text-sky-700",
-                    "border-sky-200"
-                )}
+                    "border-sky-200",
+                    "calculadoraEstadisticaDescriptiva"
+)}
 
                 ${crearTarjetaModulo(
                     "Comparación de grupos",
