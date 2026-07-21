@@ -11,6 +11,9 @@ import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
 import {
     iniciarMejoraGraficosDescriptivos
 } from "./utils/mejorarGraficosDescriptivos.js";
+import {
+    iniciarExportacionResultadosDescriptivos
+} from "./utils/exportarResultadosDescriptivos.js";
 
 // GLOBAL COMPONENT RENDERING
 
@@ -26,3 +29,4 @@ footer.innerHTML = Footer();
 // COMPONENT INITIALIZATION
 initNavBar(navBar, header);
 iniciarMejoraGraficosDescriptivos();
+iniciarExportacionResultadosDescriptivos();
