@@ -322,7 +322,8 @@ export async function LaboratorioKernel() {
                     "correlacion",
                     "bg-violet-100",
                     "text-violet-700",
-                    "border-violet-200"
+                    "border-violet-200",
+                    "correlacionAsociacion"
                 )}
 
                 ${crearTarjetaModulo(
