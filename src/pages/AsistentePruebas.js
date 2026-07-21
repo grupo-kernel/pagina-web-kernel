@@ -245,11 +245,6 @@ export function AsistentePruebas() {
             estado.normalidad = valor;
             estado.linealidad = "";
 
-            if (valor !== "si") {
-                mostrarResultadoRelacion();
-                return;
-            }
-
             estado.pantalla = "linealidad";
             mostrar(crearPreguntaLinealidad());
             return;
