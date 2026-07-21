@@ -18,6 +18,7 @@ import { CalculadoraTresOMasGrupos } from "../pages/CalculadoraTresOMasGrupos.js
 import { CalculadoraTresOMasMedicionesRelacionadas } from "../pages/CalculadoraTresOMasMedicionesRelacionadas.js";
 import { CorrelacionAsociacion } from "../pages/CorrelacionAsociacion.js";
 import { CalculadoraRelacionVariables } from "../pages/CalculadoraRelacionVariables.js";
+import { CalculadoraAsociacionCategorica } from "../pages/CalculadoraAsociacionCategorica.js";
 
 const routes = {
     home: {
@@ -132,6 +133,12 @@ const routes = {
         page: CalculadoraRelacionVariables,
         layout: "default",
         title: "Relación entre variables | El Kernel"
+    },
+
+    calculadoraAsociacionCategorica: {
+        page: CalculadoraAsociacionCategorica,
+        layout: "default",
+        title: "Asociación entre variables categóricas | El Kernel"
     }
 };
 
