@@ -1575,7 +1575,13 @@ function obtenerPruebaEjecutable(id) {
             "anova-welch",
 
         "kruskal-wallis":
-            "kruskal-wallis"
+            "kruskal-wallis",
+
+        "anova-medidas-repetidas":
+            "anova-medidas-repetidas",
+
+        friedman:
+            "friedman"
     };
 
     return pruebasDisponibles[id] || "";
