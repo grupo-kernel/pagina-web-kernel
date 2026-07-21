@@ -80,10 +80,20 @@
 
             <!-- Laboratorio Inteligente -->
             <li data-route="laboratorioKernel"
-                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
-                <span>Laboratorio Inteligente de Investigación</span>
-                <i class="bx bx-bar-chart-alt-2 text-3xl"></i>
-            </li>
+            class="flex gap-2 hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl leading-tight">
+    
+            <span class="flex flex-col">
+                <span class="whitespace-nowrap">
+            Laboratorio Inteligente
+                </span>
+
+        <span class="whitespace-nowrap">
+            de Investigación
+        </span>
+    </span>
+
+    <i class="bx bx-bar-chart-alt-2 text-3xl"></i>
+</li>
 
             <!-- Noticias -->
             <li data-route="noticias"
