@@ -11,6 +11,7 @@ import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 import { LaboratorioKernel } from "../pages/LaboratorioKernel.js";
 import { AsistentePruebas } from "../pages/AsistentePruebas.js";
+import { ComparacionGrupos } from "../pages/ComparacionGrupos.js";
 import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
 import { CalculadoraDosMuestrasRelacionadas } from "../pages/CalculadoraDosMuestrasRelacionadas.js";
 
@@ -85,6 +86,12 @@ const routes = {
         page: AsistentePruebas,
         layout: "default",
         title: "¿Qué prueba debo utilizar? | El Kernel"
+    },
+
+    comparacionGrupos: {
+        page: ComparacionGrupos,
+        layout: "default",
+        title: "Comparación de grupos y mediciones | El Kernel"
     },
 
     calculadoraDosGrupos: {
