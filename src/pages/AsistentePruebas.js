@@ -544,11 +544,26 @@ export function AsistentePruebas() {
         },
 
         "kruskal-wallis": {
-            almacenamiento:
-                "kernel-prueba-tres-grupos",
-            ruta:
-                "calculadoraTresOMasGrupos"
-        }
+    almacenamiento:
+        "kernel-prueba-tres-grupos",
+    ruta:
+        "calculadoraTresOMasGrupos"
+},
+
+"anova-medidas-repetidas": {
+    almacenamiento:
+        "kernel-prueba-tres-relacionadas",
+    ruta:
+        "calculadoraTresOMasMedicionesRelacionadas"
+},
+
+friedman: {
+    almacenamiento:
+        "kernel-prueba-tres-relacionadas",
+    ruta:
+        "calculadoraTresOMasMedicionesRelacionadas"
+}
+        
     };
 
     const destino =
