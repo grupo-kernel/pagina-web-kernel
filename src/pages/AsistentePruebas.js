@@ -1455,12 +1455,22 @@ function obtenerRecomendacionRelacion(estado) {
     }
 
     if (estado.linealidad === "no-monotonica") {
-        return ficha(
+    return {
+        id: "relacion-no-monotonica",
+        nombre:
             "No resumir la relación con un único coeficiente de correlación",
+        razon:
             "Una relación no monotónica puede producir coeficientes cercanos a cero aunque exista una asociación importante. Conviene estudiar el diagrama de dispersión y considerar modelos no lineales, regresión segmentada o suavizadores.",
-            "Reporte gráfico, R² de un modelo adecuado y medidas de ajuste."
-        );
-    }
+        categoria:
+            "Relación entre variables",
+        tipo:
+            "Exploración gráfica y modelización no lineal",
+        efecto:
+            "Reporte gráfico, R² de un modelo adecuado y medidas de ajuste.",
+        reporte:
+            "Presente el diagrama de dispersión, describa la forma observada y ajuste un modelo coherente con esa estructura. Informe los parámetros del modelo, sus intervalos de confianza, R² o medidas de ajuste y el análisis de residuos. No utilice Pearson o Spearman como resumen principal."
+    };
+}
 
     if (estado.linealidad === "no-se") {
         return ficha(
@@ -1700,6 +1710,7 @@ function crearResultado(recomendacion) {
 
                     ${crearFichaResultado(
                         "Reporte recomendado",
+                         recomendacion.reporte ||
                         "Informe el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto. Incluya gráficos y una interpretación sustantiva."
                     )}
                 </div>
