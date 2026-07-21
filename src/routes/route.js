@@ -14,6 +14,7 @@ import { AsistentePruebas } from "../pages/AsistentePruebas.js";
 import { ComparacionGrupos } from "../pages/ComparacionGrupos.js";
 import { CalculadoraDosGrupos } from "../pages/CalculadoraDosGrupos.js";
 import { CalculadoraDosMuestrasRelacionadas } from "../pages/CalculadoraDosMuestrasRelacionadas.js";
+import { CalculadoraTresOMasGrupos } from "../pages/CalculadoraTresOMasGrupos.js";
 
 const routes = {
     home: {
@@ -104,6 +105,12 @@ const routes = {
         page: CalculadoraDosMuestrasRelacionadas,
         layout: "default",
         title: "Comparación de dos mediciones relacionadas | El Kernel"
+    },
+
+    calculadoraTresOMasGrupos: {
+        page: CalculadoraTresOMasGrupos,
+        layout: "default",
+        title: "Comparación de tres o más grupos independientes | El Kernel"
     }
 };
 
