@@ -1,25 +1,61 @@
-export function DisplaySubMenu(nav){
-        const element = nav.querySelectorAll('[data-action ="open-subMenu"]');
+function establecerEstado(elemento, abierto) {
+    const disparador = elemento.querySelector("[data-submenu-trigger]");
+    const submenu = elemento.querySelector("ul");
+    const icono = disparador?.querySelector("i");
 
-        element.forEach(subElement => {
-                const ulElement = subElement.querySelector('ul');
-                const iElement = subElement.querySelector('i');
-                let action = !ulElement.classList.contains('hidden');
-                
-        subElement.addEventListener("click", (e)=> {
-               
-                e.preventDefault();
-                if(!action){
-                        iElement.classList.replace('bx-caret-down', 'bx-caret-up');            
-                        ulElement.classList.replace('hidden', 'flex');
-                        action = true;
-                }else{
-                        iElement.classList.replace('bx-caret-up', 'bx-caret-down');            
-                        ulElement.classList.replace('flex', 'hidden');
-                        action = false;
-                }
-                });
+    if (!disparador || !submenu) return;
 
-            });     
+    disparador.setAttribute("aria-expanded", String(abierto));
+    submenu.classList.toggle("hidden", !abierto);
+    submenu.classList.toggle("flex", abierto);
 
+    if (icono) {
+        icono.classList.toggle("bx-caret-down", !abierto);
+        icono.classList.toggle("bx-caret-up", abierto);
+    }
+}
+
+export function DisplaySubMenu(nav) {
+    if (!nav || nav.dataset.submenusInicializados === "true") return;
+    nav.dataset.submenusInicializados = "true";
+
+    const elementos = [
+        ...nav.querySelectorAll('[data-action="open-subMenu"]')
+    ];
+
+    const cerrarTodos = (excepto = null) => {
+        elementos.forEach((elemento) => {
+            if (elemento !== excepto) establecerEstado(elemento, false);
+        });
+    };
+
+    elementos.forEach((elemento) => {
+        const disparador = elemento.querySelector("[data-submenu-trigger]");
+        const submenu = elemento.querySelector("ul");
+
+        if (!disparador || !submenu) return;
+
+        disparador.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const abrir = disparador.getAttribute("aria-expanded") !== "true";
+            cerrarTodos(elemento);
+            establecerEstado(elemento, abrir);
+        });
+    });
+
+    nav.addEventListener("click", (event) => {
+        if (event.target.closest("[data-route]")) cerrarTodos();
+    });
+
+    nav.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        cerrarTodos();
+        nav.querySelector('[data-submenu-trigger][aria-expanded="true"]')?.focus();
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!nav.contains(event.target)) cerrarTodos();
+    });
 }

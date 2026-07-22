@@ -23,6 +23,18 @@ const carruselUniversidades = await readFile(
     new URL("../src/components/Home/CarruselUniversidades.js", import.meta.url),
     "utf8"
 );
+const navegacion = await readFile(
+    new URL("../src/components/NavBar/navBar.js", import.meta.url),
+    "utf8"
+);
+const controlSubmenus = await readFile(
+    new URL("../src/Controllers/NavBar/DisplaySubMenu.js", import.meta.url),
+    "utf8"
+);
+const layoutPrincipal = await readFile(
+    new URL("../src/components/layout/mainLayaout.js", import.meta.url),
+    "utf8"
+);
 const principal = await readFile(
     new URL("../src/main.js", import.meta.url),
     "utf8"
@@ -83,11 +95,27 @@ assert.match(
     /contenedorUniversidades\?\.replaceChildren\(CrearCarruselUniversidades\(\)\)/,
     "Las universidades deben integrarse dentro del encabezado principal."
 );
-assert.doesNotMatch(
-    home,
-    /insertAdjacentElement\("afterend", carrusel\)/,
-    "La ruleta no debe insertarse como un bloque separado debajo del encabezado."
-);
+
+assert.match(home, /setMainLayout\("full"\)/);
+assert.match(home, /classList\.remove\("max-w-7xl", "px-4", "md:px-8"\)/);
+assert.match(home, /"max-w-none"/);
+assert.match(home, /portadaAncha/);
+assert.match(layoutPrincipal, /layout === "full"/);
+assert.match(layoutPrincipal, /main\.classList\.add\("w-full", "max-w-none", "mt-0", "pt-0"\)/);
+assert.match(layoutPrincipal, /tabletBig:max-w-6xl/);
+assert.match(layoutPrincipal, /xl:max-w-7xl/);
+
+assert.match(navegacion, /id="submenu-nuestro-trabajo"/);
+assert.match(navegacion, /data-route="herramientas"/);
+assert.match(navegacion, /data-submenu-trigger/);
+assert.match(navegacion, /z-\[300\]/);
+assert.match(navegacion, /Herramientas/);
+assert.match(controlSubmenus, /dataset\.submenusInicializados/);
+assert.match(controlSubmenus, /aria-expanded/);
+assert.match(controlSubmenus, /cerrarTodos/);
+assert.match(principal, /z-\[200\]/);
+assert.match(principal, /lg:z-\[210\]/);
+assert.match(principal, /contenido\?\.classList\.add\("relative", "z-0"\)/);
 
 assert.match(carruselUniversidades, /isfodosu\.png/);
 assert.match(carruselUniversidades, /uasd\.png/);
@@ -119,5 +147,5 @@ assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
 console.log(
-    "✓ Portada integrada, pestañas universitarias, iconos SVG, navegación y pie de página validados."
+    "✓ Portada de ancho completo, pestañas universitarias, menú superior, iconos SVG y navegación validados."
 );
