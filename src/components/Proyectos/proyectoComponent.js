@@ -1,294 +1,54 @@
 import { proyecto } from "../../data/proyectoContenido.js";
 
-function safeText(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+function escapar(valor) {
+    return String(valor ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
-function getProyectoActual(id) {
-    return proyecto.find(item => item.id === id) || proyecto[0];
+function lista(items = []) {
+    return items.map((item) => `<li class="flex gap-3 text-sm leading-relaxed text-slate-600 md:text-base"><span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#b37a2a]"></span><span>${escapar(item)}</span></li>`).join("");
 }
 
-function renderLista(items = []) {
-    return items.map(item => `
-        <li class="flex gap-3 text-sm md:text-base text-slate-600 leading-relaxed">
-            <span class="mt-2 w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-            <span>${safeText(item)}</span>
-        </li>
-    `).join("");
+function etiquetas(items = []) {
+    return items.map((item) => `<span class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-[#0f5b5d]">${escapar(item)}</span>`).join("");
 }
 
-function renderEtiquetas(etiquetas = []) {
-    return etiquetas.map(tag => `
-        <span class="inline-flex items-center bg-[#96B4E1]/25 text-[#1A2B49] border border-[#96B4E1]/60 px-3 py-1 rounded-full text-xs font-bold">
-            ${safeText(tag)}
-        </span>
-    `).join("");
+function selector(item, activo) {
+    return `<button type="button" data-proyecto-id="${item.id}" class="w-full rounded-2xl border p-5 text-left transition ${activo ? "border-[#0f5b5d] bg-[#0f5b5d] text-white shadow-xl" : "border-slate-200 bg-white text-slate-950 hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg"}">
+        <div class="mb-3 flex flex-wrap gap-2"><span class="rounded-full bg-[#d5a54a] px-3 py-1 text-[11px] font-black uppercase text-[#06141a]">${escapar(item.estado)}</span><span class="rounded-full ${activo ? "bg-white/10 text-white" : "bg-slate-100 text-slate-600"} px-3 py-1 text-[11px] font-black uppercase">${escapar(item.convocatoria)}</span></div>
+        <h3 class="font-black leading-tight">${escapar(item.title)}</h3>
+        <p class="mt-3 text-sm leading-relaxed ${activo ? "text-white/75" : "text-slate-500"}">${escapar(item.enfoque)}</p>
+        <p class="mt-4 text-xs font-bold ${activo ? "text-emerald-100" : "text-slate-500"}">${escapar(item.institucion)} · ${escapar(item.duracion)}</p>
+    </button>`;
 }
 
-function renderEquipo(equipo = []) {
-    return equipo.map(persona => `
-        <span class="inline-flex items-center bg-white/10 text-white border border-white/10 px-3 py-1 rounded-full text-xs font-semibold">
-            ${safeText(persona)}
-        </span>
-    `).join("");
-}
-
-function renderProyectoSelector(item, isActive = false) {
-    return `
-        <button 
-            type="button"
-            data-proyecto-id="${item.id}"
-            class="w-full text-left rounded-2xl p-5 border-2 transition-all duration-300
-            ${isActive
-                ? "bg-[#5580C1] text-white border-[#5580C1] shadow-xl scale-[1.01]"
-                : "bg-white text-slate-800 border-slate-100 hover:border-[#96B4E1] hover:shadow-md"}">
-
-            <div class="flex flex-wrap items-center gap-2 mb-3">
-                <span class="inline-block bg-orange-500 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${safeText(item.estado)}
-                </span>
-
-                <span class="inline-block ${isActive ? "bg-white/20 text-white" : "bg-[#96B4E1]/30 text-[#1A2B49]"} text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                    ${safeText(item.convocatoria)}
-                </span>
-            </div>
-
-            <h3 class="font-black text-base md:text-lg leading-tight mb-3">
-                ${safeText(item.title)}
-            </h3>
-
-            <p class="text-sm leading-relaxed ${isActive ? "text-white/90" : "text-slate-500"}">
-                ${safeText(item.enfoque)}
-            </p>
-
-            <div class="mt-4 flex flex-wrap gap-2">
-                <span class="text-xs font-bold ${isActive ? "text-white/90" : "text-slate-500"}">
-                    ${safeText(item.institucion)}
-                </span>
-                <span class="text-xs font-bold ${isActive ? "text-white/90" : "text-slate-500"}">
-                    · ${safeText(item.duracion)}
-                </span>
-            </div>
-        </button>
-    `;
-}
-
-function renderDetalleProyecto(item) {
-    return `
-        <article class="bg-white rounded-[24px] shadow-2xl border border-slate-100 overflow-hidden">
-
-            <div class="bg-[#1E1E1E] text-white p-6 md:p-8 relative overflow-hidden">
-                <div class="absolute -right-12 -bottom-12 w-36 h-36 rounded-full bg-white/10"></div>
-                <div class="absolute right-8 top-8 w-16 h-16 rounded-full bg-[#96B4E1]/30"></div>
-
-                <div class="relative z-10">
-                    <div class="flex flex-wrap items-center gap-2 mb-4">
-                        <span class="inline-block bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${safeText(item.estado)}
-                        </span>
-
-                        <span class="inline-block bg-[#5580C1] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            ${safeText(item.convocatoria)}
-                        </span>
-                    </div>
-
-                    <h2 class="text-2xl md:text-3xl font-black leading-tight max-w-4xl">
-                        ${safeText(item.title)}
-                    </h2>
-
-                    <p class="mt-4 text-white/80 leading-relaxed max-w-4xl">
-                        ${safeText(item.contenido)}
-                    </p>
-                </div>
-            </div>
-
-            <div class="p-6 md:p-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Institución</p>
-                        <p class="text-slate-800 font-bold mt-1">${safeText(item.institucion)}</p>
-                    </div>
-
-                    <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Tipo</p>
-                        <p class="text-slate-800 font-bold mt-1">${safeText(item.tipo)}</p>
-                    </div>
-
-                    <div class="bg-[#96B4E1]/20 border border-[#96B4E1]/40 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Duración estimada</p>
-                        <p class="text-slate-800 font-bold mt-1">${safeText(item.duracion)}</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha inicial prevista</p>
-                        <p class="text-slate-700 font-semibold mt-1">${safeText(item.fechaInicio)}</p>
-                    </div>
-
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                        <p class="text-xs font-black text-[#5580C1] uppercase tracking-wide">Fecha final prevista</p>
-                        <p class="text-slate-700 font-semibold mt-1">${safeText(item.fechaFinalizacion)}</p>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <h3 class="text-[#1A2B49] text-xl font-black mb-3">
-                        Contexto general
-                    </h3>
-
-                    <p class="text-slate-600 leading-relaxed">
-                        ${safeText(item.contexto)}
-                    </p>
-                </div>
-
-                <div class="mb-8">
-                    <h3 class="text-[#1A2B49] text-xl font-black mb-3">
-                        Línea de investigación
-                    </h3>
-
-                    <p class="text-slate-600 leading-relaxed">
-                        ${safeText(item.linea)}
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                    <div>
-                        <h3 class="text-[#1A2B49] text-xl font-black mb-3">
-                            Objetivos principales
-                        </h3>
-
-                        <ul class="space-y-3">
-                            ${renderLista(item.objetivos)}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 class="text-[#1A2B49] text-xl font-black mb-3">
-                            Resultados esperados
-                        </h3>
-
-                        <ul class="space-y-3">
-                            ${renderLista(item.resultados)}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-[#1E1E1E] rounded-2xl p-5 mb-8">
-                    <p class="text-[#96B4E1] text-xs font-black uppercase tracking-wide mb-3">
-                        Equipo vinculado
-                    </p>
-
-                    <div class="flex flex-wrap gap-2">
-                        ${renderEquipo(item.equipo)}
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide mb-3">
-                        Palabras clave
-                    </p>
-
-                    <div class="flex flex-wrap gap-2">
-                        ${renderEtiquetas(item.etiquetas)}
-                    </div>
-                </div>
-            </div>
-        </article>
-    `;
+function detalle(item) {
+    return `<article class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl">
+        <header class="relative overflow-hidden bg-[#071820] px-6 py-8 text-white md:px-9 md:py-10">
+            <div class="absolute -right-20 -top-20 h-52 w-52 rounded-full bg-emerald-400/10 blur-2xl"></div>
+            <div class="relative"><div class="flex flex-wrap gap-2"><span class="rounded-full bg-[#d5a54a] px-3 py-1 text-xs font-black uppercase text-[#06141a]">${escapar(item.estado)}</span><span class="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black uppercase">${escapar(item.convocatoria)}</span></div><h2 class="mt-5 max-w-4xl text-2xl font-black leading-tight md:text-4xl">${escapar(item.title)}</h2><p class="mt-4 max-w-4xl leading-relaxed text-slate-300">${escapar(item.contenido)}</p></div>
+        </header>
+        <div class="p-6 md:p-9">
+            <section class="grid grid-cols-2 gap-3 md:grid-cols-4">${[["Institución",item.institucion],["Tipo",item.tipo],["Duración",item.duracion],["Estado",item.estado]].map(([a,b]) => `<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4"><p class="text-xs font-black uppercase tracking-wide text-[#b37a2a]">${escapar(a)}</p><p class="mt-1 font-black text-slate-950">${escapar(b)}</p></div>`).join("")}</section>
+            <section class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2"><div><h3 class="text-xl font-black text-[#071820]">Contexto y línea</h3><p class="mt-3 leading-relaxed text-slate-600">${escapar(item.contexto)}</p><p class="mt-4 rounded-2xl border-l-4 border-[#0f5b5d] bg-emerald-50 p-4 text-sm font-bold text-slate-700">${escapar(item.linea)}</p></div><div class="grid grid-cols-1 gap-6 sm:grid-cols-2"><div><h3 class="text-lg font-black text-[#071820]">Objetivos</h3><ul class="mt-3 space-y-3">${lista(item.objetivos)}</ul></div><div><h3 class="text-lg font-black text-[#071820]">Resultados esperados</h3><ul class="mt-3 space-y-3">${lista(item.resultados)}</ul></div></div></section>
+            <section class="mt-8 rounded-3xl bg-[#071820] p-6 text-white"><p class="text-xs font-black uppercase tracking-[0.18em] text-[#efc86f]">Equipo vinculado</p><div class="mt-4 flex flex-wrap gap-2">${(item.equipo || []).map((p) => `<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold">${escapar(p)}</span>`).join("")}</div></section>
+            <div class="mt-7 flex flex-wrap gap-2">${etiquetas(item.etiquetas)}</div>
+        </div>
+    </article>`;
 }
 
 export function proyectoComponent() {
     let selectedId = proyecto[0]?.id || 1;
-
     const container = document.createElement("section");
-    container.className = "w-full max-w-7xl mx-auto px-4 py-10 mb-20 font-sans tabletBig:px-20 xl:px-0";
+    container.className = "w-full bg-slate-100 px-4 py-8 font-sans md:px-8 md:py-12";
 
-    const updateView = () => {
-        const actual = getProyectoActual(selectedId);
-
-        container.innerHTML = `
-            <div class="mb-8">
-                <p class="text-[#5580C1] font-black uppercase tracking-wide text-sm mb-2">
-                    Grupo de Investigación Kernel
-                </p>
-
-                <h1 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight">
-                    Posibles propuestas de investigación
-                </h1>
-
-                <p class="text-slate-500 max-w-4xl mt-3 text-sm md:text-base leading-relaxed">
-                    Esta sección presenta posibles propuestas sometidas a FONDOCyT por integrantes del grupo.
-                    Su inclusión tiene carácter informativo y no implica aprobación, financiamiento ni ejecución formal.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
-                    <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        Posibles propuestas
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${proyecto.length}
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
-                    <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        Convocatoria
-                    </p>
-                    <p class="text-xl font-black text-slate-800">
-                        FONDOCyT
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl p-5 shadow-md border border-[#96B4E1]/40">
-                    <p class="text-[#5580C1] text-xs font-black uppercase tracking-wide">
-                        Estado
-                    </p>
-                    <p class="text-xl font-black text-slate-800">
-                        Posibles sometidas
-                    </p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.6fr] gap-6 items-start">
-                <aside class="bg-slate-50 border border-slate-200 rounded-[24px] p-4 shadow-sm">
-                    <div class="mb-4 px-1">
-                        <h2 class="text-xl font-black text-slate-800">
-                            Propuestas disponibles
-                        </h2>
-
-                        <p class="text-slate-500 text-sm leading-relaxed">
-                            Seleccione una posible propuesta para ver sus detalles principales.
-                        </p>
-                    </div>
-
-                    <div class="space-y-4">
-                        ${proyecto.map(item => renderProyectoSelector(item, item.id === selectedId)).join("")}
-                    </div>
-                </aside>
-
-                <div>
-                    ${renderDetalleProyecto(actual)}
-                </div>
-            </div>
-        `;
-
-        container.querySelectorAll("[data-proyecto-id]").forEach(button => {
-            button.onclick = () => {
-                selectedId = parseInt(button.dataset.proyectoId);
-                updateView();
-            };
-        });
+    const render = () => {
+        const actual = proyecto.find((item) => item.id === selectedId) || proyecto[0];
+        container.innerHTML = `<div class="mx-auto max-w-[1600px]">
+            <header class="rounded-[2rem] bg-[#071820] px-6 py-10 text-white shadow-2xl md:px-10 md:py-12"><p class="text-xs font-black uppercase tracking-[0.2em] text-[#efc86f]">Investigación, innovación y transferencia</p><h1 class="mt-3 text-4xl font-black md:text-6xl">Proyectos y propuestas estratégicas</h1><p class="mt-5 max-w-4xl text-base leading-relaxed text-slate-300 md:text-lg">Organizamos cada iniciativa por estado, institución, duración, objetivos, resultados y equipo. Las propuestas sometidas se identifican como tales y no se presentan como proyectos financiados hasta recibir confirmación formal.</p><div class="mt-7 grid grid-cols-2 gap-3 md:max-w-2xl md:grid-cols-3"><div class="rounded-2xl bg-white/5 p-4"><p class="text-3xl font-black">${proyecto.length}</p><p class="text-xs font-bold text-emerald-200">Iniciativas registradas</p></div><div class="rounded-2xl bg-white/5 p-4"><p class="text-2xl font-black">FONDOCyT</p><p class="text-xs font-bold text-emerald-200">Convocatoria</p></div><div class="col-span-2 rounded-2xl bg-white/5 p-4 md:col-span-1"><p class="text-2xl font-black">Trazabilidad</p><p class="text-xs font-bold text-emerald-200">Estado verificable</p></div></div></header>
+            <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[0.72fr_1.5fr]"><aside class="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-lg"><p class="text-xs font-black uppercase tracking-[0.18em] text-[#b37a2a]">Portafolio</p><h2 class="mt-1 text-2xl font-black text-slate-950">Seleccione una iniciativa</h2><div class="mt-5 space-y-4">${proyecto.map((item) => selector(item,item.id===selectedId)).join("")}</div></aside><div>${detalle(actual)}</div></div>
+        </div>`;
+        container.querySelectorAll("[data-proyecto-id]").forEach((button) => button.addEventListener("click", () => { selectedId = Number(button.dataset.proyectoId); render(); }));
     };
-
-    updateView();
-
+    render();
     return container;
 }

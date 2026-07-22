@@ -7,217 +7,93 @@ export function publicacionesComponent() {
     let resizeTimer = null;
 
     const container = document.createElement("section");
-    container.className =
-        "publicaciones-shell w-full max-w-7xl mx-auto px-4 py-8 rounded-3xl";
+    container.className = "w-full bg-slate-100 px-4 py-8 font-sans md:px-8 md:py-12";
 
-    function getDOI(pub) {
-        return String(pub?.DOI || pub?.doi || "").trim().toLowerCase();
-    }
-
-    function getRevista(pub) {
-        return String(pub?.journal || pub?.title || pub?.tile || "").trim();
-    }
-
-    function getTituloArticulo(pub) {
-        return String(pub?.articleTitle || pub?.contenido || "").trim();
-    }
-
-    function getCuartil(pub) {
-        return String(pub?.q || pub?.quartile || "")
-            .trim()
-            .toUpperCase();
-    }
-
+    function getDOI(pub) { return String(pub?.DOI || pub?.doi || "").trim().toLowerCase(); }
+    function getRevista(pub) { return String(pub?.journal || pub?.title || pub?.tile || "").trim(); }
+    function getTituloArticulo(pub) { return String(pub?.articleTitle || pub?.contenido || "").trim(); }
+    function getCuartil(pub) { return String(pub?.q || pub?.quartile || "").trim().toUpperCase(); }
     function getPublicationKey(pub) {
-        const doi = getDOI(pub);
-
-        if (doi) {
-            return doi;
-        }
-
-        return [
-            pub?.year || "",
-            getRevista(pub),
-            getTituloArticulo(pub)
-        ]
-            .join("-")
-            .trim()
-            .toLowerCase();
+        return getDOI(pub) || [pub?.year || "", getRevista(pub), getTituloArticulo(pub)].join("-").trim().toLowerCase();
     }
-
     function getPublicacionesUnicas() {
-        const map = new Map();
-
-        publicacionesContenido.forEach(profesor => {
-            (profesor.publicaciones || []).forEach(pub => {
-                const key = getPublicationKey(pub);
-
-                if (key && !map.has(key)) {
-                    map.set(key, pub);
-                }
-            });
-        });
-
-        return Array.from(map.values());
+        const mapa = new Map();
+        publicacionesContenido.forEach((profesor) => (profesor.publicaciones || []).forEach((pub) => {
+            const clave = getPublicationKey(pub);
+            if (clave && !mapa.has(clave)) mapa.set(clave, pub);
+        }));
+        return [...mapa.values()];
     }
-
     function getStats() {
-        const publicacionesUnicas = getPublicacionesUnicas();
-
-        const years = publicacionesUnicas
-            .map(pub => Number(pub.year))
-            .filter(Boolean);
-
-        const ultimoYear = years.length ? Math.max(...years) : "—";
-        const primerYear = years.length ? Math.min(...years) : "—";
-
-        const q1 = publicacionesUnicas.filter(pub => getCuartil(pub) === "Q1").length;
-
+        const publicaciones = getPublicacionesUnicas();
+        const years = publicaciones.map((pub) => Number(pub.year)).filter(Boolean);
         return {
-            totalPublicaciones: publicacionesUnicas.length,
+            total: publicaciones.length,
             investigadores: publicacionesContenido.length,
-            q1,
-            primerYear,
-            ultimoYear
+            q1: publicaciones.filter((pub) => getCuartil(pub) === "Q1").length,
+            periodo: years.length ? `${Math.min(...years)}–${Math.max(...years)}` : "—"
         };
     }
-
     function getProfesorSeleccionado() {
-        return (
-            publicacionesContenido.find(p => Number(p.id) === Number(selectedId)) ||
-            publicacionesContenido[0]
-        );
+        return publicacionesContenido.find((p) => Number(p.id) === Number(selectedId)) || publicacionesContenido[0];
     }
 
     const updateView = () => {
         const profesor = getProfesorSeleccionado();
         const stats = getStats();
-
         const ocultarDetalleMobile = window.innerWidth < 768 && !isModalOpen;
 
         container.innerHTML = `
-            <div class="mb-8 text-center">
-                <p class="text-sky-600 font-bold uppercase tracking-wide text-sm mb-2">
-                    Grupo de Investigación Kernel
-                </p>
-
-                <h1 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight">
-                    Producción científica
-                </h1>
-
-                <p class="text-slate-500 max-w-3xl mx-auto mt-3 text-sm md:text-base leading-relaxed">
-                    Publicaciones recientes del grupo en métodos iterativos, análisis numérico,
-                    optimización, teoría de grupos y matemática aplicada.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="kernel-stat-card bg-white rounded-2xl p-5 shadow-md border border-sky-100">
-                    <p class="text-sky-600 text-xs font-bold uppercase tracking-wide">
-                        Artículos únicos
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.totalPublicaciones}
-                    </p>
-                </div>
-
-                <div class="kernel-stat-card bg-white rounded-2xl p-5 shadow-md border border-sky-100">
-                    <p class="text-sky-600 text-xs font-bold uppercase tracking-wide">
-                        Investigadores
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.investigadores}
-                    </p>
-                </div>
-
-                <div class="kernel-stat-card bg-white rounded-2xl p-5 shadow-md border border-sky-100">
-                    <p class="text-sky-600 text-xs font-bold uppercase tracking-wide">
-                        Artículos Q1
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.q1}
-                    </p>
-                </div>
-
-                <div class="kernel-stat-card bg-white rounded-2xl p-5 shadow-md border border-sky-100">
-                    <p class="text-sky-600 text-xs font-bold uppercase tracking-wide">
-                        Periodo
-                    </p>
-                    <p class="text-3xl font-black text-slate-800">
-                        ${stats.primerYear}–${stats.ultimoYear}
-                    </p>
-                </div>
-            </div>
-
-            <div class="relative flex flex-col md:shadow-2xl md:rounded-3xl md:flex-row gap-6 w-full mx-auto p-4 md:p-6 min-h-[650px] md:min-h-[720px] bg-white/70 border border-white/70 backdrop-blur-sm">
-
-                <aside id="profesores-list"
-                    class="flex flex-col gap-4 w-full md:w-1/3 max-h-[430px] md:max-h-none overflow-y-auto pr-2 custom-scrollbar bg-gray-50 p-4 rounded-2xl border border-gray-200">
-
-                    <div class="mb-2">
-                        <h2 class="text-slate-800 font-black text-lg">
-                            Investigadores
-                        </h2>
-
-                        <p class="text-slate-500 text-sm leading-relaxed">
-                            Seleccione un investigador para ver su producción científica registrada.
-                        </p>
+            <div class="mx-auto max-w-[1600px]">
+                <header class="overflow-hidden rounded-[2rem] bg-[#071820] px-6 py-10 text-white shadow-2xl md:px-10 md:py-12">
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#efc86f]">Producción científica del Grupo El Kernel</p>
+                            <h1 class="mt-3 text-4xl font-black leading-tight md:text-6xl">Publicaciones con rigor, trazabilidad e impacto</h1>
+                            <p class="mt-5 max-w-4xl text-base leading-relaxed text-slate-300 md:text-lg">Explore la producción por investigador, revista, editorial, año, cuartil y DOI. Las identidades editoriales permiten reconocer rápidamente el ecosistema de publicación de cada trabajo.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            ${[[stats.total,"Artículos únicos"],[stats.investigadores,"Investigadores"],[stats.q1,"Artículos Q1"],[stats.periodo,"Periodo registrado"]].map(([valor,etiqueta]) => `<article class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-black text-white md:text-3xl">${valor}</p><p class="mt-1 text-xs font-bold uppercase tracking-wide text-emerald-200">${etiqueta}</p></article>`).join("")}
+                        </div>
                     </div>
+                </header>
 
-                    ${publicacionesContenido
-                        .map(p => renderProfesorItem(p, Number(p.id) === Number(selectedId)))
-                        .join("")}
-                </aside>
+                <div class="mt-8 grid min-h-[720px] grid-cols-1 gap-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-xl md:grid-cols-[0.78fr_1.5fr] md:p-6">
+                    <aside class="max-h-[430px] overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 p-4 custom-scrollbar md:max-h-none">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-[#b37a2a]">Autores del grupo</p>
+                        <h2 class="mt-1 text-2xl font-black text-slate-950">Seleccione un investigador</h2>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">La ficha muestra sus revistas, cuartiles, periodo y acceso directo a cada publicación.</p>
+                        <div class="mt-5 flex flex-col gap-4">${publicacionesContenido.map((p) => renderProfesorItem(p, Number(p.id) === Number(selectedId))).join("")}</div>
+                    </aside>
 
-                <div id="detalle-container" class="
-                    fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4
-                    md:relative md:inset-auto md:z-0 md:bg-transparent md:flex md:w-2/3 md:p-0
-                    ${ocultarDetalleMobile ? "hidden" : "flex"}
-                ">
-                    <div class="bg-[#1e293b] w-full max-w-lg md:max-w-none h-[85%] md:h-full rounded-3xl shadow-2xl p-6 relative border border-slate-700">
-                        ${renderDetallePublicaciones(profesor)}
+                    <div id="detalle-container" class="fixed inset-0 z-[350] items-center justify-center bg-slate-950/80 p-4 md:relative md:inset-auto md:z-0 md:flex md:bg-transparent md:p-0 ${ocultarDetalleMobile ? "hidden" : "flex"}">
+                        <div class="h-[88%] w-full max-w-lg rounded-[2rem] border border-white/10 bg-[#071820] p-5 shadow-2xl md:h-full md:max-w-none md:p-6">${renderDetallePublicaciones(profesor)}</div>
                     </div>
                 </div>
             </div>
         `;
 
-        container.querySelectorAll("[data-id]").forEach(item => {
+        container.querySelectorAll("[data-id]").forEach((item) => {
             item.onclick = () => {
                 selectedId = Number(item.dataset.id);
-
-                if (window.innerWidth < 768) {
-                    isModalOpen = true;
-                }
-
+                if (window.innerWidth < 768) isModalOpen = true;
                 updateView();
             };
         });
-
-        const closeBtn = container.querySelector("#close-modal");
-
-        if (closeBtn) {
-            closeBtn.onclick = () => {
-                isModalOpen = false;
-                updateView();
-            };
-        }
+        container.querySelector("#close-modal")?.addEventListener("click", () => {
+            isModalOpen = false;
+            updateView();
+        });
     };
 
-    const handleResize = () => {
+    window.addEventListener("resize", () => {
         clearTimeout(resizeTimer);
-
         resizeTimer = setTimeout(() => {
-            if (window.innerWidth >= 768) {
-                isModalOpen = false;
-            }
-
+            if (window.innerWidth >= 768) isModalOpen = false;
             updateView();
         }, 120);
-    };
-
-    window.addEventListener("resize", handleResize);
+    });
 
     updateView();
-
     return container;
 }
