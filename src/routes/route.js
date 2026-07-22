@@ -29,10 +29,7 @@ async function cargarCalculadoraRegresionConteo() {
         "../pages/CalculadoraRegresionConteo.js"
     );
 
-    if (
-        typeof modulo.CalculadoraRegresionConteo !==
-        "function"
-    ) {
+    if (typeof modulo.CalculadoraRegresionConteo !== "function") {
         throw new Error(
             "La calculadora de regresión de conteo no está disponible."
         );
@@ -41,151 +38,149 @@ async function cargarCalculadoraRegresionConteo() {
     return modulo.CalculadoraRegresionConteo();
 }
 
+async function cargarCalculadoraFiabilidadCuestionarios() {
+    const modulo = await import(
+        "../pages/CalculadoraFiabilidadCuestionarios.js"
+    );
+
+    if (
+        typeof modulo.CalculadoraFiabilidadCuestionarios !==
+        "function"
+    ) {
+        throw new Error(
+            "La calculadora de cuestionarios y fiabilidad no está disponible."
+        );
+    }
+
+    return modulo.CalculadoraFiabilidadCuestionarios();
+}
+
 const routes = {
     home: {
         page: CreatePageHome,
         layout: "default",
         title: "Portada | El Kernel"
     },
-
     quienesSomos: {
         page: CreatePageQuienesSomos,
         layout: "full",
         title: "Quiénes somos | El Kernel"
     },
-
     equipment: {
         page: Equipment,
         layout: "default",
         title: "Equipo de investigación | El Kernel"
     },
-
     FormacionAcademica: {
         page: FormacionAcademica,
         layout: "default",
         title: "Formación académica | El Kernel"
     },
-
     noticias: {
         page: CreatePageNews,
         layout: "full",
         title: "Noticias | El Kernel"
     },
-
     publicaciones: {
         page: publicaciones,
         layout: "default",
         title: "Publicaciones | El Kernel"
     },
-
     proyectos: {
         page: proyectos,
         layout: "default",
         title: "Proyectos | El Kernel"
     },
-
     lineas: {
         page: lineas,
         layout: "default",
         title: "Líneas de investigación | El Kernel"
     },
-
     contacto: {
         page: Contacto,
         layout: "default",
         title: "Contacto | El Kernel"
     },
-
     herramientas: {
         page: herramientas,
         layout: "default",
         title: "Herramientas | El Kernel"
     },
-
     laboratorioKernel: {
         page: LaboratorioKernel,
         layout: "default",
         title: "Laboratorio Inteligente de Investigación | El Kernel"
     },
-
     asistentePruebas: {
         page: AsistentePruebas,
         layout: "default",
         title: "¿Qué prueba debo utilizar? | El Kernel"
     },
-
     comparacionGrupos: {
         page: ComparacionGrupos,
         layout: "default",
         title: "Comparación de grupos y mediciones | El Kernel"
     },
-
     calculadoraDosGrupos: {
         page: CalculadoraDosGrupos,
         layout: "default",
         title: "Comparación de dos grupos | El Kernel"
     },
-
     calculadoraDosMuestrasRelacionadas: {
         page: CalculadoraDosMuestrasRelacionadas,
         layout: "default",
         title: "Comparación de dos mediciones relacionadas | El Kernel"
     },
-
     calculadoraTresOMasGrupos: {
         page: CalculadoraTresOMasGrupos,
         layout: "default",
         title: "Comparación de tres o más grupos independientes | El Kernel"
     },
-
     calculadoraTresOMasMedicionesRelacionadas: {
         page: CalculadoraTresOMasMedicionesRelacionadas,
         layout: "default",
         title: "Comparación de tres o más mediciones relacionadas | El Kernel"
     },
-
     correlacionAsociacion: {
         page: CorrelacionAsociacion,
         layout: "default",
         title: "Correlación y asociación | El Kernel"
     },
-
     calculadoraRelacionVariables: {
         page: CalculadoraRelacionVariables,
         layout: "default",
         title: "Relación entre variables | El Kernel"
     },
-
     calculadoraAsociacionCategorica: {
         page: CalculadoraAsociacionCategorica,
         layout: "default",
         title: "Asociación entre variables categóricas | El Kernel"
     },
-
     calculadoraEstadisticaDescriptiva: {
         page: CalculadoraEstadisticaDescriptiva,
         layout: "default",
         title: "Estadística descriptiva | El Kernel"
     },
-
+    calculadoraFiabilidadCuestionarios: {
+        page: cargarCalculadoraFiabilidadCuestionarios,
+        layout: "default",
+        title: "Cuestionarios y fiabilidad | El Kernel"
+    },
     regresionModelos: {
         page: RegresionModelos,
         layout: "default",
         title: "Modelos de regresión | El Kernel"
     },
-
     calculadoraRegresion: {
         page: CalculadoraRegresionCompleta,
         layout: "default",
         title: "Regresión lineal y múltiple | El Kernel"
     },
-
     calculadoraRegresionLogistica: {
         page: CalculadoraRegresionLogistica,
         layout: "default",
         title: "Regresión logística binaria | El Kernel"
     },
-
     calculadoraRegresionConteo: {
         page: cargarCalculadoraRegresionConteo,
         layout: "default",
@@ -212,7 +207,6 @@ export function routerInit() {
         "hashchange",
         handleRouteChange
     );
-
     handleRouteChange();
 }
 
@@ -252,23 +246,12 @@ function crearVistaErrorRuta(error) {
             <p class="text-slate-600 leading-relaxed mb-5">
                 La aplicación principal continúa disponible. Regrese al laboratorio o intente cargar nuevamente esta ruta.
             </p>
-            <div
-                data-mensaje-error-ruta
-                class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 break-words"
-            ></div>
+            <div data-mensaje-error-ruta class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 break-words"></div>
             <div class="flex flex-col sm:flex-row gap-3 mt-6">
-                <button
-                    type="button"
-                    data-action="reintentar-ruta"
-                    class="rounded-xl bg-red-700 px-6 py-3 text-white font-black hover:bg-red-800 transition-colors"
-                >
+                <button type="button" data-action="reintentar-ruta" class="rounded-xl bg-red-700 px-6 py-3 text-white font-black hover:bg-red-800 transition-colors">
                     Reintentar
                 </button>
-                <button
-                    type="button"
-                    data-action="volver-laboratorio"
-                    class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 font-black hover:bg-slate-50 transition-colors"
-                >
+                <button type="button" data-action="volver-laboratorio" class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 font-black hover:bg-slate-50 transition-colors">
                     Volver al laboratorio
                 </button>
             </div>
@@ -279,10 +262,9 @@ function crearVistaErrorRuta(error) {
         "[data-mensaje-error-ruta]"
     );
     if (mensaje) {
-        mensaje.textContent =
-            error instanceof Error
-                ? error.message
-                : "Se produjo un error inesperado.";
+        mensaje.textContent = error instanceof Error
+            ? error.message
+            : "Se produjo un error inesperado.";
     }
 
     section.querySelector(
@@ -300,13 +282,10 @@ function crearVistaErrorRuta(error) {
 }
 
 async function loadRoute(route) {
-    const content =
-        document.querySelector("main");
+    const content = document.querySelector("main");
     const page = routes[route];
 
-    if (!content) {
-        return;
-    }
+    if (!content) return;
 
     content.innerHTML = "";
 
@@ -332,10 +311,7 @@ async function loadRoute(route) {
             top: 0,
             behavior: "auto"
         });
-        trackPageView(
-            route,
-            page.title
-        );
+        trackPageView(route, page.title);
     } catch (error) {
         console.error(
             `[Kernel] Error al cargar la ruta ${route}.`,
