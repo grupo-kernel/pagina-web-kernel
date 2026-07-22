@@ -52,14 +52,14 @@ export function DisplaySubMenu(nav) {
         });
 
         panel.addEventListener("click", (event) => {
-            if (event.target.closest("[data-route]")) {
+            if (event.target.closest("[data-route], [data-home-section]")) {
                 establecerEstado(elemento, false);
             }
         });
     });
 
     nav.addEventListener("click", (event) => {
-        if (event.target.closest("[data-route]")) cerrarTodos();
+        if (event.target.closest("[data-route], [data-home-section]")) cerrarTodos();
     });
 
     document.addEventListener("click", (event) => {
