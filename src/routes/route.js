@@ -122,7 +122,7 @@ const cargarCalculadoraRegresionConteo = crearCargador(
 );
 
 const routes = {
-    home: { page: CreatePageHome, layout: "default", title: "Portada | El Kernel" },
+    home: { page: CreatePageHome, layout: "home", title: "Portada | El Kernel" },
     quienesSomos: { page: CreatePageQuienesSomos, layout: "full", title: "Quiénes somos | El Kernel" },
     equipment: { page: Equipment, layout: "default", title: "Equipo de investigación | El Kernel" },
     FormacionAcademica: { page: FormacionAcademica, layout: "default", title: "Formación académica | El Kernel" },
