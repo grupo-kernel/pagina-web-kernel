@@ -46,32 +46,23 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         rel="stylesheet"
     >
-  <script type="module" crossorigin src="./assets/index-BJCqb-wd.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CNPDTmqi.css">
+  <script type="module" crossorigin src="./assets/index-DxbxW277.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DbiBZ0gx.css">
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Encabezado y navegación principal -->
-    <div class="w-full static bg-white shadow-lg border-b-[0.4px]">
+    <div
+        data-site-header
+        class="sticky top-0 z-[200] w-full overflow-visible border-b border-slate-200 bg-white/95 shadow-lg backdrop-blur-md"
+    >
         <div
-            class="
-                w-full
-                grid grid-cols-4
-                lg:grid-cols-18
-                items-center
-                px-4 lg:px-6
-            "
+            class="relative z-[210] grid w-full grid-cols-4 items-center overflow-visible px-4 lg:grid-cols-18 lg:px-6"
         >
             <header
                 id="header"
-                class="
-                    col-span-4
-                    lg:col-span-5
-                    xl:col-span-4
-                    flex items-center
-                    py-2
-                "
+                class="col-span-4 flex items-center py-2 lg:col-span-5 xl:col-span-4"
             ></header>
 
             <nav
@@ -80,12 +71,14 @@
                     hidden
                     fixed
                     top-0 left-0
-                    z-50
+                    z-[300]
                     h-screen
                     w-3/4
+                    overflow-y-auto
                     p-1.5
                     flex-col
                     bg-white
+                    shadow-2xl
                     transition-transform
                     duration-300
                     ease-in-out
@@ -93,10 +86,11 @@
                     lg:relative
                     lg:top-auto
                     lg:left-auto
-                    lg:z-auto
+                    lg:z-[220]
                     lg:flex
                     lg:h-auto
                     lg:w-auto
+                    lg:overflow-visible
                     lg:col-span-13
                     lg:flex-row
                     lg:text-lg
@@ -113,6 +107,8 @@
         id="main"
         class="
             flex-1
+            min-w-0
+            w-full
             max-w-7xl
             2xl:max-w-500
             3xl:max-w-none
