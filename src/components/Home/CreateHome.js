@@ -1,5 +1,4 @@
 import { CrearPortadaKernel2026 } from "./PortadaKernel2026.js";
-import { CrearCarruselUniversidades } from "./CarruselUniversidades.js";
 import { obtenerEstadisticasAnalytics } from "../../services/analytics.js";
 
 function formatearNumero(valor) {
@@ -16,19 +15,6 @@ function formatearFecha(fechaISO) {
         dateStyle: "medium",
         timeStyle: "short"
     }).format(fecha);
-}
-
-function insertarCarruselUniversidades(section) {
-    const carrusel = CrearCarruselUniversidades();
-    const contenido = section.firstElementChild;
-    const encabezado = contenido?.querySelector("header");
-
-    if (encabezado?.parentElement) {
-        encabezado.insertAdjacentElement("afterend", carrusel);
-        return;
-    }
-
-    section.prepend(carrusel);
 }
 
 async function cargarEstadisticasAnalytics(section) {
@@ -68,7 +54,6 @@ async function cargarEstadisticasAnalytics(section) {
 
 export function CreateHome() {
     const section = CrearPortadaKernel2026();
-    insertarCarruselUniversidades(section);
     cargarEstadisticasAnalytics(section);
     return section;
 }

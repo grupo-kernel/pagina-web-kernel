@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { MODULOS_LABORATORIO } from "../src/data/modulosLaboratorio.js";
+import { existeIconoLaboratorio } from "../src/utils/iconosLaboratorio.js";
 
 const laboratorio = await readFile(
     new URL("../src/pages/LaboratorioKernel.js", import.meta.url),
@@ -41,6 +42,10 @@ assert.equal(new Set(rutasModulos).size, rutasModulos.length, "Cada módulo debe
 MODULOS_LABORATORIO.forEach((modulo) => {
     assert.ok(modulo.titulo.trim(), `El módulo ${modulo.id} debe tener título.`);
     assert.ok(modulo.descripcion.trim(), `El módulo ${modulo.id} debe tener descripción.`);
+    assert.ok(
+        existeIconoLaboratorio(modulo.icono),
+        `El módulo ${modulo.id} debe tener un icono SVG interno disponible.`
+    );
     assert.match(
         rutas,
         new RegExp(`\\b${modulo.ruta}\\s*:`),
@@ -49,7 +54,13 @@ MODULOS_LABORATORIO.forEach((modulo) => {
 });
 
 assert.match(laboratorio, /MODULOS_LABORATORIO\.map\(crearTarjetaModulo\)/);
+assert.match(laboratorio, /iconoLaboratorio\(modulo\.icono/);
 assert.match(laboratorio, /data-route=/);
+assert.doesNotMatch(
+    laboratorio,
+    /function icono\([^)]*\)[\s\S]*?<i aria-hidden="true" class="bx/,
+    "El laboratorio no debe depender de la fuente externa para sus iconos principales."
+);
 assert.doesNotMatch(laboratorio, /onclick\s*=/i, "La navegación no debe depender de atributos onclick.");
 assert.doesNotMatch(principal, /iniciarIntegracionModulosFinalesLaboratorio/);
 assert.doesNotMatch(principal, /iniciarIntegracionRegresionLaboratorio/);
@@ -65,9 +76,19 @@ assert.match(portada, /mleonardos@unapec\.edu\.do/);
 assert.match(portada, /ISFODOSU/);
 assert.match(portada, /UASD/);
 assert.match(portada, /UNAPEC/);
+assert.match(portada, /CrearCarruselUniversidades/);
+assert.match(portada, /data-pestanas-universidades-portada/);
+assert.match(
+    portada,
+    /contenedorUniversidades\?\.replaceChildren\(CrearCarruselUniversidades\(\)\)/,
+    "Las universidades deben integrarse dentro del encabezado principal."
+);
+assert.doesNotMatch(
+    home,
+    /insertAdjacentElement\("afterend", carrusel\)/,
+    "La ruleta no debe insertarse como un bloque separado debajo del encabezado."
+);
 
-assert.match(home, /CrearCarruselUniversidades/);
-assert.match(home, /insertAdjacentElement\("afterend", carrusel\)/);
 assert.match(carruselUniversidades, /isfodosu\.png/);
 assert.match(carruselUniversidades, /uasd\.png/);
 assert.match(carruselUniversidades, /apec\.png/);
@@ -77,13 +98,18 @@ assert.match(carruselUniversidades, /UNAPEC/);
 assert.equal(
     (carruselUniversidades.match(/id:\s*"(?:isfodosu|uasd|unapec)"/g) || []).length,
     3,
-    "La ruleta debe declarar exactamente las tres instituciones principales."
+    "Las pestañas deben declarar exactamente las tres instituciones principales."
 );
+assert.match(carruselUniversidades, /role="tablist"/);
+assert.match(carruselUniversidades, /role="tab"/);
+assert.match(carruselUniversidades, /role="tabpanel"/);
+assert.match(carruselUniversidades, /aria-selected=/);
 assert.match(carruselUniversidades, /data-universidad-control/);
-assert.match(carruselUniversidades, /INTERVALO_ROTACION\s*=\s*5500/);
+assert.match(carruselUniversidades, /INTERVALO_ROTACION\s*=\s*6000/);
 assert.match(carruselUniversidades, /prefers-reduced-motion/);
 assert.match(carruselUniversidades, /aria-live="polite"/);
 assert.match(carruselUniversidades, /ArrowLeft/);
+assert.match(carruselUniversidades, /ArrowRight/);
 assert.match(carruselUniversidades, /touchstart/);
 
 assert.match(pie, /new Date\(\)\.getFullYear\(\)/);
@@ -93,5 +119,5 @@ assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
 console.log(
-    "✓ Portada, ruleta de universidades, navegación de los nueve módulos y pie de página validados."
+    "✓ Portada integrada, pestañas universitarias, iconos SVG, navegación y pie de página validados."
 );

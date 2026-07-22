@@ -2,6 +2,7 @@ import { crearLogin } from "../auth/login.js";
 import { esperarAutenticacion } from "../auth/authGuard.js";
 import { cerrarSesion } from "../auth/authService.js";
 import { MODULOS_LABORATORIO } from "../data/modulosLaboratorio.js";
+import { iconoLaboratorio } from "../utils/iconosLaboratorio.js";
 
 function escapar(texto) {
     return String(texto ?? "")
@@ -12,15 +13,11 @@ function escapar(texto) {
         .replaceAll("'", "&#039;");
 }
 
-function icono(nombre, clases = "w-6 h-6") {
-    return `<i aria-hidden="true" class="bx ${escapar(nombre)} ${escapar(clases)}"></i>`;
-}
-
 function crearPilar({ titulo, descripcion, iconoNombre, fondo, color, borde }) {
     return `
         <article class="h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border ${fondo} ${color} ${borde}">
-                ${icono(iconoNombre, "text-3xl")}
+                ${iconoLaboratorio(iconoNombre, "text-3xl")}
             </div>
             <h2 class="mb-3 text-2xl font-black text-slate-900">${escapar(titulo)}</h2>
             <p class="leading-relaxed text-slate-600">${escapar(descripcion)}</p>
@@ -33,7 +30,7 @@ function crearTarjetaModulo(modulo) {
         <article class="group h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" data-modulo-id="${escapar(modulo.id)}">
             <div class="flex h-full items-start gap-4">
                 <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border transition-transform duration-300 group-hover:scale-110 ${modulo.fondoIcono} ${modulo.colorIcono} ${modulo.bordeIcono}">
-                    ${icono(modulo.icono, "text-3xl")}
+                    ${iconoLaboratorio(modulo.icono, "text-3xl")}
                 </div>
                 <div class="flex h-full min-w-0 flex-col">
                     <h3 class="mb-2 text-xl font-black text-slate-900">${escapar(modulo.titulo)}</h3>
@@ -45,7 +42,7 @@ function crearTarjetaModulo(modulo) {
                         aria-label="Explorar ${escapar(modulo.titulo)}"
                     >
                         Explorar
-                        ${icono("bx-right-arrow-alt", "text-xl")}
+                        ${iconoLaboratorio("bx-right-arrow-alt", "text-xl")}
                     </button>
                 </div>
             </div>
@@ -74,7 +71,7 @@ export async function LaboratorioKernel() {
             <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-sky-500/20"></div>
             <div class="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-blue-700/25"></div>
             <div class="absolute right-10 top-10 hidden h-28 w-28 rotate-6 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-sky-300 lg:flex">
-                ${icono("bx-brain", "text-6xl")}
+                ${iconoLaboratorio("bx-brain", "text-6xl")}
             </div>
 
             <button
@@ -87,7 +84,7 @@ export async function LaboratorioKernel() {
 
             <div class="relative z-10 max-w-4xl">
                 <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-4 py-2 text-sky-300">
-                    ${icono("bx-atom", "text-xl")}
+                    ${iconoLaboratorio("bx-atom", "text-xl")}
                     <span class="text-xs font-black uppercase tracking-[0.20em] md:text-sm">Grupo de Investigación El Kernel</span>
                 </div>
 
@@ -98,13 +95,13 @@ export async function LaboratorioKernel() {
 
                 <div class="mt-8 flex flex-wrap gap-3">
                     <span class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-bold text-sky-300">
-                        ${icono("bx-book-open", "text-xl")}<span class="text-white">Aprendizaje guiado</span>
+                        ${iconoLaboratorio("bx-book-open", "text-xl")}<span class="text-white">Aprendizaje guiado</span>
                     </span>
                     <span class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-bold text-amber-300">
-                        ${icono("bx-check-shield", "text-xl")}<span class="text-white">Selección inteligente</span>
+                        ${iconoLaboratorio("bx-check-shield", "text-xl")}<span class="text-white">Selección inteligente</span>
                     </span>
                     <span class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-bold text-emerald-300">
-                        ${icono("bx-calculator", "text-xl")}<span class="text-white">Herramientas de análisis</span>
+                        ${iconoLaboratorio("bx-calculator", "text-xl")}<span class="text-white">Herramientas de análisis</span>
                     </span>
                 </div>
             </div>
@@ -141,7 +138,7 @@ export async function LaboratorioKernel() {
             <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div class="flex items-start gap-5">
                     <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white">
-                        ${icono("bx-help-circle", "text-4xl")}
+                        ${iconoLaboratorio("bx-help-circle", "text-4xl")}
                     </div>
                     <div>
                         <p class="mb-2 text-xs font-black uppercase tracking-widest text-sky-100">Asistente metodológico</p>
@@ -155,7 +152,7 @@ export async function LaboratorioKernel() {
                     class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-6 py-4 font-black text-blue-700 shadow-lg transition-colors hover:bg-sky-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                     aria-label="Iniciar el asistente metodológico"
                 >
-                    ${icono("bx-check-shield", "text-2xl")}
+                    ${iconoLaboratorio("bx-check-shield", "text-2xl")}
                     Iniciar asistente
                 </button>
             </div>
@@ -168,7 +165,7 @@ export async function LaboratorioKernel() {
                     <h2 class="text-3xl font-black text-slate-900 md:text-4xl">Explore según su necesidad de investigación</h2>
                 </div>
                 <div class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500">
-                    ${icono("bx-grid-alt", "text-xl")}
+                    ${iconoLaboratorio("bx-grid-alt", "text-xl")}
                     ${MODULOS_LABORATORIO.length} módulos especializados
                 </div>
             </div>

@@ -4,6 +4,8 @@ import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 import { proyecto } from "../../data/proyectoContenido.js";
 import { lineasInvestigacion } from "../../data/lineasInvestigacion.js";
 import { MODULOS_LABORATORIO } from "../../data/modulosLaboratorio.js";
+import { iconoLaboratorio } from "../../utils/iconosLaboratorio.js";
+import { CrearCarruselUniversidades } from "./CarruselUniversidades.js";
 
 function escapar(texto) {
     return String(texto ?? "")
@@ -91,7 +93,7 @@ function tarjetaProyecto(item) {
 function resumenModulos() {
     return MODULOS_LABORATORIO.map((modulo) => `
         <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs font-bold text-slate-100">
-            <i aria-hidden="true" class="bx ${escapar(modulo.icono)} text-sky-300"></i>
+            <span class="text-sky-300">${iconoLaboratorio(modulo.icono, "text-base")}</span>
             ${escapar(modulo.titulo)}
         </span>
     `).join("");
@@ -136,60 +138,68 @@ export function CrearPortadaKernel2026() {
             <header class="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white shadow-2xl">
                 <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-sky-500/20 blur-2xl"></div>
                 <div class="absolute -bottom-40 -left-32 h-[28rem] w-[28rem] rounded-full bg-blue-700/20 blur-2xl"></div>
-                <div class="relative z-10 grid grid-cols-1 gap-10 px-6 py-10 md:px-10 md:py-14 xl:grid-cols-[1.15fr_0.85fr] xl:px-14 xl:py-16">
-                    <div class="flex flex-col justify-center">
-                        <div class="mb-6 flex items-center gap-4">
-                            <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-white/15 bg-white p-2 shadow-xl md:h-24 md:w-24">
-                                <img src="${kernelLogo}" alt="Logo del Grupo de Investigación El Kernel" class="h-full w-full object-contain" loading="eager" />
+
+                <div class="relative z-10 px-6 py-9 md:px-10 md:py-12 xl:px-12 xl:py-14">
+                    <div class="grid grid-cols-1 gap-8 xl:grid-cols-[1.02fr_0.98fr] xl:items-stretch">
+                        <div class="flex flex-col justify-center">
+                            <div class="mb-5 flex items-center gap-4">
+                                <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-white/15 bg-white p-2 shadow-xl md:h-24 md:w-24">
+                                    <img src="${kernelLogo}" alt="Logo del Grupo de Investigación El Kernel" class="h-full w-full object-contain" loading="eager" />
+                                </div>
+                                <div>
+                                    <p class="text-xs font-black uppercase tracking-[0.24em] text-sky-300 md:text-sm">Grupo de Investigación</p>
+                                    <p class="mt-1 text-2xl font-black text-white md:text-3xl">El Kernel</p>
+                                    <p class="mt-1 text-sm text-slate-300">República Dominicana</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-xs font-black uppercase tracking-[0.24em] text-sky-300 md:text-sm">Grupo de Investigación</p>
-                                <p class="mt-1 text-2xl font-black text-white md:text-3xl">El Kernel</p>
-                                <p class="mt-1 text-sm text-slate-300">República Dominicana</p>
+
+                            <h1 class="max-w-4xl text-4xl font-black leading-[1.06] text-white md:text-5xl xl:text-6xl">Matemática aplicada, computación científica e innovación educativa</h1>
+                            <p class="mt-5 max-w-3xl text-base leading-relaxed text-slate-200 md:text-lg xl:text-xl">
+                                Investigamos ecuaciones diferenciales parciales no lineales, métodos iterativos de alto orden, análisis matricial, optimización, diseño de algoritmos y educación matemática.
+                            </p>
+                            <p class="mt-4 max-w-2xl border-l-4 border-sky-400 pl-4 text-sm italic text-sky-100 md:text-base">“Innovando en la frontera entre matemática, computación y educación.”</p>
+
+                            <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <a href="#/laboratorioKernel" class="inline-flex items-center justify-center gap-3 rounded-xl bg-sky-500 px-6 py-4 font-black text-slate-950 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-sky-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200" aria-label="Entrar al Laboratorio Inteligente de Investigación">
+                                    <i aria-hidden="true" class="bx bx-brain text-2xl"></i>
+                                    Entrar al Laboratorio Inteligente
+                                </a>
+                                <a href="#/publicaciones" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-4 font-black text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30">
+                                    <i aria-hidden="true" class="bx bx-article text-xl"></i>
+                                    Publicaciones
+                                </a>
+                                <a href="#/equipment" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-4 font-black text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30">
+                                    <i aria-hidden="true" class="bx bx-group text-xl"></i>
+                                    Equipo
+                                </a>
+                            </div>
+
+                            <div class="mt-6 flex items-start gap-3 rounded-2xl border border-sky-300/20 bg-sky-400/10 p-4">
+                                <i aria-hidden="true" class="bx bx-shield-quarter mt-0.5 text-2xl text-sky-300"></i>
+                                <div>
+                                    <h2 class="font-black text-white">Investigación con orientación práctica</h2>
+                                    <p class="mt-1 text-sm leading-relaxed text-slate-200">Desarrollo teórico, experimentación numérica, aplicaciones interdisciplinarias, herramientas reproducibles y formación científica.</p>
+                                </div>
                             </div>
                         </div>
 
-                        <h1 class="max-w-4xl text-4xl font-black leading-[1.05] text-white md:text-6xl xl:text-7xl">Matemática aplicada, computación científica e innovación educativa</h1>
-                        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-200 md:text-xl">
-                            Investigamos ecuaciones diferenciales parciales no lineales, métodos iterativos de alto orden, análisis matricial, optimización, diseño de algoritmos y educación matemática.
-                        </p>
-                        <p class="mt-5 max-w-2xl border-l-4 border-sky-400 pl-4 text-base italic text-sky-100 md:text-lg">“Innovando en la frontera entre matemática, computación y educación.”</p>
-
-                        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                            <a href="#/laboratorioKernel" class="inline-flex items-center justify-center gap-3 rounded-xl bg-sky-500 px-6 py-4 font-black text-slate-950 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-sky-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200" aria-label="Entrar al Laboratorio Inteligente de Investigación">
-                                <i aria-hidden="true" class="bx bx-brain text-2xl"></i>
-                                Entrar al Laboratorio Inteligente
-                            </a>
-                            <a href="#/publicaciones" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-black text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30">
-                                <i aria-hidden="true" class="bx bx-article text-xl"></i>
-                                Publicaciones
-                            </a>
-                            <a href="#/equipment" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-black text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30">
-                                <i aria-hidden="true" class="bx bx-group text-xl"></i>
-                                Equipo
-                            </a>
-                        </div>
+                        <div data-pestanas-universidades-portada class="min-w-0"></div>
                     </div>
 
-                    <aside class="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-md md:p-7" aria-label="Indicadores del grupo">
-                        <p class="text-xs font-black uppercase tracking-[0.20em] text-sky-300">El grupo en cifras</p>
-                        <h2 class="mt-3 text-3xl font-black leading-tight text-white">Producción, talento y líneas de trabajo</h2>
-                        <div class="mt-6 grid grid-cols-2 gap-4">
+                    <section class="mt-8 border-t border-white/10 pt-6" aria-label="Indicadores del grupo">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                            <div>
+                                <p class="text-xs font-black uppercase tracking-[0.20em] text-sky-300">El grupo en cifras</p>
+                                <h2 class="mt-1 text-2xl font-black text-white">Producción, talento y líneas de trabajo</h2>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
                             ${tarjetaMetrica(contenidoCards.length, "Integrantes principales", "bx-group", "text-sky-300")}
                             ${tarjetaMetrica(totalPublicaciones, "Publicaciones únicas registradas", "bx-book-open", "text-emerald-300")}
                             ${tarjetaMetrica(proyecto.length, "Propuestas de investigación", "bx-bulb", "text-amber-300")}
                             ${tarjetaMetrica(lineasInvestigacion.length, "Líneas de investigación", "bx-git-branch", "text-violet-300")}
                         </div>
-                        <div class="mt-6 rounded-2xl border border-sky-300/20 bg-sky-400/10 p-5">
-                            <div class="flex items-start gap-3">
-                                <i aria-hidden="true" class="bx bx-shield-quarter mt-1 text-2xl text-sky-300"></i>
-                                <div>
-                                    <h3 class="font-black text-white">Investigación con orientación práctica</h3>
-                                    <p class="mt-2 text-sm leading-relaxed text-slate-200">Desarrollo teórico, experimentación numérica, aplicaciones interdisciplinarias, herramientas reproducibles y formación científica.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
+                    </section>
                 </div>
             </header>
 
@@ -237,7 +247,7 @@ export function CrearPortadaKernel2026() {
 
             <section class="grid grid-cols-1 gap-6 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center" aria-labelledby="titulo-vinculacion-portada">
                 <div>
-                    <p class="mb-2 text-xs font-black uppercase tracking-widest text-sky-700">Vinculación académica</p>
+                    <p class="mb-2 text-xs font-black uppercase tracking-widest text-sky-700">Red académica</p>
                     <h2 id="titulo-vinculacion-portada" class="text-2xl font-black text-slate-900 md:text-3xl">Instituciones presentes en la trayectoria, afiliaciones y proyectos del grupo</h2>
                     <div class="mt-5 flex flex-wrap gap-3">
                         <a href="https://www.isfodosu.edu.do/" target="_blank" rel="noopener noreferrer" class="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-black text-slate-700 hover:border-sky-400 hover:text-sky-700">ISFODOSU</a>
@@ -253,6 +263,11 @@ export function CrearPortadaKernel2026() {
             </section>
         </div>
     `;
+
+    const contenedorUniversidades = section.querySelector(
+        "[data-pestanas-universidades-portada]"
+    );
+    contenedorUniversidades?.replaceChildren(CrearCarruselUniversidades());
 
     return section;
 }
