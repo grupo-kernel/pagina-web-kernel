@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:stats": "node --experimental-default-type=module scripts/validar-estadistica-descriptiva.mjs",
+    "test:count": "node --experimental-default-type=module scripts/validar-regresion-conteo.mjs",
+    "test:all": "npm run test:stats && npm run test:count",
     "tailwind": "npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css --watch"
   },
   "keywords": [],
