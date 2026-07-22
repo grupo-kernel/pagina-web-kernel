@@ -2,26 +2,50 @@ const MODELOS_REGRESION = {
     "regresión lineal simple": {
         ruta: "calculadoraRegresion",
         tipo: "simple",
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        clase: "rose",
         texto:
             "Abra la calculadora de regresión lineal y cargue una variable dependiente cuantitativa y un predictor."
     },
     "regresión lineal múltiple": {
         ruta: "calculadoraRegresion",
         tipo: "multiple",
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        clase: "rose",
         texto:
             "Abra la calculadora de regresión lineal y cargue una variable dependiente cuantitativa y dos o más predictores."
     },
     "regresión logística binaria simple": {
         ruta: "calculadoraRegresionLogistica",
         tipo: "simple",
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        clase: "rose",
         texto:
             "Abra la calculadora logística y cargue una variable dependiente codificada 0/1 y un predictor."
     },
     "regresión logística binaria múltiple": {
         ruta: "calculadoraRegresionLogistica",
         tipo: "multiple",
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        clase: "rose",
         texto:
             "Abra la calculadora logística y cargue una variable dependiente codificada 0/1 y dos o más predictores."
+    },
+    "regresión de poisson": {
+        ruta: "calculadoraRegresionConteo",
+        tipo: "poisson",
+        almacenamiento: "kernel-modelo-conteo",
+        clase: "amber",
+        texto:
+            "Abra la calculadora de conteo y ajuste un modelo de Poisson con una variable dependiente formada por enteros no negativos."
+    },
+    "regresión binomial negativa": {
+        ruta: "calculadoraRegresionConteo",
+        tipo: "negativa",
+        almacenamiento: "kernel-modelo-conteo",
+        clase: "amber",
+        texto:
+            "Abra la calculadora de conteo y ajuste un modelo binomial negativo cuando exista sobredispersión respecto a Poisson."
     }
 };
 
@@ -49,14 +73,21 @@ function localizarRecomendacion() {
 
 function crearBloque(modelo) {
     const bloque = document.createElement("div");
+    const conteo = modelo.clase === "amber";
+    const borde = conteo ? "border-amber-200" : "border-rose-200";
+    const fondo = conteo ? "bg-amber-50" : "bg-rose-50";
+    const textoColor = conteo ? "text-amber-700" : "text-rose-700";
+    const botonColor = conteo
+        ? "bg-amber-600 hover:bg-amber-700"
+        : "bg-rose-700 hover:bg-rose-800";
 
     bloque.dataset.ejecutarModeloRegresion = "true";
     bloque.className =
-        "mt-8 rounded-2xl border border-rose-200 bg-rose-50 p-6";
+        `mt-8 rounded-2xl border ${borde} ${fondo} p-6`;
     bloque.innerHTML = `
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
-                <p class="uppercase tracking-widest text-rose-700 text-xs font-black mb-2">
+                <p class="uppercase tracking-widest ${textoColor} text-xs font-black mb-2">
                     Herramienta de modelización
                 </p>
                 <h2 class="text-xl font-black text-slate-900 mb-2">
@@ -71,7 +102,8 @@ function crearBloque(modelo) {
                 type="button"
                 data-route-regresion="${modelo.ruta}"
                 data-tipo-regresion="${modelo.tipo}"
-                class="shrink-0 inline-flex items-center justify-center bg-rose-700 text-white font-black rounded-xl px-6 py-4 hover:bg-rose-800 transition-colors shadow-lg"
+                data-almacenamiento-regresion="${modelo.almacenamiento}"
+                class="shrink-0 inline-flex items-center justify-center ${botonColor} text-white font-black rounded-xl px-6 py-4 transition-colors shadow-lg"
             >
                 Ejecutar este modelo
                 <span class="ml-2" aria-hidden="true">→</span>
@@ -83,9 +115,12 @@ function crearBloque(modelo) {
         "click",
         (event) => {
             const boton = event.currentTarget;
+            const almacenamiento =
+                boton.dataset.almacenamientoRegresion ||
+                "kernel-tipo-modelo-regresion";
 
             sessionStorage.setItem(
-                "kernel-tipo-modelo-regresion",
+                almacenamiento,
                 boton.dataset.tipoRegresion || ""
             );
             window.location.hash =
