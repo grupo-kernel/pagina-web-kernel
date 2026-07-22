@@ -1,4 +1,4 @@
-import{e as x,c as b,M as n,i as t,a as u}from"./index-DPXZ2eeI.js";function r(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function o({titulo:e,descripcion:a,iconoNombre:s,fondo:i,color:l,borde:d}){return`
+import{e as x,c as b,M as n,i as t,a as u}from"./index-C5KTmbt_.js";function r(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function o({titulo:e,descripcion:a,iconoNombre:s,fondo:i,color:l,borde:d}){return`
         <article class="h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border ${i} ${l} ${d}">
                 ${t(s,"text-3xl")}
