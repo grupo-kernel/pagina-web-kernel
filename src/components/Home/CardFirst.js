@@ -1,4 +1,4 @@
-import kernelLogo from "../../assets/favicon.ico";
+import kernelLogo from "../../../favicon.ico";
 import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 
 function getDOI(publicacion) {
