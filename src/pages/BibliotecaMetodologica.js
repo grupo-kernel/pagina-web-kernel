@@ -35,17 +35,14 @@ function lista(items, clase = "text-slate-700") {
 
 function tarjetaFicha(ficha) {
     return `
-        <article
-            data-ficha-id="${esc(ficha.id)}"
-            class="h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col"
-        >
+        <article class="h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col" data-ficha-id="${esc(ficha.id)}">
             <div class="flex items-start justify-between gap-4 mb-5">
                 <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 border border-sky-200 flex items-center justify-center font-black">${esc(ficha.nombre.slice(0, 1))}</div>
                 <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-black text-slate-600">${esc(ficha.tipo)}</span>
             </div>
             <p class="uppercase tracking-widest text-sky-700 text-xs font-black mb-2">${esc(ficha.categoria)}</p>
             <h3 class="text-2xl font-black text-slate-900 mb-3">${esc(ficha.nombre)}</h3>
-            <p class="text-slate-600 leading-relaxed text-sm line-clamp-4">${esc(ficha.definicion)}</p>
+            <p class="text-slate-600 leading-relaxed text-sm">${esc(ficha.definicion)}</p>
             <div class="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
                 <button type="button" data-action="consultar-ficha" data-ficha="${esc(ficha.id)}" class="flex-1 rounded-xl bg-sky-700 px-5 py-3 text-white font-black hover:bg-sky-800 transition-colors">Consultar ficha</button>
                 ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-sky-300 px-5 py-3 text-sky-800 font-black hover:bg-sky-50 transition-colors">Calcular</button>` : ""}
@@ -69,30 +66,29 @@ function plantillaReporte(ficha) {
         "",
         `Tamaño del efecto recomendado: ${ficha.efecto || "consulte la ficha"}`,
         "",
-        "Incluya siempre el diseño, tamaño muestral, supuestos revisados, estimación puntual, intervalo de confianza, valor p cuando corresponda y relevancia práctica."
+        "Incluya el diseño, tamaño muestral, supuestos revisados, estimación puntual, intervalo de confianza, valor p cuando corresponda y relevancia práctica."
     ].join("\n");
 }
 
 function detalleFicha(ficha) {
     return `
-        <div class="fixed inset-0 z-[110] bg-slate-950/70 backdrop-blur-sm p-4 md:p-8 overflow-y-auto" data-modal-biblioteca="true">
+        <div class="fixed inset-0 z-[110] bg-slate-950/70 backdrop-blur-sm p-4 md:p-8 overflow-y-auto" data-modal-biblioteca="true" role="dialog" aria-modal="true" aria-labelledby="titulo-ficha-biblioteca">
             <article class="w-full max-w-6xl mx-auto rounded-3xl bg-slate-50 border border-slate-200 shadow-2xl overflow-hidden">
                 <header class="relative overflow-hidden bg-slate-950 text-white px-6 py-8 md:px-10">
                     <div class="absolute -top-20 -right-16 w-48 h-48 rounded-full bg-sky-500/20"></div>
                     <div class="relative z-10 flex items-start justify-between gap-5">
                         <div>
                             <p class="uppercase tracking-widest text-sky-300 text-xs font-black mb-2">${esc(ficha.categoria)} · ${esc(ficha.tipo)}</p>
-                            <h2 class="text-3xl md:text-5xl font-black leading-tight">${esc(ficha.nombre)}</h2>
+                            <h2 id="titulo-ficha-biblioteca" class="text-3xl md:text-5xl font-black leading-tight">${esc(ficha.nombre)}</h2>
                             <p class="text-slate-200 leading-relaxed mt-4 max-w-4xl">${esc(ficha.definicion)}</p>
                         </div>
-                        <button type="button" data-action="cerrar-ficha" class="shrink-0 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xl font-black hover:bg-white/20" aria-label="Cerrar">×</button>
+                        <button type="button" data-action="cerrar-ficha" class="shrink-0 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xl font-black hover:bg-white/20" aria-label="Cerrar ficha">×</button>
                     </div>
                     <div class="relative z-10 flex flex-wrap gap-3 mt-7">
                         <button type="button" data-action="copiar-reporte-ficha" data-ficha="${esc(ficha.id)}" class="rounded-xl bg-white text-slate-950 px-5 py-3 font-black">Copiar modelo de reporte</button>
                         ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-white/20 bg-white/10 px-5 py-3 font-black">Abrir calculadora</button>` : ""}
                     </div>
                 </header>
-
                 <div class="p-5 md:p-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
                     ${bloque("Cuándo utilizarla", lista(ficha.cuandoUsar))}
                     ${bloque("Supuestos", lista(ficha.supuestos))}
@@ -134,6 +130,8 @@ function resumenCategorias(catalogo) {
 
 export function BibliotecaMetodologica() {
     const catalogo = obtenerCatalogoBiblioteca();
+    const tipos = [...new Set(catalogo.map((ficha) => ficha.tipo))]
+        .sort((a, b) => a.localeCompare(b, "es"));
     const section = document.createElement("section");
     section.className = "w-full max-w-7xl mx-auto px-4 py-10 md:px-8 font-sans";
     section.innerHTML = `
@@ -148,16 +146,14 @@ export function BibliotecaMetodologica() {
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">${resumenCategorias(catalogo)}</div>
             </div>
         </header>
-
         <section class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-lg">
             <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_0.8fr_0.8fr] gap-5">
                 <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Buscar procedimiento</span><input type="search" data-busqueda-biblioteca placeholder="Ej.: Welch, Spearman, regresión, fiabilidad…" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-600" /></label>
                 <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Categoría</span><select data-categoria-biblioteca class="w-full rounded-xl border border-slate-300 px-4 py-3"><option value="">Todas</option>${categoriasBiblioteca().map((categoria) => `<option>${esc(categoria)}</option>`).join("")}</select></label>
-                <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Tipo</span><select data-tipo-biblioteca class="w-full rounded-xl border border-slate-300 px-4 py-3"><option value="">Todos</option><option>No paramétrica</option><option>Paramétrica o modelización</option><option>Psicométrica</option></select></label>
+                <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Tipo</span><select data-tipo-biblioteca class="w-full rounded-xl border border-slate-300 px-4 py-3"><option value="">Todos</option>${tipos.map((valor) => `<option>${esc(valor)}</option>`).join("")}</select></label>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 text-sm text-slate-600"><p data-conteo-biblioteca></p><button type="button" data-action="limpiar-filtros" class="font-black text-sky-700 hover:text-sky-900">Limpiar filtros</button></div>
         </section>
-
         <section data-resultados-biblioteca class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8"></section>
         <section data-vacio-biblioteca class="hidden mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center"><h2 class="text-2xl font-black text-amber-950 mb-2">No encontramos coincidencias</h2><p class="text-amber-900">Pruebe otro término o elimine algún filtro.</p></section>
     `;
@@ -185,7 +181,10 @@ export function BibliotecaMetodologica() {
     };
 
     [busqueda, categoria, tipo].forEach((control) => {
-        control.addEventListener(control === busqueda ? "input" : "change", renderizar);
+        control.addEventListener(
+            control === busqueda ? "input" : "change",
+            renderizar
+        );
     });
 
     section.addEventListener("click", async (event) => {
@@ -202,7 +201,11 @@ export function BibliotecaMetodologica() {
             renderizar();
         } else if (accion === "consultar-ficha") {
             const ficha = catalogo.find((item) => item.id === boton.dataset.ficha);
-            if (ficha) document.body.insertAdjacentHTML("beforeend", detalleFicha(ficha));
+            if (ficha) {
+                document.querySelector("[data-modal-biblioteca]")?.remove();
+                document.body.insertAdjacentHTML("beforeend", detalleFicha(ficha));
+                document.querySelector("[data-action='cerrar-ficha']")?.focus();
+            }
         } else if (accion === "cerrar-ficha") {
             document.querySelector("[data-modal-biblioteca]")?.remove();
         } else if (accion === "abrir-calculadora") {
@@ -219,11 +222,12 @@ export function BibliotecaMetodologica() {
         }
     });
 
-    document.addEventListener("keydown", (event) => {
+    const cerrarConEscape = (event) => {
         if (event.key === "Escape") {
             document.querySelector("[data-modal-biblioteca]")?.remove();
         }
-    }, { once: true });
+    };
+    document.addEventListener("keydown", cerrarConEscape);
 
     renderizar();
     return section;
