@@ -1,5 +1,6 @@
 import { CrearPortadaKernel2026 } from "./PortadaKernel2026.js";
 import { obtenerEstadisticasAnalytics } from "../../services/analytics.js";
+import { setMainLayout } from "../layout/mainLayaout.js";
 
 function formatearNumero(valor) {
     return new Intl.NumberFormat("es-DO").format(Number(valor) || 0);
@@ -15,6 +16,24 @@ function formatearFecha(fechaISO) {
         dateStyle: "medium",
         timeStyle: "short"
     }).format(fecha);
+}
+
+function configurarPortadaAncha(section) {
+    setMainLayout("full");
+
+    const contenedor = section.firstElementChild;
+    if (!contenedor) return;
+
+    contenedor.classList.remove("max-w-7xl", "px-4", "md:px-8");
+    contenedor.classList.add(
+        "w-full",
+        "max-w-none",
+        "px-3",
+        "sm:px-5",
+        "lg:px-8",
+        "2xl:px-10"
+    );
+    section.dataset.portadaAncha = "true";
 }
 
 async function cargarEstadisticasAnalytics(section) {
@@ -54,6 +73,7 @@ async function cargarEstadisticasAnalytics(section) {
 
 export function CreateHome() {
     const section = CrearPortadaKernel2026();
+    configurarPortadaAncha(section);
     cargarEstadisticasAnalytics(section);
     return section;
 }
