@@ -10,12 +10,8 @@ function escapar(texto) {
 function articulo(titulo, descripcion, contenido) {
     return `
         <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
-            <h3 class="text-2xl font-black text-slate-900 mb-2">
-                ${titulo}
-            </h3>
-            <p class="text-sm text-slate-500 mb-5 leading-relaxed">
-                ${descripcion}
-            </p>
+            <h3 class="text-2xl font-black text-slate-900 mb-2">${titulo}</h3>
+            <p class="text-sm text-slate-500 mb-5 leading-relaxed">${descripcion}</p>
             ${contenido}
         </article>
     `;
@@ -31,52 +27,87 @@ function graficoBarras({
     maximo = 1,
     umbrales = []
 }) {
-    const altoUtil = 190;
+    const ancho = Math.max(600, filas.length * 68 + 90);
+    const alto = 330;
+    const izquierda = 52;
+    const derecha = 24;
+    const arriba = 28;
+    const abajo = 72;
+    const anchoUtil = ancho - izquierda - derecha;
+    const altoUtil = alto - arriba - abajo;
     const amplitud = Math.max(maximo - minimo, 1e-9);
-    const altura = (numero) =>
-        Math.max(
-            3,
-            Math.min(
-                altoUtil,
-                (numero - minimo) / amplitud * altoUtil
-            )
-        );
+    const paso = anchoUtil / Math.max(filas.length, 1);
+    const anchoBarra = Math.min(34, paso * 0.58);
+    const y = (numero) =>
+        arriba + (maximo - numero) / amplitud * altoUtil;
+    const ceroVisible = minimo <= 0 && maximo >= 0;
+    const lineaCero = ceroVisible ? y(0) : y(minimo);
 
     return articulo(
         titulo,
         descripcion,
         `<div class="overflow-x-auto">
-            <div class="relative flex items-end h-64 border-b border-l border-slate-300 px-3 pt-4 min-w-[560px]">
+            <svg viewBox="0 0 ${ancho} ${alto}" class="min-w-[580px] w-full" role="img" aria-label="${escapar(titulo)}">
+                <line x1="${izquierda}" y1="${arriba}" x2="${izquierda}" y2="${alto - abajo}" stroke="currentColor" stroke-width="2" class="text-slate-400"></line>
+                <line x1="${izquierda}" y1="${lineaCero}" x2="${ancho - derecha}" y2="${lineaCero}" stroke="currentColor" stroke-width="2" class="${ceroVisible ? "text-slate-600" : "text-slate-400"}"></line>
                 ${umbrales.map((umbral) => `
-                    <div
-                        class="absolute left-0 right-0 border-t border-dashed border-slate-400"
-                        style="bottom:${24 + altura(umbral.valor)}px"
-                        title="${escapar(umbral.etiqueta)}"
-                    ></div>
+                    <line
+                        x1="${izquierda}"
+                        y1="${y(umbral.valor)}"
+                        x2="${ancho - derecha}"
+                        y2="${y(umbral.valor)}"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-dasharray="5 5"
+                        class="text-slate-300"
+                    >
+                        <title>${escapar(umbral.etiqueta)}</title>
+                    </line>
                 `).join("")}
-                ${filas.map((fila) => {
-                    const numero = valor(fila);
+                ${filas.map((fila, indice) => {
+                    const numero = Math.max(
+                        minimo,
+                        Math.min(maximo, Number(valor(fila)))
+                    );
+                    const x = izquierda + indice * paso +
+                        (paso - anchoBarra) / 2;
+                    const yValor = y(numero);
+                    const superior = Math.min(yValor, lineaCero);
+                    const altura = Math.max(
+                        2,
+                        Math.abs(yValor - lineaCero)
+                    );
                     const negativa = numero < 0;
+                    const favorable = !negativa &&
+                        fila.recomendacion?.decision === "Conservar";
+                    const clase = negativa
+                        ? "text-red-600"
+                        : favorable
+                            ? "text-emerald-700"
+                            : "text-emerald-600";
+
                     return `
-                        <div class="flex flex-col items-center justify-end min-w-[54px] h-full px-1">
-                            <span class="text-[10px] font-black text-slate-700 mb-1">
-                                ${Number(numero).toFixed(2)}
-                            </span>
-                            <div
-                                class="w-8 ${negativa ? "bg-red-600" : "bg-emerald-600"} rounded-t"
-                                style="height:${altura(numero)}px"
-                                title="${escapar(fila.nombre)}: ${Number(numero).toFixed(4)}"
-                            ></div>
-                            <span class="text-[10px] text-slate-500 mt-2 text-center break-words max-w-[70px]">
-                                ${escapar(fila.nombre)}
-                            </span>
-                        </div>
+                        <rect
+                            x="${x}"
+                            y="${superior}"
+                            width="${anchoBarra}"
+                            height="${altura}"
+                            rx="4"
+                            fill="currentColor"
+                            class="${clase}"
+                        >
+                            <title>${escapar(fila.nombre)}: ${numero.toFixed(4)}</title>
+                        </rect>
+                        <text x="${x + anchoBarra / 2}" y="${negativa ? yValor + 16 : yValor - 7}" text-anchor="middle" font-size="10" fill="currentColor" class="text-slate-700">${numero.toFixed(2)}</text>
+                        <text x="${x + anchoBarra / 2}" y="${alto - 48}" text-anchor="middle" font-size="10" fill="currentColor" class="text-slate-600">${fila.indice ?? indice + 1}</text>
                     `;
                 }).join("")}
-            </div>
-            <p class="mt-3 text-xs text-slate-500">
-                ${escapar(etiquetaValor)}
-            </p>
+                <text x="18" y="${arriba + 4}" font-size="10" fill="currentColor" class="text-slate-600">${maximo.toFixed(2)}</text>
+                <text x="18" y="${alto - abajo + 4}" font-size="10" fill="currentColor" class="text-slate-600">${minimo.toFixed(2)}</text>
+                ${ceroVisible ? `<text x="25" y="${lineaCero - 5}" font-size="10" fill="currentColor" class="text-slate-600">0</text>` : ""}
+                <text x="${ancho / 2}" y="${alto - 14}" text-anchor="middle" font-size="11" fill="currentColor" class="text-slate-600">Número de pregunta</text>
+            </svg>
+            <p class="mt-3 text-xs text-slate-500">${escapar(etiquetaValor)}</p>
         </div>`
     );
 }
@@ -246,12 +277,8 @@ function graficoDistractores(resultado) {
 export function crearPanelGraficosEvaluacion(resultado) {
     return `
         <section class="mt-10">
-            <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">
-                Diagnóstico visual
-            </p>
-            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-3">
-                Gráficos de la evaluación
-            </h2>
+            <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">Diagnóstico visual</p>
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-3">Gráficos de la evaluación</h2>
             <p class="text-slate-600 leading-relaxed max-w-4xl mb-7">
                 Interprete conjuntamente dificultad, discriminación, relación con la puntuación total, distribución de resultados y funcionamiento de las alternativas.
             </p>
