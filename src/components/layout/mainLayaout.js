@@ -1,52 +1,47 @@
-const CLASES_ANCHO = [
+const CLASES_LAYOUT = [
     "w-full",
+    "min-w-0",
     "max-w-none",
     "max-w-7xl",
     "tabletBig:max-w-6xl",
     "xl:max-w-7xl",
     "2xl:max-w-500",
     "3xl:max-w-none",
-    "m-auto"
-];
-
-const CLASES_ESPACIADO = [
+    "m-auto",
+    "m-0",
+    "p-0",
     "p-2",
+    "mt-0",
     "mt-8",
     "md:mt-12",
-    "mt-0",
     "pt-0"
 ];
 
-function restablecerClases(main) {
-    main.classList.remove(...CLASES_ANCHO, ...CLASES_ESPACIADO);
-}
-
-function aplicarAnchoPredeterminado(main) {
-    main.classList.add(
-        "w-full",
-        "max-w-7xl",
-        "tabletBig:max-w-6xl",
-        "xl:max-w-7xl",
-        "2xl:max-w-500",
-        "3xl:max-w-none"
-    );
-}
+const CLASES_CONTENIDO_LIMITADO = [
+    "max-w-7xl",
+    "tabletBig:max-w-6xl",
+    "xl:max-w-7xl",
+    "2xl:max-w-500",
+    "3xl:max-w-none"
+];
 
 export function setMainLayout(layout = "default") {
     const main = document.getElementById("main");
     if (!main) return;
 
-    restablecerClases(main);
+    main.classList.remove(...CLASES_LAYOUT);
+    main.classList.add("w-full", "min-w-0");
 
     if (layout === "full") {
-        main.classList.add("w-full", "max-w-none", "mt-0", "pt-0");
+        main.classList.add("max-w-none", "m-0", "p-0", "mt-0", "pt-0");
         return;
     }
 
-    aplicarAnchoPredeterminado(main);
-    main.classList.add("p-2", "mt-8", "md:mt-12");
+    main.classList.add(...CLASES_CONTENIDO_LIMITADO, "p-2", "mt-8", "md:mt-12");
 
-    if (layout !== "left") {
+    if (layout === "left") {
+        main.classList.add("m-0");
+    } else {
         main.classList.add("m-auto");
     }
 }
