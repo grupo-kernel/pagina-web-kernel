@@ -27,12 +27,20 @@ const navegacion = await readFile(
     new URL("../src/components/NavBar/navBar.js", import.meta.url),
     "utf8"
 );
-const controlSubmenus = await readFile(
+const controladorSubmenus = await readFile(
     new URL("../src/Controllers/NavBar/DisplaySubMenu.js", import.meta.url),
+    "utf8"
+);
+const controladorNavegacion = await readFile(
+    new URL("../src/Controllers/NavBar/NavBar.controller.js", import.meta.url),
     "utf8"
 );
 const layoutPrincipal = await readFile(
     new URL("../src/components/layout/mainLayaout.js", import.meta.url),
+    "utf8"
+);
+const documentoPrincipal = await readFile(
+    new URL("../index.html", import.meta.url),
     "utf8"
 );
 const principal = await readFile(
@@ -95,26 +103,37 @@ assert.match(
     /contenedorUniversidades\?\.replaceChildren\(CrearCarruselUniversidades\(\)\)/,
     "Las universidades deben integrarse dentro del encabezado principal."
 );
+assert.doesNotMatch(
+    home,
+    /insertAdjacentElement\("afterend", carrusel\)/,
+    "La ruleta no debe insertarse como un bloque separado debajo del encabezado."
+);
 
 assert.match(home, /setMainLayout\("full"\)/);
-assert.match(home, /classList\.remove\("max-w-7xl", "px-4", "md:px-8"\)/);
-assert.match(home, /"max-w-none"/);
-assert.match(home, /portadaAncha/);
-assert.match(layoutPrincipal, /layout === "full"/);
-assert.match(layoutPrincipal, /main\.classList\.add\("w-full", "max-w-none", "mt-0", "pt-0"\)/);
-assert.match(layoutPrincipal, /tabletBig:max-w-6xl/);
-assert.match(layoutPrincipal, /xl:max-w-7xl/);
+assert.match(home, /dataset\.portadaAncha\s*=\s*"true"/);
+assert.match(home, /min-h-\[calc\(100svh-5rem\)\]/);
+assert.match(home, /contenedor\.classList\.remove\([\s\S]*?"max-w-7xl"/);
+assert.match(layoutPrincipal, /main\.classList\.add\("max-w-none", "m-0", "p-0", "mt-0", "pt-0"\)/);
+assert.match(documentoPrincipal, /data-site-header/);
+assert.match(documentoPrincipal, /z-\[200\]/);
+assert.match(documentoPrincipal, /lg:z-\[220\]/);
+assert.match(documentoPrincipal, /lg:overflow-visible/);
 
-assert.match(navegacion, /id="submenu-nuestro-trabajo"/);
-assert.match(navegacion, /data-route="herramientas"/);
-assert.match(navegacion, /data-submenu-trigger/);
-assert.match(navegacion, /z-\[300\]/);
-assert.match(navegacion, /Herramientas/);
-assert.match(controlSubmenus, /dataset\.submenusInicializados/);
-assert.match(controlSubmenus, /aria-expanded/);
-assert.match(controlSubmenus, /cerrarTodos/);
-assert.match(principal, /z-\[200\]/);
-assert.match(principal, /lg:z-\[210\]/);
+assert.match(navegacion, /itemSubmenu\("herramientas",\s*"Herramientas"/);
+assert.match(navegacion, /id:\s*"submenu-nuestro-trabajo"/);
+assert.match(navegacion, /data-action="toggle-submenu"/);
+assert.match(navegacion, /lg:z-\[260\]/);
+assert.match(navegacion, /lg:w-72/);
+assert.match(controladorSubmenus, /aria-expanded/);
+assert.match(controladorSubmenus, /mouseenter/);
+assert.match(controladorSubmenus, /mouseleave/);
+assert.match(controladorSubmenus, /event\.key !== "Escape"/);
+assert.equal(
+    (controladorNavegacion.match(/DisplaySubMenu\(nav\)/g) || []).length,
+    1,
+    "Los submenús deben inicializarse una sola vez."
+);
+assert.match(principal, /lg:z-\[220\]/);
 assert.match(principal, /contenido\?\.classList\.add\("relative", "z-0"\)/);
 
 assert.match(carruselUniversidades, /isfodosu\.png/);
@@ -147,5 +166,5 @@ assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
 console.log(
-    "✓ Portada de ancho completo, pestañas universitarias, menú superior, iconos SVG y navegación validados."
+    "✓ Portada a pantalla completa, submenú Herramientas, pestañas universitarias, iconos SVG y navegación validados."
 );

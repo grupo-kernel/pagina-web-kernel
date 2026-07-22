@@ -45,8 +45,8 @@ function prepararCapasNavegacion(nav) {
     );
     rejilla?.classList.add("overflow-visible");
 
-    nav.classList.remove("lg:z-auto");
-    nav.classList.add("overflow-visible", "lg:z-[210]");
+    nav.classList.remove("lg:z-auto", "lg:z-[210]");
+    nav.classList.add("overflow-visible", "lg:z-[220]");
     contenido?.classList.add("relative", "z-0");
 }
 
