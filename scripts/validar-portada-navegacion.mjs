@@ -162,6 +162,14 @@ assert.doesNotMatch(
 );
 assert.match(menuMovil, /dataset\.navOverlay/);
 assert.match(menuMovil, /bg-slate-950\/55/);
+assert.match(menuMovil, /z-\[190\]/);
+assert.doesNotMatch(
+    menuMovil,
+    /z-\[290\]/,
+    "El fondo superpuesto no debe quedar por encima de la cabecera ni del panel lateral."
+);
+assert.match(menuMovil, /CLASES_DISPARADOR_OCULTO/);
+assert.match(menuMovil, /"invisible", "pointer-events-none"/);
 assert.match(menuMovil, /CONSULTA_ESCRITORIO/);
 assert.match(menuMovil, /sincronizarMenuConViewport/);
 assert.match(menuMovil, /nav\.setAttribute\("aria-hidden", "false"\)/);
@@ -183,5 +191,5 @@ assert.doesNotMatch(pie, /github\.com\/grupo-kernel/);
 assert.doesNotMatch(pie, /ISFOOSU/);
 
 console.log(
-    "✓ Portada empresarial, servicios, franja institucional, navegación adaptativa, diagnóstico, laboratorio y pie institucional validados."
+    "✓ Portada empresarial, servicios, franja institucional, navegación adaptativa, capas del menú móvil, diagnóstico, laboratorio y pie institucional validados."
 );
