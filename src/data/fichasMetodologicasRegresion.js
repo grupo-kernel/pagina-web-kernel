@@ -103,6 +103,107 @@ const fichaRegresionLogistica = {
     ]
 };
 
+const fichaPoisson = {
+    nombre: "Regresión de Poisson",
+    definicion:
+        "Modelo lineal generalizado con enlace logarítmico para una variable de conteo, cuya media condicional se modela como función exponencial de los predictores y de una exposición opcional.",
+    cuandoUsar: [
+        "La variable dependiente contiene enteros no negativos.",
+        "Los conteos representan eventos observados durante una exposición, tiempo o población en riesgo.",
+        "La media y la varianza condicional son aproximadamente compatibles con Poisson.",
+        "Se desean estimar razones de tasas de incidencia ajustadas."
+    ],
+    hipotesis: {
+        h0: "En la prueba global, todos los coeficientes de los predictores son iguales a cero; individualmente, la IRR del predictor es igual a 1.",
+        h1: "Al menos un coeficiente difiere de cero; individualmente, la IRR del predictor difiere de 1."
+    },
+    supuestos: [
+        "Conteos enteros no negativos y definición adecuada de la unidad de observación.",
+        "Independencia entre observaciones o estructura de dependencia modelada.",
+        "Exposición positiva correctamente incorporada mediante un offset cuando difiere entre observaciones.",
+        "Relación aproximadamente lineal entre predictores cuantitativos y el logaritmo de la tasa esperada.",
+        "Ausencia de multicolinealidad severa.",
+        "Dispersión condicional compatible con Poisson y ausencia de exceso grave de ceros no modelado.",
+        "Revisión de residuos, leverage y observaciones influyentes."
+    ],
+    estadistico:
+        "La prueba de razón de verosimilitudes compara el modelo con un modelo nulo. Las pruebas Wald evalúan coeficientes individuales. La dispersión de Pearson, la deviance, AIC y BIC ayudan a revisar el ajuste.",
+    efecto:
+        "Razones de tasas de incidencia —IRR— con intervalos de confianza, pseudo-R², deviance, AIC, BIC y medidas de error o calibración del conteo.",
+    reporteAPA:
+        "Informe χ² de razón de verosimilitudes, gl, p, coeficientes B, errores estándar, z, p, IRR e IC 95 %. Indique la exposición, el índice de dispersión, AIC, BIC y los diagnósticos de residuos e influencia.",
+    posthoc: [],
+    alternativas: [
+        "Regresión binomial negativa cuando existe sobredispersión.",
+        "Modelo inflado en ceros cuando hay más ceros de los esperados por el proceso de conteo.",
+        "Modelo hurdle cuando el proceso que genera ceros difiere del proceso que genera conteos positivos.",
+        "Modelos mixtos o GEE para conteos agrupados o repetidos."
+    ],
+    erroresFrecuentes: [
+        "Aplicar Poisson sin comprobar la sobredispersión.",
+        "Omitir la exposición cuando los períodos o poblaciones en riesgo son diferentes.",
+        "Interpretar la IRR como diferencia absoluta de conteos.",
+        "Confundir asociación con causalidad.",
+        "Ignorar exceso de ceros y observaciones influyentes.",
+        "Comparar tasas sin mantener constante la unidad de exposición."
+    ],
+    ejemplo:
+        "Se modela el número de ausencias estudiantiles según carga académica, distancia al centro y meses de seguimiento.",
+    referencias: [
+        "Cameron, A. C., & Trivedi, P. K. (2013). Regression Analysis of Count Data.",
+        "Hilbe, J. M. (2014). Modeling Count Data.",
+        "Agresti, A. (2015). Foundations of Linear and Generalized Linear Models."
+    ]
+};
+
+const fichaBinomialNegativa = {
+    ...fichaPoisson,
+    nombre: "Regresión binomial negativa",
+    definicion:
+        "Modelo lineal generalizado para conteos que amplía Poisson mediante un parámetro de dispersión, permitiendo que la varianza condicional sea mayor que la media.",
+    cuandoUsar: [
+        "La variable dependiente contiene enteros no negativos.",
+        "Existe sobredispersión persistente bajo Poisson.",
+        "La varianza aumenta más rápidamente que la media condicional.",
+        "Se desean estimar razones de tasas ajustadas sin subestimar los errores estándar."
+    ],
+    supuestos: [
+        "Conteos enteros no negativos.",
+        "Independencia entre observaciones o dependencia modelada adecuadamente.",
+        "Exposición positiva correctamente incorporada cuando corresponde.",
+        "Relación aproximadamente lineal entre predictores cuantitativos y el logaritmo de la tasa esperada.",
+        "Ausencia de multicolinealidad severa.",
+        "Forma de sobredispersión compatible con la parametrización binomial negativa utilizada.",
+        "Revisión de exceso de ceros, residuos e influencia."
+    ],
+    estadistico:
+        "La razón de verosimilitudes evalúa el modelo global. El parámetro de dispersión cuantifica la heterogeneidad adicional. AIC y BIC permiten comparar con Poisson cuando ambos modelos se ajustan a los mismos datos.",
+    efecto:
+        "IRR ajustadas con intervalos de confianza, parámetro de dispersión, pseudo-R², deviance, AIC y BIC.",
+    reporteAPA:
+        "Informe χ² global, gl, p, parámetro de dispersión, coeficientes B, errores estándar, z, p, IRR e IC 95 %. Compare AIC con Poisson y describa la exposición, los residuos y las observaciones influyentes.",
+    alternativas: [
+        "Poisson cuando la dispersión es compatible con la igualdad media-varianza.",
+        "Modelos inflados en ceros o hurdle cuando existe un proceso específico que genera ceros.",
+        "Modelos mixtos binomiales negativos para datos agrupados o longitudinales.",
+        "Modelos de conteo con truncamiento cuando ciertos valores no pueden observarse por diseño."
+    ],
+    erroresFrecuentes: [
+        "Seleccionarla únicamente porque produce un AIC ligeramente menor, sin evidencia de sobredispersión.",
+        "Interpretar el parámetro de dispersión como tamaño del efecto sustantivo.",
+        "Omitir la exposición o usar una unidad de exposición inconsistente.",
+        "Ignorar exceso de ceros, truncamiento o dependencia entre observaciones.",
+        "Interpretar IRR como efectos causales sin un diseño apropiado."
+    ],
+    ejemplo:
+        "Se modela el número de errores en evaluaciones digitales cuando la variabilidad entre estudiantes supera claramente la esperada bajo Poisson.",
+    referencias: [
+        "Cameron, A. C., & Trivedi, P. K. (2013). Regression Analysis of Count Data.",
+        "Hilbe, J. M. (2011). Negative Binomial Regression.",
+        "Agresti, A. (2015). Foundations of Linear and Generalized Linear Models."
+    ]
+};
+
 export const fichasMetodologicasRegresion = {
     "regresion-lineal-simple": {
         ...fichaRegresionLineal,
@@ -119,5 +220,7 @@ export const fichasMetodologicasRegresion = {
     "regresion-logistica-binaria-multiple": {
         ...fichaRegresionLogistica,
         nombre: "Regresión logística binaria múltiple"
-    }
+    },
+    "regresion-poisson": fichaPoisson,
+    "regresion-binomial-negativa": fichaBinomialNegativa
 };
