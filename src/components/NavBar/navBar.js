@@ -1,108 +1,133 @@
+function itemRuta(ruta, etiqueta, icono) {
+    return `
+        <li>
+            <button
+                type="button"
+                data-route="${ruta}"
+                class="flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-left text-base font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 lg:w-auto lg:px-2 xl:text-lg 2xl:text-xl"
+            >
+                <span>${etiqueta}</span>
+                <i aria-hidden="true" class="bx ${icono} shrink-0 text-2xl"></i>
+            </button>
+        </li>
+    `;
+}
+
+function itemSubmenu(ruta, etiqueta, icono) {
+    return `
+        <li>
+            <button
+                type="button"
+                data-route="${ruta}"
+                class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 2xl:text-base"
+            >
+                <i aria-hidden="true" class="bx ${icono} shrink-0 text-xl"></i>
+                <span>${etiqueta}</span>
+            </button>
+        </li>
+    `;
+}
+
+function submenu({ id, etiqueta, icono, elementos }) {
+    return `
+        <li data-submenu class="relative min-w-0">
+            <button
+                type="button"
+                data-action="toggle-submenu"
+                aria-expanded="false"
+                aria-controls="${id}"
+                class="flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-left text-base font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 lg:w-auto lg:px-2 xl:text-lg 2xl:text-xl"
+            >
+                <span class="flex items-center gap-2">
+                    <i aria-hidden="true" class="bx ${icono} shrink-0 text-2xl"></i>
+                    <span>${etiqueta}</span>
+                </span>
+                <i data-submenu-caret aria-hidden="true" class="bx bx-caret-down shrink-0 text-xl transition-transform"></i>
+            </button>
+
+            <ul
+                id="${id}"
+                data-submenu-panel
+                class="
+                    relative
+                    z-[260]
+                    mt-2
+                    hidden
+                    w-full
+                    flex-col
+                    gap-1
+                    rounded-2xl
+                    border border-slate-200
+                    bg-white
+                    p-2
+                    text-slate-800
+                    shadow-2xl
+
+                    lg:absolute
+                    lg:left-0
+                    lg:top-full
+                    lg:z-[260]
+                    lg:mt-2
+                    lg:w-72
+                    lg:min-w-72
+                "
+            >
+                ${elementos.join("")}
+            </ul>
+        </li>
+    `;
+}
+
 export function createNavBar() {
     return `
-        <div class="mb-7 flex w-full items-center justify-between border-b border-b-zinc-500 px-2.5 pb-2.5 lg:hidden">
+        <div class="mb-7 flex w-full items-center justify-between border-b border-zinc-500 px-2.5 pb-2.5 lg:hidden">
             <span class="text-4xl font-medium">El Kernel</span>
-            <button type="button" data-action="close-navBar" class="flex h-12 w-12 items-center justify-center rounded-full" aria-label="Cerrar navegación">
-                <i class="bx bx-x text-6xl"></i>
+            <button type="button" data-action="close-navBar" aria-label="Cerrar navegación" class="rounded-xl p-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100">
+                <i aria-hidden="true" class="bx bx-x text-6xl"></i>
             </button>
         </div>
 
-        <ul class="relative z-[210] flex w-full flex-col items-stretch gap-4 overflow-visible p-4 text-black lg:flex-row lg:items-center xl:gap-9">
-            <li
-                data-route="home"
-                class="flex cursor-pointer items-center justify-between gap-1 whitespace-nowrap text-lg font-medium lg:justify-start xl:text-2xl 2xl:text-3xl"
-            >
-                <span>Portada</span>
-                <i class="bx bx-home text-3xl"></i>
-            </li>
+        <ul class="relative z-[230] flex w-full flex-col gap-2 p-3 text-black lg:flex-row lg:items-center lg:justify-end lg:gap-2 lg:p-0 xl:gap-4">
+            ${itemRuta("home", "Portada", "bx-home")}
 
-            <li data-action="open-subMenu" class="relative z-[220] whitespace-nowrap text-lg font-medium xl:text-2xl 2xl:text-3xl">
+            ${submenu({
+                id: "submenu-nosotros",
+                etiqueta: "Nosotros",
+                icono: "bx-group",
+                elementos: [
+                    itemSubmenu("quienesSomos", "Quiénes somos", "bx-info-circle"),
+                    itemSubmenu("equipment", "Equipo", "bx-group")
+                ]
+            })}
+
+            ${submenu({
+                id: "submenu-nuestro-trabajo",
+                etiqueta: "Nuestro Trabajo",
+                icono: "bx-briefcase-alt-2",
+                elementos: [
+                    itemSubmenu("lineas", "Líneas de investigación", "bx-git-branch"),
+                    itemSubmenu("proyectos", "Proyectos", "bx-bulb"),
+                    itemSubmenu("publicaciones", "Publicaciones", "bx-book-open"),
+                    itemSubmenu("herramientas", "Herramientas", "bx-wrench")
+                ]
+            })}
+
+            <li>
                 <button
                     type="button"
-                    data-submenu-trigger
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    aria-controls="submenu-nosotros"
-                    class="flex w-full items-center justify-between gap-1 rounded-lg text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100"
+                    data-route="laboratorioKernel"
+                    class="flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-left text-base font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 lg:w-auto lg:px-2 xl:text-lg 2xl:text-xl"
                 >
-                    <span>Nosotros</span>
-                    <i class="bx bx-caret-down text-3xl"></i>
+                    <span class="flex flex-col leading-none lg:items-center lg:text-center">
+                        <span>Laboratorio Inteligente</span>
+                        <span class="mt-1 text-xs font-semibold text-slate-500 xl:text-sm">de Investigación</span>
+                    </span>
+                    <i aria-hidden="true" class="bx bx-bar-chart-alt-2 shrink-0 text-2xl"></i>
                 </button>
-
-                <ul
-                    id="submenu-nosotros"
-                    class="z-[300] mt-2.5 hidden w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white text-lg shadow-2xl lg:absolute lg:left-0 lg:top-full lg:mt-3 lg:min-w-64 lg:p-2 lg:text-base"
-                >
-                    <li data-route="quienesSomos" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span>Quiénes somos</span>
-                    </li>
-                    <li data-route="equipment" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span>Equipo</span>
-                    </li>
-                </ul>
             </li>
 
-            <li data-action="open-subMenu" class="relative z-[220] whitespace-nowrap text-lg font-medium xl:text-2xl 2xl:text-3xl">
-                <button
-                    type="button"
-                    data-submenu-trigger
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    aria-controls="submenu-nuestro-trabajo"
-                    class="flex w-full items-center justify-between gap-1 rounded-lg text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100"
-                >
-                    <span>Nuestro Trabajo</span>
-                    <i class="bx bx-caret-down text-3xl"></i>
-                </button>
-
-                <ul
-                    id="submenu-nuestro-trabajo"
-                    class="z-[300] mt-2.5 hidden w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white text-lg shadow-2xl lg:absolute lg:left-0 lg:top-full lg:mt-3 lg:min-w-72 lg:p-2 lg:text-base"
-                >
-                    <li data-route="lineas" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span>Líneas de investigación</span>
-                    </li>
-                    <li data-route="proyectos" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span>Proyectos</span>
-                    </li>
-                    <li data-route="publicaciones" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span>Publicaciones</span>
-                    </li>
-                    <li data-route="herramientas" class="cursor-pointer rounded-lg px-4 py-3 hover:bg-sky-800 hover:text-white 2xl:text-2xl">
-                        <span class="flex items-center gap-2">
-                            <i class="bx bx-wrench text-xl"></i>
-                            Herramientas
-                        </span>
-                    </li>
-                </ul>
-            </li>
-
-            <li
-                data-route="laboratorioKernel"
-                class="flex cursor-pointer items-center justify-center gap-2 text-base font-medium xl:text-xl 2xl:text-2xl"
-            >
-                <span class="flex flex-col items-center text-center leading-none">
-                    <span class="whitespace-nowrap">Laboratorio Inteligente</span>
-                    <span class="mt-1 whitespace-nowrap text-sm font-semibold text-slate-600 xl:text-base 2xl:text-lg">de Investigación</span>
-                </span>
-                <i class="bx bx-bar-chart-alt-2 shrink-0 text-2xl"></i>
-            </li>
-
-            <li
-                data-route="noticias"
-                class="flex cursor-pointer items-center justify-between gap-1 whitespace-nowrap text-lg font-medium lg:justify-start xl:text-2xl 2xl:text-3xl"
-            >
-                <span>Noticias</span>
-                <i class="bx bx-news text-3xl"></i>
-            </li>
-
-            <li
-                data-route="contacto"
-                class="flex cursor-pointer items-center justify-between gap-1 whitespace-nowrap text-lg font-medium lg:justify-start xl:text-2xl 2xl:text-3xl"
-            >
-                <span>Contacto</span>
-                <i class="bx bx-envelope text-3xl"></i>
-            </li>
+            ${itemRuta("noticias", "Noticias", "bx-news")}
+            ${itemRuta("contacto", "Contacto", "bx-envelope")}
         </ul>
     `;
 }
