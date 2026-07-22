@@ -116,7 +116,7 @@ async function cargarEstadisticasAnalytics(section) {
     const mesElement = section.querySelector("#analytics-mes");
     const actualizadoElement = section.querySelector("#analytics-actualizado");
 
-    if (!totalElement || !hoyElement || !semenaElement || !mesElement || !actualizadoElement) {
+    if (!totalElement || !hoyElement || !semanaElement || !mesElement || !actualizadoElement) {
         console.warn("No se encontraron los elementos de Analytics en la portada.");
         return;
     }
