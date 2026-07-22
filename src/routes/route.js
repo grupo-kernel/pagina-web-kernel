@@ -9,6 +9,8 @@ import { lineas } from "../pages/lineas.js";
 import { proyectos } from "../pages/proyectos.js";
 import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
+import { Servicios } from "../pages/Servicios.js";
+import { DiagnosticoServicios } from "../pages/DiagnosticoServicios.js";
 import { esperarAutenticacion } from "../auth/authGuard.js";
 import { crearLogin } from "../auth/login.js";
 
@@ -122,7 +124,9 @@ const cargarCalculadoraRegresionConteo = crearCargador(
 );
 
 const routes = {
-    home: { page: CreatePageHome, layout: "default", title: "Portada | El Kernel" },
+    home: { page: CreatePageHome, layout: "full", title: "Portada | El Kernel" },
+    servicios: { page: Servicios, layout: "full", title: "Servicios profesionales y académicos | El Kernel" },
+    diagnosticoServicios: { page: DiagnosticoServicios, layout: "full", title: "Solicitar diagnóstico | El Kernel" },
     quienesSomos: { page: CreatePageQuienesSomos, layout: "full", title: "Quiénes somos | El Kernel" },
     equipment: { page: Equipment, layout: "default", title: "Equipo de investigación | El Kernel" },
     FormacionAcademica: { page: FormacionAcademica, layout: "default", title: "Formación académica | El Kernel" },
@@ -219,12 +223,12 @@ function crearVistaErrorRuta(error) {
     section.innerHTML = `
         <div class="rounded-3xl border border-red-200 bg-white p-6 md:p-9 shadow-xl">
             <p class="uppercase tracking-widest text-red-700 text-xs font-black mb-2">Error de carga</p>
-            <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">No fue posible abrir esta herramienta</h1>
-            <p class="text-slate-600 leading-relaxed mb-5">La aplicación principal continúa disponible. Regrese al laboratorio o intente cargar nuevamente esta ruta.</p>
+            <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">No fue posible abrir esta sección</h1>
+            <p class="text-slate-600 leading-relaxed mb-5">La aplicación principal continúa disponible. Regrese a la portada o intente cargar nuevamente esta ruta.</p>
             <div data-mensaje-error-ruta class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 break-words"></div>
             <div class="flex flex-col sm:flex-row gap-3 mt-6">
                 <button type="button" data-action="reintentar-ruta" class="rounded-xl bg-red-700 px-6 py-3 text-white font-black hover:bg-red-800">Reintentar</button>
-                <button type="button" data-action="volver-laboratorio" class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 font-black hover:bg-slate-50">Volver al laboratorio</button>
+                <button type="button" data-action="volver-portada" class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 font-black hover:bg-slate-50">Volver a la portada</button>
             </div>
         </div>`;
 
@@ -237,8 +241,8 @@ function crearVistaErrorRuta(error) {
 
     section.querySelector("[data-action='reintentar-ruta']")
         ?.addEventListener("click", () => window.location.reload());
-    section.querySelector("[data-action='volver-laboratorio']")
-        ?.addEventListener("click", () => navigate("laboratorioKernel"));
+    section.querySelector("[data-action='volver-portada']")
+        ?.addEventListener("click", () => navigate("home"));
 
     return section;
 }
@@ -269,7 +273,7 @@ async function loadRoute(route) {
     try {
         const pageElement = await resolverPagina(route, page);
         if (!(pageElement instanceof Element)) {
-            throw new Error("La herramienta no devolvió un componente válido.");
+            throw new Error("La sección no devolvió un componente válido.");
         }
 
         content.appendChild(pageElement);

@@ -65,17 +65,19 @@
 
             <nav
                 id="navBar"
+                aria-hidden="true"
                 class="
                     hidden
                     fixed
                     top-0 left-0
                     z-[300]
-                    h-screen
-                    w-3/4
+                    h-[100svh]
+                    w-[88%]
+                    max-w-sm
                     overflow-y-auto
-                    p-1.5
-                    flex-col
+                    border-r border-slate-200
                     bg-white
+                    p-2
                     shadow-2xl
                     transition-transform
                     duration-300
@@ -88,7 +90,12 @@
                     lg:flex
                     lg:h-auto
                     lg:w-auto
+                    lg:max-w-none
                     lg:overflow-visible
+                    lg:border-0
+                    lg:bg-transparent
+                    lg:p-0
+                    lg:shadow-none
                     lg:col-span-13
                     lg:flex-row
                     lg:text-lg
@@ -125,18 +132,7 @@
     <!-- Pie de página -->
     <footer
         id="footer"
-        class="
-            w-full
-            tabletBig:w-7xl
-            xl:w-full
-            p-3
-            mt-20
-            md:mt-8
-            bg-footer-primary
-            h-auto
-            md:h-60
-            lg:h-60
-        "
+        class="mt-16 h-auto w-full bg-footer-primary md:mt-10"
     ></footer>
 
     <script
