@@ -23,7 +23,23 @@ import { CalculadoraEstadisticaDescriptiva } from "../pages/CalculadoraEstadisti
 import { RegresionModelos } from "../pages/RegresionModelos.js";
 import { CalculadoraRegresionCompleta } from "../pages/CalculadoraRegresionCompleta.js";
 import { CalculadoraRegresionLogistica } from "../pages/CalculadoraRegresionLogistica.js";
-import { CalculadoraRegresionConteo } from "../pages/CalculadoraRegresionConteo.js";
+
+async function cargarCalculadoraRegresionConteo() {
+    const modulo = await import(
+        "../pages/CalculadoraRegresionConteo.js"
+    );
+
+    if (
+        typeof modulo.CalculadoraRegresionConteo !==
+        "function"
+    ) {
+        throw new Error(
+            "La calculadora de regresión de conteo no está disponible."
+        );
+    }
+
+    return modulo.CalculadoraRegresionConteo();
+}
 
 const routes = {
     home: {
@@ -171,7 +187,7 @@ const routes = {
     },
 
     calculadoraRegresionConteo: {
-        page: CalculadoraRegresionConteo,
+        page: cargarCalculadoraRegresionConteo,
         layout: "default",
         title: "Regresión de Poisson y binomial negativa | El Kernel"
     }
@@ -217,10 +233,75 @@ function trackPageView(route, title) {
     previousPageLocation = pageLocation;
 }
 
+function crearVistaErrorRuta(error) {
+    const section = document.createElement("section");
+
+    section.className = `
+        w-full max-w-4xl mx-auto
+        px-4 py-12 md:px-8
+        font-sans
+    `;
+    section.innerHTML = `
+        <div class="rounded-3xl border border-red-200 bg-white p-6 md:p-9 shadow-xl">
+            <p class="uppercase tracking-widest text-red-700 text-xs font-black mb-2">
+                Error de carga
+            </p>
+            <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">
+                No fue posible abrir esta herramienta
+            </h1>
+            <p class="text-slate-600 leading-relaxed mb-5">
+                La aplicación principal continúa disponible. Regrese al laboratorio o intente cargar nuevamente esta ruta.
+            </p>
+            <div
+                data-mensaje-error-ruta
+                class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 break-words"
+            ></div>
+            <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                <button
+                    type="button"
+                    data-action="reintentar-ruta"
+                    class="rounded-xl bg-red-700 px-6 py-3 text-white font-black hover:bg-red-800 transition-colors"
+                >
+                    Reintentar
+                </button>
+                <button
+                    type="button"
+                    data-action="volver-laboratorio"
+                    class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 font-black hover:bg-slate-50 transition-colors"
+                >
+                    Volver al laboratorio
+                </button>
+            </div>
+        </div>
+    `;
+
+    const mensaje = section.querySelector(
+        "[data-mensaje-error-ruta]"
+    );
+    if (mensaje) {
+        mensaje.textContent =
+            error instanceof Error
+                ? error.message
+                : "Se produjo un error inesperado.";
+    }
+
+    section.querySelector(
+        "[data-action='reintentar-ruta']"
+    )?.addEventListener("click", () => {
+        window.location.reload();
+    });
+    section.querySelector(
+        "[data-action='volver-laboratorio']"
+    )?.addEventListener("click", () => {
+        navigate("laboratorioKernel");
+    });
+
+    return section;
+}
+
 async function loadRoute(route) {
     const content =
         document.querySelector("main");
-
     const page = routes[route];
 
     if (!content) {
@@ -237,17 +318,31 @@ async function loadRoute(route) {
     setMainLayout(page.layout);
     document.title = page.title;
 
-    const pageElement = await page.page();
+    try {
+        const pageElement = await page.page();
 
-    content.appendChild(pageElement);
+        if (!(pageElement instanceof Element)) {
+            throw new Error(
+                "La herramienta no devolvió un componente válido."
+            );
+        }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "auto"
-    });
-
-    trackPageView(
-        route,
-        page.title
-    );
+        content.appendChild(pageElement);
+        window.scrollTo({
+            top: 0,
+            behavior: "auto"
+        });
+        trackPageView(
+            route,
+            page.title
+        );
+    } catch (error) {
+        console.error(
+            `[Kernel] Error al cargar la ruta ${route}.`,
+            error
+        );
+        content.appendChild(
+            crearVistaErrorRuta(error)
+        );
+    }
 }
