@@ -2,7 +2,7 @@ import isfodosu from "../../assets/isfodosu.png";
 import uasd from "../../assets/uasd.png";
 import unapec from "../../assets/apec.png";
 
-const INTERVALO_ROTACION = 5500;
+const INTERVALO_ROTACION = 6000;
 
 const INSTITUCIONES = Object.freeze([
     Object.freeze({
@@ -10,7 +10,7 @@ const INSTITUCIONES = Object.freeze([
         sigla: "ISFODOSU",
         nombre: "Instituto Superior de Formación Docente Salomé Ureña",
         descripcion:
-            "Vinculación académica en formación docente, educación matemática e investigación educativa.",
+            "Formación docente, educación matemática e investigación educativa.",
         imagen: isfodosu,
         enlace: "https://www.isfodosu.edu.do/"
     }),
@@ -19,7 +19,7 @@ const INSTITUCIONES = Object.freeze([
         sigla: "UASD",
         nombre: "Universidad Autónoma de Santo Domingo",
         descripcion:
-            "Colaboración en ciencias básicas, optimización, matemática aplicada y proyectos interdisciplinarios.",
+            "Ciencias básicas, optimización, matemática aplicada y colaboración interdisciplinaria.",
         imagen: uasd,
         enlace: "https://uasd.edu.do/"
     }),
@@ -28,7 +28,7 @@ const INSTITUCIONES = Object.freeze([
         sigla: "UNAPEC",
         nombre: "Universidad APEC",
         descripcion:
-            "Vinculación en matemática aplicada, computación científica, docencia e iniciativas de investigación.",
+            "Matemática aplicada, computación científica, docencia y proyectos de investigación.",
         imagen: unapec,
         enlace: "https://unapec.edu.do/"
     })
@@ -43,163 +43,120 @@ function escapar(texto) {
         .replaceAll("'", "&#039;");
 }
 
-function crearControlInstitucion(institucion, indice) {
+function crearPestana(institucion, indice) {
+    const activa = indice === 0;
+
     return `
         <button
             type="button"
+            role="tab"
+            id="pestana-${escapar(institucion.id)}"
+            aria-controls="panel-universidad-portada"
+            aria-selected="${activa}"
+            tabindex="${activa ? "0" : "-1"}"
             data-universidad-control
             data-indice="${indice}"
-            class="group flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-300/70 hover:bg-white/10 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/40"
-            aria-label="Mostrar ${escapar(institucion.sigla)} en la ruleta institucional"
-            aria-pressed="false"
+            class="group min-w-0 rounded-2xl border px-2.5 py-2 text-left transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/40 md:px-3 ${activa ? "border-sky-300 bg-sky-400/15 shadow-lg ring-2 ring-sky-300/30" : "border-white/10 bg-white/5 hover:border-white/30 hover:bg-white/10"}"
         >
-            <img
-                src="${institucion.imagen}"
-                alt="Vista de ${escapar(institucion.sigla)}"
-                class="h-20 w-28 shrink-0 rounded-xl object-cover shadow-md sm:h-24 sm:w-32 lg:h-20 lg:w-28"
-                loading="lazy"
-            />
-            <span class="min-w-0">
-                <span class="block text-lg font-black text-white">${escapar(institucion.sigla)}</span>
-                <span class="mt-1 block text-xs leading-relaxed text-slate-300">${escapar(institucion.nombre)}</span>
+            <span class="flex items-center gap-2.5">
+                <span class="flex h-10 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-sm md:h-12 md:w-14">
+                    <img src="${institucion.imagen}" alt="" class="h-full w-full object-contain" loading="eager" />
+                </span>
+                <span class="min-w-0">
+                    <span class="block truncate text-xs font-black tracking-wide text-white md:text-sm">${escapar(institucion.sigla)}</span>
+                    <span class="mt-0.5 hidden truncate text-[11px] text-slate-300 md:block">Ver institución</span>
+                </span>
             </span>
         </button>
     `;
 }
 
 export function CrearCarruselUniversidades() {
-    const section = document.createElement("section");
     const primera = INSTITUCIONES[0];
+    const aside = document.createElement("aside");
 
-    section.id = "alianzas-institucionales";
-    section.className =
-        "relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-950 via-slate-950 to-blue-950 text-white shadow-2xl";
-    section.setAttribute("aria-labelledby", "titulo-alianzas-institucionales");
-    section.tabIndex = 0;
+    aside.className =
+        "flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-4 shadow-2xl backdrop-blur-md md:p-5";
+    aside.setAttribute("aria-label", "Instituciones principales vinculadas al Grupo El Kernel");
 
-    section.innerHTML = `
-        <div class="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-sky-500/20 blur-3xl"></div>
-        <div class="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-blue-700/20 blur-3xl"></div>
-
-        <div class="relative z-10 px-5 py-8 md:px-9 md:py-10 xl:px-12 xl:py-12">
-            <div class="mb-7 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                    <p class="mb-2 text-xs font-black uppercase tracking-[0.22em] text-sky-300">
-                        Instituciones y alianzas
-                    </p>
-                    <h2 id="titulo-alianzas-institucionales" class="text-3xl font-black leading-tight md:text-5xl">
-                        Una ruleta visual de nuestra vinculación académica
-                    </h2>
-                    <p class="mt-4 max-w-3xl text-base leading-relaxed text-slate-300 md:text-lg">
-                        ISFODOSU, UASD y UNAPEC se presentan como las tres instituciones principales vinculadas con la trayectoria, las afiliaciones y los proyectos del grupo.
-                    </p>
-                </div>
-
-                <span class="inline-flex w-fit items-center gap-2 rounded-full border border-sky-300/30 bg-sky-400/10 px-4 py-2 text-sm font-black text-sky-100">
-                    <i aria-hidden="true" class="bx bx-buildings text-xl"></i>
-                    3 instituciones principales
-                </span>
+    aside.innerHTML = `
+        <div class="mb-4 flex items-start justify-between gap-4">
+            <div>
+                <p class="text-xs font-black uppercase tracking-[0.20em] text-sky-300">Instituciones principales</p>
+                <h2 class="mt-2 text-2xl font-black leading-tight text-white md:text-3xl">Vinculación académica</h2>
+                <p class="mt-2 text-sm leading-relaxed text-slate-300">Seleccione una pestaña o permita que las tres instituciones roten automáticamente.</p>
             </div>
-
-            <div class="grid grid-cols-1 gap-6 xl:grid-cols-[1.55fr_0.75fr]">
-                <article
-                    data-universidad-escenario
-                    class="relative min-h-[430px] overflow-hidden rounded-3xl border border-white/15 bg-slate-900 shadow-2xl md:min-h-[520px]"
-                    aria-live="polite"
-                >
-                    <img
-                        data-universidad-imagen
-                        src="${primera.imagen}"
-                        alt="Vista de ${escapar(primera.sigla)}"
-                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-                        loading="eager"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/10"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/65 to-transparent"></div>
-
-                    <div class="absolute right-4 top-4 z-10 flex gap-2 md:right-6 md:top-6">
-                        <button
-                            type="button"
-                            data-action="universidad-anterior"
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50"
-                            aria-label="Mostrar la institución anterior"
-                        >
-                            <i aria-hidden="true" class="bx bx-chevron-left text-3xl"></i>
-                        </button>
-                        <button
-                            type="button"
-                            data-action="universidad-siguiente"
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50"
-                            aria-label="Mostrar la institución siguiente"
-                        >
-                            <i aria-hidden="true" class="bx bx-chevron-right text-3xl"></i>
-                        </button>
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-8 lg:p-10">
-                        <div class="max-w-3xl">
-                            <span data-universidad-contador class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-sky-200 backdrop-blur-md">
-                                01 / ${String(INSTITUCIONES.length).padStart(2, "0")}
-                            </span>
-                            <h3 data-universidad-sigla class="mt-4 text-4xl font-black leading-none md:text-6xl">${escapar(primera.sigla)}</h3>
-                            <p data-universidad-nombre class="mt-3 text-lg font-bold text-white md:text-2xl">${escapar(primera.nombre)}</p>
-                            <p data-universidad-descripcion class="mt-4 max-w-2xl text-sm leading-relaxed text-slate-200 md:text-base">${escapar(primera.descripcion)}</p>
-                            <a
-                                data-universidad-enlace
-                                href="${primera.enlace}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50"
-                            >
-                                Visitar sitio institucional
-                                <i aria-hidden="true" class="bx bx-link-external text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <aside class="rounded-3xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-5" aria-label="Selección de instituciones">
-                    <div class="mb-4 flex items-center justify-between gap-3">
-                        <div>
-                            <p class="text-xs font-black uppercase tracking-widest text-sky-300">Seleccione una institución</p>
-                            <p class="mt-1 text-sm text-slate-300">Las tres imágenes permanecen visibles.</p>
-                        </div>
-                        <i aria-hidden="true" class="bx bx-carousel text-3xl text-sky-300"></i>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 xl:grid-cols-1">
-                        ${INSTITUCIONES.map(crearControlInstitucion).join("")}
-                    </div>
-
-                    <p class="mt-5 flex items-start gap-2 text-xs leading-relaxed text-slate-400">
-                        <i aria-hidden="true" class="bx bx-info-circle mt-0.5 text-base text-sky-300"></i>
-                        La ruleta cambia automáticamente cada 5.5 segundos y se pausa al colocar el cursor, usar el teclado o tocar los controles.
-                    </p>
-                    <p data-universidad-estado class="sr-only" aria-live="polite"></p>
-                </aside>
-            </div>
+            <span data-universidad-contador class="shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black text-sky-100">01 / 03</span>
         </div>
+
+        <div role="tablist" aria-label="Universidades vinculadas" class="grid grid-cols-3 gap-2">
+            ${INSTITUCIONES.map(crearPestana).join("")}
+        </div>
+
+        <article
+            id="panel-universidad-portada"
+            role="tabpanel"
+            tabindex="0"
+            aria-labelledby="pestana-${primera.id}"
+            aria-live="polite"
+            data-universidad-escenario
+            class="relative mt-4 min-h-[330px] flex-1 overflow-hidden rounded-3xl border border-white/15 bg-slate-900 shadow-xl md:min-h-[390px]"
+        >
+            <img
+                data-universidad-imagen
+                src="${primera.imagen}"
+                alt="Imagen institucional de ${escapar(primera.sigla)}"
+                class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+                loading="eager"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/5"></div>
+
+            <div class="absolute right-3 top-3 z-10 flex gap-2 md:right-4 md:top-4">
+                <button type="button" data-action="universidad-anterior" aria-label="Mostrar la institución anterior" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
+                    <i aria-hidden="true" class="bx bx-chevron-left text-2xl"></i>
+                </button>
+                <button type="button" data-action="universidad-siguiente" aria-label="Mostrar la institución siguiente" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
+                    <i aria-hidden="true" class="bx bx-chevron-right text-2xl"></i>
+                </button>
+            </div>
+
+            <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
+                <p data-universidad-sigla class="text-4xl font-black leading-none text-white md:text-5xl">${escapar(primera.sigla)}</p>
+                <p data-universidad-nombre class="mt-2 text-base font-bold leading-tight text-white md:text-xl">${escapar(primera.nombre)}</p>
+                <p data-universidad-descripcion class="mt-3 max-w-xl text-sm leading-relaxed text-slate-200">${escapar(primera.descripcion)}</p>
+                <a data-universidad-enlace href="${primera.enlace}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
+                    Visitar institución
+                    <i aria-hidden="true" class="bx bx-link-external text-lg"></i>
+                </a>
+            </div>
+        </article>
+
+        <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+            <div data-universidad-progreso class="h-full w-1/3 rounded-full bg-sky-400 transition-transform duration-500"></div>
+        </div>
+        <p data-universidad-estado class="sr-only" aria-live="polite"></p>
     `;
 
-    const imagen = section.querySelector("[data-universidad-imagen]");
-    const sigla = section.querySelector("[data-universidad-sigla]");
-    const nombre = section.querySelector("[data-universidad-nombre]");
-    const descripcion = section.querySelector("[data-universidad-descripcion]");
-    const enlace = section.querySelector("[data-universidad-enlace]");
-    const contador = section.querySelector("[data-universidad-contador]");
-    const estado = section.querySelector("[data-universidad-estado]");
-    const escenario = section.querySelector("[data-universidad-escenario]");
-    const controles = [...section.querySelectorAll("[data-universidad-control]")];
-    const anterior = section.querySelector("[data-action='universidad-anterior']");
-    const siguiente = section.querySelector("[data-action='universidad-siguiente']");
+    const imagen = aside.querySelector("[data-universidad-imagen]");
+    const sigla = aside.querySelector("[data-universidad-sigla]");
+    const nombre = aside.querySelector("[data-universidad-nombre]");
+    const descripcion = aside.querySelector("[data-universidad-descripcion]");
+    const enlace = aside.querySelector("[data-universidad-enlace]");
+    const contador = aside.querySelector("[data-universidad-contador]");
+    const estado = aside.querySelector("[data-universidad-estado]");
+    const escenario = aside.querySelector("[data-universidad-escenario]");
+    const progreso = aside.querySelector("[data-universidad-progreso]");
+    const controles = [...aside.querySelectorAll("[data-universidad-control]")];
+    const anterior = aside.querySelector("[data-action='universidad-anterior']");
+    const siguiente = aside.querySelector("[data-action='universidad-siguiente']");
     const preferenciaMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
     const controladorEventos = new AbortController();
     const opcionesEvento = { signal: controladorEventos.signal };
 
     let indice = 0;
     let temporizador = null;
-    let estuvoConectado = false;
     let inicioToque = null;
+    let estuvoConectado = false;
 
     function normalizar(valor) {
         return (valor % INSTITUCIONES.length + INSTITUCIONES.length) % INSTITUCIONES.length;
@@ -209,22 +166,24 @@ export function CrearCarruselUniversidades() {
         const institucion = INSTITUCIONES[indice];
 
         imagen.src = institucion.imagen;
-        imagen.alt = `Vista de ${institucion.sigla}`;
+        imagen.alt = `Imagen institucional de ${institucion.sigla}`;
         sigla.textContent = institucion.sigla;
         nombre.textContent = institucion.nombre;
         descripcion.textContent = institucion.descripcion;
         enlace.href = institucion.enlace;
         contador.textContent = `${String(indice + 1).padStart(2, "0")} / ${String(INSTITUCIONES.length).padStart(2, "0")}`;
+        escenario.setAttribute("aria-labelledby", `pestana-${institucion.id}`);
+        progreso.style.transform = `translateX(${indice * 100}%)`;
 
         controles.forEach((control, posicion) => {
             const activo = posicion === indice;
-            control.setAttribute("aria-pressed", String(activo));
-            control.setAttribute("aria-current", activo ? "true" : "false");
+            control.setAttribute("aria-selected", String(activo));
+            control.tabIndex = activo ? 0 : -1;
             control.classList.toggle("border-sky-300", activo);
             control.classList.toggle("bg-sky-400/15", activo);
             control.classList.toggle("shadow-lg", activo);
             control.classList.toggle("ring-2", activo);
-            control.classList.toggle("ring-sky-300/40", activo);
+            control.classList.toggle("ring-sky-300/30", activo);
             control.classList.toggle("border-white/10", !activo);
             control.classList.toggle("bg-white/5", !activo);
         });
@@ -243,23 +202,19 @@ export function CrearCarruselUniversidades() {
 
     function iniciarRotacion() {
         detenerRotacion();
-
         if (preferenciaMovimiento.matches || document.hidden) return;
 
         temporizador = window.setInterval(() => {
-            if (!section.isConnected) {
-                detenerRotacion();
-                return;
-            }
-
+            if (!aside.isConnected) return;
             indice = normalizar(indice + 1);
             renderizar(false);
         }, INTERVALO_ROTACION);
     }
 
-    function seleccionar(nuevoIndice, anunciar = true) {
+    function seleccionar(nuevoIndice, anunciar = true, enfocar = false) {
         indice = normalizar(nuevoIndice);
         renderizar(anunciar);
+        if (enfocar) controles[indice]?.focus();
         iniciarRotacion();
     }
 
@@ -272,28 +227,34 @@ export function CrearCarruselUniversidades() {
             () => seleccionar(Number(control.dataset.indice)),
             opcionesEvento
         );
+        control.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "ArrowLeft") {
+                    event.preventDefault();
+                    seleccionar(indice - 1, true, true);
+                } else if (event.key === "ArrowRight") {
+                    event.preventDefault();
+                    seleccionar(indice + 1, true, true);
+                } else if (event.key === "Home") {
+                    event.preventDefault();
+                    seleccionar(0, true, true);
+                } else if (event.key === "End") {
+                    event.preventDefault();
+                    seleccionar(INSTITUCIONES.length - 1, true, true);
+                }
+            },
+            opcionesEvento
+        );
     });
 
-    section.addEventListener("mouseenter", detenerRotacion, opcionesEvento);
-    section.addEventListener("mouseleave", iniciarRotacion, opcionesEvento);
-    section.addEventListener("focusin", detenerRotacion, opcionesEvento);
-    section.addEventListener(
+    aside.addEventListener("mouseenter", detenerRotacion, opcionesEvento);
+    aside.addEventListener("mouseleave", iniciarRotacion, opcionesEvento);
+    aside.addEventListener("focusin", detenerRotacion, opcionesEvento);
+    aside.addEventListener(
         "focusout",
         (event) => {
-            if (!section.contains(event.relatedTarget)) iniciarRotacion();
-        },
-        opcionesEvento
-    );
-    section.addEventListener(
-        "keydown",
-        (event) => {
-            if (event.key === "ArrowLeft") {
-                event.preventDefault();
-                seleccionar(indice - 1);
-            } else if (event.key === "ArrowRight") {
-                event.preventDefault();
-                seleccionar(indice + 1);
-            }
+            if (!aside.contains(event.relatedTarget)) iniciarRotacion();
         },
         opcionesEvento
     );
@@ -343,7 +304,7 @@ export function CrearCarruselUniversidades() {
     );
 
     const observadorConexion = new MutationObserver(() => {
-        if (section.isConnected) {
+        if (aside.isConnected) {
             estuvoConectado = true;
             return;
         }
@@ -363,5 +324,5 @@ export function CrearCarruselUniversidades() {
     renderizar(false);
     iniciarRotacion();
 
-    return section;
+    return aside;
 }
