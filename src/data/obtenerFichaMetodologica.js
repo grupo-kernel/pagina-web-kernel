@@ -26,8 +26,13 @@ import {
     fichasMetodologicasFiabilidad
 } from "./fichasMetodologicasFiabilidad.js";
 
+import {
+    fichasMetodologicasEvaluacionEducativa
+} from "./fichasMetodologicasEvaluacionEducativa.js";
+
 export function obtenerFichaMetodologica(id) {
     return (
+        fichasMetodologicasEvaluacionEducativa[id] ||
         fichasMetodologicasFiabilidad[id] ||
         fichasMetodologicasRegresion[id] ||
         fichasMetodologicasRelacionVariables[id] ||
