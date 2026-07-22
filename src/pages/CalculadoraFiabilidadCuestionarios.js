@@ -1,6 +1,6 @@
 import {
-    analizarFiabilidadCuestionario
-} from "../utils/fiabilidadCuestionarios.js";
+    analizarFiabilidadCuestionarioAvanzada
+} from "../utils/fiabilidadCuestionariosAvanzada.js";
 import {
     crearPanelGraficosFiabilidad
 } from "../utils/graficosFiabilidadCuestionarios.js";
@@ -37,13 +37,14 @@ export function CalculadoraFiabilidadCuestionarios() {
                     Cuestionarios y fiabilidad
                 </h1>
                 <p class="text-slate-200 text-lg md:text-xl leading-relaxed max-w-3xl">
-                    Examine la consistencia interna, la contribución de cada ítem y la estructura unidimensional aproximada de una escala o cuestionario.
+                    Examine la consistencia interna, la contribución de cada ítem, la precisión de las estimaciones y la estructura unidimensional aproximada de una escala.
                 </p>
                 <div class="flex flex-wrap gap-3 mt-7">
                     <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Alfa de Cronbach</span>
                     <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Omega aproximado</span>
+                    <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">KR-20</span>
+                    <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Bootstrap</span>
                     <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Análisis de ítems</span>
-                    <span class="rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Ítems invertidos</span>
                 </div>
             </div>
         </header>
@@ -59,28 +60,30 @@ export function CalculadoraFiabilidadCuestionarios() {
                 <div class="space-y-5 text-slate-600 leading-relaxed">
                     ${guia(
                         "Encabezados",
-                        "La primera fila puede contener los nombres de los ítems. Si no existen, se asignarán Ítem 1, Ítem 2, etc."
+                        "La primera fila puede contener nombres. En ausencia de encabezados se asignarán Ítem 1, Ítem 2, etc."
                     )}
                     ${guia(
                         "Ítems invertidos",
-                        "Indique sus posiciones —por ejemplo 3, 6— o sus nombres. La herramienta aplicará la recodificación mínimo + máximo − respuesta."
+                        "Indique posiciones separadas por coma —por ejemplo 3, 6— o nombres completos separados por punto y coma."
                     )}
                     ${guia(
                         "Datos ausentes",
-                        "Las filas con celdas vacías, NA, N/A, punto o null se excluyen completamente y se informa la cantidad descartada."
+                        "Las filas con celdas vacías, NA, N/A, punto, null o missing se excluyen mediante eliminación listwise."
                     )}
                     ${guia(
-                        "Interpretación",
-                        "La fiabilidad no demuestra validez ni unidimensionalidad. Las decisiones deben considerar contenido, teoría, muestra y análisis factorial."
+                        "KR-20",
+                        "Se calcula automáticamente cuando todos los ítems recodificados contienen únicamente 0 y 1."
+                    )}
+                    ${guia(
+                        "Bootstrap",
+                        "Los intervalos percentiles cuantifican la incertidumbre muestral de alfa y omega; no corrigen problemas de dimensionalidad."
                     )}
                 </div>
 
                 <div class="mt-7 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-                    <h3 class="font-black text-amber-950 mb-2">
-                        Requisito mínimo
-                    </h3>
+                    <h3 class="font-black text-amber-950 mb-2">Advertencia metodológica</h3>
                     <p class="text-sm text-amber-900 leading-relaxed">
-                        Se requieren al menos cinco participantes completos y tres ítems con variabilidad. Para conclusiones estables suele necesitarse una muestra considerablemente mayor.
+                        La consistencia interna no demuestra validez, unidimensionalidad ni estabilidad temporal. No elimine ítems únicamente para aumentar un coeficiente.
                     </p>
                 </div>
             </aside>
@@ -90,37 +93,12 @@ export function CalculadoraFiabilidadCuestionarios() {
                 class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-xl"
                 novalidate
             >
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <label class="block">
-                        <span class="block text-sm font-black text-slate-800 mb-2">
-                            Mínimo de la escala
-                        </span>
-                        <input
-                            type="number"
-                            step="any"
-                            name="minimoEscala"
-                            value="1"
-                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100 focus:border-amber-500"
-                        />
-                    </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
+                    ${campoNumero("Mínimo de la escala", "minimoEscala", "1")}
+                    ${campoNumero("Máximo de la escala", "maximoEscala", "5")}
 
-                    <label class="block">
-                        <span class="block text-sm font-black text-slate-800 mb-2">
-                            Máximo de la escala
-                        </span>
-                        <input
-                            type="number"
-                            step="any"
-                            name="maximoEscala"
-                            value="5"
-                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100 focus:border-amber-500"
-                        />
-                    </label>
-
-                    <label class="block">
-                        <span class="block text-sm font-black text-slate-800 mb-2">
-                            Ítems invertidos
-                        </span>
+                    <label class="block xl:col-span-2">
+                        <span class="block text-sm font-black text-slate-800 mb-2">Ítems invertidos</span>
                         <input
                             type="text"
                             name="itemsInvertidos"
@@ -128,12 +106,34 @@ export function CalculadoraFiabilidadCuestionarios() {
                             class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100 focus:border-amber-500"
                         />
                     </label>
+
+                    <label class="block">
+                        <span class="block text-sm font-black text-slate-800 mb-2">Confianza</span>
+                        <select name="nivelBootstrap" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100">
+                            <option value="0.90">90 %</option>
+                            <option value="0.95" selected>95 %</option>
+                            <option value="0.99">99 %</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[0.45fr_1.55fr] gap-5 mt-5">
+                    <label class="block">
+                        <span class="block text-sm font-black text-slate-800 mb-2">Remuestras bootstrap</span>
+                        <select name="numeroRemuestras" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100">
+                            <option value="200">200 — rápida</option>
+                            <option value="500" selected>500 — recomendada</option>
+                            <option value="1000">1,000 — más estable</option>
+                        </select>
+                    </label>
+
+                    <div class="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950 leading-relaxed">
+                        Las remuestras se generan con una semilla reproducible. Con muestras pequeñas, los intervalos pueden ser amplios o inestables.
+                    </div>
                 </div>
 
                 <label class="block mt-6">
-                    <span class="block text-sm font-black text-slate-800 mb-2">
-                        Respuestas del cuestionario
-                    </span>
+                    <span class="block text-sm font-black text-slate-800 mb-2">Respuestas del cuestionario</span>
                     <textarea
                         name="datos"
                         rows="16"
@@ -141,19 +141,15 @@ export function CalculadoraFiabilidadCuestionarios() {
                         placeholder="Ítem 1, Ítem 2, Ítem 3\n4, 5, 4\n3, 4, 3"
                     ></textarea>
                     <span class="block text-xs text-slate-500 mt-2">
-                        Separe columnas mediante comas, punto y coma o tabulaciones. Para números decimales utilice punto.
+                        Separe columnas mediante comas, punto y coma o tabulaciones. Para decimales utilice punto.
                     </span>
                 </label>
 
                 <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                            <h3 class="font-black text-slate-900">
-                                Importar archivo
-                            </h3>
-                            <p class="text-sm text-slate-600 mt-1">
-                                Admite CSV o TXT con la misma estructura de filas y columnas.
-                            </p>
+                            <h3 class="font-black text-slate-900">Importar archivo</h3>
+                            <p class="text-sm text-slate-600 mt-1">Admite CSV o TXT con la misma estructura.</p>
                         </div>
                         <input
                             type="file"
@@ -174,34 +170,20 @@ export function CalculadoraFiabilidadCuestionarios() {
                 <div class="flex flex-col sm:flex-row flex-wrap gap-3 mt-7">
                     <button
                         type="submit"
-                        class="inline-flex items-center justify-center bg-amber-600 text-white font-black rounded-xl px-7 py-4 hover:bg-amber-700 transition-colors shadow-lg"
+                        data-action="analizar"
+                        class="inline-flex items-center justify-center bg-amber-600 text-white font-black rounded-xl px-7 py-4 hover:bg-amber-700 transition-colors shadow-lg disabled:opacity-60"
                     >
                         Analizar fiabilidad
                         <span class="ml-2" aria-hidden="true">→</span>
                     </button>
-                    <button
-                        type="button"
-                        data-action="cargar-ejemplo"
-                        class="inline-flex items-center justify-center border border-amber-300 text-amber-800 font-black rounded-xl px-6 py-4 hover:bg-amber-50 transition-colors"
-                    >
-                        Cargar ejemplo
-                    </button>
-                    <button
-                        type="button"
-                        data-action="limpiar"
-                        class="inline-flex items-center justify-center border border-slate-300 text-slate-700 font-black rounded-xl px-6 py-4 hover:bg-slate-50 transition-colors"
-                    >
-                        Limpiar
-                    </button>
+                    <button type="button" data-action="cargar-ejemplo" class="inline-flex items-center justify-center border border-amber-300 text-amber-800 font-black rounded-xl px-6 py-4 hover:bg-amber-50 transition-colors">Cargar ejemplo</button>
+                    <button type="button" data-action="cargar-dicotomico" class="inline-flex items-center justify-center border border-violet-300 text-violet-800 font-black rounded-xl px-6 py-4 hover:bg-violet-50 transition-colors">Ejemplo KR-20</button>
+                    <button type="button" data-action="limpiar" class="inline-flex items-center justify-center border border-slate-300 text-slate-700 font-black rounded-xl px-6 py-4 hover:bg-slate-50 transition-colors">Limpiar</button>
                 </div>
             </form>
         </section>
 
-        <section
-            id="resultados-fiabilidad-cuestionarios"
-            class="hidden mt-8"
-            aria-live="polite"
-        ></section>
+        <section id="resultados-fiabilidad-cuestionarios" class="hidden mt-8" aria-live="polite"></section>
     `;
 
     const formulario = section.querySelector(
@@ -214,6 +196,9 @@ export function CalculadoraFiabilidadCuestionarios() {
         "#resultados-fiabilidad-cuestionarios"
     );
     const archivo = formulario.elements.archivo;
+    const botonAnalizar = formulario.querySelector(
+        "[data-action='analizar']"
+    );
 
     archivo.addEventListener("change", async () => {
         const seleccionado = archivo.files?.[0];
@@ -230,14 +215,23 @@ export function CalculadoraFiabilidadCuestionarios() {
         }
     });
 
-    formulario.addEventListener("submit", (event) => {
+    formulario.addEventListener("submit", async (event) => {
         event.preventDefault();
         ocultarError(mensajeError);
+        const textoOriginal = botonAnalizar.innerHTML;
+        botonAnalizar.disabled = true;
+        botonAnalizar.textContent = "Calculando intervalos…";
 
         try {
+            await new Promise((resolver) =>
+                window.requestAnimationFrame(resolver)
+            );
             const solicitud = obtenerSolicitud(formulario);
-            ultimoResultado = analizarFiabilidadCuestionario(solicitud);
-            resultados.innerHTML = crearVistaResultados(ultimoResultado);
+            ultimoResultado =
+                analizarFiabilidadCuestionarioAvanzada(solicitud);
+            resultados.innerHTML = crearVistaResultados(
+                ultimoResultado
+            );
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({
                 behavior: "smooth",
@@ -251,13 +245,15 @@ export function CalculadoraFiabilidadCuestionarios() {
                     ? error.message
                     : "No fue posible analizar la fiabilidad."
             );
+        } finally {
+            botonAnalizar.disabled = false;
+            botonAnalizar.innerHTML = textoOriginal;
         }
     });
 
     section.addEventListener("click", async (event) => {
         const boton = event.target.closest("[data-action]");
         if (!boton) return;
-
         const accion = boton.dataset.action;
 
         if (accion === "volver-laboratorio") {
@@ -265,18 +261,23 @@ export function CalculadoraFiabilidadCuestionarios() {
             return;
         }
         if (accion === "cargar-ejemplo") {
-            cargarEjemplo(formulario);
-            resultados.classList.add("hidden");
-            ocultarError(mensajeError);
+            cargarEjemploLikert(formulario);
+            reiniciarResultados(resultados, mensajeError);
+            return;
+        }
+        if (accion === "cargar-dicotomico") {
+            cargarEjemploDicotomico(formulario);
+            reiniciarResultados(resultados, mensajeError);
             return;
         }
         if (accion === "limpiar") {
             formulario.reset();
             formulario.elements.minimoEscala.value = "1";
             formulario.elements.maximoEscala.value = "5";
+            formulario.elements.nivelBootstrap.value = "0.95";
+            formulario.elements.numeroRemuestras.value = "500";
             formulario.elements.datos.value = "";
-            resultados.classList.add("hidden");
-            ocultarError(mensajeError);
+            reiniciarResultados(resultados, mensajeError);
             return;
         }
         if (!ultimoResultado) return;
@@ -288,10 +289,10 @@ export function CalculadoraFiabilidadCuestionarios() {
                 await navigator.clipboard.writeText(
                     construirReporte(ultimoResultado)
                 );
-                const textoOriginal = boton.textContent;
+                const original = boton.textContent;
                 boton.textContent = "Reporte copiado";
                 setTimeout(() => {
-                    boton.textContent = textoOriginal;
+                    boton.textContent = original;
                 }, 1600);
             } catch {
                 mostrarError(
@@ -307,13 +308,23 @@ export function CalculadoraFiabilidadCuestionarios() {
     return section;
 }
 
-function guia(titulo, texto) {
+function campoNumero(etiqueta, nombre, valor) {
     return `
-        <div>
-            <h3 class="font-black text-slate-900 mb-1">${titulo}</h3>
-            <p>${texto}</p>
-        </div>
+        <label class="block">
+            <span class="block text-sm font-black text-slate-800 mb-2">${etiqueta}</span>
+            <input
+                type="number"
+                step="any"
+                name="${nombre}"
+                value="${valor}"
+                class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-100 focus:border-amber-500"
+            />
+        </label>
     `;
+}
+
+function guia(titulo, texto) {
+    return `<div><h3 class="font-black text-slate-900 mb-1">${titulo}</h3><p>${texto}</p></div>`;
 }
 
 function detectarDelimitador(linea) {
@@ -323,10 +334,8 @@ function detectarDelimitador(linea) {
 }
 
 function esAusente(valor) {
-    const normalizado = String(valor ?? "").trim().toLowerCase();
-    return ["", "na", "n/a", ".", "null", "missing"].includes(
-        normalizado
-    );
+    return ["", "na", "n/a", ".", "null", "missing"]
+        .includes(String(valor ?? "").trim().toLowerCase());
 }
 
 function obtenerSolicitud(formulario) {
@@ -343,9 +352,9 @@ function obtenerSolicitud(formulario) {
         .map((linea) => linea.trim())
         .filter(Boolean);
 
-    if (lineas.length < 6) {
+    if (lineas.length < 5) {
         throw new Error(
-            "Se requieren al menos cinco participantes y, opcionalmente, una fila de encabezados."
+            "Se requieren al menos cinco participantes completos."
         );
     }
 
@@ -363,7 +372,7 @@ function obtenerSolicitud(formulario) {
 
     if (k < 3) {
         throw new Error(
-            "El archivo debe contener al menos tres columnas de ítems."
+            "El cuestionario debe contener al menos tres columnas de ítems."
         );
     }
     if (!filas.every((fila) => fila.length === k)) {
@@ -381,36 +390,41 @@ function obtenerSolicitud(formulario) {
             return;
         }
 
-        const numerica = fila.map((valor, indiceColumna) => {
-            const numero = Number(valor);
+        matriz.push(
+            fila.map((valor, indiceColumna) => {
+                const numero = Number(valor);
 
-            if (!Number.isFinite(numero)) {
-                throw new Error(
-                    `La fila ${indiceFila + 1}, columna ${indiceColumna + 1}, contiene un valor no numérico.`
-                );
-            }
+                if (!Number.isFinite(numero)) {
+                    throw new Error(
+                        `La fila ${indiceFila + 1}, columna ${indiceColumna + 1}, contiene un valor no numérico.`
+                    );
+                }
 
-            return numero;
-        });
-        matriz.push(numerica);
+                return numero;
+            })
+        );
     });
-
-    const itemsInvertidos = resolverItemsInvertidos(
-        formulario.elements.itemsInvertidos.value,
-        nombresItems
-    );
 
     return {
         matriz,
         nombresItems,
-        itemsInvertidos,
+        itemsInvertidos: resolverItemsInvertidos(
+            formulario.elements.itemsInvertidos.value,
+            nombresItems
+        ),
         minimoEscala: Number(
             formulario.elements.minimoEscala.value
         ),
         maximoEscala: Number(
             formulario.elements.maximoEscala.value
         ),
-        filasExcluidas
+        filasExcluidas,
+        numeroRemuestras: Number(
+            formulario.elements.numeroRemuestras.value
+        ),
+        nivelConfianzaBootstrap: Number(
+            formulario.elements.nivelBootstrap.value
+        )
     };
 }
 
@@ -425,7 +439,7 @@ function resolverItemsInvertidos(texto, nombresItems) {
     );
 
     return texto
-        .split(/[,;\s]+/)
+        .split(/[,;]+/)
         .map((token) => token.trim())
         .filter(Boolean)
         .map((token) => {
@@ -434,7 +448,7 @@ function resolverItemsInvertidos(texto, nombresItems) {
             if (Number.isInteger(posicion)) {
                 if (posicion < 1 || posicion > nombresItems.length) {
                     throw new Error(
-                        `El ítem invertido ${token} no existe en el cuestionario.`
+                        `El ítem invertido ${token} no existe.`
                     );
                 }
                 return posicion - 1;
@@ -443,14 +457,14 @@ function resolverItemsInvertidos(texto, nombresItems) {
             const indice = mapaNombres.get(token.toLowerCase());
             if (indice === undefined) {
                 throw new Error(
-                    `No se encontró el ítem invertido llamado “${token}”. Use su posición numérica cuando el nombre contenga espacios.`
+                    `No se encontró el ítem invertido llamado “${token}”.`
                 );
             }
             return indice;
         });
 }
 
-function cargarEjemplo(formulario) {
+function cargarEjemploLikert(formulario) {
     formulario.elements.minimoEscala.value = "1";
     formulario.elements.maximoEscala.value = "5";
     formulario.elements.itemsInvertidos.value = "6";
@@ -481,6 +495,49 @@ function cargarEjemplo(formulario) {
 2, 3, 2, 2, 3, 4`;
 }
 
+function cargarEjemploDicotomico(formulario) {
+    formulario.elements.minimoEscala.value = "0";
+    formulario.elements.maximoEscala.value = "1";
+    formulario.elements.itemsInvertidos.value = "";
+    formulario.elements.datos.value = `Item1, Item2, Item3, Item4, Item5, Item6
+1,1,1,1,1,1
+1,1,1,0,1,1
+1,1,0,1,1,1
+1,0,1,1,1,0
+0,1,1,1,0,1
+1,1,1,1,1,0
+0,0,1,1,0,1
+1,0,1,0,1,0
+0,1,0,1,0,1
+1,1,0,0,1,0
+0,0,1,0,0,1
+1,0,0,1,1,0
+0,1,1,0,0,1
+0,0,0,1,0,0
+1,1,1,1,0,1
+0,1,0,0,1,0
+1,0,1,1,0,1
+0,0,1,0,1,0
+1,1,0,1,1,1
+0,1,1,0,1,0
+1,0,0,1,0,1
+0,0,0,0,0,0
+1,1,1,0,1,1
+0,1,0,1,0,0
+1,0,1,0,1,1
+0,0,1,1,0,0
+1,1,0,1,1,0
+0,1,1,0,0,0
+1,0,0,1,0,0
+0,0,0,0,1,0`;
+}
+
+function reiniciarResultados(resultados, mensajeError) {
+    resultados.classList.add("hidden");
+    resultados.innerHTML = "";
+    ocultarError(mensajeError);
+}
+
 function formatear(valor, decimales = 4) {
     if (!Number.isFinite(Number(valor))) return "—";
 
@@ -501,17 +558,22 @@ function escapar(texto) {
 function tarjetaMetrica(etiqueta, valor, ayuda) {
     return `
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">
-                ${etiqueta}
-            </p>
-            <p class="text-2xl font-black text-slate-900 break-words">
-                ${valor}
-            </p>
-            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                ${ayuda}
-            </p>
+            <p class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">${etiqueta}</p>
+            <p class="text-2xl font-black text-slate-900 break-words">${valor}</p>
+            <p class="text-xs text-slate-500 mt-2 leading-relaxed">${ayuda}</p>
         </article>
     `;
+}
+
+function formatearIntervalo(intervalo) {
+    if (
+        !Number.isFinite(intervalo?.inferior) ||
+        !Number.isFinite(intervalo?.superior)
+    ) {
+        return "No disponible";
+    }
+
+    return `[${formatear(intervalo.inferior, 4)}, ${formatear(intervalo.superior, 4)}]`;
 }
 
 function crearTablaItems(resultado) {
@@ -554,19 +616,47 @@ function crearTablaItems(resultado) {
     `;
 }
 
+function crearPares(titulo, pares, tipo) {
+    const clase = tipo === "negativo"
+        ? "border-red-200 bg-red-50 text-red-950"
+        : "border-violet-200 bg-violet-50 text-violet-950";
+
+    if (!pares.length) {
+        return `
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-950">
+                <strong>${titulo}:</strong> no se detectaron pares mediante el criterio automático.
+            </div>
+        `;
+    }
+
+    return `
+        <div class="rounded-2xl border ${clase} p-5">
+            <h3 class="font-black mb-3">${titulo}</h3>
+            <div class="space-y-2 text-sm">
+                ${pares.map((fila) => `
+                    <p>
+                        <strong>${escapar(fila.itemA)}</strong> –
+                        <strong>${escapar(fila.itemB)}</strong>:
+                        r = ${formatear(fila.correlacion, 3)}
+                    </p>
+                `).join("")}
+            </div>
+        </div>
+    `;
+}
+
 function crearVistaResultados(resultado) {
+    const bootstrap = resultado.intervalosBootstrap;
+    const kr20 = resultado.kr20;
+
     return `
         <div class="rounded-3xl bg-slate-950 text-white p-6 md:p-9 shadow-2xl">
             <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
                 <div>
-                    <p class="uppercase tracking-widest text-amber-300 text-xs font-black mb-2">
-                        Consistencia interna
-                    </p>
-                    <h2 class="text-3xl md:text-4xl font-black mb-3">
-                        Resultados de fiabilidad
-                    </h2>
+                    <p class="uppercase tracking-widest text-amber-300 text-xs font-black mb-2">Consistencia interna</p>
+                    <h2 class="text-3xl md:text-4xl font-black mb-3">Resultados de fiabilidad</h2>
                     <p class="text-slate-200 leading-relaxed max-w-4xl">
-                        El análisis utilizó ${resultado.n} participantes y ${resultado.k} ítems. Se recodificaron ${resultado.itemsInvertidos.length} ítems invertidos.
+                        Se analizaron ${resultado.n} participantes y ${resultado.k} ítems. Se recodificaron ${resultado.itemsInvertidos.length} ítems invertidos y se excluyeron ${resultado.filasExcluidas} filas incompletas.
                     </p>
                 </div>
                 <span class="inline-flex self-start rounded-2xl bg-amber-500/20 text-amber-200 border border-amber-400/30 px-5 py-3 font-black">
@@ -580,84 +670,105 @@ function crearVistaResultados(resultado) {
             </div>
         </div>
 
-        <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mt-7">
-            ${tarjetaMetrica("Participantes", resultado.n, "Filas completas utilizadas")}
-            ${tarjetaMetrica("Ítems", resultado.k, "Variables que forman la escala")}
-            ${tarjetaMetrica("Alfa", formatear(resultado.fiabilidad.alfaCronbach, 4), "Consistencia interna no estandarizada")}
-            ${tarjetaMetrica("Alfa est.", formatear(resultado.fiabilidad.alfaEstandarizado, 4), "Basado en correlaciones interítem")}
-            ${tarjetaMetrica("Omega", formatear(resultado.fiabilidad.omegaTotalAproximado, 4), "Aproximación unidimensional")}
-            ${tarjetaMetrica("Spearman–Brown", formatear(resultado.fiabilidad.spearmanBrown, 4), "División alternada de los ítems")}
+        <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-7 gap-4 mt-7">
+            ${tarjetaMetrica("Participantes", resultado.n, "Filas completas")}
+            ${tarjetaMetrica("Ítems", resultado.k, "Componentes de la escala")}
+            ${tarjetaMetrica("Alfa", formatear(resultado.fiabilidad.alfaCronbach, 4), "No estandarizado")}
+            ${tarjetaMetrica("Alfa est.", formatear(resultado.fiabilidad.alfaEstandarizado, 4), "Matriz de correlaciones")}
+            ${tarjetaMetrica("Omega", formatear(resultado.fiabilidad.omegaTotalAproximado, 4), "Aproximación de un factor")}
+            ${tarjetaMetrica("KR-20", kr20.aplica ? formatear(kr20.valor, 4) : "No aplica", "Ítems dicotómicos 0/1")}
+            ${tarjetaMetrica("Spearman–Brown", formatear(resultado.fiabilidad.spearmanBrown, 4), "División par–impar")}
         </section>
 
-        <section class="mt-9">
-            <p class="uppercase tracking-widest text-amber-700 text-xs font-black mb-2">
-                Advertencias metodológicas
+        <section class="mt-8 rounded-3xl border border-sky-200 bg-white p-6 md:p-8 shadow-lg">
+            <p class="uppercase tracking-widest text-sky-700 text-xs font-black mb-2">Precisión muestral</p>
+            <h2 class="text-3xl font-black text-slate-900 mb-3">Intervalos bootstrap</h2>
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Método percentil con ${bootstrap.numeroRemuestras.toLocaleString("es-DO")} remuestras y nivel de confianza de ${(bootstrap.nivelConfianza * 100).toFixed(0)} %.
             </p>
-            <h2 class="text-3xl font-black text-slate-900 mb-5">
-                Condiciones que deben considerarse
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                ${resultado.advertencias.map((texto) => `
-                    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950 leading-relaxed">
-                        ${escapar(texto)}
-                    </div>
-                `).join("")}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                ${tarjetaMetrica(
+                    "IC del alfa",
+                    formatearIntervalo(bootstrap.alfa),
+                    `${bootstrap.alfa.remuestrasValidas} remuestras válidas`
+                )}
+                ${tarjetaMetrica(
+                    "IC del omega",
+                    formatearIntervalo(bootstrap.omega),
+                    `${bootstrap.omega.remuestrasValidas} remuestras válidas`
+                )}
             </div>
         </section>
 
+        <section class="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-6 md:p-8">
+            <h2 class="text-2xl font-black text-amber-950 mb-4">Advertencias metodológicas</h2>
+            <ul class="space-y-3 text-amber-950 leading-relaxed">
+                ${resultado.advertencias.map((texto) => `
+                    <li class="flex gap-3"><span class="font-black">!</span><span>${escapar(texto)}</span></li>
+                `).join("")}
+            </ul>
+        </section>
+
         <section class="mt-10 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-lg">
-            <p class="uppercase tracking-widest text-amber-700 text-xs font-black mb-2">
-                Diagnóstico por ítem
-            </p>
-            <h2 class="text-3xl font-black text-slate-900 mb-3">
-                Estadísticos y contribución de cada ítem
-            </h2>
+            <p class="uppercase tracking-widest text-amber-700 text-xs font-black mb-2">Diagnóstico por ítem</p>
+            <h2 class="text-3xl font-black text-slate-900 mb-3">Contribución de cada ítem</h2>
             <p class="text-slate-600 leading-relaxed mb-6">
-                Las alertas automáticas orientan la revisión, pero la eliminación de un ítem debe justificarse mediante contenido, teoría y evidencia adicional.
+                Revise conjuntamente la correlación ítem–total, el alfa si se elimina, la carga aproximada y el contenido sustantivo.
             </p>
             ${crearTablaItems(resultado)}
+        </section>
+
+        <section class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-lg">
+            <p class="uppercase tracking-widest text-violet-700 text-xs font-black mb-2">Relaciones interítem</p>
+            <h2 class="text-3xl font-black text-slate-900 mb-5">Redundancia y correlaciones negativas</h2>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                ${crearPares(
+                    "Pares potencialmente redundantes (r ≥ 0.80)",
+                    resultado.diagnosticosAvanzados.paresRedundantes,
+                    "redundante"
+                )}
+                ${crearPares(
+                    "Pares con correlación negativa (r ≤ −0.20)",
+                    resultado.diagnosticosAvanzados.paresNegativos,
+                    "negativo"
+                )}
+            </div>
         </section>
 
         ${crearPanelGraficosFiabilidad(resultado)}
 
         <section class="mt-10 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8">
-            <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">
-                Interpretación guiada
-            </p>
-            <h2 class="text-3xl font-black text-emerald-950 mb-5">
-                Lectura general del instrumento
-            </h2>
+            <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">Interpretación guiada</p>
+            <h2 class="text-3xl font-black text-emerald-950 mb-5">Lectura general del instrumento</h2>
             <ul class="space-y-3 text-emerald-950 leading-relaxed">
                 ${resultado.interpretacion.map((texto) => `
-                    <li class="flex gap-3">
-                        <span class="font-black text-emerald-700">✓</span>
-                        <span>${escapar(texto)}</span>
-                    </li>
+                    <li class="flex gap-3"><span class="font-black text-emerald-700">✓</span><span>${escapar(texto)}</span></li>
                 `).join("")}
             </ul>
         </section>
 
         <section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8 text-slate-700 leading-relaxed">
-            <h2 class="text-2xl font-black text-slate-900 mb-3">
-                Criterio metodológico
-            </h2>
+            <h2 class="text-2xl font-black text-slate-900 mb-3">Criterio metodológico</h2>
             <p>
-                No establezca puntos de corte rígidos como única evidencia. Informe el alfa y el omega, describa la muestra, especifique los ítems invertidos, revise la dimensionalidad y presente las correlaciones ítem–total. Cuando el instrumento tenga varias dimensiones, calcule la fiabilidad por subescala en lugar de combinar indiscriminadamente todos los ítems.
+                Alfa, omega y KR-20 evalúan consistencia interna bajo supuestos diferentes, pero ninguno demuestra por sí solo validez. Antes de modificar el instrumento, examine la dimensionalidad, el contenido, la formulación de los ítems, la población y el propósito de la medición.
             </p>
         </section>
     `;
 }
 
 function construirReporte(resultado) {
+    const b = resultado.intervalosBootstrap;
     const lineas = [
         "CUESTIONARIOS Y FIABILIDAD — LABORATORIO KERNEL",
         "",
         `Participantes: ${resultado.n}`,
         `Ítems: ${resultado.k}`,
-        `Ítems invertidos: ${resultado.itemsInvertidos.join(", ") || "ninguno"}`,
         `Alfa de Cronbach: ${formatear(resultado.fiabilidad.alfaCronbach, 4)}`,
+        `IC bootstrap del alfa: ${formatearIntervalo(b.alfa)}`,
         `Alfa estandarizado: ${formatear(resultado.fiabilidad.alfaEstandarizado, 4)}`,
-        `Omega total aproximado: ${formatear(resultado.fiabilidad.omegaTotalAproximado, 4)}`,
+        `Omega aproximado: ${formatear(resultado.fiabilidad.omegaTotalAproximado, 4)}`,
+        `IC bootstrap del omega: ${formatearIntervalo(b.omega)}`,
+        `KR-20: ${resultado.kr20.aplica ? formatear(resultado.kr20.valor, 4) : "No aplica"}`,
         `Spearman–Brown: ${formatear(resultado.fiabilidad.spearmanBrown, 4)}`,
         `Correlación interítem media: ${formatear(resultado.fiabilidad.correlacionInteritemMedia, 4)}`,
         "",
@@ -680,27 +791,23 @@ function celdaCsv(valor) {
 }
 
 function exportarCsv(resultado) {
+    const b = resultado.intervalosBootstrap;
     const filas = [
         ["CUESTIONARIOS Y FIABILIDAD"],
         ["Participantes", resultado.n],
         ["Ítems", resultado.k],
         ["Alfa de Cronbach", resultado.fiabilidad.alfaCronbach],
+        ["IC alfa inferior", b.alfa.inferior],
+        ["IC alfa superior", b.alfa.superior],
         ["Alfa estandarizado", resultado.fiabilidad.alfaEstandarizado],
-        ["Omega total aproximado", resultado.fiabilidad.omegaTotalAproximado],
+        ["Omega aproximado", resultado.fiabilidad.omegaTotalAproximado],
+        ["IC omega inferior", b.omega.inferior],
+        ["IC omega superior", b.omega.superior],
+        ["KR-20", resultado.kr20.valor],
         ["Spearman-Brown", resultado.fiabilidad.spearmanBrown],
         ["Correlación interítem media", resultado.fiabilidad.correlacionInteritemMedia],
         [],
-        [
-            "Ítem",
-            "Invertido",
-            "Media",
-            "DE",
-            "Correlación ítem-total",
-            "Alfa si se elimina",
-            "Carga un factor",
-            "Unicidad",
-            "Alertas"
-        ],
+        ["Ítem", "Invertido", "Media", "DE", "Ítem-total", "Alfa sin ítem", "Carga", "Unicidad", "Alertas"],
         ...resultado.items.map((item) => [
             item.nombre,
             item.invertido ? "Sí" : "No",
@@ -713,16 +820,15 @@ function exportarCsv(resultado) {
             item.alertas.join(" ")
         ]),
         [],
-        ["Puntuación total por participante"],
-        ...resultado.puntuacionesTotales.map((valor, indice) => [
-            indice + 1,
-            valor
+        ["Pares redundantes"],
+        ["Ítem A", "Ítem B", "Correlación"],
+        ...resultado.diagnosticosAvanzados.paresRedundantes.map((fila) => [
+            fila.itemA,
+            fila.itemB,
+            fila.correlacion
         ]),
         [],
-        [
-            "Créditos",
-            "Miguel Antonio Leonardo Sepúlveda y Natanael Ureña Castillo"
-        ]
+        ["Créditos", "Miguel Antonio Leonardo Sepúlveda y Natanael Ureña Castillo"]
     ];
     const contenido = filas
         .map((fila) => fila.map(celdaCsv).join(","))
