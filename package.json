@@ -11,7 +11,8 @@
     "test:count": "node --experimental-default-type=module scripts/validar-regresion-conteo.mjs",
     "test:reliability": "node --experimental-default-type=module scripts/validar-fiabilidad-cuestionarios.mjs",
     "test:reliability-advanced": "node --experimental-default-type=module scripts/validar-fiabilidad-avanzada.mjs",
-    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced",
+    "test:evaluation": "node --experimental-default-type=module scripts/validar-evaluacion-educativa.mjs",
+    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced && npm run test:evaluation",
     "tailwind": "npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css --watch"
   },
   "keywords": [],
