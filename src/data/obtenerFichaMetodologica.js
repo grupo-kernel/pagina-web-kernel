@@ -18,8 +18,13 @@ import {
     fichasMetodologicasRelacionVariables
 } from "./fichasMetodologicasRelacionVariables.js";
 
+import {
+    fichasMetodologicasRegresion
+} from "./fichasMetodologicasRegresion.js";
+
 export function obtenerFichaMetodologica(id) {
     return (
+        fichasMetodologicasRegresion[id] ||
         fichasMetodologicasRelacionVariables[id] ||
         fichasMetodologicasMedidasRepetidas[id] ||
         fichasMetodologicasMultigrupo[id] ||
