@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test:stats": "node --experimental-default-type=module scripts/validar-estadistica-descriptiva.mjs",
     "tailwind": "npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css --watch"
   },
   "keywords": [],
@@ -19,10 +20,10 @@
     "vite": "^7.3.1"
   },
   "dependencies": {
-  "@fortawesome/fontawesome-free": "^7.2.0",
-  "@tailwindcss/cli": "^4.1.18",
-  "@tailwindcss/vite": "^4.2.0",
-  "firebase": "^12.16.0",
-  "jstat": "^1.9.6"
-}
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/vite": "^4.2.0",
+    "firebase": "^12.16.0",
+    "jstat": "^1.9.6"
+  }
 }
