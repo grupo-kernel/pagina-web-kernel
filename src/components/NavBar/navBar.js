@@ -1,123 +1,113 @@
 export function createNavBar() {
-    const wrapper = `
-        <div class="lg:hidden border-b-zinc-500 border-b pb-2.5 w-full flex px-2.5 justify-between items-center mb-7">
-            <span class="text-4xl font-medium">El Kernel</span>
-            <i data-action="close-navBar" class="text-6xl cursor-pointer bx bx-x"></i>
+    return `
+        <div class="lg:hidden border-b border-zinc-200 pb-3 w-full flex px-3 justify-between items-center mb-5">
+            <span class="text-3xl font-black text-slate-900">El Kernel</span>
+            <button
+                type="button"
+                data-action="close-navBar"
+                class="flex h-12 w-12 items-center justify-center rounded-xl text-4xl text-slate-800 hover:bg-slate-100"
+                aria-label="Cerrar menú principal"
+            >
+                <i aria-hidden="true" class="bx bx-x"></i>
+            </button>
         </div>
 
-        <ul class="flex w-full text-black flex-col lg:flex-row lg:items-start p-4 gap-4 xl:gap-9">
-
-            <li data-route="home"
-                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
+        <ul class="flex w-full flex-col gap-2 overflow-visible p-3 text-black lg:flex-row lg:items-center lg:justify-end lg:gap-2 lg:p-0 xl:gap-4">
+            <li
+                data-route="home"
+                class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 lg:text-base xl:text-lg 2xl:text-xl"
+            >
                 <span>Portada</span>
-                <i class="bx bx-home text-3xl"></i>
+                <i aria-hidden="true" class="bx bx-home text-xl"></i>
             </li>
 
-            <!-- Nosotros -->
-            <li data-action="open-subMenu"
-                class="gap-1 text-nowrap lg:relative 2xl:text-3xl hover:cursor-pointer font-medium items-center text-lg xl:text-2xl">
-
-                <div class="flex justify-between">
+            <li data-submenu class="relative whitespace-nowrap">
+                <button
+                    type="button"
+                    data-action="open-subMenu"
+                    aria-expanded="false"
+                    aria-controls="submenu-nosotros"
+                    class="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 lg:text-base xl:text-lg 2xl:text-xl"
+                >
                     <span>Nosotros</span>
-                    <i class="text-3xl bx bx-caret-down"></i>
-                </div>
+                    <i aria-hidden="true" class="bx bx-caret-down text-xl transition-transform"></i>
+                </button>
 
-                <ul class="flex-col mt-2.5 text-lg lg:text-base hidden w-full lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56 lg:bg-white lg:shadow-2xl">
-
-                    <li data-route="quienesSomos"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
-                        <span>Quiénes Somos</span>
+                <ul
+                    id="submenu-nosotros"
+                    data-submenu-panel
+                    class="z-[240] mt-2 hidden w-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-2 text-base shadow-2xl ring-1 ring-slate-950/5 lg:absolute lg:left-0 lg:top-[calc(100%+0.35rem)] lg:mt-0 lg:min-w-[16rem]"
+                >
+                    <li data-route="quienesSomos" class="cursor-pointer rounded-xl px-4 py-3 font-semibold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white">
+                        <span>Quiénes somos</span>
                     </li>
-
-                    <li data-route="equipment"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
+                    <li data-route="equipment" class="cursor-pointer rounded-xl px-4 py-3 font-semibold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white">
                         <span>Equipo</span>
                     </li>
-
                 </ul>
-
             </li>
 
-            <!-- Nuestro Trabajo -->
-            <li data-action="open-subMenu"
-                class="lg:relative gap-1 2xl:text-3xl text-nowrap hover:cursor-pointer font-medium items-center text-lg xl:text-2xl">
+            <li data-submenu class="relative whitespace-nowrap">
+                <button
+                    type="button"
+                    data-action="open-subMenu"
+                    aria-expanded="false"
+                    aria-controls="submenu-nuestro-trabajo"
+                    class="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 lg:text-base xl:text-lg 2xl:text-xl"
+                >
+                    <span>Nuestro trabajo</span>
+                    <i aria-hidden="true" class="bx bx-caret-down text-xl transition-transform"></i>
+                </button>
 
-                <div class="flex justify-between">
-                    <span>Nuestro Trabajo</span>
-                    <i class="text-3xl bx bx-caret-down"></i>
-                </div>
-
-                <ul class="flex-col mt-2.5 text-lg lg:text-base hidden w-full lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56 lg:bg-white lg:shadow-2xl">
-
-                    <li data-route="lineas"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
-                        <span>Líneas</span>
+                <ul
+                    id="submenu-nuestro-trabajo"
+                    data-submenu-panel
+                    class="z-[240] mt-2 hidden w-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-2 text-base shadow-2xl ring-1 ring-slate-950/5 lg:absolute lg:left-0 lg:top-[calc(100%+0.35rem)] lg:mt-0 lg:min-w-[17rem]"
+                >
+                    <li data-route="lineas" class="cursor-pointer rounded-xl px-4 py-3 font-semibold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white">
+                        <span>Líneas de investigación</span>
                     </li>
-
-                    <li data-route="proyectos"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
+                    <li data-route="proyectos" class="cursor-pointer rounded-xl px-4 py-3 font-semibold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white">
                         <span>Proyectos</span>
                     </li>
-
-                    <li data-route="publicaciones"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
+                    <li data-route="publicaciones" class="cursor-pointer rounded-xl px-4 py-3 font-semibold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white">
                         <span>Publicaciones</span>
                     </li>
-
-                    <li data-route="herramientas"
-                        class="px-2 py-1.5 2xl:text-3xl hover:bg-sky-800 hover:text-white">
-                        <span>Herramientas</span>
+                    <li data-route="herramientas" class="cursor-pointer rounded-xl bg-sky-50 px-4 py-3 font-black text-sky-800 transition-colors hover:bg-sky-700 hover:text-white">
+                        <span class="flex items-center justify-between gap-3">
+                            Herramientas
+                            <i aria-hidden="true" class="bx bx-wrench text-xl"></i>
+                        </span>
                     </li>
-
                 </ul>
-
             </li>
 
-            <!-- Laboratorio Inteligente -->
-<li
-    data-route="laboratorioKernel"
-    class="
-        flex items-center justify-center gap-2
-        hover:cursor-pointer
-        font-medium
-        text-base xl:text-xl 2xl:text-2xl
-    "
->
-    <span class="flex flex-col items-center text-center leading-none">
-        <span class="whitespace-nowrap">
-            Laboratorio Inteligente
-        </span>
+            <li
+                data-route="laboratorioKernel"
+                class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 lg:text-base xl:text-lg 2xl:text-xl"
+            >
+                <span class="flex flex-col leading-none lg:items-center lg:text-center">
+                    <span>Laboratorio Inteligente</span>
+                    <span class="mt-1 text-xs font-semibold text-slate-500 xl:text-sm">de Investigación</span>
+                </span>
+                <i aria-hidden="true" class="bx bx-bar-chart-alt-2 text-xl"></i>
+            </li>
 
-        <span
-            class="
-                mt-1 whitespace-nowrap
-                text-sm xl:text-base 2xl:text-lg
-                font-semibold text-slate-600
-            "
-        >
-            de Investigación
-        </span>
-    </span>
-
-    <i class="bx bx-bar-chart-alt-2 text-2xl shrink-0"></i>
-</li>
-
-            <!-- Noticias -->
-            <li data-route="noticias"
-                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
+            <li
+                data-route="noticias"
+                class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 lg:text-base xl:text-lg 2xl:text-xl"
+            >
                 <span>Noticias</span>
-                <i class="bx bx-news text-3xl"></i>
+                <i aria-hidden="true" class="bx bx-news text-xl"></i>
             </li>
 
-            <!-- Contacto -->
-            <li data-route="contacto"
-                class="flex gap-1 text-nowrap hover:cursor-pointer justify-between font-medium 2xl:text-3xl items-center text-lg xl:text-2xl">
+            <li
+                data-route="contacto"
+                class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 font-semibold text-slate-800 transition-colors hover:bg-sky-50 hover:text-sky-800 lg:text-base xl:text-lg 2xl:text-xl"
+            >
                 <span>Contacto</span>
-                <i class="bx bx-envelope text-3xl"></i>
+                <i aria-hidden="true" class="bx bx-envelope text-xl"></i>
             </li>
-
         </ul>
     `;
-
-    return wrapper;
 }
