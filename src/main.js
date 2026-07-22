@@ -31,12 +31,34 @@ function ejecutarInicializador(nombre, inicializador) {
     }
 }
 
+function prepararCapasNavegacion(nav) {
+    if (!nav) return;
+
+    const rejilla = nav.parentElement;
+    const barraSuperior = rejilla?.parentElement;
+    const contenido = document.querySelector("#main");
+
+    barraSuperior?.classList.add(
+        "relative",
+        "z-[200]",
+        "overflow-visible"
+    );
+    rejilla?.classList.add("overflow-visible");
+
+    nav.classList.remove("lg:z-auto");
+    nav.classList.add("overflow-visible", "lg:z-[210]");
+    contenido?.classList.add("relative", "z-0");
+}
+
 const header = document.querySelector("#header");
 const navBar = document.querySelector("#navBar");
 const footer = document.querySelector("#footer");
 
 if (header) header.innerHTML = createHeader();
-if (navBar) navBar.innerHTML = createNavBar();
+if (navBar) {
+    navBar.innerHTML = createNavBar();
+    prepararCapasNavegacion(navBar);
+}
 if (footer) footer.innerHTML = Footer();
 
 ejecutarInicializador("la navegación", () => {
