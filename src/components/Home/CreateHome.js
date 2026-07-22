@@ -7,15 +7,10 @@ function formatearNumero(valor) {
 }
 
 function formatearFecha(fechaISO) {
-    if (!fechaISO) {
-        return null;
-    }
+    if (!fechaISO) return null;
 
     const fecha = new Date(fechaISO);
-
-    if (Number.isNaN(fecha.getTime())) {
-        return null;
-    }
+    if (Number.isNaN(fecha.getTime())) return null;
 
     return new Intl.DateTimeFormat("es-DO", {
         dateStyle: "medium",
@@ -40,7 +35,6 @@ async function cargarEstadisticasAnalytics(section) {
         console.warn(
             "No se encontraron los elementos de Analytics en la portada."
         );
-
         return;
     }
 
@@ -51,11 +45,9 @@ async function cargarEstadisticasAnalytics(section) {
 
         totalElement.textContent = formatearNumero(estadisticas.total);
         hoyElement.textContent = formatearNumero(estadisticas.hoy);
-
         semanaElement.textContent = formatearNumero(
             estadisticas.ultimos7Dias
         );
-
         mesElement.textContent = formatearNumero(
             estadisticas.ultimos30Dias
         );
@@ -63,7 +55,6 @@ async function cargarEstadisticasAnalytics(section) {
         const fechaActualizacion = formatearFecha(
             estadisticas.actualizadoEn
         );
-
         actualizadoElement.textContent = fechaActualizacion
             ? `Actualizado: ${fechaActualizacion}`
             : "Estadísticas temporalmente no disponibles";
@@ -73,11 +64,14 @@ async function cargarEstadisticasAnalytics(section) {
             error
         );
 
-        totalElement.textContent = "—";
-        hoyElement.textContent = "—";
-        semanaElement.textContent = "—";
-        mesElement.textContent = "—";
-
+        [
+            totalElement,
+            hoyElement,
+            semanaElement,
+            mesElement
+        ].forEach((elemento) => {
+            elemento.textContent = "—";
+        });
         actualizadoElement.textContent =
             "No fue posible cargar las estadísticas";
     }
@@ -87,21 +81,15 @@ export function CreateHome() {
     const section = document.createElement("section");
 
     section.className = `
-        relative w-full max-w-7xl mx-auto px-4 py-10
-        flex flex-col tabletBig:flex-row
-        items-stretch justify-center
-        gap-0
+        relative w-full max-w-7xl mx-auto
+        px-4 py-8 md:px-6 md:py-12
+        flex flex-col gap-8
         font-sans
-        tabletBig:px-20
-        xl:px-0
-        2xl:max-w-[1800px]
+        2xl:max-w-[1600px]
     `;
 
     section.innerHTML = CreateCardFirstHome();
-
-    const sliderComponent = CreateSliderComponentHome();
-    section.appendChild(sliderComponent);
-
+    section.appendChild(CreateSliderComponentHome());
     cargarEstadisticasAnalytics(section);
 
     return section;
