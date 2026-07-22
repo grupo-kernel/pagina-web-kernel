@@ -20,6 +20,9 @@ import {
 import {
     iniciarIntegracionRegresionLaboratorio
 } from "./utils/integrarRegresionLaboratorio.js";
+import {
+    iniciarIntegracionRegresionAsistente
+} from "./utils/integrarRegresionAsistente.js";
 
 // GLOBAL COMPONENT RENDERING
 
@@ -38,3 +41,4 @@ iniciarGraficosDescriptivosPonderados();
 iniciarExportacionResultadosDescriptivos();
 iniciarCreditosCalculadoras();
 iniciarIntegracionRegresionLaboratorio();
+iniciarIntegracionRegresionAsistente();
