@@ -48,60 +48,24 @@
     >
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Encabezado y navegación principal -->
-    <div class="w-full static bg-white shadow-lg border-b-[0.4px]">
+    <div
+        data-site-header
+        class="relative z-[200] w-full overflow-visible border-b border-slate-200 bg-white shadow-lg"
+    >
         <div
-            class="
-                w-full
-                grid grid-cols-4
-                lg:grid-cols-18
-                items-center
-                px-4 lg:px-6
-            "
+            class="relative z-[210] grid w-full grid-cols-4 items-center overflow-visible px-4 lg:grid-cols-18 lg:px-6"
         >
             <header
                 id="header"
-                class="
-                    col-span-4
-                    lg:col-span-5
-                    xl:col-span-4
-                    flex items-center
-                    py-2
-                "
+                class="col-span-4 flex items-center py-2 lg:col-span-5 xl:col-span-4"
             ></header>
 
             <nav
                 id="navBar"
-                class="
-                    hidden
-                    fixed
-                    top-0 left-0
-                    z-50
-                    h-screen
-                    w-3/4
-                    p-1.5
-                    flex-col
-                    bg-white
-                    transition-transform
-                    duration-300
-                    ease-in-out
-
-                    lg:relative
-                    lg:top-auto
-                    lg:left-auto
-                    lg:z-auto
-                    lg:flex
-                    lg:h-auto
-                    lg:w-auto
-                    lg:col-span-13
-                    lg:flex-row
-                    lg:text-lg
-
-                    xl:col-span-14
-                    2xl:text-5xl
-                "
+                class="fixed left-0 top-0 z-[300] hidden h-screen w-3/4 flex-col overflow-y-auto overflow-x-visible bg-white p-1.5 transition-transform duration-300 ease-in-out lg:relative lg:left-auto lg:top-auto lg:z-[220] lg:col-span-13 lg:flex lg:h-auto lg:w-auto lg:flex-row lg:overflow-visible xl:col-span-14"
             ></nav>
         </div>
     </div>
@@ -109,38 +73,13 @@
     <!-- Contenido dinámico -->
     <main
         id="main"
-        class="
-            flex-1
-            max-w-7xl
-            2xl:max-w-500
-            3xl:max-w-none
-            tabletBig:max-w-6xl
-            xl:max-w-7xl
-            m-auto
-            p-2
-            mt-8
-            mb-30
-            md:mt-12
-            md:mb-0
-            lg:mb-0
-        "
+        class="flex-1 w-full min-w-0 mb-30 md:mb-0 lg:mb-0"
     ></main>
 
     <!-- Pie de página -->
     <footer
         id="footer"
-        class="
-            w-full
-            tabletBig:w-7xl
-            xl:w-full
-            p-3
-            mt-20
-            md:mt-8
-            bg-footer-primary
-            h-auto
-            md:h-60
-            lg:h-60
-        "
+        class="w-full tabletBig:w-7xl xl:w-full p-3 mt-20 md:mt-8 bg-footer-primary h-auto md:h-60 lg:h-60"
     ></footer>
 
     <script
