@@ -1,42 +1,37 @@
 import kernel from "../../assets/ElKernel.png";
 
 export function Footer() {
-        const wrapper = `<div class="max-w-7xl mx-auto p-3 md:flex md:flex-row md:items-center md:justify-between">
-    <div class=" flex items-center gap-4  text-white "> 
-                    <div>
-                    <img class="object-fill  rounded-full " width="87px" heigth="87px" src="${kernel}" alt="Grupo de investigacion dominicano" _blank title="El kernel">
-                    </div>
-                <div class="flex flex-col">
-                     <h5 class=" text-xs lg:text-xl  md:text-sm  font-bold ">Grupo de Investigación</h5>   
-                     <p class=" text-xs lg:text-lg  font-light mt-1.5 ">Explorando EDPs no lineales, Métodos iterativos y más.</p>
+    const anio = new Date().getFullYear();
+
+    return `
+        <div class="mx-auto max-w-7xl p-4 md:flex md:items-center md:justify-between md:gap-8">
+            <div class="flex items-center gap-4 text-white">
+                <img class="h-[72px] w-[72px] rounded-full object-contain" src="${kernel}" alt="Logo del Grupo de Investigación El Kernel" loading="lazy" />
+                <div>
+                    <h5 class="text-sm font-bold md:text-base lg:text-xl">Grupo de Investigación El Kernel</h5>
+                    <p class="mt-1 text-xs font-light lg:text-base">EDPs no lineales, métodos iterativos, optimización y educación matemática.</p>
                 </div>
+            </div>
 
-        </div>
-        <div class=" mt-6 md:mt-0 flex flex-col text-white " >
-                <h5 class=" text-footer-contacto text-xs md:text-sm  lg:text-xl font-bold mb-2 ">Contacto</h5>
-                <ul class=" md:text-sm  text-xs lg:text-lg lg:leading-9 ">
-                        <li><a class=" underline " target="_blank" href="mailto:mleonardos@unapec.edu.do">mleonardos@unapec.edu.do</a></li>
-                        <li>República Dominicana</li>
-                        <li><a class=" underline text-footer-contacto " target="_blank" href="https://www.grupoelkernel.com" _blank >grupoelkernel.com</a></li>
+            <div class="mt-6 flex flex-col text-white md:mt-0">
+                <h5 class="mb-2 text-xs font-bold text-footer-contacto md:text-sm lg:text-xl">Contacto</h5>
+                <ul class="text-xs leading-7 md:text-sm lg:text-base">
+                    <li><a class="underline" href="mailto:mleonardos@unapec.edu.do">mleonardos@unapec.edu.do</a></li>
+                    <li>República Dominicana</li>
+                    <li><a class="text-footer-contacto underline" target="_blank" rel="noopener noreferrer" href="https://www.grupoelkernel.com">grupoelkernel.com</a></li>
                 </ul>
-        </div>
-        <div class=" mt-6 md:mt-0 " >
-                    <ul class="flex items-center justify-between md:gap-5 lg:gap-8  gap-3 " >
-                        <li><a class=" text-footer-contacto font-medium text-xs   md:text-sm lg:text-lg hover:underline "  title ="ISFODOSU" href="https://www.isfodosu.edu.do"    target="_blank" >ISFODOSU</a></li>
-                        <li><a class=" text-footer-contacto font-medium text-xs  md:text-sm lg:text-lg hover:underline "  title ="UASD" href="https://uasd.edu.do"    target=" _blan"k >UASD</a></li>
-                         <li><a class=" text-footer-contacto font-medium text-xs  md:text-sm  lg:text-lg hover:underline "  title ="APEC" href="https://unapec.edu.do"      target="_blank" >APEC</a></li>
-                    </ul>
-        </div> 
-        </div>
-        <div class="max-w-7xl mx-auto px-3 text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5">
-                <h5>© 2026 Grupo de Investigación El Kernel — Todos los derechos reservados</h5>
-        </div>
-        `
+            </div>
 
-                ;
-
-        return wrapper;
+            <nav class="mt-6 md:mt-0" aria-label="Instituciones vinculadas">
+                <ul class="flex items-center gap-3 md:gap-5 lg:gap-8">
+                    <li><a class="text-xs font-medium text-footer-contacto hover:underline md:text-sm lg:text-lg" title="ISFODOSU" href="https://www.isfodosu.edu.do/" target="_blank" rel="noopener noreferrer">ISFODOSU</a></li>
+                    <li><a class="text-xs font-medium text-footer-contacto hover:underline md:text-sm lg:text-lg" title="UASD" href="https://uasd.edu.do/" target="_blank" rel="noopener noreferrer">UASD</a></li>
+                    <li><a class="text-xs font-medium text-footer-contacto hover:underline md:text-sm lg:text-lg" title="UNAPEC" href="https://unapec.edu.do/" target="_blank" rel="noopener noreferrer">UNAPEC</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="mx-auto mt-3 max-w-7xl px-4 pb-4 text-xs text-white md:mt-8 md:text-sm lg:text-base">
+            <p>© ${anio} Grupo de Investigación El Kernel — Todos los derechos reservados.</p>
+        </div>
+    `;
 }
-
-//<div class = "md:flex  md:flex-row md:items-center md:justify-between " >
-//<div class="text-white text-xs md:text-sm lg:text-lg md:mt-8 mt-2.5  ">

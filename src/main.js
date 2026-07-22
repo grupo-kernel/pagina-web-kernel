@@ -17,56 +17,31 @@ import {
     iniciarCreditosCalculadoras
 } from "./utils/creditosCalculadoras.js";
 import {
-    iniciarIntegracionRegresionLaboratorio
-} from "./utils/integrarRegresionLaboratorio.js";
-import {
     iniciarIntegracionRegresionAsistente
 } from "./utils/integrarRegresionAsistente.js";
 import {
-    iniciarIntegracionFiabilidadLaboratorio
-} from "./utils/integrarFiabilidadLaboratorio.js";
-import {
     iniciarIntegracionFiabilidadAsistente
 } from "./utils/integrarFiabilidadAsistente.js";
-import {
-    iniciarIntegracionEvaluacionEducativaLaboratorio
-} from "./utils/integrarEvaluacionEducativaLaboratorio.js";
 
 function ejecutarInicializador(nombre, inicializador) {
     try {
         inicializador();
     } catch (error) {
-        console.error(
-            `[Kernel] No fue posible iniciar ${nombre}.`,
-            error
-        );
+        console.error(`[Kernel] No fue posible iniciar ${nombre}.`, error);
     }
 }
 
-// GLOBAL COMPONENT RENDERING
 const header = document.querySelector("#header");
 const navBar = document.querySelector("#navBar");
 const footer = document.querySelector("#footer");
 
-if (header) {
-    header.innerHTML = createHeader();
-}
+if (header) header.innerHTML = createHeader();
+if (navBar) navBar.innerHTML = createNavBar();
+if (footer) footer.innerHTML = Footer();
 
-if (navBar) {
-    navBar.innerHTML = createNavBar();
-}
-
-if (footer) {
-    footer.innerHTML = Footer();
-}
-
-// COMPONENT INITIALIZATION
 ejecutarInicializador("la navegación", () => {
-    if (navBar && header) {
-        initNavBar(navBar, header);
-    }
+    if (navBar && header) initNavBar(navBar, header);
 });
-
 ejecutarInicializador(
     "los gráficos de estadística descriptiva",
     iniciarGraficosDescriptivosSeguros
@@ -80,22 +55,10 @@ ejecutarInicializador(
     iniciarCreditosCalculadoras
 );
 ejecutarInicializador(
-    "la integración del área de regresión",
-    iniciarIntegracionRegresionLaboratorio
-);
-ejecutarInicializador(
     "la integración de regresión con el asistente",
     iniciarIntegracionRegresionAsistente
 );
 ejecutarInicializador(
-    "la integración de cuestionarios y fiabilidad",
-    iniciarIntegracionFiabilidadLaboratorio
-);
-ejecutarInicializador(
     "cuestionarios y fiabilidad en el asistente",
     iniciarIntegracionFiabilidadAsistente
-);
-ejecutarInicializador(
-    "la integración de evaluación educativa",
-    iniciarIntegracionEvaluacionEducativaLaboratorio
 );
