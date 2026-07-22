@@ -23,6 +23,26 @@ const carruselUniversidades = await readFile(
     new URL("../src/components/Home/CarruselUniversidades.js", import.meta.url),
     "utf8"
 );
+const barraNavegacion = await readFile(
+    new URL("../src/components/NavBar/navBar.js", import.meta.url),
+    "utf8"
+);
+const controladorSubmenu = await readFile(
+    new URL("../src/Controllers/NavBar/DisplaySubMenu.js", import.meta.url),
+    "utf8"
+);
+const controladorNavegacion = await readFile(
+    new URL("../src/Controllers/NavBar/NavBar.controller.js", import.meta.url),
+    "utf8"
+);
+const distribucionPrincipal = await readFile(
+    new URL("../src/components/layout/mainLayaout.js", import.meta.url),
+    "utf8"
+);
+const documento = await readFile(
+    new URL("../index.html", import.meta.url),
+    "utf8"
+);
 const principal = await readFile(
     new URL("../src/main.js", import.meta.url),
     "utf8"
@@ -83,10 +103,32 @@ assert.match(
     /contenedorUniversidades\?\.replaceChildren\(CrearCarruselUniversidades\(\)\)/,
     "Las universidades deben integrarse dentro del encabezado principal."
 );
-assert.doesNotMatch(
-    home,
-    /insertAdjacentElement\("afterend", carrusel\)/,
-    "La ruleta no debe insertarse como un bloque separado debajo del encabezado."
+
+assert.match(home, /aplicarPortadaDeAnchoCompleto/);
+assert.match(home, /encabezado\.classList\.add\("w-full", "rounded-none"\)/);
+assert.match(home, /max-w-\[1800px\]/);
+assert.match(home, /max-w-\[1600px\]/);
+assert.match(rutas, /home:\s*\{\s*page:\s*CreatePageHome,\s*layout:\s*"home"/);
+assert.match(distribucionPrincipal, /layout === "home" \|\| layout === "full"/);
+assert.match(distribucionPrincipal, /"max-w-none", "m-0", "p-0", "mt-0"/);
+
+assert.match(documento, /data-site-header/);
+assert.match(documento, /z-\[200\]/);
+assert.match(documento, /lg:z-\[220\]/);
+assert.match(documento, /<main[\s\S]*?w-full[\s\S]*?min-w-0/);
+
+assert.match(barraNavegacion, /submenu-nuestro-trabajo/);
+assert.match(barraNavegacion, /data-submenu-panel/);
+assert.match(barraNavegacion, /z-\[240\]/);
+assert.match(barraNavegacion, /data-route="herramientas"/);
+assert.match(barraNavegacion, />\s*Herramientas\s*</);
+assert.match(controladorSubmenu, /event\.stopPropagation\(\)/);
+assert.match(controladorSubmenu, /submenus\.forEach\(\(otro\)/);
+assert.match(controladorSubmenu, /document\.addEventListener\("click"/);
+assert.equal(
+    (controladorNavegacion.match(/DisplaySubMenu\(nav\)/g) || []).length,
+    1,
+    "Los submenús deben inicializarse exactamente una vez."
 );
 
 assert.match(carruselUniversidades, /isfodosu\.png/);
@@ -119,5 +161,5 @@ assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
 console.log(
-    "✓ Portada integrada, pestañas universitarias, iconos SVG, navegación y pie de página validados."
+    "✓ Portada a todo el ancho, menú Herramientas, pestañas universitarias, iconos SVG y navegación validados."
 );
