@@ -9,8 +9,8 @@ import { Footer } from "./components/Footer/Footer.js";
 // CONTROLLERS & LOGIC
 import { initNavBar } from "./Controllers/NavBar/NavBar.controller.js";
 import {
-    iniciarGraficosDescriptivosPonderados
-} from "./utils/graficosDescriptivosPonderados.js";
+    iniciarGraficosDescriptivosSeguros
+} from "./utils/graficosDescriptivosSeguros.js";
 import {
     iniciarExportacionResultadosDescriptivos
 } from "./utils/exportarResultadosDescriptivos.js";
@@ -24,21 +24,58 @@ import {
     iniciarIntegracionRegresionAsistente
 } from "./utils/integrarRegresionAsistente.js";
 
+function ejecutarInicializador(nombre, inicializador) {
+    try {
+        inicializador();
+    } catch (error) {
+        console.error(
+            `[Kernel] No fue posible iniciar ${nombre}.`,
+            error
+        );
+    }
+}
+
 // GLOBAL COMPONENT RENDERING
-
 const header = document.querySelector("#header");
-header.innerHTML = createHeader();
-
 const navBar = document.querySelector("#navBar");
-navBar.innerHTML = createNavBar();
-
 const footer = document.querySelector("#footer");
-footer.innerHTML = Footer();
+
+if (header) {
+    header.innerHTML = createHeader();
+}
+
+if (navBar) {
+    navBar.innerHTML = createNavBar();
+}
+
+if (footer) {
+    footer.innerHTML = Footer();
+}
 
 // COMPONENT INITIALIZATION
-initNavBar(navBar, header);
-iniciarGraficosDescriptivosPonderados();
-iniciarExportacionResultadosDescriptivos();
-iniciarCreditosCalculadoras();
-iniciarIntegracionRegresionLaboratorio();
-iniciarIntegracionRegresionAsistente();
+ejecutarInicializador("la navegación", () => {
+    if (navBar && header) {
+        initNavBar(navBar, header);
+    }
+});
+
+ejecutarInicializador(
+    "los gráficos de estadística descriptiva",
+    iniciarGraficosDescriptivosSeguros
+);
+ejecutarInicializador(
+    "la exportación de estadística descriptiva",
+    iniciarExportacionResultadosDescriptivos
+);
+ejecutarInicializador(
+    "los créditos de las calculadoras",
+    iniciarCreditosCalculadoras
+);
+ejecutarInicializador(
+    "la integración del área de regresión",
+    iniciarIntegracionRegresionLaboratorio
+);
+ejecutarInicializador(
+    "la integración de regresión con el asistente",
+    iniciarIntegracionRegresionAsistente
+);
