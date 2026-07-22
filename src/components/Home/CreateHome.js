@@ -18,22 +18,35 @@ function formatearFecha(fechaISO) {
     }).format(fecha);
 }
 
-function configurarPortadaAncha(section) {
-    setMainLayout("full");
-
+function prepararPortadaPantallaCompleta(section) {
     const contenedor = section.firstElementChild;
     if (!contenedor) return;
 
-    contenedor.classList.remove("max-w-7xl", "px-4", "md:px-8");
-    contenedor.classList.add(
-        "w-full",
-        "max-w-none",
-        "px-3",
-        "sm:px-5",
-        "lg:px-8",
-        "2xl:px-10"
-    );
     section.dataset.portadaAncha = "true";
+    section.classList.add("w-full", "max-w-none");
+
+    contenedor.classList.remove(
+        "mx-auto",
+        "max-w-7xl",
+        "px-4",
+        "py-8",
+        "md:px-8",
+        "md:py-12"
+    );
+    contenedor.classList.add("w-full", "max-w-none", "space-y-10");
+
+    const encabezado = contenedor.querySelector(":scope > header");
+    encabezado?.classList.remove("rounded-[2rem]");
+    encabezado?.classList.add(
+        "min-h-[calc(100svh-5rem)]",
+        "w-full",
+        "rounded-none"
+    );
+
+    [...contenedor.children].forEach((bloque, indice) => {
+        if (indice === 0) return;
+        bloque.classList.add("mx-4", "sm:mx-6", "lg:mx-8", "xl:mx-10");
+    });
 }
 
 async function cargarEstadisticasAnalytics(section) {
@@ -72,8 +85,11 @@ async function cargarEstadisticasAnalytics(section) {
 }
 
 export function CreateHome() {
+    setMainLayout("full");
+
     const section = CrearPortadaKernel2026();
-    configurarPortadaAncha(section);
+    prepararPortadaPantallaCompleta(section);
     cargarEstadisticasAnalytics(section);
+
     return section;
 }
