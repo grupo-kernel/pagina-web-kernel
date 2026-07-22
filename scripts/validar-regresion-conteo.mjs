@@ -8,6 +8,13 @@ function finito(valor, mensaje) {
     assert.ok(Number.isFinite(Number(valor)), mensaje);
 }
 
+function probabilidadValida(valor, mensaje) {
+    assert.ok(
+        Number.isFinite(Number(valor)) && valor >= 0 && valor <= 1,
+        mensaje
+    );
+}
+
 function probarPoisson() {
     const y = [0, 1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7];
     const x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -24,6 +31,14 @@ function probarPoisson() {
     finito(resultado.seleccionado.ajuste.aic, "AIC debe ser finito.");
     finito(resultado.seleccionado.dispersion.indice, "La dispersión debe ser finita.");
     finito(resultado.seleccionado.coeficientes[1].irr, "La IRR debe ser finita.");
+    probabilidadValida(
+        resultado.seleccionado.coeficientes[1].p,
+        "El valor p del coeficiente debe estar entre 0 y 1."
+    );
+    probabilidadValida(
+        resultado.seleccionado.pruebaGlobal.p,
+        "El valor p global debe estar entre 0 y 1."
+    );
 }
 
 function probarExposicionYPrediccion() {
