@@ -25,6 +25,52 @@ function escapar(texto) {
         .replaceAll("'", "&#039;");
 }
 
+function logGamma(z) {
+    const coeficientes = [
+        676.5203681218851,
+        -1259.1392167224028,
+        771.3234287776531,
+        -176.6150291621406,
+        12.507343278686905,
+        -0.13857109526572012,
+        9.984369578019572e-6,
+        1.5056327351493116e-7
+    ];
+
+    if (z < 0.5) {
+        return Math.log(Math.PI) -
+            Math.log(Math.sin(Math.PI * z)) -
+            logGamma(1 - z);
+    }
+
+    let x = 0.9999999999998099;
+    const zm1 = z - 1;
+    coeficientes.forEach((coeficiente, indice) => {
+        x += coeficiente / (zm1 + indice + 1);
+    });
+    const t = zm1 + coeficientes.length - 0.5;
+
+    return 0.5 * Math.log(2 * Math.PI) +
+        (zm1 + 0.5) * Math.log(t) - t + Math.log(x);
+}
+
+function probabilidadPoisson(k, media) {
+    return Math.exp(
+        -media + k * Math.log(Math.max(media, 1e-12)) - logGamma(k + 1)
+    );
+}
+
+function probabilidadNegativa(k, media, alpha) {
+    const r = 1 / Math.max(alpha, 1e-10);
+    return Math.exp(
+        logGamma(k + r) -
+        logGamma(r) -
+        logGamma(k + 1) +
+        r * Math.log(r / (r + media)) +
+        k * Math.log(media / (r + media))
+    );
+}
+
 function articulo(titulo, descripcion, contenido) {
     return `
         <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
@@ -44,8 +90,9 @@ function ejes({ ancho, alto, izquierda, derecha, arriba, abajo }) {
 
 function graficoObservadoAjustado(modelo) {
     const datos = modelo.datosGrafico;
-    const valores = datos.flatMap((fila) => [fila.observado, fila.ajustado]);
-    const dominio = rango(valores);
+    const dominio = rango(
+        datos.flatMap((fila) => [fila.observado, fila.ajustado])
+    );
     const ancho = 600;
     const alto = 320;
     const izquierda = 55;
@@ -81,7 +128,10 @@ function graficoResiduos(modelo) {
         2.5,
         ...datos.map((fila) => Math.abs(fila.residuoPearson))
     );
-    const dominioY = { minimo: -maxAbs * 1.1, maximo: maxAbs * 1.1 };
+    const dominioY = {
+        minimo: -maxAbs * 1.1,
+        maximo: maxAbs * 1.1
+    };
     const ancho = 600;
     const alto = 320;
     const izquierda = 55;
@@ -112,40 +162,67 @@ function graficoResiduos(modelo) {
     );
 }
 
+function frecuenciaEsperada(modelo, conteo) {
+    return modelo.datosGrafico.reduce((total, fila) => {
+        const probabilidad = modelo.tipoModelo === "negativa"
+            ? probabilidadNegativa(
+                conteo,
+                fila.ajustado,
+                modelo.dispersion.alpha
+            )
+            : probabilidadPoisson(conteo, fila.ajustado);
+        return total + probabilidad;
+    }, 0);
+}
+
 function graficoDistribucion(modelo) {
     const datos = modelo.datosGrafico;
-    const maxConteo = Math.max(...datos.map((fila) => fila.observado), 1);
-    const limite = Math.min(maxConteo, 20);
-    const categorias = Array.from({ length: limite + 1 }, (_, conteo) => ({
-        conteo,
-        observado: datos.filter((fila) =>
-            conteo < limite ? fila.observado === conteo : fila.observado >= conteo
-        ).length,
-        ajustado: datos.reduce((total, fila) => {
-            const media = fila.ajustado;
-            if (conteo < limite) {
-                let factorial = 1;
-                for (let k = 2; k <= conteo; k += 1) factorial *= k;
-                return total + Math.exp(-media) * media ** conteo / factorial;
-            }
-            return total;
-        }, 0)
-    }));
-    const maximo = Math.max(
-        ...categorias.flatMap((fila) => [fila.observado, fila.ajustado]),
+    const maxConteo = Math.max(
+        ...datos.map((fila) => fila.observado),
         1
     );
+    const limite = Math.min(maxConteo, 20);
+    const categorias = Array.from(
+        { length: limite + 1 },
+        (_, conteo) => {
+            const observado = datos.filter((fila) =>
+                conteo < limite
+                    ? fila.observado === conteo
+                    : fila.observado >= conteo
+            ).length;
+
+            let esperado;
+            if (conteo < limite || maxConteo <= limite) {
+                esperado = frecuenciaEsperada(modelo, conteo);
+            } else {
+                const probabilidadAcumulada = Array.from(
+                    { length: limite },
+                    (_, k) => frecuenciaEsperada(modelo, k)
+                ).reduce((total, valor) => total + valor, 0);
+                esperado = Math.max(0, datos.length - probabilidadAcumulada);
+            }
+
+            return { conteo, observado, esperado };
+        }
+    );
+    const maximo = Math.max(
+        ...categorias.flatMap((fila) => [fila.observado, fila.esperado]),
+        1
+    );
+    const modeloTexto = modelo.tipoModelo === "negativa"
+        ? "binomial negativa"
+        : "Poisson";
 
     return articulo(
         "Distribución observada y esperada",
-        "Compara la frecuencia observada de los conteos con la frecuencia aproximada esperada bajo una distribución de Poisson con las medias ajustadas.",
+        `Compara la frecuencia observada de los conteos con la frecuencia esperada bajo el modelo ${modeloTexto} ajustado.`,
         `<div class="overflow-x-auto">
             <div class="flex items-end h-64 border-b border-l border-slate-300 px-3 pt-4 min-w-[560px]">
                 ${categorias.map((fila) => `
                     <div class="flex flex-col items-center justify-end min-w-[48px] h-full">
                         <div class="flex items-end gap-1 h-[205px]">
                             <div class="w-4 bg-sky-700 rounded-t" style="height:${Math.max(3, fila.observado / maximo * 190)}px" title="Observado: ${fila.observado}"></div>
-                            <div class="w-4 bg-amber-500 rounded-t" style="height:${Math.max(3, fila.ajustado / maximo * 190)}px" title="Esperado: ${fila.ajustado.toFixed(2)}"></div>
+                            <div class="w-4 bg-amber-500 rounded-t" style="height:${Math.max(3, fila.esperado / maximo * 190)}px" title="Esperado: ${fila.esperado.toFixed(2)}"></div>
                         </div>
                         <span class="text-[10px] text-slate-600 mt-2">${fila.conteo === limite && maxConteo > limite ? `${limite}+` : fila.conteo}</span>
                     </div>
@@ -162,17 +239,26 @@ function graficoDistribucion(modelo) {
 function graficoCook(modelo) {
     const datos = modelo.datosGrafico;
     const umbral = 4 / modelo.n;
-    const maximo = Math.max(...datos.map((fila) => fila.distanciaCook), umbral, 1e-6);
+    const maximo = Math.max(
+        ...datos.map((fila) => fila.distanciaCook),
+        umbral,
+        1e-6
+    );
+    const alturaUtil = 190;
+    const posicionUmbral = Math.min(
+        alturaUtil,
+        umbral / maximo * alturaUtil
+    );
 
     return articulo(
         "Distancia de Cook",
         `La línea de referencia corresponde a 4/n = ${umbral.toFixed(4)}. Las observaciones que la superan requieren revisión sustantiva.`,
         `<div class="overflow-x-auto">
             <div class="relative h-64 border-b border-l border-slate-300 px-3 pt-4 flex items-end min-w-[560px]">
-                <div class="absolute left-0 right-0 border-t-2 border-dashed border-red-400" style="bottom:${Math.min(95, umbral / maximo * 190 / 2.2 + 24)}px"></div>
+                <div class="absolute left-0 right-0 border-t-2 border-dashed border-red-400" style="bottom:${24 + posicionUmbral}px"></div>
                 ${datos.map((fila) => `
                     <div class="flex flex-col items-center justify-end min-w-[34px] h-full">
-                        <div class="w-5 ${fila.distanciaCook > umbral ? "bg-red-600" : "bg-violet-600"} rounded-t" style="height:${Math.max(3, fila.distanciaCook / maximo * 190)}px" title="Obs. ${fila.observacion}: Cook ${fila.distanciaCook.toFixed(5)}"></div>
+                        <div class="w-5 ${fila.distanciaCook > umbral ? "bg-red-600" : "bg-violet-600"} rounded-t" style="height:${Math.max(3, fila.distanciaCook / maximo * alturaUtil)}px" title="Obs. ${fila.observacion}: Cook ${fila.distanciaCook.toFixed(5)}"></div>
                         <span class="text-[9px] text-slate-500 mt-2">${fila.observacion}</span>
                     </div>
                 `).join("")}
@@ -188,29 +274,40 @@ function graficoComparacion(comparacion) {
             ? [{ nombre: "Binomial negativa", datos: comparacion.negativa }]
             : [])
     ];
-    const maxAic = Math.max(...modelos.map((fila) => fila.datos.aic), 1);
-    const maxDispersion = Math.max(...modelos.map((fila) => fila.datos.dispersion), 1);
+    const aics = modelos.map((fila) => fila.datos.aic);
+    const minimoAic = Math.min(...aics);
+    const maxDelta = Math.max(...aics.map((aic) => aic - minimoAic), 1);
+    const maxDispersion = Math.max(
+        ...modelos.map((fila) => fila.datos.dispersion),
+        1
+    );
 
     return articulo(
         "Comparación de modelos",
         "AIC más bajo indica mejor equilibrio entre ajuste y complejidad. Un índice de dispersión próximo a 1 es compatible con la varianza asumida.",
         `<div class="space-y-6">
-            ${modelos.map((fila) => `
-                <div>
-                    <div class="flex items-center justify-between gap-4 mb-2">
-                        <strong class="text-slate-900">${escapar(fila.nombre)}</strong>
-                        <span class="text-sm text-slate-600">AIC ${fila.datos.aic.toFixed(2)} · φ ${fila.datos.dispersion.toFixed(3)}</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="h-5 rounded-full bg-slate-100 overflow-hidden">
-                            <div class="h-full bg-sky-700 rounded-full" style="width:${Math.max(4, fila.datos.aic / maxAic * 100)}%"></div>
+            ${modelos.map((fila) => {
+                const deltaAic = fila.datos.aic - minimoAic;
+                const calidad = 100 -
+                    Math.min(90, deltaAic / maxDelta * 90);
+
+                return `
+                    <div>
+                        <div class="flex items-center justify-between gap-4 mb-2">
+                            <strong class="text-slate-900">${escapar(fila.nombre)}</strong>
+                            <span class="text-sm text-slate-600">AIC ${fila.datos.aic.toFixed(2)} · ΔAIC ${deltaAic.toFixed(2)} · φ ${fila.datos.dispersion.toFixed(3)}</span>
                         </div>
-                        <div class="h-5 rounded-full bg-slate-100 overflow-hidden">
-                            <div class="h-full bg-amber-500 rounded-full" style="width:${Math.max(4, Math.min(100, fila.datos.dispersion / maxDispersion * 100))}%"></div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="h-5 rounded-full bg-slate-100 overflow-hidden" title="Preferencia relativa por AIC">
+                                <div class="h-full bg-sky-700 rounded-full" style="width:${Math.max(6, calidad)}%"></div>
+                            </div>
+                            <div class="h-5 rounded-full bg-slate-100 overflow-hidden" title="Índice de dispersión">
+                                <div class="h-full bg-amber-500 rounded-full" style="width:${Math.max(4, Math.min(100, fila.datos.dispersion / maxDispersion * 100))}%"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join("")}
+                `;
+            }).join("")}
             <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 leading-relaxed">
                 <strong>Criterio automático:</strong> ${escapar(comparacion.criterioSeleccion)}
             </div>
