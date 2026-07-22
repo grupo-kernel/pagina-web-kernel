@@ -9,6 +9,10 @@ const authSource = await readFile(
   new URL("../src/auth/authService.js", import.meta.url),
   "utf8"
 );
+const loginSource = await readFile(
+  new URL("../src/auth/login.js", import.meta.url),
+  "utf8"
+);
 
 const bloqueProtegido = rutaSource.match(
   /const RUTAS_PROTEGIDAS = new Set\(\[([\s\S]*?)\]\);/
@@ -94,5 +98,25 @@ assert.match(
   /inMemoryPersistence/,
   "Debe existir un respaldo temporal cuando sessionStorage no esté disponible."
 );
+assert.match(
+  authSource,
+  /sendPasswordResetEmail/,
+  "El servicio debe permitir recuperación de contraseña por correo."
+);
+assert.match(
+  loginSource,
+  /recuperar-password/,
+  "La pantalla de acceso debe ofrecer recuperación de contraseña."
+);
+assert.match(
+  loginSource,
+  /Si el correo está autorizado/,
+  "La recuperación debe usar un mensaje genérico para evitar enumeración de usuarios."
+);
+assert.doesNotMatch(
+  loginSource,
+  /Error:\s*\$\{error\.code/,
+  "La interfaz no debe exponer códigos internos de Firebase al usuario."
+);
 
-console.log("✓ Seguridad de rutas y persistencia validada.");
+console.log("✓ Seguridad de rutas, sesión y recuperación validada.");
