@@ -1,4 +1,4 @@
-import{e as x,c as b,M as n,a as u}from"./index-BHNLBOVU.js";function a(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function t(e,s="w-6 h-6"){return`<i aria-hidden="true" class="bx ${a(e)} ${a(s)}"></i>`}function o({titulo:e,descripcion:s,iconoNombre:r,fondo:i,color:l,borde:d}){return`
+import{e as x,c as b,M as n,a as u}from"./index-Bc8RVPgZ.js";function a(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function t(e,s="w-6 h-6"){return`<i aria-hidden="true" class="bx ${a(e)} ${a(s)}"></i>`}function o({titulo:e,descripcion:s,iconoNombre:r,fondo:i,color:l,borde:d}){return`
         <article class="h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border ${i} ${l} ${d}">
                 ${t(r,"text-3xl")}
