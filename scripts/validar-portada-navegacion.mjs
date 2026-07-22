@@ -14,6 +14,14 @@ const portada = await readFile(
     new URL("../src/components/Home/PortadaKernel2026.js", import.meta.url),
     "utf8"
 );
+const home = await readFile(
+    new URL("../src/components/Home/CreateHome.js", import.meta.url),
+    "utf8"
+);
+const carruselUniversidades = await readFile(
+    new URL("../src/components/Home/CarruselUniversidades.js", import.meta.url),
+    "utf8"
+);
 const principal = await readFile(
     new URL("../src/main.js", import.meta.url),
     "utf8"
@@ -58,10 +66,32 @@ assert.match(portada, /ISFODOSU/);
 assert.match(portada, /UASD/);
 assert.match(portada, /UNAPEC/);
 
+assert.match(home, /CrearCarruselUniversidades/);
+assert.match(home, /insertAdjacentElement\("afterend", carrusel\)/);
+assert.match(carruselUniversidades, /isfodosu\.png/);
+assert.match(carruselUniversidades, /uasd\.png/);
+assert.match(carruselUniversidades, /apec\.png/);
+assert.match(carruselUniversidades, /ISFODOSU/);
+assert.match(carruselUniversidades, /UASD/);
+assert.match(carruselUniversidades, /UNAPEC/);
+assert.equal(
+    (carruselUniversidades.match(/id:\s*"(?:isfodosu|uasd|unapec)"/g) || []).length,
+    3,
+    "La ruleta debe declarar exactamente las tres instituciones principales."
+);
+assert.match(carruselUniversidades, /data-universidad-control/);
+assert.match(carruselUniversidades, /INTERVALO_ROTACION\s*=\s*5500/);
+assert.match(carruselUniversidades, /prefers-reduced-motion/);
+assert.match(carruselUniversidades, /aria-live="polite"/);
+assert.match(carruselUniversidades, /ArrowLeft/);
+assert.match(carruselUniversidades, /touchstart/);
+
 assert.match(pie, /new Date\(\)\.getFullYear\(\)/);
 assert.match(pie, /ISFODOSU/);
 assert.match(pie, /UNAPEC/);
 assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
-console.log("✓ Portada, navegación de los nueve módulos y pie de página validados.");
+console.log(
+    "✓ Portada, ruleta de universidades, navegación de los nueve módulos y pie de página validados."
+);
