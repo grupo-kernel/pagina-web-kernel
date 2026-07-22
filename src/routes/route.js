@@ -23,6 +23,7 @@ import { CalculadoraEstadisticaDescriptiva } from "../pages/CalculadoraEstadisti
 import { RegresionModelos } from "../pages/RegresionModelos.js";
 import { CalculadoraRegresionCompleta } from "../pages/CalculadoraRegresionCompleta.js";
 import { CalculadoraRegresionLogistica } from "../pages/CalculadoraRegresionLogistica.js";
+import { CalculadoraRegresionConteo } from "../pages/CalculadoraRegresionConteo.js";
 
 const routes = {
     home: {
@@ -167,6 +168,12 @@ const routes = {
         page: CalculadoraRegresionLogistica,
         layout: "default",
         title: "Regresión logística binaria | El Kernel"
+    },
+
+    calculadoraRegresionConteo: {
+        page: CalculadoraRegresionConteo,
+        layout: "default",
+        title: "Regresión de Poisson y binomial negativa | El Kernel"
     }
 };
 
