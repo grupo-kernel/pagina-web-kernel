@@ -1,4 +1,4 @@
-import kernelLogo from "../../assets/ElKernel.png";
+import kernelLogo from "../../assets/favicon.ico";
 import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 
 function getDOI(publicacion) {
@@ -82,6 +82,8 @@ export function CreateCardFirstHome() {
                                     class="h-full w-full object-contain"
                                     loading="eager"
                                     fetchpriority="high"
+                                    width="48"
+                                    height="48"
                                 />
                             </div>
                             <div>
