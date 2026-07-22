@@ -55,6 +55,23 @@ async function cargarCalculadoraFiabilidadCuestionarios() {
     return modulo.CalculadoraFiabilidadCuestionarios();
 }
 
+async function cargarCalculadoraEvaluacionEducativa() {
+    const modulo = await import(
+        "../pages/CalculadoraEvaluacionEducativa.js"
+    );
+
+    if (
+        typeof modulo.CalculadoraEvaluacionEducativa !==
+        "function"
+    ) {
+        throw new Error(
+            "La calculadora de evaluación educativa no está disponible."
+        );
+    }
+
+    return modulo.CalculadoraEvaluacionEducativa();
+}
+
 const routes = {
     home: {
         page: CreatePageHome,
@@ -165,6 +182,11 @@ const routes = {
         page: cargarCalculadoraFiabilidadCuestionarios,
         layout: "default",
         title: "Cuestionarios y fiabilidad | El Kernel"
+    },
+    calculadoraEvaluacionEducativa: {
+        page: cargarCalculadoraEvaluacionEducativa,
+        layout: "default",
+        title: "Evaluación educativa | El Kernel"
     },
     regresionModelos: {
         page: RegresionModelos,
