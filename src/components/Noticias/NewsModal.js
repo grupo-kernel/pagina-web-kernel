@@ -1,71 +1,60 @@
-export function newsModal({ title, content = { paragraphs: [], list: [] }, articleURL }) {
+import { renderMMehbPoster } from "./MMehbPoster.js";
 
-    // Manejo de párrafos y listado.
+function safeText(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+export function newsModal({
+    title,
+    date,
+    category,
+    visualType,
+    content = { paragraphs: [], list: [] },
+    articleURL
+}) {
     const paragraphs = (content.paragraphs || [])
-        .map(p => `<p>${p}</p>`)
+        .map((paragraph) => `<p>${safeText(paragraph)}</p>`)
         .join("");
 
     const list = (content.list || []).length
-        ? `
-            <ul class="list-disc pl-6 space-y-2">
-                ${content.list.map(item => `<li>${item}</li>`).join("")}
-            </ul>
-        `
+        ? `<ul class="space-y-3">${content.list.map((item) => `<li class="flex items-start gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#0b5963]"></span><span>${safeText(item)}</span></li>`).join("")}</ul>`
         : "";
 
-    const nwModal = `
-        <div role="dialog" id="newsModal" 
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm 
-            flex items-center justify-center z-50 p-4">
+    const poster = visualType === "mmehb-2026"
+        ? `<div class="mb-7">${renderMMehbPoster()}</div>`
+        : "";
 
-            <div class="bg-white w-full md:max-w-lg
-                rounded-2xl md:rounded-xl shadow-2xl relative animate-modalIn
-                max-h-[85vh] flex flex-col">
+    return `
+        <div role="dialog" aria-modal="true" aria-labelledby="titulo-modal-noticia" id="newsModal" class="fixed inset-0 z-[500] flex items-center justify-center bg-slate-950/75 p-3 backdrop-blur-sm md:p-6">
+            <article class="flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-[2rem] bg-white shadow-2xl">
+                <header class="relative border-b border-slate-200 bg-[#071820] px-6 py-6 text-white md:px-9">
+                    <div class="pr-12">
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-widest text-cyan-200">
+                            <span>${safeText(category || "Noticia")}</span>
+                            <span aria-hidden="true">·</span>
+                            <span>${safeText(date || "")}</span>
+                        </div>
+                        <h2 id="titulo-modal-noticia" class="mt-3 text-2xl font-black leading-tight md:text-4xl">${safeText(title)}</h2>
+                    </div>
+                    <button type="button" data-close-modal aria-label="Cerrar noticia" class="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-2xl font-black text-white transition hover:bg-white hover:text-slate-950">×</button>
+                </header>
 
-                <!-- Header -->
-                <div class="relative p-5 border-b border-gray-200">
-
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-800 pr-10">
-                        ${title}
-                    </h2>
-
-                    <!-- Botón X -->
-                    <button data-close-modal
-                        class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full
-                        bg-white/80 hover:bg-gray-200 text-gray-600 text-lg font-bold transition">
-                        ✕
-                    </button>
+                <div class="flex-1 overflow-y-auto px-5 py-6 md:px-9 md:py-8">
+                    ${poster}
+                    <div class="space-y-5 text-base leading-relaxed text-slate-700 md:text-lg">${paragraphs}</div>
+                    ${list ? `<section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-5 md:p-7"><h3 class="mb-5 text-xl font-black text-slate-950">Datos principales</h3>${list}</section>` : ""}
                 </div>
 
-                <!-- Contenido -->
-                <div class="p-6 overflow-y-auto flex-1 space-y-4 text-gray-600 leading-relaxed">
-                    ${paragraphs}
-                    ${list}
-                </div>
-
-                <!-- Footer -->
-                <div class="p-4 border-t border-gray-200 flex justify-end gap-3">
-
-                    ${
-                        articleURL
-                            ? `
-                                <a href="${articleURL}" target="_blank" rel="noopener noreferrer"
-                                   class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-                                    Leer artículo
-                                </a>
-                              `
-                            : ""
-                    }
-
-                    <button data-close-modal
-                        class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
-                        Cerrar
-                    </button>
-
-                </div>
-            </div>
+                <footer class="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-5 sm:flex-row sm:justify-end md:px-9">
+                    ${articleURL ? `<a href="${safeText(articleURL)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-xl bg-[#0b5963] px-5 py-3 font-black text-white transition hover:bg-[#063e46]">Consultar sitio oficial</a>` : ""}
+                    <button type="button" data-close-modal class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 font-black text-slate-700 transition hover:bg-slate-100">Cerrar</button>
+                </footer>
+            </article>
         </div>
     `;
-
-    return nwModal;
 }
