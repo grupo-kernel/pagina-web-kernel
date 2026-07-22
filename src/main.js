@@ -23,6 +23,9 @@ import {
 import {
     iniciarIntegracionRegresionAsistente
 } from "./utils/integrarRegresionAsistente.js";
+import {
+    iniciarIntegracionFiabilidadLaboratorio
+} from "./utils/integrarFiabilidadLaboratorio.js";
 
 function ejecutarInicializador(nombre, inicializador) {
     try {
@@ -78,4 +81,8 @@ ejecutarInicializador(
 ejecutarInicializador(
     "la integración de regresión con el asistente",
     iniciarIntegracionRegresionAsistente
+);
+ejecutarInicializador(
+    "la integración de cuestionarios y fiabilidad",
+    iniciarIntegracionFiabilidadLaboratorio
 );
