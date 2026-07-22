@@ -1,39 +1,36 @@
-function establecerEstado(elemento, abierto) {
-    const disparador = elemento.querySelector("[data-submenu-trigger]");
-    const submenu = elemento.querySelector("ul");
-    const icono = disparador?.querySelector("i");
-
-    if (!disparador || !submenu) return;
-
-    disparador.setAttribute("aria-expanded", String(abierto));
-    submenu.classList.toggle("hidden", !abierto);
-    submenu.classList.toggle("flex", abierto);
-
-    if (icono) {
-        icono.classList.toggle("bx-caret-down", !abierto);
-        icono.classList.toggle("bx-caret-up", abierto);
-    }
-}
-
 export function DisplaySubMenu(nav) {
     if (!nav || nav.dataset.submenusInicializados === "true") return;
-    nav.dataset.submenusInicializados = "true";
 
-    const elementos = [
-        ...nav.querySelectorAll('[data-action="open-subMenu"]')
-    ];
+    const elementos = [...nav.querySelectorAll("[data-submenu]")];
+    const escritorio = window.matchMedia("(min-width: 1024px)");
 
-    const cerrarTodos = (excepto = null) => {
+    function obtenerPartes(elemento) {
+        return {
+            disparador: elemento.querySelector(":scope > [data-action='toggle-submenu']"),
+            panel: elemento.querySelector(":scope > [data-submenu-panel]"),
+            indicador: elemento.querySelector(":scope > [data-action='toggle-submenu'] [data-submenu-caret]")
+        };
+    }
+
+    function establecerEstado(elemento, abierto) {
+        const { disparador, panel, indicador } = obtenerPartes(elemento);
+        if (!disparador || !panel) return;
+
+        disparador.setAttribute("aria-expanded", String(abierto));
+        panel.classList.toggle("hidden", !abierto);
+        panel.classList.toggle("flex", abierto);
+        indicador?.classList.toggle("rotate-180", abierto);
+    }
+
+    function cerrarTodos(excepto = null) {
         elementos.forEach((elemento) => {
             if (elemento !== excepto) establecerEstado(elemento, false);
         });
-    };
+    }
 
     elementos.forEach((elemento) => {
-        const disparador = elemento.querySelector("[data-submenu-trigger]");
-        const submenu = elemento.querySelector("ul");
-
-        if (!disparador || !submenu) return;
+        const { disparador, panel } = obtenerPartes(elemento);
+        if (!disparador || !panel) return;
 
         disparador.addEventListener("click", (event) => {
             event.preventDefault();
@@ -43,19 +40,42 @@ export function DisplaySubMenu(nav) {
             cerrarTodos(elemento);
             establecerEstado(elemento, abrir);
         });
+
+        elemento.addEventListener("mouseenter", () => {
+            if (!escritorio.matches) return;
+            cerrarTodos(elemento);
+            establecerEstado(elemento, true);
+        });
+
+        elemento.addEventListener("mouseleave", () => {
+            if (escritorio.matches) establecerEstado(elemento, false);
+        });
+
+        panel.addEventListener("click", (event) => {
+            if (event.target.closest("[data-route]")) {
+                establecerEstado(elemento, false);
+            }
+        });
     });
 
     nav.addEventListener("click", (event) => {
         if (event.target.closest("[data-route]")) cerrarTodos();
     });
 
-    nav.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") return;
-        cerrarTodos();
-        nav.querySelector('[data-submenu-trigger][aria-expanded="true"]')?.focus();
-    });
-
     document.addEventListener("click", (event) => {
         if (!nav.contains(event.target)) cerrarTodos();
     });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+
+        const activo = nav.querySelector(
+            "[data-action='toggle-submenu'][aria-expanded='true']"
+        );
+        cerrarTodos();
+        activo?.focus();
+    });
+
+    escritorio.addEventListener("change", () => cerrarTodos());
+    nav.dataset.submenusInicializados = "true";
 }
