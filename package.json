@@ -12,7 +12,9 @@
     "test:reliability": "node --experimental-default-type=module scripts/validar-fiabilidad-cuestionarios.mjs",
     "test:reliability-advanced": "node --experimental-default-type=module scripts/validar-fiabilidad-avanzada.mjs",
     "test:evaluation": "node --experimental-default-type=module scripts/validar-evaluacion-educativa.mjs",
-    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced && npm run test:evaluation",
+    "test:sample-size": "node --experimental-default-type=module scripts/validar-tamano-muestra.mjs",
+    "test:library": "node --experimental-default-type=module scripts/validar-biblioteca-metodologica.mjs",
+    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced && npm run test:evaluation && npm run test:sample-size && npm run test:library",
     "tailwind": "npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css --watch"
   },
   "keywords": [],
