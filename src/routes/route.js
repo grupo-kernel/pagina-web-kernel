@@ -23,6 +23,8 @@ import { CalculadoraEstadisticaDescriptiva } from "../pages/CalculadoraEstadisti
 import { RegresionModelos } from "../pages/RegresionModelos.js";
 import { CalculadoraRegresionCompleta } from "../pages/CalculadoraRegresionCompleta.js";
 import { CalculadoraRegresionLogistica } from "../pages/CalculadoraRegresionLogistica.js";
+import { esperarAutenticacion } from "../auth/authGuard.js";
+import { crearLogin } from "../auth/login.js";
 
 async function cargarModulo(ruta, exportacion, mensaje) {
     const modulo = await import(ruta);
@@ -218,6 +220,28 @@ const routes = {
     }
 };
 
+const RUTAS_PROTEGIDAS = new Set([
+    "laboratorioKernel",
+    "asistentePruebas",
+    "comparacionGrupos",
+    "calculadoraDosGrupos",
+    "calculadoraDosMuestrasRelacionadas",
+    "calculadoraTresOMasGrupos",
+    "calculadoraTresOMasMedicionesRelacionadas",
+    "correlacionAsociacion",
+    "calculadoraRelacionVariables",
+    "calculadoraAsociacionCategorica",
+    "calculadoraEstadisticaDescriptiva",
+    "calculadoraFiabilidadCuestionarios",
+    "calculadoraEvaluacionEducativa",
+    "calculadoraTamanoMuestraPotencia",
+    "bibliotecaMetodologica",
+    "regresionModelos",
+    "calculadoraRegresion",
+    "calculadoraRegresionLogistica",
+    "calculadoraRegresionConteo"
+]);
+
 let previousPageLocation = document.referrer || "";
 
 export function navigate(route) {
@@ -253,6 +277,16 @@ function trackPageView(route, title) {
     previousPageLocation = pageLocation;
 }
 
+function crearVistaLogin() {
+    document.title = "Acceso al Laboratorio | El Kernel";
+
+    return crearLogin(() => {
+        window.dispatchEvent(
+            new HashChangeEvent("hashchange")
+        );
+    });
+}
+
 function crearVistaErrorRuta(error) {
     const section = document.createElement("section");
     section.className = "w-full max-w-4xl mx-auto px-4 py-12 md:px-8 font-sans";
@@ -281,6 +315,15 @@ function crearVistaErrorRuta(error) {
     return section;
 }
 
+async function resolverPagina(route, page) {
+    if (!RUTAS_PROTEGIDAS.has(route)) {
+        return page.page();
+    }
+
+    const user = await esperarAutenticacion();
+    return user ? page.page() : crearVistaLogin();
+}
+
 async function loadRoute(route) {
     const content = document.querySelector("main");
     const page = routes[route];
@@ -296,13 +339,13 @@ async function loadRoute(route) {
     document.title = page.title;
 
     try {
-        const pageElement = await page.page();
+        const pageElement = await resolverPagina(route, page);
         if (!(pageElement instanceof Element)) {
             throw new Error("La herramienta no devolvió un componente válido.");
         }
         content.appendChild(pageElement);
         window.scrollTo({ top: 0, behavior: "auto" });
-        trackPageView(route, page.title);
+        trackPageView(route, document.title);
     } catch (error) {
         console.error(`[Kernel] Error al cargar la ruta ${route}.`, error);
         content.appendChild(crearVistaErrorRuta(error));
