@@ -31,6 +31,9 @@ import {
 import {
     iniciarIntegracionEvaluacionEducativaLaboratorio
 } from "./utils/integrarEvaluacionEducativaLaboratorio.js";
+import {
+    iniciarIntegracionModulosFinalesLaboratorio
+} from "./utils/integrarModulosFinalesLaboratorio.js";
 
 function ejecutarInicializador(nombre, inicializador) {
     try {
@@ -48,25 +51,14 @@ const header = document.querySelector("#header");
 const navBar = document.querySelector("#navBar");
 const footer = document.querySelector("#footer");
 
-if (header) {
-    header.innerHTML = createHeader();
-}
-
-if (navBar) {
-    navBar.innerHTML = createNavBar();
-}
-
-if (footer) {
-    footer.innerHTML = Footer();
-}
+if (header) header.innerHTML = createHeader();
+if (navBar) navBar.innerHTML = createNavBar();
+if (footer) footer.innerHTML = Footer();
 
 // COMPONENT INITIALIZATION
 ejecutarInicializador("la navegación", () => {
-    if (navBar && header) {
-        initNavBar(navBar, header);
-    }
+    if (navBar && header) initNavBar(navBar, header);
 });
-
 ejecutarInicializador(
     "los gráficos de estadística descriptiva",
     iniciarGraficosDescriptivosSeguros
@@ -98,4 +90,8 @@ ejecutarInicializador(
 ejecutarInicializador(
     "la integración de evaluación educativa",
     iniciarIntegracionEvaluacionEducativaLaboratorio
+);
+ejecutarInicializador(
+    "tamaño de muestra y Biblioteca metodológica",
+    iniciarIntegracionModulosFinalesLaboratorio
 );
