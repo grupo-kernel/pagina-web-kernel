@@ -1,0 +1,37 @@
+name: Validate Vite Build
+
+on:
+  push:
+    branches:
+      - El-Kernel-2.0
+      - main
+  pull_request:
+    branches:
+      - El-Kernel-2.0
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build with Vite
+        run: npm run build
