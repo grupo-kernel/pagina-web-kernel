@@ -25,6 +25,18 @@ const portada = await readFile(
     new URL("../src/components/Home/PortadaKernel2026.js", import.meta.url),
     "utf8"
 );
+const navegacion = await readFile(
+    new URL("../src/components/NavBar/navBar.js", import.meta.url),
+    "utf8"
+);
+const controlNavegacion = await readFile(
+    new URL("../src/Controllers/NavBar/onNavigate.js", import.meta.url),
+    "utf8"
+);
+const controlSubmenus = await readFile(
+    new URL("../src/Controllers/NavBar/DisplaySubMenu.js", import.meta.url),
+    "utf8"
+);
 
 assert.equal(CATALOGO_SERVICIOS.length, 20, "El catálogo institucional debe incluir los 20 servicios aprobados.");
 assert.equal(CATEGORIAS_SERVICIOS.length, 6, "Deben existir cinco bloques temáticos y el filtro general.");
@@ -82,4 +94,16 @@ assert.doesNotMatch(
 );
 assert.match(portada, /Repositorio del grupo/);
 
-console.log("✓ Catálogo digital de 20 servicios, paquetes, principios, proceso, contacto y retirada visual del repositorio validados.");
+assert.match(navegacion, /data-home-section="catalogo-servicios"/);
+assert.match(navegacion, /Catálogo de servicios/);
+assert.match(navegacion, /20 áreas profesionales y académicas/);
+assert.match(navegacion, /itemSeccionPortada\("catalogo-servicios"/);
+assert.match(controlNavegacion, /CLAVE_SECCION_PORTADA\s*=\s*"kernel-home-section"/);
+assert.match(controlNavegacion, /document\.getElementById\(seccion\)/);
+assert.match(controlNavegacion, /navigate\("home"\)/);
+assert.match(controlNavegacion, /scrollIntoView\(\{ behavior: "smooth", block: "start" \}\)/);
+assert.match(controlSubmenus, /\[data-route\], \[data-home-section\]/);
+
+console.log(
+    "✓ Catálogo digital de 20 servicios, acceso móvil visible, navegación, paquetes, principios, proceso, contacto y retirada visual del repositorio validados."
+);

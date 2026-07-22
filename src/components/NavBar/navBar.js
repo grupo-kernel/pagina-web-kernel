@@ -28,6 +28,45 @@ function itemSubmenu(ruta, etiqueta, icono) {
     `;
 }
 
+function itemSeccionPortada(seccion, etiqueta, icono, clases = "") {
+    return `
+        <li class="${clases}">
+            <button
+                type="button"
+                data-home-section="${seccion}"
+                class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold text-slate-700 transition-colors hover:bg-sky-700 hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100 2xl:text-base"
+            >
+                <i aria-hidden="true" class="bx ${icono} shrink-0 text-xl"></i>
+                <span>${etiqueta}</span>
+            </button>
+        </li>
+    `;
+}
+
+function accesoCatalogoMovil() {
+    return `
+        <li class="lg:hidden">
+            <button
+                type="button"
+                data-home-section="catalogo-servicios"
+                aria-label="Abrir el catálogo institucional de servicios"
+                class="flex w-full items-center justify-between gap-4 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3.5 text-left text-sky-950 shadow-sm transition-colors hover:border-sky-700 hover:bg-sky-700 hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100"
+            >
+                <span class="flex min-w-0 items-center gap-3">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-sky-700 shadow-sm">
+                        <i aria-hidden="true" class="bx bx-grid-alt text-2xl"></i>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-base font-black">Catálogo de servicios</span>
+                        <span class="mt-0.5 block text-xs font-semibold opacity-75">20 áreas profesionales y académicas</span>
+                    </span>
+                </span>
+                <i aria-hidden="true" class="bx bx-right-arrow-alt shrink-0 text-2xl"></i>
+            </button>
+        </li>
+    `;
+}
+
 function submenu({ id, etiqueta, icono, elementos }) {
     return `
         <li data-submenu class="relative min-w-0">
@@ -105,12 +144,15 @@ export function createNavBar() {
                 etiqueta: "Nuestro Trabajo",
                 icono: "bx-briefcase-alt-2",
                 elementos: [
+                    itemSeccionPortada("catalogo-servicios", "Catálogo de servicios", "bx-grid-alt", "hidden lg:block"),
                     itemSubmenu("lineas", "Líneas de investigación", "bx-git-branch"),
                     itemSubmenu("proyectos", "Proyectos", "bx-bulb"),
                     itemSubmenu("publicaciones", "Publicaciones", "bx-book-open"),
                     itemSubmenu("herramientas", "Herramientas", "bx-wrench")
                 ]
             })}
+
+            ${accesoCatalogoMovil()}
 
             <li>
                 <button
