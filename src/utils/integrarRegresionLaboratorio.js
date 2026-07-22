@@ -32,16 +32,16 @@ function integrarTarjetaRegresion() {
 
     if (descripcion) {
         descripcion.textContent =
-            "Regresión lineal simple y múltiple con coeficientes, ANOVA, diagnósticos gráficos, predicción e interpretación guiada.";
+            "Regresión lineal simple y múltiple, y regresión logística binaria, con inferencia, diagnósticos gráficos, predicción e interpretación guiada.";
     }
 
     if (boton) {
         boton.onclick = () => {
-            window.location.hash = "/calculadoraRegresion";
+            window.location.hash = "/regresionModelos";
         };
         boton.setAttribute(
             "aria-label",
-            "Abrir la calculadora de regresión lineal y múltiple"
+            "Explorar los modelos de regresión"
         );
     }
 
