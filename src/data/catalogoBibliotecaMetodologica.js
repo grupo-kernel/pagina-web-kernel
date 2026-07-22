@@ -6,6 +6,7 @@ import { fichasMetodologicasRelacionVariables } from "./fichasMetodologicasRelac
 import { fichasMetodologicasRegresion } from "./fichasMetodologicasRegresion.js";
 import { fichasMetodologicasFiabilidad } from "./fichasMetodologicasFiabilidad.js";
 import { fichasMetodologicasEvaluacionEducativa } from "./fichasMetodologicasEvaluacionEducativa.js";
+import { fichasMetodologicasTamanoMuestra } from "./fichasMetodologicasTamanoMuestra.js";
 
 const COLECCIONES = [
     fichasMetodologicas,
@@ -15,7 +16,8 @@ const COLECCIONES = [
     fichasMetodologicasRelacionVariables,
     fichasMetodologicasRegresion,
     fichasMetodologicasFiabilidad,
-    fichasMetodologicasEvaluacionEducativa
+    fichasMetodologicasEvaluacionEducativa,
+    fichasMetodologicasTamanoMuestra
 ];
 
 function textoNormalizado(texto) {
@@ -28,6 +30,7 @@ function textoNormalizado(texto) {
 function categoriaDe(id, ficha) {
     const texto = textoNormalizado(`${id} ${ficha.nombre}`);
 
+    if (texto.includes("tamano de muestra") || texto.includes("potencia estadistica")) return "Planificación muestral";
     if (texto.includes("regresion")) return "Regresión";
     if (texto.includes("fiabilidad") || texto.includes("cronbach") || texto.includes("omega")) return "Instrumentos";
     if (texto.includes("evaluacion educativa") || texto.includes("analisis clasico") || texto.includes("dificultad")) return "Evaluación educativa";
@@ -41,15 +44,18 @@ function categoriaDe(id, ficha) {
 function tipoDe(id, ficha) {
     const texto = textoNormalizado(`${id} ${ficha.nombre} ${(ficha.alternativas || []).join(" ")}`);
     const noParametrica = ["mann", "wilcoxon", "kruskal", "friedman", "spearman", "kendall", "fisher"].some((termino) => texto.includes(termino));
-    const descriptiva = texto.includes("fiabilidad") || texto.includes("evaluacion educativa");
+    const psicometrica = texto.includes("fiabilidad") || texto.includes("evaluacion educativa");
+    const planificacion = texto.includes("tamano de muestra") || texto.includes("potencia estadistica");
 
-    if (descriptiva) return "Psicométrica";
+    if (psicometrica) return "Psicométrica";
+    if (planificacion) return "Planificación";
     return noParametrica ? "No paramétrica" : "Paramétrica o modelización";
 }
 
 function rutaDe(id, ficha) {
     const texto = textoNormalizado(`${id} ${ficha.nombre}`);
 
+    if (texto.includes("tamano de muestra") || texto.includes("potencia estadistica")) return "calculadoraTamanoMuestraPotencia";
     if (texto.includes("fiabilidad") || texto.includes("cronbach") || texto.includes("omega")) return "calculadoraFiabilidadCuestionarios";
     if (texto.includes("evaluacion educativa") || texto.includes("analisis clasico")) return "calculadoraEvaluacionEducativa";
     if (texto.includes("regresion logistica")) return "calculadoraRegresionLogistica";
