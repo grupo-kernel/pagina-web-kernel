@@ -1,5 +1,6 @@
 import { CrearPortadaKernel2026 } from "./PortadaKernel2026.js";
 import { obtenerEstadisticasAnalytics } from "../../services/analytics.js";
+import { setMainLayout } from "../layout/mainLayaout.js";
 
 function formatearNumero(valor) {
     return new Intl.NumberFormat("es-DO").format(Number(valor) || 0);
@@ -15,6 +16,37 @@ function formatearFecha(fechaISO) {
         dateStyle: "medium",
         timeStyle: "short"
     }).format(fecha);
+}
+
+function prepararPortadaPantallaCompleta(section) {
+    const contenedor = section.firstElementChild;
+    if (!contenedor) return;
+
+    section.dataset.portadaAncha = "true";
+    section.classList.add("w-full", "max-w-none");
+
+    contenedor.classList.remove(
+        "mx-auto",
+        "max-w-7xl",
+        "px-4",
+        "py-8",
+        "md:px-8",
+        "md:py-12"
+    );
+    contenedor.classList.add("w-full", "max-w-none", "space-y-10");
+
+    const encabezado = contenedor.querySelector(":scope > header");
+    encabezado?.classList.remove("rounded-[2rem]");
+    encabezado?.classList.add(
+        "min-h-[calc(100svh-5rem)]",
+        "w-full",
+        "rounded-none"
+    );
+
+    [...contenedor.children].forEach((bloque, indice) => {
+        if (indice === 0) return;
+        bloque.classList.add("mx-4", "sm:mx-6", "lg:mx-8", "xl:mx-10");
+    });
 }
 
 async function cargarEstadisticasAnalytics(section) {
@@ -53,7 +85,11 @@ async function cargarEstadisticasAnalytics(section) {
 }
 
 export function CreateHome() {
+    setMainLayout("full");
+
     const section = CrearPortadaKernel2026();
+    prepararPortadaPantallaCompleta(section);
     cargarEstadisticasAnalytics(section);
+
     return section;
 }
