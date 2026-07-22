@@ -1,25 +1,25 @@
-import{e as x,c as b,M as n,a as u}from"./index-Bc8RVPgZ.js";function a(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function t(e,s="w-6 h-6"){return`<i aria-hidden="true" class="bx ${a(e)} ${a(s)}"></i>`}function o({titulo:e,descripcion:s,iconoNombre:r,fondo:i,color:l,borde:d}){return`
+import{e as x,c as b,M as n,i as t,a as u}from"./index-Djf4Rpxg.js";function r(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function o({titulo:e,descripcion:a,iconoNombre:s,fondo:i,color:l,borde:d}){return`
         <article class="h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border ${i} ${l} ${d}">
-                ${t(r,"text-3xl")}
+                ${t(s,"text-3xl")}
             </div>
-            <h2 class="mb-3 text-2xl font-black text-slate-900">${a(e)}</h2>
-            <p class="leading-relaxed text-slate-600">${a(s)}</p>
+            <h2 class="mb-3 text-2xl font-black text-slate-900">${r(e)}</h2>
+            <p class="leading-relaxed text-slate-600">${r(a)}</p>
         </article>
     `}function p(e){return`
-        <article class="group h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" data-modulo-id="${a(e.id)}">
+        <article class="group h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" data-modulo-id="${r(e.id)}">
             <div class="flex h-full items-start gap-4">
                 <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border transition-transform duration-300 group-hover:scale-110 ${e.fondoIcono} ${e.colorIcono} ${e.bordeIcono}">
                     ${t(e.icono,"text-3xl")}
                 </div>
                 <div class="flex h-full min-w-0 flex-col">
-                    <h3 class="mb-2 text-xl font-black text-slate-900">${a(e.titulo)}</h3>
-                    <p class="text-sm leading-relaxed text-slate-600">${a(e.descripcion)}</p>
+                    <h3 class="mb-2 text-xl font-black text-slate-900">${r(e.titulo)}</h3>
+                    <p class="text-sm leading-relaxed text-slate-600">${r(e.descripcion)}</p>
                     <button
                         type="button"
-                        data-route="${a(e.ruta)}"
+                        data-route="${r(e.ruta)}"
                         class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-black text-[#0D6EFD] transition-colors hover:text-blue-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"
-                        aria-label="Explorar ${a(e.titulo)}"
+                        aria-label="Explorar ${r(e.titulo)}"
                     >
                         Explorar
                         ${t("bx-right-arrow-alt","text-xl")}
@@ -27,7 +27,7 @@ import{e as x,c as b,M as n,a as u}from"./index-Bc8RVPgZ.js";function a(e){retur
                 </div>
             </div>
         </article>
-    `}function c(e){e&&(window.location.hash=`/${e}`)}async function m(){if(!await x())return b(()=>{window.dispatchEvent(new HashChangeEvent("hashchange"))});const s=document.createElement("section");s.className="w-full max-w-7xl mx-auto px-4 py-10 md:px-8 font-sans",s.innerHTML=`
+    `}function c(e){e&&(window.location.hash=`/${e}`)}async function m(){if(!await x())return b(()=>{window.dispatchEvent(new HashChangeEvent("hashchange"))});const a=document.createElement("section");a.className="w-full max-w-7xl mx-auto px-4 py-10 md:px-8 font-sans",a.innerHTML=`
         <header class="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 text-white shadow-2xl md:px-12 md:py-16">
             <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-sky-500/20"></div>
             <div class="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-blue-700/25"></div>
@@ -113,4 +113,4 @@ import{e as x,c as b,M as n,a as u}from"./index-Bc8RVPgZ.js";function a(e){retur
                 ${n.map(p).join("")}
             </div>
         </section>
-    `,s.addEventListener("click",i=>{const l=i.target.closest("[data-route]");!l||!s.contains(l)||c(l.dataset.route)});const r=s.querySelector("#cerrar-sesion-kernel");return r?.addEventListener("click",async()=>{r.disabled=!0,r.textContent="Cerrando…";try{await u(),c("home")}catch(i){console.error("[Kernel] No fue posible cerrar la sesión.",i),r.disabled=!1,r.textContent="Cerrar sesión"}}),s}export{m as LaboratorioKernel};
+    `,a.addEventListener("click",i=>{const l=i.target.closest("[data-route]");!l||!a.contains(l)||c(l.dataset.route)});const s=a.querySelector("#cerrar-sesion-kernel");return s?.addEventListener("click",async()=>{s.disabled=!0,s.textContent="Cerrando…";try{await u(),c("home")}catch(i){console.error("[Kernel] No fue posible cerrar la sesión.",i),s.disabled=!1,s.textContent="Cerrar sesión"}}),a}export{m as LaboratorioKernel};
