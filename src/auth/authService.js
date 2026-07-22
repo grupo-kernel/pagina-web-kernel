@@ -5,13 +5,26 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
+  browserSessionPersistence,
   inMemoryPersistence,
 } from "firebase/auth";
 
-export async function iniciarSesion(email, password) {
-  await setPersistence(auth, inMemoryPersistence);
+async function configurarPersistencia() {
+  try {
+    await setPersistence(auth, browserSessionPersistence);
+  } catch (error) {
+    console.warn(
+      "No fue posible conservar la sesión en el navegador; se utilizará memoria temporal.",
+      error
+    );
+    await setPersistence(auth, inMemoryPersistence);
+  }
+}
 
-  return await signInWithEmailAndPassword(
+export async function iniciarSesion(email, password) {
+  await configurarPersistencia();
+
+  return signInWithEmailAndPassword(
     auth,
     email,
     password
@@ -19,7 +32,7 @@ export async function iniciarSesion(email, password) {
 }
 
 export async function cerrarSesion() {
-  return await signOut(auth);
+  return signOut(auth);
 }
 
 export function observarSesion(callback) {
