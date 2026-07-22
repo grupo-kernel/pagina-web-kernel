@@ -44,10 +44,10 @@ export function RegresionModelos() {
                 ¿Qué tipo de resultado desea explicar o predecir?
             </h2>
             <p class="text-slate-600 leading-relaxed max-w-4xl mb-8">
-                La variable dependiente determina la familia de modelos. No utilice regresión lineal para un resultado dicotómico ni interprete la regresión logística como si estimara cambios directos en la escala original de una variable continua.
+                La variable dependiente determina la familia de modelos. Una respuesta continua, una respuesta dicotómica y un conteo requieren funciones de enlace, supuestos e interpretaciones diferentes.
             </p>
 
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-7">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-7">
                 ${crearTarjetaModelo({
                     etiqueta: "Resultado cuantitativo continuo",
                     titulo: "Regresión lineal simple y múltiple",
@@ -77,13 +77,28 @@ export function RegresionModelos() {
                     ruta: "calculadoraRegresionLogistica",
                     clase: "rose"
                 })}
+
+                ${crearTarjetaModelo({
+                    etiqueta: "Resultado de conteo",
+                    titulo: "Poisson y binomial negativa",
+                    descripcion: "Modele el número esperado de eventos, compare la dispersión y estime razones de tasas de incidencia con exposición opcional.",
+                    caracteristicas: [
+                        "Selección automática o manual",
+                        "IRR e intervalos de confianza",
+                        "Dispersión, AIC, BIC y deviance",
+                        "Exceso de ceros e influencia",
+                        "Predicción de tasas y conteos"
+                    ],
+                    ruta: "calculadoraRegresionConteo",
+                    clase: "amber"
+                })}
             </div>
         </section>
 
         <section class="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5">
             ${crearCriterio(
                 "Defina el desenlace",
-                "Antes de elegir el modelo, especifique la variable dependiente, su escala y qué representa un valor alto, bajo o el evento codificado como 1."
+                "Especifique la variable dependiente, su escala y qué representa un valor alto, bajo, un evento codificado como 1 o un conteo acumulado."
             )}
             ${crearCriterio(
                 "Separe explicación y predicción",
@@ -91,16 +106,16 @@ export function RegresionModelos() {
             )}
             ${crearCriterio(
                 "Revise los supuestos",
-                "La significación estadística no compensa una forma funcional incorrecta, colinealidad, observaciones influyentes, mala calibración o sesgo del diseño."
+                "La significación estadística no compensa una forma funcional incorrecta, colinealidad, observaciones influyentes, sobredispersión, mala calibración o sesgo del diseño."
             )}
         </section>
 
         <section class="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8 text-slate-700 leading-relaxed">
             <h2 class="text-2xl font-black text-slate-900 mb-3">
-                Próxima ampliación
+                Próximas ampliaciones
             </h2>
             <p>
-                El área podrá incorporar posteriormente regresión ordinal, multinomial, Poisson y modelos con regularización. Estas extensiones deben añadirse como calculadoras independientes para conservar claridad metodológica y diagnósticos propios.
+                El área podrá incorporar regresión ordinal, multinomial, modelos inflados en ceros, modelos hurdle, regularización y validación cruzada. Cada extensión debe mantenerse como herramienta independiente para conservar claridad metodológica y diagnósticos propios.
             </p>
         </section>
     `;
@@ -132,21 +147,30 @@ function crearTarjetaModelo({
     ruta,
     clase
 }) {
-    const estilos = clase === "rose"
-        ? {
+    const paletas = {
+        rose: {
             borde: "border-rose-200",
             fondo: "bg-rose-50",
             etiqueta: "text-rose-700",
             boton: "bg-rose-700 hover:bg-rose-800",
             icono: "bg-rose-100 text-rose-700 border-rose-200"
-        }
-        : {
+        },
+        amber: {
+            borde: "border-amber-200",
+            fondo: "bg-amber-50",
+            etiqueta: "text-amber-700",
+            boton: "bg-amber-600 hover:bg-amber-700",
+            icono: "bg-amber-100 text-amber-700 border-amber-200"
+        },
+        indigo: {
             borde: "border-indigo-200",
             fondo: "bg-indigo-50",
             etiqueta: "text-indigo-700",
             boton: "bg-indigo-700 hover:bg-indigo-800",
             icono: "bg-indigo-100 text-indigo-700 border-indigo-200"
-        };
+        }
+    };
+    const estilos = paletas[clase] || paletas.indigo;
 
     return `
         <article class="h-full rounded-3xl border ${estilos.borde} bg-white p-6 md:p-8 shadow-xl flex flex-col">
@@ -210,6 +234,19 @@ function iconoRegresion(tipo) {
                 <path d="M4 18V5"></path>
                 <path d="M6 17c2.5 0 2.5-10 6-10s3.5 10 6 10"></path>
                 <path d="M6 17h12"></path>
+            </svg>
+        `;
+    }
+
+    if (tipo === "amber") {
+        return `
+            <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 20V4"></path>
+                <path d="M4 20h16"></path>
+                <rect x="6" y="14" width="2.5" height="4" rx="0.7"></rect>
+                <rect x="10.5" y="10" width="2.5" height="8" rx="0.7"></rect>
+                <rect x="15" y="6" width="2.5" height="12" rx="0.7"></rect>
+                <path d="M6 8c3-2 7-2.5 12-4"></path>
             </svg>
         `;
     }
