@@ -7,6 +7,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   inMemoryPersistence,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 async function configurarPersistencia() {
@@ -28,6 +29,13 @@ export async function iniciarSesion(email, password) {
     auth,
     email,
     password
+  );
+}
+
+export async function enviarRecuperacionContrasena(email) {
+  return sendPasswordResetEmail(
+    auth,
+    String(email || "").trim()
   );
 }
 
