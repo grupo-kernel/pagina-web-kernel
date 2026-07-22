@@ -88,6 +88,46 @@ assert.match(
   /resolverPagina/,
   "La resolución de páginas debe pasar por el guard de rutas."
 );
+assert.doesNotMatch(
+  rutaSource,
+  /import\(\s*ruta\s*\)/,
+  "Las importaciones dinámicas no deben construirse desde una variable."
+);
+assert.match(
+  rutaSource,
+  /function crearCargador\(importador, exportacion, mensaje\)/,
+  "Las rutas diferidas deben utilizar el cargador seguro y verificable."
+);
+
+const modulosDiferidos = [
+  "LaboratorioKernel",
+  "AsistentePruebas",
+  "ComparacionGrupos",
+  "CalculadoraDosGrupos",
+  "CalculadoraDosMuestrasRelacionadas",
+  "CalculadoraTresOMasGrupos",
+  "CalculadoraTresOMasMedicionesRelacionadas",
+  "CorrelacionAsociacion",
+  "CalculadoraRelacionVariables",
+  "CalculadoraAsociacionCategorica",
+  "CalculadoraEstadisticaDescriptiva",
+  "CalculadoraFiabilidadCuestionarios",
+  "CalculadoraEvaluacionEducativa",
+  "CalculadoraTamanoMuestraPotencia",
+  "BibliotecaMetodologica",
+  "RegresionModelos",
+  "CalculadoraRegresionCompleta",
+  "CalculadoraRegresionLogistica",
+  "CalculadoraRegresionConteo"
+];
+
+modulosDiferidos.forEach((nombre) => {
+  assert.ok(
+    rutaSource.includes(`() => import("../pages/${nombre}.js")`),
+    `Debe existir una importación dinámica literal para ${nombre}.`
+  );
+});
+
 assert.match(
   authSource,
   /browserSessionPersistence/,
@@ -119,4 +159,4 @@ assert.doesNotMatch(
   "La interfaz no debe exponer códigos internos de Firebase al usuario."
 );
 
-console.log("✓ Seguridad de rutas, sesión y recuperación validada.");
+console.log("✓ Seguridad, sesión y carga diferida de rutas validadas.");
