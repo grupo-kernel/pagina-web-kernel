@@ -20,7 +20,9 @@ import { CorrelacionAsociacion } from "../pages/CorrelacionAsociacion.js";
 import { CalculadoraRelacionVariables } from "../pages/CalculadoraRelacionVariables.js";
 import { CalculadoraAsociacionCategorica } from "../pages/CalculadoraAsociacionCategorica.js";
 import { CalculadoraEstadisticaDescriptiva } from "../pages/CalculadoraEstadisticaDescriptiva.js";
+import { RegresionModelos } from "../pages/RegresionModelos.js";
 import { CalculadoraRegresionCompleta } from "../pages/CalculadoraRegresionCompleta.js";
+import { CalculadoraRegresionLogistica } from "../pages/CalculadoraRegresionLogistica.js";
 
 const routes = {
     home: {
@@ -149,10 +151,22 @@ const routes = {
         title: "Estadística descriptiva | El Kernel"
     },
 
+    regresionModelos: {
+        page: RegresionModelos,
+        layout: "default",
+        title: "Modelos de regresión | El Kernel"
+    },
+
     calculadoraRegresion: {
         page: CalculadoraRegresionCompleta,
         layout: "default",
         title: "Regresión lineal y múltiple | El Kernel"
+    },
+
+    calculadoraRegresionLogistica: {
+        page: CalculadoraRegresionLogistica,
+        layout: "default",
+        title: "Regresión logística binaria | El Kernel"
     }
 };
 
