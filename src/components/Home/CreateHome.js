@@ -17,6 +17,44 @@ function formatearFecha(fechaISO) {
     }).format(fecha);
 }
 
+function aplicarPortadaDeAnchoCompleto(section) {
+    const envoltura = section.firstElementChild;
+    if (!(envoltura instanceof HTMLElement)) return;
+
+    envoltura.className = "w-full space-y-0 pb-12";
+
+    const encabezado = [...envoltura.children].find(
+        (elemento) => elemento.tagName === "HEADER"
+    );
+
+    if (!(encabezado instanceof HTMLElement)) return;
+
+    encabezado.classList.remove("rounded-[2rem]");
+    encabezado.classList.add("w-full", "rounded-none");
+
+    const contenidoEncabezado = [...encabezado.children].find((elemento) =>
+        elemento.classList.contains("relative") &&
+        elemento.classList.contains("z-10")
+    );
+
+    contenidoEncabezado?.classList.add(
+        "mx-auto",
+        "w-full",
+        "max-w-[1800px]",
+        "2xl:px-20"
+    );
+
+    const seccionesPosteriores = [...envoltura.children].filter(
+        (elemento) => elemento !== encabezado
+    );
+    const contenido = document.createElement("div");
+    contenido.className =
+        "mx-auto w-full max-w-[1600px] space-y-10 px-4 py-10 md:px-8 xl:px-12";
+
+    seccionesPosteriores.forEach((elemento) => contenido.appendChild(elemento));
+    envoltura.appendChild(contenido);
+}
+
 async function cargarEstadisticasAnalytics(section) {
     const totalElement = section.querySelector("#analytics-total");
     const hoyElement = section.querySelector("#analytics-hoy");
@@ -54,6 +92,7 @@ async function cargarEstadisticasAnalytics(section) {
 
 export function CreateHome() {
     const section = CrearPortadaKernel2026();
+    aplicarPortadaDeAnchoCompleto(section);
     cargarEstadisticasAnalytics(section);
     return section;
 }
