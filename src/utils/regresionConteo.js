@@ -179,7 +179,7 @@ function normalCdf(z) {
     const t = 1 / (1 + 0.3275911 * x);
     const erf = 1 - (((((1.061405429 * t - 1.453152027) * t) +
         1.421413741) * t - 0.284496736) * t + 0.254829592) *
-        Math.exp(-x * x);
+        t * Math.exp(-x * x);
     return 0.5 * (1 + signo * erf);
 }
 
@@ -453,7 +453,7 @@ function ajustarModelo({
         };
     });
 
-    const matrizNula = construirDiseno([Array(n).fill(0)], true).map(() => [1]);
+    const matrizNula = Array.from({ length: n }, () => [1]);
     const nulo = ajustarIrls({
         matrizX: matrizNula,
         y,
