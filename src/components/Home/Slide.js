@@ -12,7 +12,7 @@ function crearSlide(imagen, nombre, descripcion) {
                   alt="Logo de ${nombre}"
                   title="${nombre}"
                   class="h-full w-full object-contain"
-                  loading="lazy"
+                  decoding="async"
                />
             </div>
             <p class="mt-5 text-2xl font-black text-white md:text-3xl">${nombre}</p>
