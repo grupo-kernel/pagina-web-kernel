@@ -43,6 +43,10 @@ const controladorNavegacion = await readFile(
     new URL("../src/Controllers/NavBar/NavBar.controller.js", import.meta.url),
     "utf8"
 );
+const controlVisualMenu = await readFile(
+    new URL("../src/Controllers/NavBar/DisplayNavBar.js", import.meta.url),
+    "utf8"
+);
 const menuMovil = await readFile(
     new URL("../src/Controllers/NavBar/NavBarMobile.js", import.meta.url),
     "utf8"
@@ -151,11 +155,21 @@ assert.match(documentoPrincipal, /z-\[200\]/);
 assert.match(documentoPrincipal, /lg:z-\[220\]/);
 assert.match(documentoPrincipal, /w-\[88%\]/);
 assert.match(documentoPrincipal, /max-w-sm/);
-assert.match(documentoPrincipal, /aria-hidden="true"/);
+assert.doesNotMatch(
+    documentoPrincipal,
+    /<nav[\s\S]*?aria-hidden="true"/,
+    "El menú no debe nacer oculto semánticamente en escritorio."
+);
 assert.match(menuMovil, /dataset\.navOverlay/);
 assert.match(menuMovil, /bg-slate-950\/55/);
-assert.match(menuMovil, /aria-expanded/);
+assert.match(menuMovil, /CONSULTA_ESCRITORIO/);
+assert.match(menuMovil, /sincronizarMenuConViewport/);
+assert.match(menuMovil, /nav\.setAttribute\("aria-hidden", "false"\)/);
+assert.match(menuMovil, /nav\.setAttribute\("aria-hidden", "true"\)/);
 assert.match(menuMovil, /document\.body\.style\.overflow/);
+assert.match(controlVisualMenu, /sincronizarMenuConViewport\(navBar\)/);
+assert.match(controlVisualMenu, /addEventListener\("change"/);
+assert.match(controlVisualMenu, /aria-expanded/);
 
 assert.match(pie, /new Date\(\)\.getFullYear\(\)/);
 assert.match(pie, /#\/servicios/);
@@ -169,5 +183,5 @@ assert.doesNotMatch(pie, /github\.com\/grupo-kernel/);
 assert.doesNotMatch(pie, /ISFOOSU/);
 
 console.log(
-    "✓ Portada empresarial, servicios, franja institucional, navegación móvil, diagnóstico, laboratorio y pie institucional validados."
+    "✓ Portada empresarial, servicios, franja institucional, navegación adaptativa, diagnóstico, laboratorio y pie institucional validados."
 );
