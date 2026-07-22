@@ -42,7 +42,7 @@ function tarjetaFicha(ficha) {
             </div>
             <p class="uppercase tracking-widest text-sky-700 text-xs font-black mb-2">${esc(ficha.categoria)}</p>
             <h3 class="text-2xl font-black text-slate-900 mb-3">${esc(ficha.nombre)}</h3>
-            <p class="text-slate-600 leading-relaxed text-sm">${esc(ficha.definicion)}</p>
+            <p class="text-slate-600 leading-relaxed text-sm line-clamp-4">${esc(ficha.definicion)}</p>
             <div class="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
                 <button type="button" data-action="consultar-ficha" data-ficha="${esc(ficha.id)}" class="flex-1 rounded-xl bg-sky-700 px-5 py-3 text-white font-black hover:bg-sky-800 transition-colors">Consultar ficha</button>
                 ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-sky-300 px-5 py-3 text-sky-800 font-black hover:bg-sky-50 transition-colors">Calcular</button>` : ""}
@@ -85,7 +85,7 @@ function detalleFicha(ficha) {
                         <button type="button" data-action="cerrar-ficha" class="shrink-0 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xl font-black hover:bg-white/20" aria-label="Cerrar ficha">×</button>
                     </div>
                     <div class="relative z-10 flex flex-wrap gap-3 mt-7">
-                        <button type="button" data-action="copiar-reporte-ficha" data-ficha="${esc(ficha.id)}" class="rounded-xl bg-white text-slate-950 px-5 py-3 font-black">Copiar modelo de reporte</button>
+                        <button type="button" data-action="copiar-reporte-ficha" class="rounded-xl bg-white text-slate-950 px-5 py-3 font-black">Copiar modelo de reporte</button>
                         ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-white/20 bg-white/10 px-5 py-3 font-black">Abrir calculadora</button>` : ""}
                     </div>
                 </header>
@@ -109,6 +109,52 @@ function detalleFicha(ficha) {
             </article>
         </div>
     `;
+}
+
+function abrirModalFicha(ficha) {
+    document.querySelector("[data-modal-biblioteca]")?.remove();
+    document.body.insertAdjacentHTML("beforeend", detalleFicha(ficha));
+    const modal = document.querySelector("[data-modal-biblioteca]");
+    if (!modal) return;
+
+    const cerrar = () => {
+        document.removeEventListener("keydown", manejarTecla);
+        modal.remove();
+    };
+    const manejarTecla = (event) => {
+        if (event.key === "Escape") cerrar();
+    };
+
+    modal.addEventListener("click", async (event) => {
+        const boton = event.target.closest("[data-action]");
+        if (event.target === modal) {
+            cerrar();
+            return;
+        }
+        if (!boton) return;
+
+        if (boton.dataset.action === "cerrar-ficha") {
+            cerrar();
+        } else if (boton.dataset.action === "abrir-calculadora") {
+            const ruta = boton.dataset.ruta;
+            cerrar();
+            window.location.hash = `/${ruta}`;
+        } else if (boton.dataset.action === "copiar-reporte-ficha") {
+            try {
+                await navigator.clipboard.writeText(plantillaReporte(ficha));
+                const original = boton.textContent;
+                boton.textContent = "Modelo copiado";
+                setTimeout(() => {
+                    if (boton.isConnected) boton.textContent = original;
+                }, 1400);
+            } catch {
+                boton.textContent = "No fue posible copiar";
+            }
+        }
+    });
+
+    document.addEventListener("keydown", manejarTecla);
+    modal.querySelector("[data-action='cerrar-ficha']")?.focus();
 }
 
 function resumenCategorias(catalogo) {
@@ -187,7 +233,7 @@ export function BibliotecaMetodologica() {
         );
     });
 
-    section.addEventListener("click", async (event) => {
+    section.addEventListener("click", (event) => {
         const boton = event.target.closest("[data-action]");
         if (!boton) return;
         const accion = boton.dataset.action;
@@ -201,33 +247,11 @@ export function BibliotecaMetodologica() {
             renderizar();
         } else if (accion === "consultar-ficha") {
             const ficha = catalogo.find((item) => item.id === boton.dataset.ficha);
-            if (ficha) {
-                document.querySelector("[data-modal-biblioteca]")?.remove();
-                document.body.insertAdjacentHTML("beforeend", detalleFicha(ficha));
-                document.querySelector("[data-action='cerrar-ficha']")?.focus();
-            }
-        } else if (accion === "cerrar-ficha") {
-            document.querySelector("[data-modal-biblioteca]")?.remove();
+            if (ficha) abrirModalFicha(ficha);
         } else if (accion === "abrir-calculadora") {
-            document.querySelector("[data-modal-biblioteca]")?.remove();
             window.location.hash = `/${boton.dataset.ruta}`;
-        } else if (accion === "copiar-reporte-ficha") {
-            const ficha = catalogo.find((item) => item.id === boton.dataset.ficha);
-            if (ficha) {
-                await navigator.clipboard.writeText(plantillaReporte(ficha));
-                const original = boton.textContent;
-                boton.textContent = "Modelo copiado";
-                setTimeout(() => { boton.textContent = original; }, 1400);
-            }
         }
     });
-
-    const cerrarConEscape = (event) => {
-        if (event.key === "Escape") {
-            document.querySelector("[data-modal-biblioteca]")?.remove();
-        }
-    };
-    document.addEventListener("keydown", cerrarConEscape);
 
     renderizar();
     return section;
