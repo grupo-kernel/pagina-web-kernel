@@ -23,6 +23,26 @@ const carruselUniversidades = await readFile(
     new URL("../src/components/Home/CarruselUniversidades.js", import.meta.url),
     "utf8"
 );
+const navegacion = await readFile(
+    new URL("../src/components/NavBar/navBar.js", import.meta.url),
+    "utf8"
+);
+const controladorSubmenus = await readFile(
+    new URL("../src/Controllers/NavBar/DisplaySubMenu.js", import.meta.url),
+    "utf8"
+);
+const controladorNavegacion = await readFile(
+    new URL("../src/Controllers/NavBar/NavBar.controller.js", import.meta.url),
+    "utf8"
+);
+const layoutPrincipal = await readFile(
+    new URL("../src/components/layout/mainLayaout.js", import.meta.url),
+    "utf8"
+);
+const documentoPrincipal = await readFile(
+    new URL("../index.html", import.meta.url),
+    "utf8"
+);
 const principal = await readFile(
     new URL("../src/main.js", import.meta.url),
     "utf8"
@@ -89,6 +109,32 @@ assert.doesNotMatch(
     "La ruleta no debe insertarse como un bloque separado debajo del encabezado."
 );
 
+assert.match(home, /setMainLayout\("full"\)/);
+assert.match(home, /dataset\.portadaAncha\s*=\s*"true"/);
+assert.match(home, /min-h-\[calc\(100svh-5rem\)\]/);
+assert.match(home, /contenedor\.classList\.remove\([\s\S]*?"max-w-7xl"/);
+assert.match(layoutPrincipal, /main\.classList\.add\("max-w-none", "m-0", "p-0", "mt-0", "pt-0"\)/);
+assert.match(documentoPrincipal, /data-site-header/);
+assert.match(documentoPrincipal, /z-\[200\]/);
+assert.match(documentoPrincipal, /lg:z-\[220\]/);
+assert.match(documentoPrincipal, /lg:overflow-visible/);
+
+assert.match(navegacion, /data-route="herramientas"/);
+assert.match(navegacion, />Herramientas</);
+assert.match(navegacion, /id="submenu-nuestro-trabajo"/);
+assert.match(navegacion, /data-action="toggle-submenu"/);
+assert.match(navegacion, /lg:z-\[260\]/);
+assert.match(navegacion, /lg:w-72/);
+assert.match(controladorSubmenus, /aria-expanded/);
+assert.match(controladorSubmenus, /mouseenter/);
+assert.match(controladorSubmenus, /mouseleave/);
+assert.match(controladorSubmenus, /event\.key === "Escape"/);
+assert.equal(
+    (controladorNavegacion.match(/DisplaySubMenu\(nav\)/g) || []).length,
+    1,
+    "Los submenús deben inicializarse una sola vez."
+);
+
 assert.match(carruselUniversidades, /isfodosu\.png/);
 assert.match(carruselUniversidades, /uasd\.png/);
 assert.match(carruselUniversidades, /apec\.png/);
@@ -119,5 +165,5 @@ assert.doesNotMatch(pie, /ISFOOSU/);
 assert.doesNotMatch(pie, /_blan"k/);
 
 console.log(
-    "✓ Portada integrada, pestañas universitarias, iconos SVG, navegación y pie de página validados."
+    "✓ Portada a pantalla completa, submenú Herramientas, pestañas universitarias, iconos SVG y navegación validados."
 );
