@@ -119,9 +119,8 @@ assert.match(documentoPrincipal, /z-\[200\]/);
 assert.match(documentoPrincipal, /lg:z-\[220\]/);
 assert.match(documentoPrincipal, /lg:overflow-visible/);
 
-assert.match(navegacion, /data-route="herramientas"/);
-assert.match(navegacion, />Herramientas</);
-assert.match(navegacion, /id="submenu-nuestro-trabajo"/);
+assert.match(navegacion, /itemSubmenu\("herramientas",\s*"Herramientas"/);
+assert.match(navegacion, /id:\s*"submenu-nuestro-trabajo"/);
 assert.match(navegacion, /data-action="toggle-submenu"/);
 assert.match(navegacion, /lg:z-\[260\]/);
 assert.match(navegacion, /lg:w-72/);
