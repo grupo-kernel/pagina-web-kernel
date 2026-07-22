@@ -26,6 +26,9 @@ import {
 import {
     iniciarIntegracionFiabilidadLaboratorio
 } from "./utils/integrarFiabilidadLaboratorio.js";
+import {
+    iniciarIntegracionFiabilidadAsistente
+} from "./utils/integrarFiabilidadAsistente.js";
 
 function ejecutarInicializador(nombre, inicializador) {
     try {
@@ -85,4 +88,8 @@ ejecutarInicializador(
 ejecutarInicializador(
     "la integración de cuestionarios y fiabilidad",
     iniciarIntegracionFiabilidadLaboratorio
+);
+ejecutarInicializador(
+    "cuestionarios y fiabilidad en el asistente",
+    iniciarIntegracionFiabilidadAsistente
 );
