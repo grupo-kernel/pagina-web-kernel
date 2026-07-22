@@ -1,5 +1,4 @@
 import "./css/style.css";
-import "./css/output.css";
 
 // UI COMPONENTS
 import { createHeader } from "./components/Header/header.js";
