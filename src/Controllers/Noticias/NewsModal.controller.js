@@ -1,22 +1,22 @@
 import { newsData } from "../../data/newsData.js";
+import { noticiaMMehb2026 } from "../../data/newsMMehb2026.js";
 import { newsModal } from "../../components/Noticias/NewsModal.js";
 
+const TODAS_LAS_NOTICIAS = Object.freeze([
+    noticiaMMehb2026,
+    ...newsData.filter((item) => item.id !== noticiaMMehb2026.id)
+]);
+
 export function initNewsModalController(rootElement) {
-    if (!rootElement) {
-        return;
-    }
+    if (!rootElement) return;
 
-    rootElement.addEventListener("click", event => {
+    rootElement.addEventListener("click", (event) => {
         const trigger = event.target.closest("[data-news-btn], [data-news-card]");
-
-        if (!trigger || !rootElement.contains(trigger)) {
-            return;
-        }
+        if (!trigger || !rootElement.contains(trigger)) return;
 
         const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
-
-        const selectedNews = newsData.find(
-            news => String(news.id) === String(newsId)
+        const selectedNews = TODAS_LAS_NOTICIAS.find(
+            (news) => String(news.id) === String(newsId)
         );
 
         if (!selectedNews) {
@@ -29,17 +29,12 @@ export function initNewsModalController(rootElement) {
 }
 
 function openNewsModal(news) {
-    const previousModal = document.querySelector("#newsModal");
-
-    if (previousModal) {
-        previousModal.remove();
-    }
+    document.querySelector("#newsModal")?.remove();
 
     const wrapper = document.createElement("div");
     wrapper.innerHTML = newsModal(news);
 
     const modal = wrapper.firstElementChild;
-
     if (!modal) {
         console.warn("No se pudo crear el modal de noticia.");
         return;
@@ -48,27 +43,24 @@ function openNewsModal(news) {
     document.body.appendChild(modal);
     document.body.style.overflow = "hidden";
 
-    function closeModal() {
+    const closeModal = () => {
         modal.remove();
         document.body.style.overflow = "";
         document.removeEventListener("keydown", handleEscape);
-    }
+    };
 
-    function handleEscape(event) {
-        if (event.key === "Escape") {
-            closeModal();
-        }
-    }
+    const handleEscape = (event) => {
+        if (event.key === "Escape") closeModal();
+    };
 
-    modal.querySelectorAll("[data-close-modal]").forEach(button => {
+    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
         button.addEventListener("click", closeModal);
     });
 
-    modal.addEventListener("click", event => {
-        if (event.target === modal) {
-            closeModal();
-        }
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal();
     });
 
     document.addEventListener("keydown", handleEscape);
+    modal.querySelector("[data-close-modal]")?.focus();
 }
