@@ -165,8 +165,7 @@ function omegaRapido(matriz) {
 }
 
 function calcularKr20(matriz) {
-    const valores = matriz.flat();
-    const dicotomico = valores.every(
+    const dicotomico = matriz.flat().every(
         (valor) => valor === 0 || valor === 1
     );
 
@@ -180,14 +179,14 @@ function calcularKr20(matriz) {
     }
 
     const k = matriz[0].length;
-    const columnas = transponer(matriz);
-    const sumaPQ = columnas.reduce((total, columna) => {
-        const p = media(columna);
-        return total + p * (1 - p);
-    }, 0);
+    const varianzasItems = transponer(matriz).map(varianzaMuestral);
     const varianzaTotal = varianzaMuestral(sumarFilas(matriz));
 
-    if (varianzaTotal === null || varianzaTotal < EPS) {
+    if (
+        varianzaTotal === null ||
+        varianzaTotal < EPS ||
+        varianzasItems.some((valor) => valor === null)
+    ) {
         return {
             aplica: true,
             valor: null,
@@ -198,9 +197,14 @@ function calcularKr20(matriz) {
 
     return {
         aplica: true,
-        valor: k / (k - 1) * (1 - sumaPQ / varianzaTotal),
+        valor: k / (k - 1) *
+            (1 -
+                varianzasItems.reduce(
+                    (total, valor) => total + valor,
+                    0
+                ) / varianzaTotal),
         razon:
-            "Todos los ítems son dicotómicos; KR-20 es equivalente al alfa calculado sobre puntuaciones 0/1."
+            "Todos los ítems son dicotómicos; KR-20 coincide con el alfa calculado sobre las puntuaciones 0/1."
     };
 }
 
@@ -216,19 +220,19 @@ function crearGenerador(semilla) {
     };
 }
 
-function percentil(valoresOrdenados, proporcion) {
-    if (!valoresOrdenados.length) return null;
-    if (proporcion <= 0) return valoresOrdenados[0];
-    if (proporcion >= 1) return valoresOrdenados.at(-1);
+function percentil(ordenados, proporcion) {
+    if (!ordenados.length) return null;
+    if (proporcion <= 0) return ordenados[0];
+    if (proporcion >= 1) return ordenados.at(-1);
 
-    const posicion = (valoresOrdenados.length - 1) * proporcion;
+    const posicion = (ordenados.length - 1) * proporcion;
     const inferior = Math.floor(posicion);
     const superior = Math.ceil(posicion);
 
     return inferior === superior
-        ? valoresOrdenados[inferior]
-        : valoresOrdenados[inferior] * (superior - posicion) +
-            valoresOrdenados[superior] * (posicion - inferior);
+        ? ordenados[inferior]
+        : ordenados[inferior] * (superior - posicion) +
+            ordenados[superior] * (posicion - inferior);
 }
 
 function intervaloPercentil(valores, nivelConfianza) {
@@ -289,28 +293,31 @@ function calcularBootstrap({
 }
 
 function diagnosticarPares(correlaciones, nombresItems) {
-    const redundantes = [];
-    const negativos = [];
+    const paresRedundantes = [];
+    const paresNegativos = [];
 
     for (let i = 0; i < correlaciones.length; i += 1) {
         for (let j = i + 1; j < correlaciones.length; j += 1) {
-            const r = correlaciones[i][j];
             const fila = {
                 itemA: nombresItems[i],
                 itemB: nombresItems[j],
-                correlacion: r
+                correlacion: correlaciones[i][j]
             };
 
-            if (r >= 0.80) redundantes.push(fila);
-            if (r <= -0.20) negativos.push(fila);
+            if (fila.correlacion >= 0.80) {
+                paresRedundantes.push(fila);
+            }
+            if (fila.correlacion <= -0.20) {
+                paresNegativos.push(fila);
+            }
         }
     }
 
     return {
-        paresRedundantes: redundantes.sort(
+        paresRedundantes: paresRedundantes.sort(
             (a, b) => b.correlacion - a.correlacion
         ),
-        paresNegativos: negativos.sort(
+        paresNegativos: paresNegativos.sort(
             (a, b) => a.correlacion - b.correlacion
         )
     };
@@ -336,26 +343,26 @@ export function analizarFiabilidadCuestionarioAvanzada({
     }
 
     const kr20 = calcularKr20(base.matrizRecodificada);
-    const bootstrap = calcularBootstrap({
+    const intervalosBootstrap = calcularBootstrap({
         matriz: base.matrizRecodificada,
         numeroRemuestras: remuestras,
         nivelConfianza: nivel,
         semilla: semillaBootstrap
     });
-    const pares = diagnosticarPares(
+    const diagnosticosAvanzados = diagnosticarPares(
         base.correlaciones,
         base.nombresItems
     );
-    const nuevasAdvertencias = [...base.advertencias];
+    const advertencias = [...base.advertencias];
 
-    if (pares.paresRedundantes.length) {
-        nuevasAdvertencias.push(
-            `Se detectaron ${pares.paresRedundantes.length} pares de ítems con correlación interítem de 0.80 o más; revise posible redundancia de contenido.`
+    if (diagnosticosAvanzados.paresRedundantes.length) {
+        advertencias.push(
+            `Se detectaron ${diagnosticosAvanzados.paresRedundantes.length} pares de ítems con correlación interítem de 0.80 o más; revise posible redundancia de contenido.`
         );
     }
-    if (pares.paresNegativos.length) {
-        nuevasAdvertencias.push(
-            `Se detectaron ${pares.paresNegativos.length} pares con correlación igual o inferior a −0.20; revise codificación, inversión y coherencia del constructo.`
+    if (diagnosticosAvanzados.paresNegativos.length) {
+        advertencias.push(
+            `Se detectaron ${diagnosticosAvanzados.paresNegativos.length} pares con correlación igual o inferior a −0.20; revise codificación, inversión y coherencia del constructo.`
         );
     }
 
@@ -366,8 +373,8 @@ export function analizarFiabilidadCuestionarioAvanzada({
             kr20: kr20.valor
         },
         kr20,
-        intervalosBootstrap: bootstrap,
-        diagnosticosAvanzados: pares,
-        advertencias: nuevasAdvertencias
+        intervalosBootstrap,
+        diagnosticosAvanzados,
+        advertencias
     };
 }
