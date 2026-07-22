@@ -1,6 +1,7 @@
 const SELECTOR_CALCULADORAS = [
     "#formulario-estadistica-descriptiva",
     "#formulario-regresion",
+    "#formulario-regresion-conteo",
     "[id*='calculadora'] form",
     "section form"
 ].join(",");
@@ -23,7 +24,9 @@ function esPaginaPrincipalLaboratorio() {
 function esPaginaDeCalculadora() {
     const titulo = document.querySelector("main h1, #app h1, h1");
     const botonVolver = document.querySelector(
-        "[data-action='volver-laboratorio']"
+        "[data-action='volver-laboratorio'], " +
+        "[data-action='volver-modelos'], " +
+        "[data-action='volver-regresion']"
     );
     const formulario = document.querySelector(
         SELECTOR_CALCULADORAS
