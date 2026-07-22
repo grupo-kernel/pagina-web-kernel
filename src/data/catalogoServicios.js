@@ -1,0 +1,34 @@
+import {
+    CATALOGO_META,
+    CATEGORIAS_SERVICIOS,
+    MODALIDADES_SERVICIO,
+    PAQUETES_INSTITUCIONALES,
+    PRINCIPIOS_SERVICIO,
+    PROCESO_SERVICIO,
+    PROPUESTA_VALOR,
+    SECTORES_DESTINATARIOS
+} from "./catalogoServiciosBase.js";
+import { SERVICIOS_INVESTIGACION } from "./catalogoServiciosInvestigacion.js";
+import { SERVICIOS_MATEMATICA_DATOS } from "./catalogoServiciosMatematicaDatos.js";
+import { SERVICIOS_RIESGO_FINANZAS } from "./catalogoServiciosRiesgoFinanzas.js";
+import { SERVICIOS_EDUCACION } from "./catalogoServiciosEducacion.js";
+import { SERVICIOS_TECNOLOGIA_TRANSFERENCIA } from "./catalogoServiciosTecnologiaTransferencia.js";
+
+export {
+    CATALOGO_META,
+    CATEGORIAS_SERVICIOS,
+    MODALIDADES_SERVICIO,
+    PAQUETES_INSTITUCIONALES,
+    PRINCIPIOS_SERVICIO,
+    PROCESO_SERVICIO,
+    PROPUESTA_VALOR,
+    SECTORES_DESTINATARIOS
+};
+
+export const CATALOGO_SERVICIOS = Object.freeze([
+    ...SERVICIOS_INVESTIGACION,
+    ...SERVICIOS_MATEMATICA_DATOS,
+    ...SERVICIOS_RIESGO_FINANZAS,
+    ...SERVICIOS_EDUCACION,
+    ...SERVICIOS_TECNOLOGIA_TRANSFERENCIA
+]);

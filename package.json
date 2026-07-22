@@ -15,9 +15,10 @@
     "test:sample-size": "node --experimental-default-type=module scripts/validar-tamano-muestra.mjs",
     "test:library": "node --experimental-default-type=module scripts/validar-biblioteca-metodologica.mjs",
     "test:security": "node --experimental-default-type=module scripts/validar-seguridad-laboratorio.mjs",
+    "test:services": "node --experimental-default-type=module scripts/validar-catalogo-servicios.mjs",
     "test:navigation": "node --experimental-default-type=module scripts/validar-portada-navegacion.mjs",
     "test:dist": "node --experimental-default-type=module scripts/validar-dist-rutas.mjs",
-    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced && npm run test:evaluation && npm run test:sample-size && npm run test:library && npm run test:security && npm run test:navigation",
+    "test:all": "npm run test:stats && npm run test:count && npm run test:reliability && npm run test:reliability-advanced && npm run test:evaluation && npm run test:sample-size && npm run test:library && npm run test:security && npm run test:services && npm run test:navigation",
     "tailwind": "npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css --watch"
   },
   "keywords": [],

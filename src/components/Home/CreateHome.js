@@ -1,6 +1,8 @@
 import { CrearPortadaKernel2026 } from "./PortadaKernel2026.js";
+import { CrearCatalogoServicios } from "./CatalogoServicios.js";
 import { obtenerEstadisticasAnalytics } from "../../services/analytics.js";
 import { setMainLayout } from "../layout/mainLayaout.js";
+import { iconoLaboratorio } from "../../utils/iconosLaboratorio.js";
 
 function formatearNumero(valor) {
     return new Intl.NumberFormat("es-DO").format(Number(valor) || 0);
@@ -16,6 +18,64 @@ function formatearFecha(fechaISO) {
         dateStyle: "medium",
         timeStyle: "short"
     }).format(fecha);
+}
+
+function eliminarAccesoRepositorio(section) {
+    const accesoRepositorio = section.querySelector(
+        'a[href="https://github.com/grupo-kernel"]'
+    );
+    if (!accesoRepositorio) return;
+
+    const solicitarInformacion = document.createElement("a");
+    solicitarInformacion.href = "#/contacto";
+    solicitarInformacion.dataset.contactoServicios = "true";
+    solicitarInformacion.className =
+        "mt-4 inline-flex items-center gap-2 text-sm font-black text-sky-300 hover:text-white";
+    solicitarInformacion.innerHTML = `
+        Solicitar información
+        ${iconoLaboratorio("bx-right-arrow-alt", "text-lg")}
+    `;
+
+    accesoRepositorio.replaceWith(solicitarInformacion);
+}
+
+function insertarCatalogoServicios(section) {
+    const contenedor = section.firstElementChild;
+    const encabezado = contenedor?.querySelector(":scope > header");
+    if (!contenedor || !encabezado) return null;
+
+    const catalogo = CrearCatalogoServicios();
+    catalogo.dataset.catalogoServiciosPortada = "true";
+    encabezado.insertAdjacentElement("afterend", catalogo);
+
+    const accesoLaboratorio = encabezado.querySelector('a[href="#/laboratorioKernel"]');
+    const acciones = accesoLaboratorio?.parentElement;
+
+    if (acciones && !acciones.querySelector("[data-scroll-catalogo-servicios]")) {
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.dataset.scrollCatalogoServicios = "true";
+        boton.className =
+            "inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-4 font-black text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30";
+        boton.innerHTML = `
+            ${iconoLaboratorio("bx-grid-alt", "text-xl")}
+            Catálogo de servicios
+        `;
+        boton.addEventListener("click", () => {
+            catalogo.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        acciones.appendChild(boton);
+    }
+
+    const destinoPendiente = window.sessionStorage.getItem("kernel-home-section");
+    if (destinoPendiente === catalogo.id) {
+        window.sessionStorage.removeItem("kernel-home-section");
+        window.requestAnimationFrame(() => {
+            catalogo.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    }
+
+    return catalogo;
 }
 
 function prepararPortadaPantallaCompleta(section) {
@@ -88,6 +148,8 @@ export function CreateHome() {
     setMainLayout("full");
 
     const section = CrearPortadaKernel2026();
+    eliminarAccesoRepositorio(section);
+    insertarCatalogoServicios(section);
     prepararPortadaPantallaCompleta(section);
     cargarEstadisticasAnalytics(section);
 
