@@ -20,6 +20,25 @@ function formatearFecha(fechaISO) {
     }).format(fecha);
 }
 
+function eliminarAccesoRepositorio(section) {
+    const accesoRepositorio = section.querySelector(
+        'a[href="https://github.com/grupo-kernel"]'
+    );
+    if (!accesoRepositorio) return;
+
+    const solicitarInformacion = document.createElement("a");
+    solicitarInformacion.href = "#/contacto";
+    solicitarInformacion.dataset.contactoServicios = "true";
+    solicitarInformacion.className =
+        "mt-4 inline-flex items-center gap-2 text-sm font-black text-sky-300 hover:text-white";
+    solicitarInformacion.innerHTML = `
+        Solicitar información
+        ${iconoLaboratorio("bx-right-arrow-alt", "text-lg")}
+    `;
+
+    accesoRepositorio.replaceWith(solicitarInformacion);
+}
+
 function insertarCatalogoServicios(section) {
     const contenedor = section.firstElementChild;
     const encabezado = contenedor?.querySelector(":scope > header");
@@ -97,7 +116,7 @@ async function cargarEstadisticasAnalytics(section) {
     const mesElement = section.querySelector("#analytics-mes");
     const actualizadoElement = section.querySelector("#analytics-actualizado");
 
-    if (!totalElement || !hoyElement || !semanaElement || !mesElement || !actualizadoElement) {
+    if (!totalElement || !hoyElement || !semenaElement || !mesElement || !actualizadoElement) {
         console.warn("No se encontraron los elementos de Analytics en la portada.");
         return;
     }
@@ -129,6 +148,7 @@ export function CreateHome() {
     setMainLayout("full");
 
     const section = CrearPortadaKernel2026();
+    eliminarAccesoRepositorio(section);
     insertarCatalogoServicios(section);
     prepararPortadaPantallaCompleta(section);
     cargarEstadisticasAnalytics(section);
