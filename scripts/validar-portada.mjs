@@ -92,6 +92,16 @@ assert.match(
   /object-contain/,
   "Los logos institucionales deben mostrarse sin recortes."
 );
+assert.doesNotMatch(
+  slides,
+  /loading="lazy"/,
+  "La diapositiva activa no debe permanecer vacía al entrar en pantalla en móviles."
+);
+assert.match(
+  slides,
+  /decoding="async"/,
+  "Las imágenes institucionales deben decodificarse sin bloquear la interfaz."
+);
 
 const demora = controlador.match(/const DELAY = (\d+);/);
 assert.ok(demora, "El carrusel debe declarar un intervalo explícito.");
