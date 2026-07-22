@@ -40,3 +40,6 @@ jobs:
 
       - name: Build with Vite
         run: npm run build
+
+      - name: Validate generated route chunks
+        run: npm run test:dist
