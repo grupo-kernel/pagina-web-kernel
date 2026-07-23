@@ -59,7 +59,10 @@ export function Footer() {
         <div class="bg-[#041014] px-5 py-5 text-xs text-slate-400 md:px-8 md:text-sm">
             <div class="mx-auto flex max-w-[1600px] flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <p>© ${anio} Grupo de Investigación El Kernel — Todos los derechos reservados.</p>
-                <p>Los alcances, responsables, aliados, tiempos y tarifas se definen después del diagnóstico inicial.</p>
+                <div class="flex flex-col gap-1 md:items-end">
+                    <p>Los alcances, responsables, aliados, tiempos y tarifas se definen después del diagnóstico inicial.</p>
+                    <a href="./THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer" class="w-fit underline decoration-slate-600 underline-offset-4 transition hover:text-slate-200">Licencias y créditos</a>
+                </div>
             </div>
         </div>
     `;

@@ -4,6 +4,9 @@ import {
 import {
     crearPanelGraficosEvaluacion
 } from "../utils/graficosEvaluacionEducativa.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraEvaluacionEducativa() {
     const section = document.createElement("section");
@@ -236,6 +239,14 @@ export function CalculadoraEvaluacionEducativa() {
             resultados.innerHTML = crearVistaResultados(
                 ultimoResultado
             );
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "evaluacion-educativa",
+                datos: {
+                    solicitud,
+                    resultado: ultimoResultado
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({
                 behavior: "smooth",

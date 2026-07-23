@@ -1,6 +1,12 @@
 const EPS = 1e-10;
 const LIMITE_ETA = 35;
 
+/*
+ * Las aproximaciones de normal, cuantil normal y log-gamma siguen las
+ * referencias matemáticas registradas en docs/ALGORITHM_REFERENCES.md
+ * (Abramowitz–Stegun, familia de Acklam y Lanczos, respectivamente).
+ */
+
 function validarVector(nombre, valores, minimo = 5) {
     if (!Array.isArray(valores) || valores.length < minimo) {
         throw new Error(`${nombre} debe contener al menos ${minimo} observaciones.`);

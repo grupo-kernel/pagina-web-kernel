@@ -1,6 +1,9 @@
 import {
     analizarAsociacionCategorica
 } from "../utils/estadisticaAsociacionCategorica.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraAsociacionCategorica() {
     const section = document.createElement("section");
@@ -282,29 +285,40 @@ export function CalculadoraAsociacionCategorica() {
                     obtenerDatosTabla(
                         contenedorTabla
                     );
+                const solicitud = {
+                    tabla: datos.tabla,
+                    etiquetasFilas:
+                        datos.etiquetasFilas,
+                    etiquetasColumnas:
+                        datos.etiquetasColumnas,
+                    prueba:
+                        formulario.elements
+                            .prueba.value,
+                    nivelConfianza: Number(
+                        formulario.elements
+                            .nivelConfianza.value
+                    ),
+                    maximoTablasExactas: 50000,
+                    simulaciones: 10000
+                };
                 const resultado =
-                    analizarAsociacionCategorica({
-                        tabla: datos.tabla,
-                        etiquetasFilas:
-                            datos.etiquetasFilas,
-                        etiquetasColumnas:
-                            datos.etiquetasColumnas,
-                        prueba:
-                            formulario.elements
-                                .prueba.value,
-                        nivelConfianza: Number(
-                            formulario.elements
-                                .nivelConfianza.value
-                        ),
-                        maximoTablasExactas: 50000,
-                        simulaciones: 10000
-                    });
+                    analizarAsociacionCategorica(
+                        solicitud
+                    );
 
                 resultados.innerHTML =
                     crearVistaResultados(resultado);
                 resultados.classList.remove(
                     "hidden"
                 );
+                prepararExportacionCalculadora({
+                    contenedor: resultados,
+                    nombre: "asociacion-categorica",
+                    datos: {
+                        solicitud,
+                        resultado
+                    }
+                });
                 resultados.scrollIntoView({
                     behavior: "smooth",
                     block: "start"

@@ -5,6 +5,9 @@ import {
 import {
     crearPanelGraficosConteo
 } from "../utils/graficosRegresionConteo.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraRegresionConteo() {
     const section = document.createElement("section");
@@ -189,6 +192,15 @@ export function CalculadoraRegresionConteo() {
                 ultimoResultado,
                 ultimosMetadatos
             );
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "regresion-conteo",
+                datos: {
+                    solicitud,
+                    metadatos: ultimosMetadatos,
+                    resultado: ultimoResultado
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (err) {

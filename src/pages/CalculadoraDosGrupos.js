@@ -1,6 +1,9 @@
 import {
     analizarDosGrupos
 } from "../utils/estadisticaDosGrupos.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraDosGrupos() {
     const section = document.createElement("section");
@@ -378,14 +381,15 @@ const campoGrupo2 =
                             .nivelConfianza
                             .value
                     );
+                const solicitud = {
+                    grupo1,
+                    grupo2,
+                    prueba,
+                    nivelConfianza
+                };
 
                 const resultado =
-                    analizarDosGrupos({
-                        grupo1,
-                        grupo2,
-                        prueba,
-                        nivelConfianza
-                    });
+                    analizarDosGrupos(solicitud);
 
                 resultados.innerHTML =
                     crearVistaResultados(
@@ -396,6 +400,14 @@ const campoGrupo2 =
                 resultados.classList.remove(
                     "hidden"
                 );
+                prepararExportacionCalculadora({
+                    contenedor: resultados,
+                    nombre: "comparacion-dos-grupos",
+                    datos: {
+                        solicitud,
+                        resultado
+                    }
+                });
 
                 resultados.scrollIntoView({
                     behavior: "smooth",

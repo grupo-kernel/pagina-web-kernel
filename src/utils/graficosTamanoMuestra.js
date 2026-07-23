@@ -7,9 +7,13 @@ function esc(texto) {
         .replaceAll("'", "&#039;");
 }
 
-function articulo(titulo, descripcion, contenido) {
+function articulo(id, titulo, descripcion, contenido) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">${esc(titulo)}</h3>
             <p class="text-sm text-slate-500 mb-5 leading-relaxed">${esc(descripcion)}</p>
             ${contenido}
@@ -20,6 +24,7 @@ function articulo(titulo, descripcion, contenido) {
 function sensibilidad(resultado) {
     if (!resultado.sensibilidad.length) {
         return articulo(
+            "sensibilidad-potencia",
             "Sensibilidad según potencia",
             "El diseño seleccionado se basa en precisión, no en una potencia objetivo.",
             `<div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-slate-600">Modifique el margen de error o el nivel de confianza para estudiar escenarios alternativos.</div>`
@@ -40,6 +45,7 @@ function sensibilidad(resultado) {
     const y = (n) => arriba + (max - n) / amplitud * (alto - arriba - abajo);
 
     return articulo(
+        "sensibilidad-potencia",
         "Sensibilidad según potencia",
         "Muestra el crecimiento de la muestra cuando se exige mayor potencia estadística.",
         `<div class="overflow-x-auto">
@@ -68,6 +74,7 @@ function ajustes(resultado) {
     const max = Math.max(...pasos.map(([, valor]) => valor), 1);
 
     return articulo(
+        "efecto-ajustes",
         "Efecto de los ajustes",
         "Compara el tamaño inicial con las correcciones por población, diseño y pérdidas.",
         `<div class="space-y-5">
@@ -84,6 +91,7 @@ function ajustes(resultado) {
 function asignacion(resultado) {
     if (!resultado.asignacion) {
         return articulo(
+            "distribucion-muestra",
             "Distribución de la muestra",
             "El diseño utiliza una sola muestra.",
             `<div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-slate-700">Tamaño recomendado: <strong>${resultado.tamano.final}</strong>.</div>`
@@ -97,6 +105,7 @@ function asignacion(resultado) {
     const max = Math.max(...filas.map(([, valor]) => valor));
 
     return articulo(
+        "distribucion-muestra",
         "Distribución de la muestra",
         "Asignación sugerida después de aplicar correcciones y redondeo.",
         `<div class="flex items-end gap-4 h-64 border-b border-l border-slate-300 px-4 pt-4 overflow-x-auto">

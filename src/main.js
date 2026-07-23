@@ -11,9 +11,6 @@ import {
     iniciarGraficosDescriptivosSeguros
 } from "./utils/graficosDescriptivosSeguros.js";
 import {
-    iniciarExportacionResultadosDescriptivos
-} from "./utils/exportarResultadosDescriptivos.js";
-import {
     iniciarCreditosCalculadoras
 } from "./utils/creditosCalculadoras.js";
 import {
@@ -67,10 +64,6 @@ ejecutarInicializador("la navegación", () => {
 ejecutarInicializador(
     "los gráficos de estadística descriptiva",
     iniciarGraficosDescriptivosSeguros
-);
-ejecutarInicializador(
-    "la exportación de estadística descriptiva",
-    iniciarExportacionResultadosDescriptivos
 );
 ejecutarInicializador(
     "los créditos de las calculadoras",

@@ -1,5 +1,11 @@
 const EPS = 1e-12;
 
+/*
+ * Referencias numéricas: cuantil normal de la familia racional de Acklam,
+ * función error de Abramowitz–Stegun 7.1.26 y log-gamma de Lanczos (1964).
+ * Consulte docs/ALGORITHM_REFERENCES.md para el registro completo.
+ */
+
 function clamp(x, a = 0, b = 1) {
     return Math.max(a, Math.min(b, x));
 }

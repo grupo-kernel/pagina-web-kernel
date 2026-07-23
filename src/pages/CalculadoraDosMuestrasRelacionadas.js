@@ -1,6 +1,9 @@
 import {
     analizarMuestrasRelacionadas
 } from "../utils/estadisticaDosMuestrasRelacionadas.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraDosMuestrasRelacionadas() {
     const section = document.createElement("section");
@@ -282,14 +285,17 @@ export function CalculadoraDosMuestrasRelacionadas() {
                     formulario.elements
                         .nivelConfianza.value
                 );
+                const solicitud = {
+                    medicion1,
+                    medicion2,
+                    prueba,
+                    nivelConfianza
+                };
 
                 const resultado =
-                    analizarMuestrasRelacionadas({
-                        medicion1,
-                        medicion2,
-                        prueba,
-                        nivelConfianza
-                    });
+                    analizarMuestrasRelacionadas(
+                        solicitud
+                    );
 
                 resultados.innerHTML =
                     crearVistaResultados(
@@ -299,6 +305,15 @@ export function CalculadoraDosMuestrasRelacionadas() {
                 resultados.classList.remove(
                     "hidden"
                 );
+                prepararExportacionCalculadora({
+                    contenedor: resultados,
+                    nombre:
+                        "comparacion-mediciones-relacionadas",
+                    datos: {
+                        solicitud,
+                        resultado
+                    }
+                });
                 resultados.scrollIntoView({
                     behavior: "smooth",
                     block: "start"

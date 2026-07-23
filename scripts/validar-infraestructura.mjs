@@ -14,12 +14,51 @@ const despliegue = await readFile(
 const versionNode = (
     await readFile(new URL("../.nvmrc", import.meta.url), "utf8")
 ).trim();
+const licencia = await readFile(
+    new URL("../LICENSE", import.meta.url),
+    "utf8"
+);
+const avisosTerceros = await readFile(
+    new URL("../THIRD_PARTY_NOTICES.md", import.meta.url),
+    "utf8"
+);
 
 assert.equal(
     packageJson.type,
     "module",
     "El proyecto debe declarar módulos ES sin opciones experimentales de Node."
 );
+assert.equal(
+    packageJson.private,
+    true,
+    "El paquete propietario no debe poder publicarse accidentalmente."
+);
+assert.equal(
+    packageJson.license,
+    "UNLICENSED",
+    "package.json debe coincidir con el aviso de reserva de derechos."
+);
+assert.match(
+    licencia,
+    /AVISO DE RESERVA DE DERECHOS/,
+    "Falta el aviso principal de derechos."
+);
+
+for (const componente of [
+    "jStat",
+    "Firebase",
+    "Font Awesome",
+    "Boxicons",
+    "Bootstrap Icons",
+    "Tailwind",
+    "Vite"
+]) {
+    assert.match(
+        avisosTerceros,
+        new RegExp(componente, "i"),
+        `Falta ${componente} en los avisos de terceros.`
+    );
+}
 assert.equal(versionNode, "22", "La versión local de Node debe coincidir con CI.");
 
 Object.entries(packageJson.scripts)

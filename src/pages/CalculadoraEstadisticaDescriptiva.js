@@ -1,6 +1,9 @@
 import {
     analizarEstadisticaDescriptiva
 } from "../utils/estadisticaDescriptiva.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraEstadisticaDescriptiva() {
     const section = document.createElement("section");
@@ -191,6 +194,15 @@ export function CalculadoraEstadisticaDescriptiva() {
             resultados.innerHTML =
                 crearVistaResultados(resultado);
             resultados.classList.remove("hidden");
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "estadistica-descriptiva",
+                datos: {
+                    solicitud,
+                    resultado
+                },
+                incluirImpresion: true
+            });
             resultados.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
@@ -552,7 +564,11 @@ function crearGraficoFrecuencias(resultado) {
     );
 
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="distribucion-frecuencias"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">
                 Distribución de frecuencias
             </h3>
@@ -594,7 +610,11 @@ function crearDiagramaCaja(r, aproximado) {
     const xMax = posicion(maximo);
 
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="diagrama-caja"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">
                 Diagrama de caja
             </h3>

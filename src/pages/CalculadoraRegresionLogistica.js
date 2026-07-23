@@ -5,6 +5,9 @@ import {
 import {
     crearPanelGraficosLogistica
 } from "../utils/graficosRegresionLogistica.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraRegresionLogistica() {
     const section = document.createElement("section");
@@ -252,6 +255,15 @@ export function CalculadoraRegresionLogistica() {
                 modelo,
                 metadatos
             );
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "regresion-logistica-binaria",
+                datos: {
+                    solicitud,
+                    metadatos: ultimosMetadatos,
+                    modelo: ultimoModelo
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({
                 behavior: "smooth",

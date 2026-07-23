@@ -7,9 +7,13 @@ function escapar(texto) {
         .replaceAll("'", "&#039;");
 }
 
-function articulo(titulo, descripcion, contenido) {
+function articulo(id, titulo, descripcion, contenido) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">${titulo}</h3>
             <p class="text-sm text-slate-500 mb-5 leading-relaxed">${descripcion}</p>
             ${contenido}
@@ -18,6 +22,7 @@ function articulo(titulo, descripcion, contenido) {
 }
 
 function graficoBarras({
+    id,
     filas,
     titulo,
     descripcion,
@@ -44,6 +49,7 @@ function graficoBarras({
     const lineaCero = ceroVisible ? y(0) : y(minimo);
 
     return articulo(
+        id,
         titulo,
         descripcion,
         `<div class="overflow-x-auto">
@@ -114,6 +120,7 @@ function graficoBarras({
 
 function graficoDificultad(resultado) {
     return graficoBarras({
+        id: "indice-dificultad",
         filas: resultado.items,
         titulo: "Índice de dificultad",
         descripcion:
@@ -137,6 +144,7 @@ function graficoDiscriminacion(resultado) {
     );
 
     return graficoBarras({
+        id: "indice-discriminacion",
         filas: resultado.items,
         titulo: "Índice de discriminación",
         descripcion:
@@ -162,6 +170,7 @@ function graficoPuntoBiserial(resultado) {
     );
 
     return graficoBarras({
+        id: "correlacion-punto-biserial",
         filas: resultado.items,
         titulo: "Correlación punto-biserial corregida",
         descripcion:
@@ -192,6 +201,7 @@ function graficoMapa(resultado) {
             (alto - arriba - abajo);
 
     return articulo(
+        "mapa-calidad-preguntas",
         "Mapa de calidad de las preguntas",
         "Combina dificultad y discriminación. El cuadrante de dificultad intermedia y discriminación positiva suele ser el más favorable.",
         `<div class="overflow-x-auto">
@@ -230,6 +240,7 @@ function graficoPuntuaciones(resultado) {
     );
 
     return articulo(
+        "distribucion-puntuaciones",
         "Distribución de puntuaciones",
         "Muestra la frecuencia de cada puntuación total obtenida en la prueba.",
         `<div class="overflow-x-auto">
@@ -254,6 +265,7 @@ function graficoDistractores(resultado) {
     );
 
     return articulo(
+        "distractores-no-funcionales",
         "Distractores no funcionales",
         resultado.modo === "opciones"
             ? "Cuenta las alternativas incorrectas seleccionadas por menos del 5 % o que no atraen más al grupo inferior."

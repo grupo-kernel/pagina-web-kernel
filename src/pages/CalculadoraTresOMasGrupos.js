@@ -1,6 +1,9 @@
 import {
     analizarTresOMasGrupos
 } from "../utils/estadisticaTresOMasGrupos.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraTresOMasGrupos() {
     const section = document.createElement("section");
@@ -242,15 +245,25 @@ export function CalculadoraTresOMasGrupos() {
             const nivelConfianza = Number(
                 formulario.elements.nivelConfianza.value
             );
-
-            const resultado = analizarTresOMasGrupos({
+            const solicitud = {
                 grupos,
                 prueba,
                 nivelConfianza
-            });
+            };
+
+            const resultado =
+                analizarTresOMasGrupos(solicitud);
 
             resultados.innerHTML = crearVistaResultados(resultado);
             resultados.classList.remove("hidden");
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "comparacion-tres-o-mas-grupos",
+                datos: {
+                    solicitud,
+                    resultado
+                }
+            });
             resultados.scrollIntoView({
                 behavior: "smooth",
                 block: "start"

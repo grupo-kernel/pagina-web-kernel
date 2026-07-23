@@ -14,9 +14,13 @@ function formatear(valor, decimales = 3) {
     });
 }
 
-function articulo(titulo, descripcion, contenido) {
+function articulo(id, titulo, descripcion, contenido) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">
                 ${titulo}
             </h3>
@@ -38,6 +42,7 @@ function graficoItemTotal(resultado) {
     );
 
     return articulo(
+        "correlacion-item-total",
         "Correlación ítem–total corregida",
         "Valores inferiores a 0.30 requieren revisión. Los valores negativos suelen señalar inversión no corregida, ambigüedad o falta de coherencia con la escala.",
         `<div class="space-y-4">
@@ -91,6 +96,7 @@ function graficoAlfaEliminado(resultado) {
     const amplitud = Math.max(maximo - minimo, 0.1);
 
     return articulo(
+        "alfa-si-elimina-item",
         "Alfa si se elimina el ítem",
         "Compare cada valor con el alfa global. Un aumento apreciable puede justificar revisar el contenido del ítem, pero no eliminarlo automáticamente.",
         `<div class="space-y-4">
@@ -138,6 +144,7 @@ function graficoMedias(resultado) {
     );
 
     return articulo(
+        "medias-items",
         "Medias de los ítems",
         "Las medias se ubican dentro del rango de la escala después de recodificar los ítems invertidos.",
         `<div class="flex items-end gap-3 h-72 border-b border-l border-slate-300 px-4 pt-5 overflow-x-auto">
@@ -172,6 +179,7 @@ function graficoPuntuacionTotal(resultado) {
     );
 
     return articulo(
+        "distribucion-puntuacion-total",
         "Distribución de la puntuación total",
         "El histograma resume las puntuaciones obtenidas al sumar los ítems después de aplicar la recodificación indicada.",
         `<div class="flex items-end gap-1 h-72 border-b border-l border-slate-300 px-4 pt-5 overflow-x-auto">
@@ -202,6 +210,7 @@ function graficoPuntuacionTotal(resultado) {
 
 function graficoCargas(resultado) {
     return articulo(
+        "cargas-componente-principal",
         "Cargas del componente principal",
         "Estas cargas sustentan la aproximación unidimensional utilizada para calcular omega. No sustituyen un análisis factorial confirmatorio.",
         `<div class="space-y-4">
@@ -248,6 +257,7 @@ function mapaCorrelaciones(resultado) {
     const k = resultado.k;
 
     return articulo(
+        "mapa-correlaciones-interitem",
         "Mapa de correlaciones interítem",
         "Los tonos azules representan relaciones positivas y los rojos relaciones negativas. Revise especialmente correlaciones negativas o extremadamente altas.",
         `<div class="overflow-x-auto">

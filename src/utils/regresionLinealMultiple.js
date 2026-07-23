@@ -1,5 +1,11 @@
 const EPS = 1e-12;
 
+/*
+ * Las aproximaciones de cuantil normal y log-gamma siguen las referencias
+ * matemáticas registradas en docs/ALGORITHM_REFERENCES.md (familia racional
+ * de Acklam y aproximación de Lanczos, respectivamente).
+ */
+
 function validarVector(nombre, valores) {
     if (!Array.isArray(valores) || valores.length < 3) {
         throw new Error(`${nombre} debe contener al menos tres observaciones.`);

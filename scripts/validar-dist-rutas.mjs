@@ -9,6 +9,19 @@ await stat(dist).catch(() => {
   throw new Error("El directorio dist no existe. Ejecute npm run build primero.");
 });
 
+for (const archivoLegal of ["LICENSE", "THIRD_PARTY_NOTICES.md"]) {
+  const [fuente, desplegado] = await Promise.all([
+    readFile(new URL(`../${archivoLegal}`, import.meta.url), "utf8"),
+    readFile(new URL(`../dist/${archivoLegal}`, import.meta.url), "utf8")
+  ]);
+
+  assert.equal(
+    desplegado,
+    fuente,
+    `${archivoLegal} no se copió íntegramente al artefacto desplegable.`
+  );
+}
+
 const archivos = await readdir(assets);
 const javascript = archivos.filter((archivo) => archivo.endsWith(".js"));
 

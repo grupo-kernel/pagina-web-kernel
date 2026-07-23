@@ -1,6 +1,9 @@
 import {
     analizarRelacionVariables
 } from "../utils/estadisticaRelacionVariables.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraRelacionVariables() {
     const section = document.createElement("section");
@@ -291,20 +294,31 @@ export function CalculadoraRelacionVariables() {
                     formulario.elements
                         .nivelConfianza.value
                 );
+                const solicitud = {
+                    x,
+                    y,
+                    prueba,
+                    nivelConfianza,
+                    nombreX,
+                    nombreY,
+                    categoriaPositiva
+                };
                 const resultado =
-                    analizarRelacionVariables({
-                        x,
-                        y,
-                        prueba,
-                        nivelConfianza,
-                        nombreX,
-                        nombreY,
-                        categoriaPositiva
-                    });
+                    analizarRelacionVariables(
+                        solicitud
+                    );
 
                 resultados.innerHTML =
                     crearVistaResultados(resultado);
                 resultados.classList.remove("hidden");
+                prepararExportacionCalculadora({
+                    contenedor: resultados,
+                    nombre: "relacion-entre-variables",
+                    datos: {
+                        solicitud,
+                        resultado
+                    }
+                });
                 resultados.scrollIntoView({
                     behavior: "smooth",
                     block: "start"
@@ -1120,7 +1134,11 @@ function crearDiagramaDispersion(resultado) {
         .join("");
 
     return `
-        <article class="mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="diagrama-dispersion"
+            class="mt-6 rounded-2xl border border-slate-200 bg-white p-6"
+        >
             <h3 class="text-xl font-black text-slate-900 mb-4">
                 Diagrama de dispersión
             </h3>
@@ -1193,7 +1211,11 @@ function crearGraficoPuntoBiserial(resultado) {
         .join("");
 
     return `
-        <article class="mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="comparacion-punto-biserial"
+            class="mt-6 rounded-2xl border border-slate-200 bg-white p-6"
+        >
             <h3 class="text-xl font-black text-slate-900 mb-4">
                 Distribución por categoría
             </h3>

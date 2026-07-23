@@ -4,6 +4,9 @@ import {
 import {
     crearPanelGraficosFiabilidad
 } from "../utils/graficosFiabilidadCuestionarios.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraFiabilidadCuestionarios() {
     const section = document.createElement("section");
@@ -232,6 +235,14 @@ export function CalculadoraFiabilidadCuestionarios() {
             resultados.innerHTML = crearVistaResultados(
                 ultimoResultado
             );
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "fiabilidad-cuestionarios",
+                datos: {
+                    solicitud,
+                    resultado: ultimoResultado
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({
                 behavior: "smooth",

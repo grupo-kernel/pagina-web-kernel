@@ -1,3 +1,8 @@
+/*
+ * La aproximación de log-gamma utilizada para la distribución teórica sigue
+ * a Lanczos (1964); consulte docs/ALGORITHM_REFERENCES.md.
+ */
+
 function rango(valores, margen = 0.08) {
     const validos = valores.filter(Number.isFinite);
     const minimo = Math.min(...validos);
@@ -71,9 +76,13 @@ function probabilidadNegativa(k, media, alpha) {
     );
 }
 
-function articulo(titulo, descripcion, contenido) {
+function articulo(id, titulo, descripcion, contenido) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">${titulo}</h3>
             <p class="text-sm text-slate-500 mb-5 leading-relaxed">${descripcion}</p>
             ${contenido}
@@ -103,6 +112,7 @@ function graficoObservadoAjustado(modelo) {
     const y = (valor) => escala(valor, dominio, alto - abajo, arriba);
 
     return articulo(
+        "observado-ajustado",
         "Observado frente a ajustado",
         "Los puntos próximos a la diagonal representan observaciones con conteos bien aproximados por el modelo.",
         `<div class="overflow-x-auto">
@@ -142,6 +152,7 @@ function graficoResiduos(modelo) {
     const y = (valor) => escala(valor, dominioY, alto - abajo, arriba);
 
     return articulo(
+        "residuos-pearson",
         "Residuos de Pearson",
         "Una nube sin patrón claro alrededor de cero es compatible con una especificación razonable de la media y la varianza.",
         `<div class="overflow-x-auto">
@@ -214,6 +225,7 @@ function graficoDistribucion(modelo) {
         : "Poisson";
 
     return articulo(
+        "distribucion-observada-esperada",
         "Distribución observada y esperada",
         `Compara la frecuencia observada de los conteos con la frecuencia esperada bajo el modelo ${modeloTexto} ajustado.`,
         `<div class="overflow-x-auto">
@@ -251,6 +263,7 @@ function graficoCook(modelo) {
     );
 
     return articulo(
+        "distancia-cook",
         "Distancia de Cook",
         `La línea de referencia corresponde a 4/n = ${umbral.toFixed(4)}. Las observaciones que la superan requieren revisión sustantiva.`,
         `<div class="overflow-x-auto">
@@ -283,6 +296,7 @@ function graficoComparacion(comparacion) {
     );
 
     return articulo(
+        "comparacion-modelos",
         "Comparación de modelos",
         "AIC más bajo indica mejor equilibrio entre ajuste y complejidad. Un índice de dispersión próximo a 1 es compatible con la varianza asumida.",
         `<div class="space-y-6">

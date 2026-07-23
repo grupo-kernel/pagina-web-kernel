@@ -5,6 +5,9 @@ import {
 import {
     crearPanelGraficosRegresion
 } from "../utils/graficosRegresion.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraRegresionCompleta() {
     const section = document.createElement("section");
@@ -250,6 +253,15 @@ export function CalculadoraRegresionCompleta() {
                 ultimoModelo,
                 ultimosMetadatos
             );
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "regresion-lineal-multiple",
+                datos: {
+                    solicitud: preparado.solicitud,
+                    metadatos: ultimosMetadatos,
+                    modelo: ultimoModelo
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({
                 behavior: "smooth",

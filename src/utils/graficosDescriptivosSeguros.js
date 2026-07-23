@@ -215,6 +215,8 @@ function crearEncabezado() {
 
 function crearHistograma(filas) {
     const articulo = document.createElement("article");
+    articulo.dataset.graficoExportable = "true";
+    articulo.dataset.graficoId = "histograma";
     articulo.className =
         "rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden";
     const maximo = Math.max(
@@ -254,6 +256,8 @@ function crearHistograma(filas) {
 
 function crearOjiva(filas) {
     const articulo = document.createElement("article");
+    articulo.dataset.graficoExportable = "true";
+    articulo.dataset.graficoId = "ojiva-frecuencia-acumulada";
     articulo.className =
         "rounded-3xl border border-slate-200 bg-white p-6 shadow-md overflow-hidden";
     const ancho = 600;

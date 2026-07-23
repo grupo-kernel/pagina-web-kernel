@@ -1,6 +1,9 @@
 import {
     analizarTresOMasMedicionesRelacionadas
 } from "../utils/estadisticaTresOMasMedicionesRelacionadas.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 export function CalculadoraTresOMasMedicionesRelacionadas() {
     const section = document.createElement("section");
@@ -257,18 +260,30 @@ export function CalculadoraTresOMasMedicionesRelacionadas() {
                     formulario.elements
                         .nivelConfianza.value
                 );
+                const solicitud = {
+                    mediciones,
+                    prueba,
+                    nivelConfianza
+                };
                 const resultado =
-                    analizarTresOMasMedicionesRelacionadas({
-                        mediciones,
-                        prueba,
-                        nivelConfianza
-                    });
+                    analizarTresOMasMedicionesRelacionadas(
+                        solicitud
+                    );
 
                 resultados.innerHTML =
                     crearVistaResultados(resultado);
                 resultados.classList.remove(
                     "hidden"
                 );
+                prepararExportacionCalculadora({
+                    contenedor: resultados,
+                    nombre:
+                        "comparacion-mediciones-repetidas",
+                    datos: {
+                        solicitud,
+                        resultado
+                    }
+                });
                 resultados.scrollIntoView({
                     behavior: "smooth",
                     block: "start"

@@ -1,5 +1,11 @@
 import * as jStatModule from "jstat";
 
+/*
+ * La aproximación interna de log-gamma sigue a Lanczos (1964). La referencia
+ * y las reglas de procedencia están registradas en
+ * docs/ALGORITHM_REFERENCES.md.
+ */
+
 const jStat =
     jStatModule.jStat ??
     jStatModule.default?.jStat;

@@ -4,6 +4,9 @@ import {
 import {
     crearPanelGraficosTamanoMuestra
 } from "../utils/graficosTamanoMuestra.js";
+import {
+    prepararExportacionCalculadora
+} from "../utils/exportacionesCalculadoras.js";
 
 const DISENOS = {
     estimacion_media: {
@@ -261,8 +264,17 @@ export function CalculadoraTamanoMuestraPotencia() {
         event.preventDefault();
         error.classList.add("hidden");
         try {
-            ultimo = calcularTamanoMuestraPotencia(solicitud(form));
+            const datosSolicitud = solicitud(form);
+            ultimo = calcularTamanoMuestraPotencia(datosSolicitud);
             resultados.innerHTML = vista(ultimo);
+            prepararExportacionCalculadora({
+                contenedor: resultados,
+                nombre: "tamano-muestra-potencia",
+                datos: {
+                    solicitud: datosSolicitud,
+                    resultado: ultimo
+                }
+            });
             resultados.classList.remove("hidden");
             resultados.scrollIntoView({ behavior: "smooth" });
         } catch (err) {

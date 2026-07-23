@@ -17,9 +17,19 @@ function formatear(valor, decimales = 3) {
     });
 }
 
-function articuloGrafico(titulo, descripcion, contenido, clase = "") {
+function articuloGrafico(
+    id,
+    titulo,
+    descripcion,
+    contenido,
+    clase = ""
+) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg overflow-hidden ${clase}">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg overflow-hidden ${clase}"
+        >
             <h3 class="text-2xl font-black text-slate-900 mb-2">
                 ${titulo}
             </h3>
@@ -94,6 +104,7 @@ function graficoRoc(modelo) {
     `;
 
     return articuloGrafico(
+        "curva-roc",
         "Curva ROC",
         "Relaciona sensibilidad y tasa de falsos positivos para todos los umbrales posibles. La diagonal representa una clasificación sin capacidad discriminativa.",
         contenido
@@ -142,6 +153,7 @@ function matrizConfusion(modelo) {
     `;
 
     return articuloGrafico(
+        "matriz-confusion",
         "Matriz de confusión",
         `Resume la clasificación con umbral ${formatear(m.umbral, 2)}. Los falsos positivos y falsos negativos deben interpretarse según el costo real de cada error.`,
         contenido
@@ -198,6 +210,7 @@ function distribucionProbabilidades(modelo, nombreDependiente) {
     `;
 
     return articuloGrafico(
+        "probabilidades-clase",
         "Probabilidades estimadas por clase",
         "Una buena separación visual concentra los casos observados con valor 1 hacia probabilidades altas y los casos con valor 0 hacia probabilidades bajas.",
         contenido
@@ -256,6 +269,7 @@ function graficoCalibracion(modelo) {
     `;
 
     return articuloGrafico(
+        "calibracion",
         "Calibración",
         "Compara la probabilidad media estimada con la proporción realmente observada en grupos ordenados por riesgo. Los puntos próximos a la diagonal indican mejor calibración.",
         contenido
@@ -324,6 +338,7 @@ function graficoOddsRatio(modelo) {
     `;
 
     return articuloGrafico(
+        "odds-ratio",
         "Razones de probabilidades e intervalos de confianza",
         "Valores mayores que 1 indican aumento de las odds del evento por unidad del predictor; valores menores que 1 indican disminución, manteniendo constantes los demás predictores.",
         contenido,
@@ -365,6 +380,7 @@ function graficoCook(modelo) {
     `;
 
     return articuloGrafico(
+        "distancia-cook",
         "Distancia de Cook",
         "Señala observaciones con potencial influencia sobre el ajuste. El criterio 4/n es orientativo y no sustituye la revisión del caso y del diseño del estudio.",
         contenido

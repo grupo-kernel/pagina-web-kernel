@@ -1,3 +1,8 @@
+/*
+ * El cuantil normal usado por el gráfico Q–Q pertenece a la familia racional
+ * de Acklam; consulte docs/ALGORITHM_REFERENCES.md.
+ */
+
 function numero(valor, decimales = 3) {
     if (!Number.isFinite(valor)) return "—";
 
@@ -114,9 +119,13 @@ function cuadricula({
     };
 }
 
-function tarjetaGrafico(titulo, descripcion, contenidoSvg) {
+function tarjetaGrafico(id, titulo, descripcion, contenidoSvg) {
     return `
-        <article class="rounded-3xl border border-slate-200 bg-white p-5 md:p-6 shadow-md overflow-hidden">
+        <article
+            data-grafico-exportable="true"
+            data-grafico-id="${id}"
+            class="rounded-3xl border border-slate-200 bg-white p-5 md:p-6 shadow-md overflow-hidden"
+        >
             <h3 class="text-xl md:text-2xl font-black text-slate-900 mb-2">
                 ${titulo}
             </h3>
@@ -214,6 +223,7 @@ function dispersionRecta(modelo, nombreDependiente) {
     `).join("");
 
     return tarjetaGrafico(
+        "dispersion-recta-ajustada",
         "Dispersión y recta ajustada",
         "Los puntos representan los datos observados; la línea muestra el modelo estimado y los segmentos verticales representan los residuos.",
         svgBase(`
@@ -267,6 +277,7 @@ function observadoPredicho(modelo, nombreDependiente) {
     `).join("");
 
     return tarjetaGrafico(
+        "observado-predicho",
         "Observado frente a predicho",
         "Un ajuste adecuado concentra los puntos cerca de la línea diagonal de igualdad.",
         svgBase(`
@@ -318,6 +329,7 @@ function residuosPredichos(modelo) {
     `).join("");
 
     return tarjetaGrafico(
+        "residuos-predichos",
         "Residuos frente a valores predichos",
         "Se espera una nube aproximadamente aleatoria alrededor de cero. Los puntos rojos tienen residuos estandarizados con magnitud mayor que 2.",
         svgBase(`
@@ -403,6 +415,7 @@ function histogramaResiduos(modelo) {
     }).join("");
 
     return tarjetaGrafico(
+        "histograma-residuos",
         "Histograma de residuos",
         "Permite examinar visualmente la simetría, concentración y posibles colas de la distribución residual.",
         svgBase(`
@@ -500,6 +513,7 @@ function graficoQQ(modelo) {
     `).join("");
 
     return tarjetaGrafico(
+        "qq-residuos",
         "Gráfico Q–Q de residuos",
         "La proximidad de los puntos a la diagonal ofrece una evaluación visual de la normalidad residual.",
         svgBase(`
@@ -553,6 +567,7 @@ function graficoCook(modelo) {
     }).join("");
 
     return tarjetaGrafico(
+        "distancia-cook",
         "Distancia de Cook",
         `El umbral orientativo mostrado es 4/n = ${numero(umbral, 4)}. Las barras rojas superan ese criterio y requieren revisión.`,
         svgBase(`
