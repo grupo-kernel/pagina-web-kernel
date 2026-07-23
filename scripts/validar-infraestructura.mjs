@@ -46,6 +46,11 @@ assert.match(
 
 for (const componente of [
     "jStat",
+    "html2canvas-pro",
+    "css-line-break",
+    "text-segmentation",
+    "utrie",
+    "base64-arraybuffer",
     "Firebase",
     "Font Awesome",
     "Boxicons",
@@ -71,7 +76,15 @@ Object.entries(packageJson.scripts)
         );
     });
 
-for (const dependencia of ["firebase", "jstat"]) {
+for (const dependencia of [
+    "firebase",
+    "jstat",
+    "html2canvas-pro",
+    "css-line-break",
+    "text-segmentation",
+    "utrie",
+    "base64-arraybuffer"
+]) {
     assert.ok(
         packageLock.packages?.[`node_modules/${dependencia}`],
         `${dependencia} debe estar registrado en package-lock.json.`

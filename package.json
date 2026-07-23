@@ -51,6 +51,7 @@
     "@tailwindcss/cli": "^4.1.18",
     "@tailwindcss/vite": "^4.2.0",
     "firebase": "^12.16.0",
+    "html2canvas-pro": "^2.3.1",
     "jstat": "^1.9.6"
   }
 }

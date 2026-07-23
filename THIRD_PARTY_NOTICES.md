@@ -13,6 +13,11 @@ enumeradas aquí.
 | Componente | Versión o alcance | Uso en la plataforma | Licencia |
 | --- | --- | --- | --- |
 | jStat | 1.9.6 | Funciones estadísticas incorporadas al paquete web | MIT |
+| html2canvas-pro | 2.3.1 | Generación local de imágenes PNG a partir de resultados HTML | MIT |
+| css-line-break | 2.1.0 | Dependencia de html2canvas-pro para segmentación de líneas CSS | MIT |
+| text-segmentation | 1.0.3 | Dependencia de html2canvas-pro para segmentación de texto | MIT |
+| utrie | 1.0.2 | Estructura Unicode utilizada por los segmentadores de texto | MIT |
+| base64-arraybuffer | 1.0.2 | Codificación interna utilizada por utrie | MIT |
 | Firebase JavaScript SDK | 12.16.0; módulos de aplicación y autenticación | Autenticación del laboratorio | Apache License 2.0 |
 | Font Awesome Free | 7.2.0 | Fuente, estilos e iconos | Iconos SVG/JS: CC BY 4.0; fuentes: SIL OFL 1.1; código: MIT |
 | Boxicons Free | 3.0.6, servido desde `cdn.boxicons.com` | Fuente, estilos e iconos de la interfaz | Iconos: CC BY 4.0; fuentes: SIL OFL 1.1; código: MIT |
@@ -32,6 +37,23 @@ la cual fueron obtenidos.
 - Proyecto: <https://github.com/jstat/jstat>
 - Copyright (c) 2013 jStat.
 - Licencia: MIT; texto completo en el Apéndice A.
+
+### html2canvas-pro y dependencias
+
+- Proyecto principal: <https://github.com/yorickshan/html2canvas-pro>
+- Copyright (c) 2024-present yorickshan y colaboradores de
+  html2canvas-pro.
+- `css-line-break`: <https://github.com/niklasvh/css-line-break>,
+  Copyright (c) 2017 Niklas von Hertzen.
+- `text-segmentation`: <https://github.com/niklasvh/text-segmentation>,
+  Copyright (c) 2021 Niklas von Hertzen.
+- `utrie`: <https://github.com/niklasvh/utrie>, Copyright (c) 2021
+  Niklas von Hertzen.
+- `base64-arraybuffer`:
+  <https://github.com/niklasvh/base64-arraybuffer>, Copyright (c) 2012
+  Niklas von Hertzen.
+- Los cinco componentes se distribuyen bajo licencia MIT; texto completo en
+  el Apéndice A.
 
 ### Firebase JavaScript SDK
 

@@ -11,6 +11,28 @@ const SELECTOR_CONTROLES =
 const MAX_FILAS_EXCEL = 100000;
 const MAX_COLUMNAS_EXCEL = 16384;
 const MAX_PIXELES_CANVAS = 64000000;
+let promesaCapturadorHtml = null;
+
+async function cargarCapturadorHtml() {
+    if (!promesaCapturadorHtml) {
+        promesaCapturadorHtml = import("html2canvas-pro")
+            .then((modulo) => {
+                if (typeof modulo.default !== "function") {
+                    throw new TypeError(
+                        "El capturador PNG no está disponible."
+                    );
+                }
+
+                return modulo.default;
+            })
+            .catch((error) => {
+                promesaCapturadorHtml = null;
+                throw error;
+            });
+    }
+
+    return promesaCapturadorHtml;
+}
 
 const TABLA_CRC32 = (() => {
     const tabla = new Uint32Array(256);
@@ -1028,6 +1050,33 @@ function validarEscalaCanvas(ancho, alto, escala) {
     }
 }
 
+function escalaCanvasSegura(escala) {
+    const valor = Number(escala);
+
+    if (
+        !Number.isFinite(valor) ||
+        valor < 1 ||
+        valor > 4
+    ) {
+        throw new RangeError("La escala PNG debe estar entre 1 y 4.");
+    }
+
+    return valor;
+}
+
+function canvasComoPng(canvas) {
+    return new Promise((resolver, rechazar) => {
+        canvas.toBlob((blob) => {
+            if (blob) resolver(blob);
+            else {
+                rechazar(
+                    new Error("No se pudo generar la imagen PNG.")
+                );
+            }
+        }, MIME_PNG);
+    });
+}
+
 async function rasterizarSvg(
     contenido,
     ancho,
@@ -1037,15 +1086,7 @@ async function rasterizarSvg(
         fondo = "#ffffff"
     } = {}
 ) {
-    const escalaSegura = Number(escala);
-
-    if (
-        !Number.isFinite(escalaSegura) ||
-        escalaSegura < 1 ||
-        escalaSegura > 4
-    ) {
-        throw new RangeError("La escala PNG debe estar entre 1 y 4.");
-    }
+    const escalaSegura = escalaCanvasSegura(escala);
 
     validarEscalaCanvas(ancho, alto, escalaSegura);
 
@@ -1100,19 +1141,116 @@ async function rasterizarSvg(
             canvas.height
         );
 
-        return await new Promise((resolver, rechazar) => {
-            canvas.toBlob((blob) => {
-                if (blob) resolver(blob);
-                else {
-                    rechazar(
-                        new Error("No se pudo generar la imagen PNG.")
-                    );
-                }
-            }, MIME_PNG);
-        });
+        return await canvasComoPng(canvas);
     } finally {
         URL.revokeObjectURL(url);
     }
+}
+
+function dimensionesElementoHtml(elemento) {
+    const rectangulo = elemento.getBoundingClientRect?.();
+    const ancho = Math.max(
+        1,
+        Math.ceil(
+            elemento.scrollWidth ||
+            elemento.offsetWidth ||
+            rectangulo?.width ||
+            900
+        )
+    );
+    const alto = Math.max(
+        1,
+        Math.ceil(
+            elemento.scrollHeight ||
+            elemento.offsetHeight ||
+            rectangulo?.height ||
+            450
+        )
+    );
+
+    return { ancho, alto };
+}
+
+async function rasterizarElementoHtml(
+    elemento,
+    {
+        escala = 2,
+        fondo = "#ffffff"
+    } = {}
+) {
+    if (!elemento?.getBoundingClientRect) {
+        throw new TypeError(
+            "Se necesita un elemento HTML visible para generar el PNG."
+        );
+    }
+
+    const escalaSegura = escalaCanvasSegura(escala);
+    const { ancho, alto } = dimensionesElementoHtml(elemento);
+
+    validarEscalaCanvas(ancho, alto, escalaSegura);
+
+    try {
+        await elemento.ownerDocument?.fonts?.ready;
+    } catch {
+        // La captura puede continuar con la fuente de respaldo.
+    }
+
+    const capturar = await cargarCapturadorHtml();
+    let canvas;
+
+    try {
+        canvas = await capturar(elemento, {
+            backgroundColor: fondo,
+            scale: escalaSegura,
+            useCORS: true,
+            allowTaint: false,
+            foreignObjectRendering: false,
+            removeContainer: true,
+            logging: false,
+            imageTimeout: 15000,
+            imageSmoothing: true,
+            imageSmoothingQuality: "high",
+            windowWidth: Math.max(
+                document.documentElement.clientWidth,
+                ancho
+            ),
+            windowHeight: Math.max(
+                document.documentElement.clientHeight,
+                alto
+            ),
+            scrollX: globalThis.scrollX || 0,
+            scrollY: globalThis.scrollY || 0,
+            ignoreElements: (nodo) =>
+                nodo.matches?.(SELECTOR_CONTROLES) || false,
+            onclone: (_documento, copia) => {
+                copia.querySelectorAll(SELECTOR_CONTROLES)
+                    .forEach((control) => control.remove());
+                copia.querySelectorAll(".overflow-x-auto")
+                    .forEach((nodo) => {
+                        nodo.style.overflowX = "visible";
+                        nodo.style.maxWidth = "none";
+                    });
+                copia.style.backgroundColor = fondo;
+            }
+        });
+    } catch (error) {
+        throw new Error(
+            "No se pudo generar el PNG en este navegador." +
+            (
+                error?.message
+                    ? ` ${error.message}`
+                    : ""
+            )
+        );
+    }
+
+    validarEscalaCanvas(
+        canvas.width,
+        canvas.height,
+        1
+    );
+
+    return canvasComoPng(canvas);
 }
 
 function copiarEstadoControles(origen, copia) {
@@ -1137,25 +1275,6 @@ function copiarEstadoControles(origen, copia) {
     });
 }
 
-function aplicarEstilosHtmlEnLinea(elemento) {
-    if (typeof globalThis.getComputedStyle !== "function") return;
-
-    const nodos = [elemento, ...elemento.querySelectorAll("*")];
-
-    nodos.forEach((nodo) => {
-        const estilo = globalThis.getComputedStyle(nodo);
-        const propiedades = [];
-
-        for (let indice = 0; indice < estilo.length; indice += 1) {
-            const propiedad = estilo.item(indice);
-            const valor = estilo.getPropertyValue(propiedad);
-            if (valor) propiedades.push(`${propiedad}:${valor}`);
-        }
-
-        nodo.setAttribute("style", propiedades.join(";"));
-    });
-}
-
 function prepararClonCaptura(elemento) {
     const copia = elemento.cloneNode(true);
 
@@ -1172,92 +1291,24 @@ function prepararClonCaptura(elemento) {
     return copia;
 }
 
-function serializarElementoHtml(elemento, opciones = {}) {
-    const rectangulo = elemento.getBoundingClientRect();
-    const anchosInternos = [...elemento.querySelectorAll("*")]
-        .map((nodo) => nodo.scrollWidth || 0);
-    const anchoContenido = Math.max(
-        elemento.scrollWidth || 0,
-        ...anchosInternos
-    );
-    const anchoReferencia = Math.max(
-        1,
-        Math.round(
-            rectangulo.width ||
-            elemento.scrollWidth ||
-            900
-        ),
-        Math.min(12000, anchoContenido)
-    );
-    const copia = prepararClonCaptura(elemento);
-    const escenario = document.createElement("div");
-
-    escenario.dataset.controlExportacion = "true";
-    escenario.style.cssText = [
-        "position:fixed",
-        "left:-100000px",
-        "top:0",
-        `width:${anchoReferencia}px`,
-        "height:auto",
-        "overflow:visible",
-        "pointer-events:none",
-        "z-index:-1",
-        `background:${opciones.fondo || "#ffffff"}`
-    ].join(";");
-    escenario.appendChild(copia);
-    document.body.appendChild(escenario);
-
-    try {
-        copia.style.width = `${anchoReferencia}px`;
-        copia.style.maxWidth = "none";
-        aplicarEstilosHtmlEnLinea(copia);
-
-        const medida = copia.getBoundingClientRect();
-        const ancho = Math.max(
-            1,
-            Math.ceil(medida.width || copia.scrollWidth || anchoReferencia)
-        );
-        const alto = Math.max(
-            1,
-            Math.ceil(medida.height || copia.scrollHeight || 450)
-        );
-        const contenido = new XMLSerializer().serializeToString(copia);
-        const fondo = escaparXml(opciones.fondo || "#ffffff");
-
-        return {
-            ancho,
-            alto,
-            contenido: `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${ancho}" height="${alto}" viewBox="0 0 ${ancho} ${alto}">
-<rect width="100%" height="100%" fill="${fondo}"/>
-<foreignObject x="0" y="0" width="${ancho}" height="${alto}">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width:${ancho}px;min-height:${alto}px;background:${fondo};">${contenido}</div>
-</foreignObject>
-</svg>`
-        };
-    } finally {
-        escenario.remove();
-    }
-}
-
 export async function crearPngDeElemento(
     elemento,
     opciones = {}
 ) {
     const esSvg =
         String(elemento?.tagName || "").toLowerCase() === "svg";
-    const serializado = esSvg
-        ? serializarSvg(elemento)
-        : serializarElementoHtml(elemento, opciones);
+
+    if (!esSvg) {
+        return rasterizarElementoHtml(elemento, opciones);
+    }
+
+    const serializado = serializarSvg(elemento);
 
     return rasterizarSvg(
         serializado.contenido,
         serializado.ancho,
         serializado.alto,
-        {
-            escala: opciones.escala ?? 2,
-            fondo: opciones.fondo ?? "#ffffff"
-        }
+        opciones
     );
 }
 
@@ -1318,7 +1369,62 @@ export async function exportarGraficasPng(
     return descargarColeccion(archivos, nombre, "png");
 }
 
-export function imprimirResultados(
+function copiarEstilosParaImpresion(documentoDestino) {
+    const pendientes = [];
+
+    document.querySelectorAll(
+        'link[rel~="stylesheet"], style'
+    ).forEach((origen) => {
+        if (origen.tagName.toLowerCase() === "style") {
+            documentoDestino.head.appendChild(
+                documentoDestino.importNode(origen, true)
+            );
+            return;
+        }
+
+        const enlace = documentoDestino.createElement("link");
+        enlace.rel = "stylesheet";
+        enlace.href = origen.href;
+        if (origen.media) enlace.media = origen.media;
+        if (origen.crossOrigin) {
+            enlace.crossOrigin = origen.crossOrigin;
+        }
+
+        pendientes.push(
+            new Promise((resolver) => {
+                enlace.addEventListener(
+                    "load",
+                    resolver,
+                    { once: true }
+                );
+                enlace.addEventListener(
+                    "error",
+                    resolver,
+                    { once: true }
+                );
+            })
+        );
+        documentoDestino.head.appendChild(enlace);
+    });
+
+    return pendientes;
+}
+
+function esperar(milisegundos) {
+    return new Promise((resolver) => {
+        globalThis.setTimeout(resolver, milisegundos);
+    });
+}
+
+function esperarDosFotogramas(ventana) {
+    return new Promise((resolver) => {
+        ventana.requestAnimationFrame(() => {
+            ventana.requestAnimationFrame(resolver);
+        });
+    });
+}
+
+export async function imprimirResultados(
     elemento,
     {
         titulo = "Informe de resultados"
@@ -1339,6 +1445,8 @@ export function imprimirResultados(
 
     const copia = prepararClonCaptura(elemento);
     const documento = ventana.document;
+    const cargasEstilos =
+        copiarEstilosParaImpresion(documento);
     const estilos = documento.createElement("style");
     const encabezado = documento.createElement("header");
     const h1 = documento.createElement("h1");
@@ -1355,10 +1463,12 @@ export function imprimirResultados(
             background: #ffffff;
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.45;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-        header { margin-bottom: 24px; }
+        body > header { margin-bottom: 24px; }
         h1, h2, h3, h4 { color: #0f172a; }
-        article, section, table, svg { break-inside: avoid; }
+        article, figure, svg { break-inside: avoid; }
         article {
             margin: 0 0 18px;
             padding: 18px;
@@ -1375,8 +1485,18 @@ export function imprimirResultados(
             padding: 8px;
             text-align: left;
         }
-        svg { max-width: 100%; height: auto; }
-        [class*="hidden"] { display: none !important; }
+        thead { display: table-header-group; }
+        tr { break-inside: avoid; }
+        svg, img { max-width: 100%; height: auto; }
+        .hidden, [hidden],
+        [data-control-exportacion] {
+            display: none !important;
+        }
+        .overflow-hidden,
+        .overflow-x-auto {
+            overflow: visible !important;
+            max-height: none !important;
+        }
         @page { margin: 15mm; }
     `;
     h1.textContent = titulo;
@@ -1389,10 +1509,27 @@ export function imprimirResultados(
         documento.importNode(copia, true)
     );
 
-    globalThis.setTimeout(() => {
-        ventana.focus();
-        ventana.print();
-    }, 150);
+    await Promise.race([
+        Promise.allSettled(cargasEstilos),
+        esperar(4000)
+    ]);
+
+    try {
+        await documento.fonts?.ready;
+    } catch {
+        // La impresión puede continuar con la fuente de respaldo.
+    }
+
+    await esperarDosFotogramas(ventana);
+
+    if (ventana.closed) {
+        throw new Error(
+            "La ventana de impresión se cerró antes de preparar el informe."
+        );
+    }
+
+    ventana.focus();
+    ventana.print();
 }
 
 function crearBoton(texto, formato, variante = "primario") {

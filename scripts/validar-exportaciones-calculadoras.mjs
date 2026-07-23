@@ -206,7 +206,57 @@ assert.match(
     /data-grafico-exportable/,
     "La integración debe reconocer las tarjetas etiquetadas."
 );
+assert.match(
+    codigo,
+    /import\(["']html2canvas-pro["']\)/,
+    "La captura HTML debe cargar un rasterizador compatible con Safari."
+);
+assert.match(
+    codigo,
+    /foreignObjectRendering:\s*false/,
+    "PNG no debe depender de foreignObject para rasterizar HTML."
+);
+assert.doesNotMatch(
+    codigo,
+    /<foreignObject/,
+    "La exportación HTML no debe serializarse mediante foreignObject."
+);
+assert.doesNotMatch(
+    codigo,
+    /\[class\*=["']hidden["']\]/,
+    "La impresión no debe ocultar clases como overflow-hidden."
+);
+assert.match(
+    codigo,
+    /\.hidden,\s*\[hidden\]/,
+    "La impresión debe ocultar únicamente elementos realmente ocultos."
+);
+assert.match(
+    codigo,
+    /\.overflow-hidden,\s*\.overflow-x-auto/,
+    "La impresión debe liberar contenedores que podrían recortar páginas o gráficas."
+);
+assert.match(
+    codigo,
+    /link\[rel~=["']stylesheet["']\]/,
+    "El informe imprimible debe conservar las hojas de estilo."
+);
+
+const paquete = JSON.parse(
+    await import("node:fs/promises").then(({ readFile }) =>
+        readFile(
+            new URL("../package.json", import.meta.url),
+            "utf8"
+        )
+    )
+);
+
+assert.equal(
+    paquete.dependencies["html2canvas-pro"],
+    "^2.3.1",
+    "El capturador HTML compatible debe quedar fijado en dependencias."
+);
 
 console.log(
-    `✓ Exportaciones validadas: XLSX OpenXML real (${entradas.size} entradas), datos seguros, SVG y PNG 2×.`
+    `✓ Exportaciones validadas: XLSX OpenXML real (${entradas.size} entradas), PNG HTML compatible, SVG e impresión con estilos.`
 );
