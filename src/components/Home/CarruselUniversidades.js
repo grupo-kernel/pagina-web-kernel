@@ -1,8 +1,8 @@
-import isfodosu from "../../assets/isfodosu.png";
-import uasd from "../../assets/uasd.png";
-import unapec from "../../assets/apec.png";
+import isfodosu from "../../assets/isfodosu-campus.webp";
+import uasd from "../../assets/uasd-campus.webp";
+import unapec from "../../assets/unapec-campus.webp";
 
-const INTERVALO_ROTACION = 6000;
+const INTERVALO_ROTACION = 5000;
 
 const INSTITUCIONES = Object.freeze([
     Object.freeze({
@@ -12,7 +12,11 @@ const INSTITUCIONES = Object.freeze([
         descripcion:
             "Formación docente, educación matemática e investigación educativa.",
         imagen: isfodosu,
-        enlace: "https://www.isfodosu.edu.do/"
+        enlace: "https://www.isfodosu.edu.do/",
+        alt: "Fachada del Instituto Superior de Formación Docente Salomé Ureña",
+        ancho: 1260,
+        alto: 790,
+        posicion: "50% 46%"
     }),
     Object.freeze({
         id: "uasd",
@@ -21,7 +25,11 @@ const INSTITUCIONES = Object.freeze([
         descripcion:
             "Ciencias básicas, optimización, matemática aplicada y colaboración interdisciplinaria.",
         imagen: uasd,
-        enlace: "https://uasd.edu.do/"
+        enlace: "https://uasd.edu.do/",
+        alt: "Edificio y estatua en el campus de la Universidad Autónoma de Santo Domingo",
+        ancho: 1758,
+        alto: 1284,
+        posicion: "50% 42%"
     }),
     Object.freeze({
         id: "unapec",
@@ -30,9 +38,43 @@ const INSTITUCIONES = Object.freeze([
         descripcion:
             "Matemática aplicada, computación científica, docencia y proyectos de investigación.",
         imagen: unapec,
-        enlace: "https://unapec.edu.do/"
+        enlace: "https://unapec.edu.do/",
+        alt: "Entrada principal del campus de Universidad APEC",
+        ancho: 608,
+        alto: 342,
+        posicion: "50% 50%"
     })
 ]);
+
+const ICONOS = Object.freeze({
+    anterior: `
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"></path>
+        </svg>
+    `,
+    siguiente: `
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
+        </svg>
+    `,
+    pausa: `
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+            <path d="M7 5.75A1.75 1.75 0 0 1 8.75 4h.5A1.75 1.75 0 0 1 11 5.75v12.5A1.75 1.75 0 0 1 9.25 20h-.5A1.75 1.75 0 0 1 7 18.25V5.75Zm6 0A1.75 1.75 0 0 1 14.75 4h.5A1.75 1.75 0 0 1 17 5.75v12.5A1.75 1.75 0 0 1 15.25 20h-.5A1.75 1.75 0 0 1 13 18.25V5.75Z"></path>
+        </svg>
+    `,
+    reproducir: `
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+            <path d="M8.4 5.1a1.5 1.5 0 0 1 2.25-1.3l9 5.2a1.5 1.5 0 0 1 0 2.6l-9 5.2a1.5 1.5 0 0 1-2.25-1.3V5.1Z"></path>
+        </svg>
+    `,
+    externo: `
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 4h5v5"></path>
+            <path d="m10 14 10-10"></path>
+            <path d="M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5"></path>
+        </svg>
+    `
+});
 
 function escapar(texto) {
     return String(texto ?? "")
@@ -50,147 +92,273 @@ function crearPestana(institucion, indice) {
         <button
             type="button"
             role="tab"
-            id="pestana-${escapar(institucion.id)}"
-            aria-controls="panel-universidad-portada"
+            id="pestana-institucion-${escapar(institucion.id)}"
+            aria-controls="panel-institucion-portada"
             aria-selected="${activa}"
+            aria-label="Mostrar ${escapar(institucion.nombre)}"
             tabindex="${activa ? "0" : "-1"}"
             data-universidad-control
             data-indice="${indice}"
-            class="group min-w-0 rounded-2xl border px-2.5 py-2 text-left transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/40 md:px-3 ${activa ? "border-sky-300 bg-sky-400/15 shadow-lg ring-2 ring-sky-300/30" : "border-white/10 bg-white/5 hover:border-white/30 hover:bg-white/10"}"
+            class="flex min-h-11 min-w-0 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-center text-xs font-black tracking-wide text-slate-600 transition duration-300 hover:border-[#0f5b5d]/40 hover:text-[#0f5b5d] focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100 aria-selected:border-[#0f5b5d] aria-selected:bg-[#0f5b5d] aria-selected:text-white aria-selected:shadow-md sm:text-sm"
         >
-            <span class="flex items-center gap-2.5">
-                <span class="flex h-10 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-sm md:h-12 md:w-14">
-                    <img src="${institucion.imagen}" alt="" class="h-full w-full object-contain" loading="eager" />
-                </span>
-                <span class="min-w-0">
-                    <span class="block truncate text-xs font-black tracking-wide text-white md:text-sm">${escapar(institucion.sigla)}</span>
-                    <span class="mt-0.5 hidden truncate text-[11px] text-slate-300 md:block">Ver institución</span>
-                </span>
-            </span>
+            ${escapar(institucion.sigla)}
         </button>
     `;
 }
 
 export function CrearCarruselUniversidades() {
     const primera = INSTITUCIONES[0];
-    const aside = document.createElement("aside");
+    const carrusel = document.createElement("div");
 
-    aside.className =
-        "flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-4 shadow-2xl backdrop-blur-md md:p-5";
-    aside.setAttribute("aria-label", "Instituciones principales vinculadas al Grupo El Kernel");
+    carrusel.className =
+        "overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_22px_60px_-36px_rgba(7,24,32,0.42)]";
+    carrusel.setAttribute("role", "region");
+    carrusel.setAttribute("aria-label", "Instituciones vinculadas al Grupo El Kernel");
+    carrusel.setAttribute("aria-roledescription", "carrusel");
 
-    aside.innerHTML = `
-        <div class="mb-4 flex items-start justify-between gap-4">
-            <div>
-                <p class="text-xs font-black uppercase tracking-[0.20em] text-sky-300">Instituciones principales</p>
-                <h2 class="mt-2 text-2xl font-black leading-tight text-white md:text-3xl">Vinculación académica</h2>
-                <p class="mt-2 text-sm leading-relaxed text-slate-300">Seleccione una pestaña o permita que las tres instituciones roten automáticamente.</p>
+    carrusel.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(19rem,0.88fr)]">
+            <figure
+                id="panel-institucion-portada"
+                role="tabpanel"
+                tabindex="0"
+                aria-labelledby="pestana-institucion-${primera.id}"
+                data-universidad-escenario
+                class="relative aspect-[3/2] min-h-[18rem] overflow-hidden bg-slate-900 outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#efc86f]/70 sm:min-h-[22rem] lg:aspect-auto lg:min-h-[31rem]"
+            >
+                <img
+                    data-universidad-imagen-capa
+                    data-institucion-id="${primera.id}"
+                    src="${primera.imagen}"
+                    alt="${escapar(primera.alt)}"
+                    width="${primera.ancho}"
+                    height="${primera.alto}"
+                    class="absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-500 motion-reduce:transition-none"
+                    style="object-position: ${primera.posicion}"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                />
+                <img
+                    data-universidad-imagen-capa
+                    alt=""
+                    class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                />
+
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071820]/35 via-transparent to-[#071820]/20" aria-hidden="true"></div>
+
+                <div class="absolute inset-x-3 top-3 z-10 flex items-start justify-between gap-2 sm:inset-x-4 sm:top-4">
+                    <span class="rounded-full border border-white/25 bg-[#071820]/75 px-3 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-white shadow-lg backdrop-blur-md sm:text-xs">
+                        <span class="sm:hidden">Campus</span>
+                        <span class="hidden sm:inline">Fotografía institucional</span>
+                    </span>
+
+                    <div class="flex items-center gap-2">
+                        <span data-universidad-contador class="flex h-11 min-w-14 items-center justify-center rounded-full border border-white/25 bg-[#071820]/75 px-3 text-xs font-black text-white shadow-lg backdrop-blur-md">
+                            01 / 03
+                        </span>
+                        <button
+                            type="button"
+                            data-action="universidad-anterior"
+                            aria-label="Mostrar la institución anterior"
+                            class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-[#071820]/75 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-[#071820] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#efc86f]/70"
+                        >
+                            ${ICONOS.anterior}
+                        </button>
+                        <button
+                            type="button"
+                            data-action="universidad-siguiente"
+                            aria-label="Mostrar la institución siguiente"
+                            class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-[#071820]/75 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-[#071820] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#efc86f]/70"
+                        >
+                            ${ICONOS.siguiente}
+                        </button>
+                    </div>
+                </div>
+            </figure>
+
+            <div class="flex min-h-full flex-col p-5 sm:p-6 lg:p-8">
+                <div class="flex-1">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Institución vinculada</p>
+                    <p data-universidad-sigla class="mt-5 text-4xl font-black leading-none tracking-tight text-[#0f5b5d] sm:text-5xl">
+                        ${escapar(primera.sigla)}
+                    </p>
+                    <h3 data-universidad-nombre class="mt-3 text-xl font-black leading-tight text-slate-950 sm:text-2xl">
+                        ${escapar(primera.nombre)}
+                    </h3>
+                    <p data-universidad-descripcion class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+                        ${escapar(primera.descripcion)}
+                    </p>
+                    <a
+                        data-universidad-enlace
+                        href="${primera.enlace}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Visitar el sitio institucional de ${escapar(primera.sigla)}"
+                        class="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#071820] px-4 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#0f5b5d] focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100"
+                    >
+                        Visitar institución
+                        ${ICONOS.externo}
+                    </a>
+                </div>
+
+                <div class="mt-8 border-t border-slate-200 pt-5">
+                    <div role="tablist" aria-label="Seleccionar institución" class="grid grid-cols-3 gap-2">
+                        ${INSTITUCIONES.map(crearPestana).join("")}
+                    </div>
+
+                    <div class="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <button
+                            type="button"
+                            data-action="pausar-rotacion"
+                            aria-pressed="false"
+                            class="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-black text-slate-700 transition hover:border-[#0f5b5d]/30 hover:bg-emerald-50 hover:text-[#0f5b5d] focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100 sm:self-auto"
+                        >
+                            <span data-universidad-icono-pausa>${ICONOS.pausa}</span>
+                            <span data-universidad-icono-reproducir class="hidden">${ICONOS.reproducir}</span>
+                            <span data-universidad-texto-rotacion>Pausar rotación</span>
+                        </button>
+
+                        <div class="min-w-0 flex-1 sm:max-w-32" aria-hidden="true">
+                            <div class="h-1.5 overflow-hidden rounded-full bg-slate-200">
+                                <div data-universidad-progreso class="h-full w-1/3 rounded-full bg-[#d5a54a] transition-[width] duration-500 motion-reduce:transition-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span data-universidad-contador class="shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black text-sky-100">01 / 03</span>
         </div>
 
-        <div role="tablist" aria-label="Universidades vinculadas" class="grid grid-cols-3 gap-2">
-            ${INSTITUCIONES.map(crearPestana).join("")}
-        </div>
-
-        <article
-            id="panel-universidad-portada"
-            role="tabpanel"
-            tabindex="0"
-            aria-labelledby="pestana-${primera.id}"
-            aria-live="polite"
-            data-universidad-escenario
-            class="relative mt-4 min-h-[330px] flex-1 overflow-hidden rounded-3xl border border-white/15 bg-slate-900 shadow-xl md:min-h-[390px]"
-        >
-            <img
-                data-universidad-imagen
-                src="${primera.imagen}"
-                alt="Imagen institucional de ${escapar(primera.sigla)}"
-                class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-                loading="eager"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/5"></div>
-
-            <div class="absolute right-3 top-3 z-10 flex gap-2 md:right-4 md:top-4">
-                <button type="button" data-action="universidad-anterior" aria-label="Mostrar la institución anterior" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
-                    <i aria-hidden="true" class="bx bx-chevron-left text-2xl"></i>
-                </button>
-                <button type="button" data-action="universidad-siguiente" aria-label="Mostrar la institución siguiente" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-slate-950/65 text-white shadow-lg backdrop-blur-md transition hover:bg-white hover:text-slate-950 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
-                    <i aria-hidden="true" class="bx bx-chevron-right text-2xl"></i>
-                </button>
-            </div>
-
-            <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
-                <p data-universidad-sigla class="text-4xl font-black leading-none text-white md:text-5xl">${escapar(primera.sigla)}</p>
-                <p data-universidad-nombre class="mt-2 text-base font-bold leading-tight text-white md:text-xl">${escapar(primera.nombre)}</p>
-                <p data-universidad-descripcion class="mt-3 max-w-xl text-sm leading-relaxed text-slate-200">${escapar(primera.descripcion)}</p>
-                <a data-universidad-enlace href="${primera.enlace}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/50">
-                    Visitar institución
-                    <i aria-hidden="true" class="bx bx-link-external text-lg"></i>
-                </a>
-            </div>
-        </article>
-
-        <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
-            <div data-universidad-progreso class="h-full w-1/3 rounded-full bg-sky-400 transition-transform duration-500"></div>
-        </div>
-        <p data-universidad-estado class="sr-only" aria-live="polite"></p>
+        <p data-universidad-estado class="sr-only" aria-live="polite" aria-atomic="true"></p>
     `;
 
-    const imagen = aside.querySelector("[data-universidad-imagen]");
-    const sigla = aside.querySelector("[data-universidad-sigla]");
-    const nombre = aside.querySelector("[data-universidad-nombre]");
-    const descripcion = aside.querySelector("[data-universidad-descripcion]");
-    const enlace = aside.querySelector("[data-universidad-enlace]");
-    const contador = aside.querySelector("[data-universidad-contador]");
-    const estado = aside.querySelector("[data-universidad-estado]");
-    const escenario = aside.querySelector("[data-universidad-escenario]");
-    const progreso = aside.querySelector("[data-universidad-progreso]");
-    const controles = [...aside.querySelectorAll("[data-universidad-control]")];
-    const anterior = aside.querySelector("[data-action='universidad-anterior']");
-    const siguiente = aside.querySelector("[data-action='universidad-siguiente']");
+    const capasImagen = [...carrusel.querySelectorAll("[data-universidad-imagen-capa]")];
+    const sigla = carrusel.querySelector("[data-universidad-sigla]");
+    const nombre = carrusel.querySelector("[data-universidad-nombre]");
+    const descripcion = carrusel.querySelector("[data-universidad-descripcion]");
+    const enlace = carrusel.querySelector("[data-universidad-enlace]");
+    const contador = carrusel.querySelector("[data-universidad-contador]");
+    const estado = carrusel.querySelector("[data-universidad-estado]");
+    const escenario = carrusel.querySelector("[data-universidad-escenario]");
+    const progreso = carrusel.querySelector("[data-universidad-progreso]");
+    const controles = [...carrusel.querySelectorAll("[data-universidad-control]")];
+    const anterior = carrusel.querySelector("[data-action='universidad-anterior']");
+    const siguiente = carrusel.querySelector("[data-action='universidad-siguiente']");
+    const controlRotacion = carrusel.querySelector("[data-action='pausar-rotacion']");
+    const iconoPausa = carrusel.querySelector("[data-universidad-icono-pausa]");
+    const iconoReproducir = carrusel.querySelector("[data-universidad-icono-reproducir]");
+    const textoRotacion = carrusel.querySelector("[data-universidad-texto-rotacion]");
     const preferenciaMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
     const controladorEventos = new AbortController();
     const opcionesEvento = { signal: controladorEventos.signal };
 
     let indice = 0;
+    let capaActiva = 0;
+    let solicitudImagen = 0;
     let temporizador = null;
+    let temporizadorPrecarga = null;
     let inicioToque = null;
     let estuvoConectado = false;
+    let punteroDentro = false;
+    let focoDentro = false;
+    let tactoActivo = false;
+    let preferenciaExplicita = false;
+    let rotacionPermitida = !preferenciaMovimiento.matches;
+    let visibleEnViewport = typeof window.IntersectionObserver !== "function";
 
     function normalizar(valor) {
         return (valor % INSTITUCIONES.length + INSTITUCIONES.length) % INSTITUCIONES.length;
     }
 
+    function mostrarImagen(institucion) {
+        const actual = capasImagen[capaActiva];
+        if (actual?.dataset.institucionId === institucion.id) return;
+
+        const siguienteCapa = capaActiva === 0 ? 1 : 0;
+        const destino = capasImagen[siguienteCapa];
+        const token = ++solicitudImagen;
+        let revelada = false;
+
+        function revelar() {
+            if (revelada || token !== solicitudImagen || !destino.naturalWidth) return;
+            revelada = true;
+
+            actual.alt = "";
+            destino.alt = institucion.alt;
+            destino.classList.remove("opacity-0");
+            destino.classList.add("opacity-100");
+            actual.classList.remove("opacity-100");
+            actual.classList.add("opacity-0");
+            capaActiva = siguienteCapa;
+        }
+
+        destino.onload = revelar;
+        destino.onerror = () => {
+            if (token === solicitudImagen) {
+                destino.removeAttribute("src");
+            }
+        };
+        destino.alt = "";
+        destino.width = institucion.ancho;
+        destino.height = institucion.alto;
+        destino.style.objectPosition = institucion.posicion;
+        destino.dataset.institucionId = institucion.id;
+        destino.src = institucion.imagen;
+
+        if (destino.complete && destino.naturalWidth) {
+            window.requestAnimationFrame(revelar);
+        }
+    }
+
+    function programarPrecarga() {
+        if (temporizadorPrecarga !== null) {
+            window.clearTimeout(temporizadorPrecarga);
+        }
+
+        if (!visibleEnViewport) return;
+
+        temporizadorPrecarga = window.setTimeout(() => {
+            const proxima = INSTITUCIONES[normalizar(indice + 1)];
+            const imagen = new Image();
+            imagen.decoding = "async";
+            imagen.src = proxima.imagen;
+            temporizadorPrecarga = null;
+        }, 700);
+    }
+
     function renderizar(anunciar = false) {
         const institucion = INSTITUCIONES[indice];
 
-        imagen.src = institucion.imagen;
-        imagen.alt = `Imagen institucional de ${institucion.sigla}`;
+        mostrarImagen(institucion);
         sigla.textContent = institucion.sigla;
         nombre.textContent = institucion.nombre;
         descripcion.textContent = institucion.descripcion;
         enlace.href = institucion.enlace;
+        enlace.setAttribute(
+            "aria-label",
+            `Visitar el sitio institucional de ${institucion.sigla}`
+        );
         contador.textContent = `${String(indice + 1).padStart(2, "0")} / ${String(INSTITUCIONES.length).padStart(2, "0")}`;
-        escenario.setAttribute("aria-labelledby", `pestana-${institucion.id}`);
-        progreso.style.transform = `translateX(${indice * 100}%)`;
+        escenario.setAttribute(
+            "aria-labelledby",
+            `pestana-institucion-${institucion.id}`
+        );
+        progreso.style.width = `${((indice + 1) / INSTITUCIONES.length) * 100}%`;
 
         controles.forEach((control, posicion) => {
             const activo = posicion === indice;
             control.setAttribute("aria-selected", String(activo));
             control.tabIndex = activo ? 0 : -1;
-            control.classList.toggle("border-sky-300", activo);
-            control.classList.toggle("bg-sky-400/15", activo);
-            control.classList.toggle("shadow-lg", activo);
-            control.classList.toggle("ring-2", activo);
-            control.classList.toggle("ring-sky-300/30", activo);
-            control.classList.toggle("border-white/10", !activo);
-            control.classList.toggle("bg-white/5", !activo);
         });
 
         if (anunciar) {
             estado.textContent = `${institucion.sigla}: ${institucion.nombre}`;
         }
+
+        programarPrecarga();
     }
 
     function detenerRotacion() {
@@ -200,15 +368,39 @@ export function CrearCarruselUniversidades() {
         }
     }
 
+    function puedeRotar() {
+        return (
+            rotacionPermitida &&
+            visibleEnViewport &&
+            !document.hidden &&
+            !punteroDentro &&
+            !focoDentro &&
+            !tactoActivo &&
+            carrusel.isConnected
+        );
+    }
+
     function iniciarRotacion() {
         detenerRotacion();
-        if (preferenciaMovimiento.matches || document.hidden) return;
+        if (!puedeRotar()) return;
 
         temporizador = window.setInterval(() => {
-            if (!aside.isConnected) return;
             indice = normalizar(indice + 1);
             renderizar(false);
         }, INTERVALO_ROTACION);
+    }
+
+    function actualizarControlRotacion() {
+        const pausada = !rotacionPermitida;
+
+        controlRotacion.setAttribute("aria-pressed", String(pausada));
+        controlRotacion.setAttribute(
+            "aria-label",
+            pausada ? "Reanudar la rotación automática" : "Pausar la rotación automática"
+        );
+        iconoPausa.classList.toggle("hidden", pausada);
+        iconoReproducir.classList.toggle("hidden", !pausada);
+        textoRotacion.textContent = pausada ? "Reanudar rotación" : "Pausar rotación";
     }
 
     function seleccionar(nuevoIndice, anunciar = true, enfocar = false) {
@@ -220,6 +412,23 @@ export function CrearCarruselUniversidades() {
 
     anterior?.addEventListener("click", () => seleccionar(indice - 1), opcionesEvento);
     siguiente?.addEventListener("click", () => seleccionar(indice + 1), opcionesEvento);
+    controlRotacion?.addEventListener(
+        "click",
+        () => {
+            preferenciaExplicita = true;
+            rotacionPermitida = !rotacionPermitida;
+            actualizarControlRotacion();
+
+            if (rotacionPermitida) {
+                estado.textContent = "Rotación automática reanudada.";
+                iniciarRotacion();
+            } else {
+                estado.textContent = "Rotación automática pausada.";
+                detenerRotacion();
+            }
+        },
+        opcionesEvento
+    );
 
     controles.forEach((control) => {
         control.addEventListener(
@@ -248,13 +457,35 @@ export function CrearCarruselUniversidades() {
         );
     });
 
-    aside.addEventListener("mouseenter", detenerRotacion, opcionesEvento);
-    aside.addEventListener("mouseleave", iniciarRotacion, opcionesEvento);
-    aside.addEventListener("focusin", detenerRotacion, opcionesEvento);
-    aside.addEventListener(
+    carrusel.addEventListener(
+        "mouseenter",
+        () => {
+            punteroDentro = true;
+            detenerRotacion();
+        },
+        opcionesEvento
+    );
+    carrusel.addEventListener(
+        "mouseleave",
+        () => {
+            punteroDentro = false;
+            iniciarRotacion();
+        },
+        opcionesEvento
+    );
+    carrusel.addEventListener(
+        "focusin",
+        () => {
+            focoDentro = true;
+            detenerRotacion();
+        },
+        opcionesEvento
+    );
+    carrusel.addEventListener(
         "focusout",
         (event) => {
-            if (!aside.contains(event.relatedTarget)) iniciarRotacion();
+            focoDentro = carrusel.contains(event.relatedTarget);
+            if (!focoDentro) iniciarRotacion();
         },
         opcionesEvento
     );
@@ -263,6 +494,7 @@ export function CrearCarruselUniversidades() {
         "touchstart",
         (event) => {
             inicioToque = event.changedTouches[0]?.clientX ?? null;
+            tactoActivo = true;
             detenerRotacion();
         },
         { ...opcionesEvento, passive: true }
@@ -271,6 +503,7 @@ export function CrearCarruselUniversidades() {
         "touchend",
         (event) => {
             const finalToque = event.changedTouches[0]?.clientX ?? null;
+            tactoActivo = false;
 
             if (inicioToque !== null && finalToque !== null) {
                 const desplazamiento = finalToque - inicioToque;
@@ -285,6 +518,15 @@ export function CrearCarruselUniversidades() {
         },
         { ...opcionesEvento, passive: true }
     );
+    escenario?.addEventListener(
+        "touchcancel",
+        () => {
+            inicioToque = null;
+            tactoActivo = false;
+            iniciarRotacion();
+        },
+        opcionesEvento
+    );
 
     document.addEventListener(
         "visibilitychange",
@@ -297,21 +539,54 @@ export function CrearCarruselUniversidades() {
     preferenciaMovimiento.addEventListener(
         "change",
         () => {
-            if (preferenciaMovimiento.matches) detenerRotacion();
-            else iniciarRotacion();
+            if (!preferenciaExplicita) {
+                rotacionPermitida = !preferenciaMovimiento.matches;
+                actualizarControlRotacion();
+            }
+
+            if (rotacionPermitida) iniciarRotacion();
+            else detenerRotacion();
         },
         opcionesEvento
     );
 
+    const observadorViewport =
+        typeof window.IntersectionObserver === "function"
+            ? new IntersectionObserver(
+                (entradas) => {
+                    visibleEnViewport = entradas.some(
+                        (entrada) => entrada.isIntersecting && entrada.intersectionRatio >= 0.15
+                    );
+
+                    if (visibleEnViewport) {
+                        programarPrecarga();
+                        iniciarRotacion();
+                    } else {
+                        detenerRotacion();
+                    }
+                },
+                { threshold: [0, 0.15, 0.5] }
+            )
+            : null;
+
+    observadorViewport?.observe(carrusel);
+
     const observadorConexion = new MutationObserver(() => {
-        if (aside.isConnected) {
-            estuvoConectado = true;
+        if (carrusel.isConnected) {
+            if (!estuvoConectado) {
+                estuvoConectado = true;
+                iniciarRotacion();
+            }
             return;
         }
 
         if (estuvoConectado) {
             detenerRotacion();
+            if (temporizadorPrecarga !== null) {
+                window.clearTimeout(temporizadorPrecarga);
+            }
             controladorEventos.abort();
+            observadorViewport?.disconnect();
             observadorConexion.disconnect();
         }
     });
@@ -322,7 +597,7 @@ export function CrearCarruselUniversidades() {
     });
 
     renderizar(false);
-    iniciarRotacion();
+    actualizarControlRotacion();
 
-    return aside;
+    return carrusel;
 }

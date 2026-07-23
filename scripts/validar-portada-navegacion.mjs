@@ -23,6 +23,10 @@ const franjaInstitucional = await readFile(
     new URL("../src/components/Home/FranjaInstitucional.js", import.meta.url),
     "utf8"
 );
+const carruselUniversidades = await readFile(
+    new URL("../src/components/Home/CarruselUniversidades.js", import.meta.url),
+    "utf8"
+);
 const resumenServicios = await readFile(
     new URL("../src/components/Home/ResumenServicios.js", import.meta.url),
     "utf8"
@@ -115,15 +119,28 @@ assert.doesNotMatch(home, /CrearCatalogoServicios/);
 assert.match(layoutPrincipal, /layout === "full"/);
 assert.match(layoutPrincipal, /main\.classList\.add\("max-w-none", "m-0", "p-0", "mt-0", "pt-0"\)/);
 
-assert.match(franjaInstitucional, /isfodosu\.png/);
-assert.match(franjaInstitucional, /uasd\.png/);
-assert.match(franjaInstitucional, /apec\.png/);
-assert.match(franjaInstitucional, /ISFODOSU/);
-assert.match(franjaInstitucional, /UASD/);
-assert.match(franjaInstitucional, /UNAPEC/);
+assert.match(franjaInstitucional, /CrearCarruselUniversidades/);
+assert.match(franjaInstitucional, /Instituciones presentes en nuestra trayectoria científica/);
 assert.match(franjaInstitucional, /Confidencialidad/);
 assert.match(franjaInstitucional, /Reproducibilidad/);
 assert.match(franjaInstitucional, /Transferencia/);
+
+assert.match(carruselUniversidades, /isfodosu-campus\.webp/);
+assert.match(carruselUniversidades, /uasd-campus\.webp/);
+assert.match(carruselUniversidades, /unapec-campus\.webp/);
+assert.match(carruselUniversidades, /ISFODOSU/);
+assert.match(carruselUniversidades, /UASD/);
+assert.match(carruselUniversidades, /UNAPEC/);
+assert.match(carruselUniversidades, /INTERVALO_ROTACION\s*=\s*5000/);
+assert.match(carruselUniversidades, /role="tab"/);
+assert.match(carruselUniversidades, /role="tabpanel"/);
+assert.match(carruselUniversidades, /data-action="pausar-rotacion"/);
+assert.match(carruselUniversidades, /prefers-reduced-motion/);
+assert.match(carruselUniversidades, /IntersectionObserver/);
+assert.match(carruselUniversidades, /touchstart/);
+assert.match(carruselUniversidades, /touchend/);
+assert.match(carruselUniversidades, /target="_blank"/);
+assert.match(carruselUniversidades, /rel="noopener noreferrer"/);
 
 assert.match(resumenServicios, /Ver los 20 servicios/);
 assert.match(resumenServicios, /Solicitar diagnóstico/);
@@ -191,5 +208,5 @@ assert.doesNotMatch(pie, /github\.com\/grupo-kernel/);
 assert.doesNotMatch(pie, /ISFOOSU/);
 
 console.log(
-    "✓ Portada empresarial, servicios, franja institucional, navegación adaptativa, capas del menú móvil, diagnóstico, laboratorio y pie institucional validados."
+    "✓ Portada empresarial, carrusel y franja institucional, servicios, navegación adaptativa, capas del menú móvil, diagnóstico, laboratorio y pie institucional validados."
 );
