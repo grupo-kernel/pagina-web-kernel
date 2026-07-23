@@ -1,4 +1,5 @@
 import { renderMMehbPoster } from "./MMehbPoster.js";
+import { renderMescytPoster } from "./MescytPoster.js";
 
 function safeText(value) {
     return String(value ?? "")
@@ -7,6 +8,12 @@ function safeText(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+}
+
+function renderVisualEspecial(visualType) {
+    if (visualType === "mmehb-2026") return renderMMehbPoster({ compacto: true });
+    if (visualType === "mescyt-cic-2026") return renderMescytPoster({ compacto: true });
+    return null;
 }
 
 export function newsCard({
@@ -21,25 +28,23 @@ export function newsCard({
     visualType = "image"
 }) {
     const imgClass = imageFit === "cover" ? "object-cover" : "object-contain";
-    const esPosterMMehb = visualType === "mmehb-2026";
-    const altoVisual = esPosterMMehb ? "h-[430px] md:h-[500px]" : "h-64 md:h-72 2xl:h-96";
+    const visualEspecial = renderVisualEspecial(visualType);
+    const altoVisual = visualEspecial ? "h-[430px] md:h-[500px]" : "h-64 md:h-72 2xl:h-96";
 
-    const visual = esPosterMMehb
-        ? renderMMehbPoster({ compacto: true })
-        : image
-            ? `
-                <img
-                    src="${safeText(image)}"
-                    alt="${safeText(imageAlt || title)}"
-                    class="h-full w-full ${imgClass} rounded-xl"
-                    loading="lazy"
-                />
-              `
-            : `
-                <div class="flex h-full w-full items-center justify-center font-bold text-slate-400">
-                    Imagen no disponible
-                </div>
-              `;
+    const visual = visualEspecial || (image
+        ? `
+            <img
+                src="${safeText(image)}"
+                alt="${safeText(imageAlt || title)}"
+                class="h-full w-full ${imgClass} rounded-xl"
+                loading="lazy"
+            />
+          `
+        : `
+            <div class="flex h-full w-full items-center justify-center font-bold text-slate-400">
+                Imagen no disponible
+            </div>
+          `);
 
     return `
         <article
