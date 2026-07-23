@@ -20,14 +20,22 @@ function normalizar(texto) {
         .trim();
 }
 
-function lista(items, clase = "text-slate-700") {
+let cerrarModalBiblioteca = null;
+
+function lista(items, clase = "text-slate-700", opciones = {}) {
+    const {
+        vacio = "No se especifican elementos adicionales.",
+        simbolo = "✓",
+        claseIcono = "bg-sky-100 text-sky-700"
+    } = opciones;
+
     if (!Array.isArray(items) || !items.length) {
-        return `<p class="text-slate-500">No se especifican elementos adicionales.</p>`;
+        return `<p class="text-slate-500">${esc(vacio)}</p>`;
     }
 
     return `<ul class="space-y-3 ${clase}">${items.map((item) => `
         <li class="flex items-start gap-3 leading-relaxed">
-            <span class="mt-1 shrink-0 w-5 h-5 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-black">✓</span>
+            <span class="mt-1 shrink-0 w-5 h-5 rounded-full ${claseIcono} flex items-center justify-center text-xs font-black" aria-hidden="true">${esc(simbolo)}</span>
             <span>${esc(item)}</span>
         </li>
     `).join("")}</ul>`;
@@ -44,8 +52,8 @@ function tarjetaFicha(ficha) {
             <h3 class="text-2xl font-black text-slate-900 mb-3">${esc(ficha.nombre)}</h3>
             <p class="text-slate-600 leading-relaxed text-sm line-clamp-4">${esc(ficha.definicion)}</p>
             <div class="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
-                <button type="button" data-action="consultar-ficha" data-ficha="${esc(ficha.id)}" class="flex-1 rounded-xl bg-sky-700 px-5 py-3 text-white font-black hover:bg-sky-800 transition-colors">Consultar ficha</button>
-                ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-sky-300 px-5 py-3 text-sky-800 font-black hover:bg-sky-50 transition-colors">Calcular</button>` : ""}
+                <button type="button" data-action="consultar-ficha" data-ficha="${esc(ficha.id)}" class="flex-1 rounded-xl bg-sky-700 px-5 py-3 text-white font-black hover:bg-sky-800 transition-colors" aria-label="Consultar la ficha metodológica de ${esc(ficha.nombre)}">Consultar ficha</button>
+                ${ficha.ruta ? `<button type="button" data-action="abrir-calculadora" data-ruta="${esc(ficha.ruta)}" class="rounded-xl border border-sky-300 px-5 py-3 text-sky-800 font-black hover:bg-sky-50 transition-colors" aria-label="Abrir la calculadora de ${esc(ficha.nombre)}">Calcular</button>` : ""}
             </div>
         </article>
     `;
@@ -64,7 +72,7 @@ function plantillaReporte(ficha) {
     return [
         ficha.reporteAPA || "No existe una plantilla específica de reporte.",
         "",
-        `Tamaño del efecto recomendado: ${ficha.efecto || "consulte la ficha"}`,
+        `${ficha.etiquetaEfecto || "Tamaño del efecto"}: ${ficha.efecto || "consulte la ficha"}`,
         "",
         "Incluya el diseño, tamaño muestral, supuestos revisados, estimación puntual, intervalo de confianza, valor p cuando corresponda y relevancia práctica."
     ].join("\n");
@@ -72,7 +80,7 @@ function plantillaReporte(ficha) {
 
 function detalleFicha(ficha) {
     return `
-        <div class="fixed inset-0 z-[110] bg-slate-950/70 backdrop-blur-sm p-4 md:p-8 overflow-y-auto" data-modal-biblioteca="true" role="dialog" aria-modal="true" aria-labelledby="titulo-ficha-biblioteca">
+        <div class="fixed inset-0 z-[500] bg-slate-950/70 backdrop-blur-sm p-4 md:p-8 overflow-y-auto" data-modal-biblioteca="true" role="dialog" aria-modal="true" aria-labelledby="titulo-ficha-biblioteca" aria-describedby="descripcion-ficha-biblioteca">
             <article class="w-full max-w-6xl mx-auto rounded-3xl bg-slate-50 border border-slate-200 shadow-2xl overflow-hidden">
                 <header class="relative overflow-hidden bg-slate-950 text-white px-6 py-8 md:px-10">
                     <div class="absolute -top-20 -right-16 w-48 h-48 rounded-full bg-sky-500/20"></div>
@@ -80,9 +88,9 @@ function detalleFicha(ficha) {
                         <div>
                             <p class="uppercase tracking-widest text-sky-300 text-xs font-black mb-2">${esc(ficha.categoria)} · ${esc(ficha.tipo)}</p>
                             <h2 id="titulo-ficha-biblioteca" class="text-3xl md:text-5xl font-black leading-tight">${esc(ficha.nombre)}</h2>
-                            <p class="text-slate-200 leading-relaxed mt-4 max-w-4xl">${esc(ficha.definicion)}</p>
+                            <p id="descripcion-ficha-biblioteca" class="text-slate-200 leading-relaxed mt-4 max-w-4xl">${esc(ficha.definicion)}</p>
                         </div>
-                        <button type="button" data-action="cerrar-ficha" class="shrink-0 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xl font-black hover:bg-white/20" aria-label="Cerrar ficha">×</button>
+                        <button type="button" data-action="cerrar-ficha" class="shrink-0 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xl font-black hover:bg-white/20" aria-label="Cerrar la ficha de ${esc(ficha.nombre)}">×</button>
                     </div>
                     <div class="relative z-10 flex flex-wrap gap-3 mt-7">
                         <button type="button" data-action="copiar-reporte-ficha" class="rounded-xl bg-white text-slate-950 px-5 py-3 font-black">Copiar modelo de reporte</button>
@@ -90,7 +98,16 @@ function detalleFicha(ficha) {
                     </div>
                 </header>
                 <div class="p-5 md:p-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    ${ficha.objetivo ? bloque("Objetivo", `<p class="text-slate-700 leading-relaxed">${esc(ficha.objetivo)}</p>`) : ""}
                     ${bloque("Cuándo utilizarla", lista(ficha.cuandoUsar))}
+                    ${ficha.cuandoNoUsar?.length ? bloque("Cuándo no utilizarla", lista(
+                        ficha.cuandoNoUsar,
+                        "text-amber-950",
+                        {
+                            simbolo: "!",
+                            claseIcono: "bg-amber-100 text-amber-800"
+                        }
+                    ), "border-amber-200") : ""}
                     ${bloque("Supuestos", lista(ficha.supuestos))}
                     ${bloque("Hipótesis", `
                         <div class="space-y-4">
@@ -98,11 +115,22 @@ function detalleFicha(ficha) {
                             <div class="rounded-2xl bg-sky-50 border border-sky-200 p-5"><strong class="block text-sky-950 mb-2">H₁</strong><p class="text-sky-900 leading-relaxed">${esc(ficha.hipotesis?.h1 || "Consulte el objetivo específico del análisis.")}</p></div>
                         </div>
                     `)}
-                    ${bloque("Estadístico e interpretación", `<p class="text-slate-700 leading-relaxed">${esc(ficha.estadistico || "No especificado.")}</p><div class="mt-5 rounded-2xl border border-violet-200 bg-violet-50 p-5"><strong class="block text-violet-950 mb-2">Tamaño del efecto</strong><p class="text-violet-900 leading-relaxed">${esc(ficha.efecto || "No especificado.")}</p></div>`)}
+                    ${bloque("Estadístico e interpretación", `<p class="text-slate-700 leading-relaxed">${esc(ficha.estadistico || "No especificado.")}</p><div class="mt-5 rounded-2xl border border-violet-200 bg-violet-50 p-5"><strong class="block text-violet-950 mb-2">${esc(ficha.etiquetaEfecto || "Tamaño del efecto")}</strong><p class="text-violet-900 leading-relaxed">${esc(ficha.efecto || "No especificado.")}</p></div>`)}
                     ${bloque("Modelo de reporte", `<pre class="whitespace-pre-wrap rounded-2xl bg-slate-950 text-slate-100 p-5 text-sm leading-relaxed overflow-x-auto">${esc(plantillaReporte(ficha))}</pre>`)}
                     ${bloque("Alternativas", lista(ficha.alternativas))}
-                    ${bloque("Post hoc o seguimiento", lista(ficha.posthoc))}
-                    ${bloque("Errores frecuentes", lista(ficha.erroresFrecuentes, "text-red-900"), "border-red-200")}
+                    ${bloque("Post hoc o seguimiento", lista(
+                        ficha.posthoc,
+                        "text-slate-700",
+                        { vacio: "No aplica para este procedimiento." }
+                    ))}
+                    ${bloque("Errores frecuentes", lista(
+                        ficha.erroresFrecuentes,
+                        "text-red-900",
+                        {
+                            simbolo: "!",
+                            claseIcono: "bg-red-100 text-red-700"
+                        }
+                    ), "border-red-200")}
                     ${bloque("Ejemplo aplicado", `<p class="text-slate-700 leading-relaxed">${esc(ficha.ejemplo || "No disponible.")}</p>`)}
                     ${bloque("Referencias", lista(ficha.referencias, "text-slate-600"))}
                 </div>
@@ -112,17 +140,62 @@ function detalleFicha(ficha) {
 }
 
 function abrirModalFicha(ficha) {
-    document.querySelector("[data-modal-biblioteca]")?.remove();
+    cerrarModalBiblioteca?.({ restaurarFoco: false });
+    const elementoAnterior = document.activeElement;
+    const overflowAnterior = document.body.style.overflow;
     document.body.insertAdjacentHTML("beforeend", detalleFicha(ficha));
     const modal = document.querySelector("[data-modal-biblioteca]");
     if (!modal) return;
 
-    const cerrar = () => {
+    document.body.style.overflow = "hidden";
+
+    const controlesFoco = () => [...modal.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((control) => control.getAttribute("aria-hidden") !== "true");
+
+    const cerrar = ({ restaurarFoco = true } = {}) => {
         document.removeEventListener("keydown", manejarTecla);
+        window.removeEventListener("hashchange", manejarCambioRuta);
         modal.remove();
+        document.body.style.overflow = overflowAnterior;
+        if (cerrarModalBiblioteca === cerrar) {
+            cerrarModalBiblioteca = null;
+        }
+
+        if (
+            restaurarFoco &&
+            elementoAnterior instanceof HTMLElement &&
+            elementoAnterior.isConnected
+        ) {
+            elementoAnterior.focus();
+        }
+    };
+    const manejarCambioRuta = () => {
+        cerrar({ restaurarFoco: false });
     };
     const manejarTecla = (event) => {
-        if (event.key === "Escape") cerrar();
+        if (event.key === "Escape") {
+            event.preventDefault();
+            cerrar();
+            return;
+        }
+
+        if (event.key !== "Tab") return;
+        const controles = controlesFoco();
+        if (!controles.length) {
+            event.preventDefault();
+            return;
+        }
+
+        const primero = controles[0];
+        const ultimo = controles.at(-1);
+        if (event.shiftKey && document.activeElement === primero) {
+            event.preventDefault();
+            ultimo.focus();
+        } else if (!event.shiftKey && document.activeElement === ultimo) {
+            event.preventDefault();
+            primero.focus();
+        }
     };
 
     modal.addEventListener("click", async (event) => {
@@ -137,7 +210,7 @@ function abrirModalFicha(ficha) {
             cerrar();
         } else if (boton.dataset.action === "abrir-calculadora") {
             const ruta = boton.dataset.ruta;
-            cerrar();
+            cerrar({ restaurarFoco: false });
             window.location.hash = `/${ruta}`;
         } else if (boton.dataset.action === "copiar-reporte-ficha") {
             try {
@@ -153,7 +226,9 @@ function abrirModalFicha(ficha) {
         }
     });
 
+    cerrarModalBiblioteca = cerrar;
     document.addEventListener("keydown", manejarTecla);
+    window.addEventListener("hashchange", manejarCambioRuta);
     modal.querySelector("[data-action='cerrar-ficha']")?.focus();
 }
 
@@ -198,7 +273,7 @@ export function BibliotecaMetodologica() {
                 <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Categoría</span><select data-categoria-biblioteca class="w-full rounded-xl border border-slate-300 px-4 py-3"><option value="">Todas</option>${categoriasBiblioteca().map((categoria) => `<option>${esc(categoria)}</option>`).join("")}</select></label>
                 <label class="block"><span class="block text-sm font-black text-slate-800 mb-2">Tipo</span><select data-tipo-biblioteca class="w-full rounded-xl border border-slate-300 px-4 py-3"><option value="">Todos</option>${tipos.map((valor) => `<option>${esc(valor)}</option>`).join("")}</select></label>
             </div>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 text-sm text-slate-600"><p data-conteo-biblioteca></p><button type="button" data-action="limpiar-filtros" class="font-black text-sky-700 hover:text-sky-900">Limpiar filtros</button></div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 text-sm text-slate-600"><p data-conteo-biblioteca role="status" aria-live="polite" aria-atomic="true"></p><button type="button" data-action="limpiar-filtros" class="font-black text-sky-700 hover:text-sky-900">Limpiar filtros</button></div>
         </section>
         <section data-resultados-biblioteca class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8"></section>
         <section data-vacio-biblioteca class="hidden mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center"><h2 class="text-2xl font-black text-amber-950 mb-2">No encontramos coincidencias</h2><p class="text-amber-900">Pruebe otro término o elimine algún filtro.</p></section>

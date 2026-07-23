@@ -157,8 +157,48 @@ export const fichasMetodologicasRelacionVariables = {
         ]
     },
 
-    "spearman-cuantitativas": fichaSpearman,
-    "spearman-ordinales": fichaSpearman,
+    "spearman-cuantitativas": {
+        ...fichaSpearman,
+        nombre: "Rho de Spearman para variables cuantitativas",
+        objetivo:
+            "Cuantificar una relación monotónica entre dos variables cuantitativas cuando la linealidad o la normalidad requeridas por Pearson no son razonables.",
+        definicion:
+            "Coeficiente no paramétrico basado en rangos que cuantifica la intensidad y dirección de una relación monotónica entre dos variables cuantitativas.",
+        cuandoUsar: [
+            "Las dos variables son cuantitativas y están emparejadas fila por fila.",
+            "La relación es monotónica, aunque no necesariamente lineal.",
+            "La normalidad no es razonable o existen valores atípicos que desaconsejan Pearson.",
+            "Los valores pueden ordenarse de forma válida."
+        ],
+        cuandoNoUsar: [
+            "Cuando la relación cambia de dirección y no es monotónica.",
+            "Cuando el objetivo es predecir o controlar covariables.",
+            "Cuando se desea específicamente cuantificar una relación lineal y se cumplen los supuestos de Pearson."
+        ],
+        ejemplo:
+            "Se estudia la relación monotónica entre el tiempo semanal de práctica y la calificación de una prueba, con asimetría y algunos valores extremos."
+    },
+    "spearman-ordinales": {
+        ...fichaSpearman,
+        nombre: "Rho de Spearman para variables ordinales",
+        objetivo:
+            "Cuantificar la intensidad y dirección de la asociación monotónica entre dos variables ordinales mediante sus rangos.",
+        definicion:
+            "Coeficiente no paramétrico que correlaciona los rangos de dos variables ordinales y permite rangos promedio cuando existen empates.",
+        cuandoUsar: [
+            "Las dos variables son ordinales y están emparejadas por unidad de análisis.",
+            "El orden de las categorías tiene significado sustantivo.",
+            "La relación esperada es monotónica.",
+            "La cantidad de empates no hace preferible una medida basada directamente en concordancias."
+        ],
+        cuandoNoUsar: [
+            "Cuando las categorías son nominales y no poseen orden.",
+            "Cuando existen numerosos empates y una muestra pequeña, situación en la que tau-b de Kendall suele ser más apropiada.",
+            "Cuando la relación no es monotónica."
+        ],
+        ejemplo:
+            "Se estudia la asociación entre nivel ordinal de participación en clase y nivel ordinal de logro académico."
+    },
 
     kendall: {
         nombre: "Tau-b de Kendall",
@@ -247,7 +287,6 @@ export const fichasMetodologicasRelacionVariables = {
         ejemplo:
             "Se analiza la relación entre participar o no en tutoría y la calificación final.",
         referencias: [
-            "Cureton, E. E. (1956). Rank-biserial correlation.",
             "Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics."
         ]
     }

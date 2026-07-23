@@ -19,11 +19,11 @@ export function CalculadoraDosGrupos() {
             <div class="relative z-10 max-w-4xl">
                 <button
                     type="button"
-                    data-action="volver-laboratorio"
+                    data-action="volver-comparacion"
                     class="inline-flex items-center gap-2 text-sky-300 font-black hover:text-white transition-colors mb-7"
                 >
                     <span aria-hidden="true">←</span>
-                    Volver al laboratorio
+                    Volver a comparación de grupos
                 </button>
 
                 <p class="uppercase tracking-[0.20em] text-sky-300 text-xs md:text-sm font-black mb-3">
@@ -433,10 +433,10 @@ const campoGrupo2 =
 
             if (
                 accion ===
-                "volver-laboratorio"
+                "volver-comparacion"
             ) {
                 window.location.hash =
-                    "/laboratorioKernel";
+                    "/comparacionGrupos";
                 return;
             }
 

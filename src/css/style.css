@@ -301,8 +301,20 @@
    Accesibilidad
    ============================================================ */
 
-button:focus-visible,
-a:focus-visible {
-    outline: 3px solid #38bdf8;
-    outline-offset: 3px;
+:where(
+    button,
+    a,
+    input,
+    select,
+    textarea,
+    [tabindex]:not([tabindex="-1"])
+):focus-visible {
+    /*
+     * Indicador bicolor: el verde petróleo conserva contraste sobre fondos
+     * claros y el halo blanco mantiene el foco perceptible sobre fondos oscuros.
+     * !important evita que utilidades `focus:outline-none` lo eliminen.
+     */
+    outline: 3px solid #0f5b5d !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.94) !important;
 }

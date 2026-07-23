@@ -102,7 +102,7 @@ assert.doesNotMatch(principal, /iniciarIntegracionRegresionLaboratorio/);
 assert.doesNotMatch(principal, /iniciarIntegracionFiabilidadLaboratorio/);
 assert.doesNotMatch(principal, /iniciarIntegracionEvaluacionEducativaLaboratorio/);
 
-assert.match(portada, /ElKernel\.png/);
+assert.match(portada, /ElKernel\.webp/);
 assert.match(portada, /Soluciones cuantitativas para investigar, enseñar y decidir mejor/);
 assert.match(portada, /#\/diagnosticoServicios/);
 assert.match(portada, /#\/servicios/);

@@ -18,7 +18,7 @@ const MODELOS_REGRESION = {
     "regresión logística binaria simple": {
         ruta: "calculadoraRegresionLogistica",
         tipo: "simple",
-        almacenamiento: "kernel-tipo-modelo-regresion",
+        almacenamiento: null,
         clase: "rose",
         texto:
             "Abra la calculadora logística y cargue una variable dependiente codificada 0/1 y un predictor."
@@ -26,7 +26,7 @@ const MODELOS_REGRESION = {
     "regresión logística binaria múltiple": {
         ruta: "calculadoraRegresionLogistica",
         tipo: "multiple",
-        almacenamiento: "kernel-tipo-modelo-regresion",
+        almacenamiento: null,
         clase: "rose",
         texto:
             "Abra la calculadora logística y cargue una variable dependiente codificada 0/1 y dos o más predictores."
@@ -78,7 +78,7 @@ function crearBloque(modelo) {
     const fondo = conteo ? "bg-amber-50" : "bg-rose-50";
     const textoColor = conteo ? "text-amber-700" : "text-rose-700";
     const botonColor = conteo
-        ? "bg-amber-600 hover:bg-amber-700"
+        ? "bg-amber-700 hover:bg-amber-800"
         : "bg-rose-700 hover:bg-rose-800";
 
     bloque.dataset.ejecutarModeloRegresion = "true";
@@ -102,7 +102,9 @@ function crearBloque(modelo) {
                 type="button"
                 data-route-regresion="${modelo.ruta}"
                 data-tipo-regresion="${modelo.tipo}"
-                data-almacenamiento-regresion="${modelo.almacenamiento}"
+                ${modelo.almacenamiento
+                    ? `data-almacenamiento-regresion="${modelo.almacenamiento}"`
+                    : ""}
                 class="shrink-0 inline-flex items-center justify-center ${botonColor} text-white font-black rounded-xl px-6 py-4 transition-colors shadow-lg"
             >
                 Ejecutar este modelo
@@ -116,13 +118,14 @@ function crearBloque(modelo) {
         (event) => {
             const boton = event.currentTarget;
             const almacenamiento =
-                boton.dataset.almacenamientoRegresion ||
-                "kernel-tipo-modelo-regresion";
+                boton.dataset.almacenamientoRegresion;
 
-            sessionStorage.setItem(
-                almacenamiento,
-                boton.dataset.tipoRegresion || ""
-            );
+            if (almacenamiento) {
+                sessionStorage.setItem(
+                    almacenamiento,
+                    boton.dataset.tipoRegresion || ""
+                );
+            }
             window.location.hash =
                 `/${boton.dataset.routeRegresion}`;
         }
@@ -142,6 +145,9 @@ function integrarResultado() {
         !contenedor ||
         contenedor.querySelector(
             "[data-ejecutar-modelo-regresion='true']"
+        ) ||
+        contenedor.querySelector(
+            "[data-action='ejecutar-prueba']"
         )
     ) {
         return;
@@ -156,9 +162,33 @@ function integrarResultado() {
     );
 }
 
+function aplicarTipoRegresionGuardado() {
+    const formulario = document.querySelector(
+        "#formulario-regresion"
+    );
+    const selector = formulario?.elements?.tipoModelo;
+    if (!selector) return;
+
+    const tipo = sessionStorage.getItem(
+        "kernel-tipo-modelo-regresion"
+    );
+    if (tipo !== "simple" && tipo !== "multiple") return;
+
+    selector.value = tipo;
+    selector.dispatchEvent(new Event("change", {
+        bubbles: true
+    }));
+    sessionStorage.removeItem(
+        "kernel-tipo-modelo-regresion"
+    );
+}
+
 export function iniciarIntegracionRegresionAsistente() {
     const observador = new MutationObserver(
-        integrarResultado
+        () => {
+            integrarResultado();
+            aplicarTipoRegresionGuardado();
+        }
     );
 
     observador.observe(document.body, {
@@ -167,4 +197,5 @@ export function iniciarIntegracionRegresionAsistente() {
     });
 
     integrarResultado();
+    aplicarTipoRegresionGuardado();
 }

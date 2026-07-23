@@ -49,7 +49,7 @@ export function newsCard({
     return `
         <article
             data-news-card="${safeText(id)}"
-            class="flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+            class="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
         >
             <div class="${altoVisual} flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50 to-slate-100 p-3">
                 ${visual}

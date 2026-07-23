@@ -540,22 +540,25 @@ function tablaItems(resultado) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Indicadores de dificultad, discriminación y fiabilidad por pregunta
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Pregunta</th>
-                        <th class="px-4 py-3 text-right">p</th>
-                        <th class="px-4 py-3 text-left">Dificultad</th>
-                        <th class="px-4 py-3 text-right">D</th>
-                        <th class="px-4 py-3 text-left">Discriminación</th>
-                        <th class="px-4 py-3 text-right">rpb</th>
-                        <th class="px-4 py-3 text-right">KR-20 sin ítem</th>
-                        <th class="px-4 py-3 text-left">Decisión</th>
+                        <th scope="col" class="px-4 py-3 text-left">Pregunta</th>
+                        <th scope="col" class="px-4 py-3 text-right">p</th>
+                        <th scope="col" class="px-4 py-3 text-left">Dificultad</th>
+                        <th scope="col" class="px-4 py-3 text-right">D</th>
+                        <th scope="col" class="px-4 py-3 text-left">Discriminación</th>
+                        <th scope="col" class="px-4 py-3 text-right">rpb</th>
+                        <th scope="col" class="px-4 py-3 text-right">KR-20 sin ítem</th>
+                        <th scope="col" class="px-4 py-3 text-left">Decisión</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${resultado.items.map((item) => `
                         <tr class="${item.recomendacion.decision === "Revisión urgente" ? "bg-red-50" : item.recomendacion.decision.includes("Revisar") ? "bg-amber-50" : ""}">
-                            <td class="px-4 py-3 font-black text-slate-900 min-w-[160px]">${item.indice}. ${escapar(item.nombre)}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900 min-w-[160px]">${item.indice}. ${escapar(item.nombre)}</th>
                             <td class="px-4 py-3 text-right">${formatear(item.dificultad, 3)}</td>
                             <td class="px-4 py-3">${escapar(item.clasificacionDificultad)}</td>
                             <td class="px-4 py-3 text-right font-black">${formatear(item.discriminacion, 3)}</td>
@@ -595,19 +598,22 @@ function panelDistractores(resultado) {
                     </div>
                     <div class="overflow-x-auto rounded-xl border border-slate-200">
                         <table class="min-w-full text-sm">
+                            <caption class="sr-only">
+                                Distribución de respuestas para ${escapar(item.nombre)}
+                            </caption>
                             <thead class="bg-slate-100 text-slate-700">
                                 <tr>
-                                    <th class="px-3 py-2 text-left">Opción</th>
-                                    <th class="px-3 py-2 text-right">Total</th>
-                                    <th class="px-3 py-2 text-right">Grupo superior</th>
-                                    <th class="px-3 py-2 text-right">Grupo inferior</th>
-                                    <th class="px-3 py-2 text-left">Lectura</th>
+                                    <th scope="col" class="px-3 py-2 text-left">Opción</th>
+                                    <th scope="col" class="px-3 py-2 text-right">Total</th>
+                                    <th scope="col" class="px-3 py-2 text-right">Grupo superior</th>
+                                    <th scope="col" class="px-3 py-2 text-right">Grupo inferior</th>
+                                    <th scope="col" class="px-3 py-2 text-left">Lectura</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 bg-white">
                                 ${item.opciones.map((opcion) => `
                                     <tr class="${opcion.esClave ? "bg-emerald-50" : ""}">
-                                        <td class="px-3 py-2 font-black">${escapar(opcion.opcion)}${opcion.esClave ? " ✓" : ""}</td>
+                                        <th scope="row" class="px-3 py-2 text-left font-black">${escapar(opcion.opcion)}${opcion.esClave ? " ✓" : ""}</th>
                                         <td class="px-3 py-2 text-right">${opcion.seleccionTotal} (${porcentaje(opcion.proporcionTotal)})</td>
                                         <td class="px-3 py-2 text-right">${opcion.seleccionSuperior} (${porcentaje(opcion.proporcionSuperior)})</td>
                                         <td class="px-3 py-2 text-right">${opcion.seleccionInferior} (${porcentaje(opcion.proporcionInferior)})</td>
@@ -627,11 +633,14 @@ function tablaPuntuaciones(resultado) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-[420px]">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Puntuación y porcentaje obtenidos por estudiante
+                </caption>
                 <thead class="bg-slate-950 text-white sticky top-0">
                     <tr>
-                        <th class="px-4 py-3 text-left">Estudiante</th>
-                        <th class="px-4 py-3 text-right">Puntuación</th>
-                        <th class="px-4 py-3 text-right">Porcentaje</th>
+                        <th scope="col" class="px-4 py-3 text-left">Estudiante</th>
+                        <th scope="col" class="px-4 py-3 text-right">Puntuación</th>
+                        <th scope="col" class="px-4 py-3 text-right">Porcentaje</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -639,7 +648,7 @@ function tablaPuntuaciones(resultado) {
                         .sort((a, b) => b.total - a.total)
                         .map((fila) => `
                             <tr>
-                                <td class="px-4 py-3 font-black">${escapar(fila.id)}</td>
+                                <th scope="row" class="px-4 py-3 text-left font-black">${escapar(fila.id)}</th>
                                 <td class="px-4 py-3 text-right">${fila.total} / ${resultado.k}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.porcentaje, 1)} %</td>
                             </tr>

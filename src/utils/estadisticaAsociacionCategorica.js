@@ -925,7 +925,8 @@ function enumerarTablasConMargenes(
 
 function muestrearFilaHipergometrica(
     totalFila,
-    columnasRestantes
+    columnasRestantes,
+    aleatorio
 ) {
     const fila = new Array(
         columnasRestantes.length
@@ -942,7 +943,7 @@ function muestrearFilaHipergometrica(
         extraccion += 1
     ) {
         let objetivo =
-            Math.random() *
+            aleatorio() *
             totalRestante;
         let elegida =
             columnasRestantes.length - 1;
@@ -972,7 +973,8 @@ function muestrearFilaHipergometrica(
 
 function muestrearTablaConMargenes(
     totalesFilas,
-    totalesColumnas
+    totalesColumnas,
+    aleatorio
 ) {
     const columnasRestantes = [
         ...totalesColumnas
@@ -987,7 +989,8 @@ function muestrearTablaConMargenes(
         tabla.push(
             muestrearFilaHipergometrica(
                 totalesFilas[fila],
-                columnasRestantes
+                columnasRestantes,
+                aleatorio
             )
         );
     }
@@ -997,11 +1000,33 @@ function muestrearTablaConMargenes(
     return tabla;
 }
 
+function crearGeneradorAleatorio(semilla) {
+    let estado = semilla >>> 0;
+
+    return () => {
+        estado += 0x6D2B79F5;
+        let valor = estado;
+        valor = Math.imul(
+            valor ^ valor >>> 15,
+            valor | 1
+        );
+        valor ^= valor +
+            Math.imul(
+                valor ^ valor >>> 7,
+                valor | 61
+            );
+        return (
+            (valor ^ valor >>> 14) >>> 0
+        ) / 4294967296;
+    };
+}
+
 function calcularFisherFreemanHalton(
     datos,
     {
         maximoTablasExactas,
-        simulaciones
+        simulaciones,
+        semilla
     }
 ) {
     const logObservada =
@@ -1070,6 +1095,8 @@ function calcularFisherFreemanHalton(
     }
 
     let extremas = 0;
+    const aleatorio =
+        crearGeneradorAleatorio(semilla);
 
     for (
         let indice = 0;
@@ -1079,7 +1106,8 @@ function calcularFisherFreemanHalton(
         const tablaSimulada =
             muestrearTablaConMargenes(
                 datos.totalesFilas,
-                datos.totalesColumnas
+                datos.totalesColumnas,
+                aleatorio
             );
         const logP =
             logProbabilidadTabla(
@@ -1110,6 +1138,7 @@ function calcularFisherFreemanHalton(
         tablasEvaluadas:
             enumeracion.cantidad,
         simulaciones,
+        semilla,
         errorMonteCarlo:
             Math.sqrt(
                 valorP *
@@ -1379,7 +1408,8 @@ export function pruebaFisherFreemanHalton(
         etiquetasFilas = null,
         etiquetasColumnas = null,
         maximoTablasExactas = 100000,
-        simulaciones = 10000
+        simulaciones = 10000,
+        semilla = 20260723
     } = opciones;
 
     validarNivelConfianza(
@@ -1403,6 +1433,11 @@ export function pruebaFisherFreemanHalton(
     ) {
         throw new RangeError(
             "El número de simulaciones debe ser un entero de al menos 1000."
+        );
+    }
+    if (!Number.isInteger(semilla)) {
+        throw new RangeError(
+            "La semilla de Monte Carlo debe ser un entero."
         );
     }
 
@@ -1447,7 +1482,8 @@ export function pruebaFisherFreemanHalton(
             datos,
             {
                 maximoTablasExactas,
-                simulaciones
+                simulaciones,
+                semilla
             }
         );
     const alfa = 1 - nivelConfianza;
@@ -1502,14 +1538,16 @@ export function analizarAsociacionCategorica({
     etiquetasFilas = null,
     etiquetasColumnas = null,
     maximoTablasExactas = 100000,
-    simulaciones = 10000
+    simulaciones = 10000,
+    semilla = 20260723
 }) {
     const opciones = {
         nivelConfianza,
         etiquetasFilas,
         etiquetasColumnas,
         maximoTablasExactas,
-        simulaciones
+        simulaciones,
+        semilla
     };
 
     if (prueba === "automatico") {

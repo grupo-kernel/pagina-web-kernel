@@ -1,11 +1,11 @@
 // Imagenes
-import sepulveda from "../assets/sep.png";
-import natanael from "../assets/nat.png";
-import randy from "../assets/rad.png";
-import antmel from "../assets/ant.png";
-import marino from "../assets/mar.png";
-import marc from "../assets/marc.png";
-import jose from "../assets/jos.png";
+import sepulveda from "../assets/sep.webp";
+import natanael from "../assets/nat.webp";
+import randy from "../assets/rad.webp";
+import antmel from "../assets/ant.webp";
+import marino from "../assets/mar.webp";
+import marc from "../assets/marc.webp";
+import jose from "../assets/jos.webp";
 
 export const contenidoCards = [
     {

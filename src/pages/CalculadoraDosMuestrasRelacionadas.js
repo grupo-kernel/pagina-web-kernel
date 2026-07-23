@@ -19,11 +19,11 @@ export function CalculadoraDosMuestrasRelacionadas() {
             <div class="relative z-10 max-w-4xl">
                 <button
                     type="button"
-                    data-action="volver-laboratorio"
+                    data-action="volver-comparacion"
                     class="inline-flex items-center gap-2 text-violet-300 font-black hover:text-white transition-colors mb-7"
                 >
                     <span aria-hidden="true">←</span>
-                    Volver al laboratorio
+                    Volver a comparación de grupos
                 </button>
 
                 <p class="uppercase tracking-[0.20em] text-violet-300 text-xs md:text-sm font-black mb-3">
@@ -330,9 +330,9 @@ export function CalculadoraDosMuestrasRelacionadas() {
 
             const accion = boton.dataset.action;
 
-            if (accion === "volver-laboratorio") {
+            if (accion === "volver-comparacion") {
                 window.location.hash =
-                    "/laboratorioKernel";
+                    "/comparacionGrupos";
                 return;
             }
 

@@ -5,7 +5,16 @@ function validarVector(nombre, valores) {
         throw new Error(`${nombre} debe contener al menos tres observaciones.`);
     }
 
-    const numericos = valores.map(Number);
+    const numericos = valores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
 
     if (!numericos.every(Number.isFinite)) {
         throw new Error(`${nombre} contiene valores no numéricos o no finitos.`);
@@ -93,6 +102,160 @@ function invertirMatriz(matriz) {
     }
 
     return aumentada.map((fila) => fila.slice(n));
+}
+
+function resolverMinimosCuadradosQR(matriz, respuesta) {
+    const n = matriz.length;
+    const p = matriz[0].length;
+    const r = matriz.map((fila) => [...fila]);
+    const qty = [...respuesta];
+    const diagonal = [];
+
+    for (let columna = 0; columna < p; columna += 1) {
+        let norma = 0;
+        for (let fila = columna; fila < n; fila += 1) {
+            norma = Math.hypot(norma, r[fila][columna]);
+        }
+
+        const tolerancia = Number.EPSILON *
+            Math.max(n, p) *
+            Math.max(1, ...diagonal.map(Math.abs)) *
+            100;
+
+        if (!(norma > tolerancia)) {
+            throw new Error(
+                "La matriz de predictores es singular. Elimine variables redundantes o perfectamente colineales."
+            );
+        }
+
+        const signo = r[columna][columna] >= 0 ? 1 : -1;
+        const v = Array.from(
+            { length: n - columna },
+            (_, indice) => r[columna + indice][columna]
+        );
+        v[0] += signo * norma;
+        const normaV2 = v.reduce(
+            (total, valor) => total + valor ** 2,
+            0
+        );
+
+        if (!(normaV2 > 0)) {
+            throw new Error(
+                "La matriz de predictores es singular. Elimine variables redundantes o perfectamente colineales."
+            );
+        }
+
+        for (let j = columna; j < p; j += 1) {
+            let producto = 0;
+            for (let i = 0; i < v.length; i += 1) {
+                producto += v[i] * r[columna + i][j];
+            }
+            const factor = 2 * producto / normaV2;
+            for (let i = 0; i < v.length; i += 1) {
+                r[columna + i][j] -= factor * v[i];
+            }
+        }
+
+        let productoY = 0;
+        for (let i = 0; i < v.length; i += 1) {
+            productoY += v[i] * qty[columna + i];
+        }
+        const factorY = 2 * productoY / normaV2;
+        for (let i = 0; i < v.length; i += 1) {
+            qty[columna + i] -= factorY * v[i];
+        }
+
+        diagonal.push(r[columna][columna]);
+    }
+
+    const coeficientes = Array(p).fill(0);
+    for (let i = p - 1; i >= 0; i -= 1) {
+        let suma = qty[i];
+        for (let j = i + 1; j < p; j += 1) {
+            suma -= r[i][j] * coeficientes[j];
+        }
+        coeficientes[i] = suma / r[i][i];
+    }
+
+    const inversaR = Array.from(
+        { length: p },
+        () => Array(p).fill(0)
+    );
+    for (let columna = 0; columna < p; columna += 1) {
+        for (let i = p - 1; i >= 0; i -= 1) {
+            let suma = i === columna ? 1 : 0;
+            for (let j = i + 1; j < p; j += 1) {
+                suma -= r[i][j] * inversaR[j][columna];
+            }
+            inversaR[i][columna] = suma / r[i][i];
+        }
+    }
+
+    return {
+        coeficientes,
+        inversaProducto: multiplicarMatrices(
+            inversaR,
+            transponer(inversaR)
+        )
+    };
+}
+
+function prepararDisenoEstable(predictores, incluirIntercepto) {
+    const n = predictores[0].length;
+    const medias = predictores.map(
+        (columna) => incluirIntercepto ? media(columna) : 0
+    );
+    const escalas = predictores.map((columna, indice) => {
+        const centro = medias[indice];
+        const escala = Math.sqrt(
+            columna.reduce(
+                (total, valor) => total + (valor - centro) ** 2,
+                0
+            ) / n
+        );
+        const maximo = Math.max(1, ...columna.map(Math.abs));
+
+        if (!(escala > Number.EPSILON * maximo * 10)) {
+            throw new Error(
+                `El predictor X${indice + 1} no presenta variabilidad suficiente para estimar el modelo.`
+            );
+        }
+        return escala;
+    });
+    const matriz = Array.from({ length: n }, (_, fila) => [
+        ...(incluirIntercepto ? [1] : []),
+        ...predictores.map(
+            (columna, indice) =>
+                (columna[fila] - medias[indice]) / escalas[indice]
+        )
+    ]);
+    const p = matriz[0].length;
+    const transformacion = Array.from(
+        { length: p },
+        () => Array(p).fill(0)
+    );
+
+    if (incluirIntercepto) {
+        transformacion[0][0] = 1;
+        predictores.forEach((_, indice) => {
+            transformacion[0][indice + 1] =
+                -medias[indice] / escalas[indice];
+            transformacion[indice + 1][indice + 1] =
+                1 / escalas[indice];
+        });
+    } else {
+        predictores.forEach((_, indice) => {
+            transformacion[indice][indice] =
+                1 / escalas[indice];
+        });
+    }
+
+    return {
+        matriz,
+        transformacion,
+        medias,
+        escalas
+    };
 }
 
 function media(valores) {
@@ -282,19 +445,39 @@ function cuantileNormal(p) {
         (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
 }
 
-function cuantileStudentAproximado(p, gl) {
-    const z = cuantileNormal(p);
-    const z2 = z * z;
-    const z3 = z2 * z;
-    const z5 = z3 * z2;
-    const z7 = z5 * z2;
+function cdfStudent(t, gl) {
+    if (t === 0) return 0.5;
+    if (t === Infinity) return 1;
+    if (t === -Infinity) return 0;
+    const x = gl / (gl + t ** 2);
+    const cola = 0.5 * betaRegularizada(
+        x,
+        gl / 2,
+        0.5
+    );
+    return t > 0 ? 1 - cola : cola;
+}
 
-    return z +
-        (z3 + z) / (4 * gl) +
-        (5 * z5 + 16 * z3 + 3 * z) /
-            (96 * gl ** 2) +
-        (3 * z7 + 19 * z5 + 17 * z3 - 15 * z) /
-            (384 * gl ** 3);
+function cuantileStudent(p, gl) {
+    if (!(p > 0 && p < 1) || !(gl > 0)) {
+        throw new Error(
+            "No fue posible calcular el cuantil de la distribución t."
+        );
+    }
+    if (p === 0.5) return 0;
+    if (p < 0.5) return -cuantileStudent(1 - p, gl);
+
+    let inferior = 0;
+    let superior = 1;
+    while (cdfStudent(superior, gl) < p && superior < 1e12) {
+        superior *= 2;
+    }
+    for (let i = 0; i < 120; i += 1) {
+        const medio = (inferior + superior) / 2;
+        if (cdfStudent(medio, gl) < p) inferior = medio;
+        else superior = medio;
+    }
+    return (inferior + superior) / 2;
 }
 
 function construirMatrizDiseno(predictores, incluirIntercepto) {
@@ -382,7 +565,21 @@ export function ajustarRegresion({
     const nombres = predictores.map(
         (_, indice) => nombresPredictores[indice] || `X${indice + 1}`
     );
-    const matrizX = construirMatrizDiseno(
+    const mediaY = media(respuesta);
+    const variacionY = sumaCuadrados(respuesta, mediaY);
+    const escalaY = Math.max(1, ...respuesta.map(Math.abs));
+
+    if (
+        Math.sqrt(variacionY / respuesta.length) <=
+        Number.EPSILON * escalaY * 10
+    ) {
+        throw new Error(
+            "La variable dependiente no presenta variabilidad; no es posible ajustar una regresión."
+        );
+    }
+
+    const matrizX = construirMatrizDiseno(predictores, incluirIntercepto);
+    const disenoEstable = prepararDisenoEstable(
         predictores,
         incluirIntercepto
     );
@@ -396,24 +593,40 @@ export function ajustarRegresion({
         );
     }
 
-    const xt = transponer(matrizX);
-    const xtx = multiplicarMatrices(xt, matrizX);
-    const xtxInversa = invertirMatriz(xtx);
-    const xty = multiplicarMatrizVector(xt, respuesta);
-    const coeficientes = multiplicarMatrizVector(
-        xtxInversa,
-        xty
+    const solucionEstable = resolverMinimosCuadradosQR(
+        disenoEstable.matriz,
+        respuesta
     );
+    const coeficientes = multiplicarMatrizVector(
+        disenoEstable.transformacion,
+        solucionEstable.coeficientes
+    );
+    const xtxInversa = multiplicarMatrices(
+        multiplicarMatrices(
+            disenoEstable.transformacion,
+            solucionEstable.inversaProducto
+        ),
+        transponer(disenoEstable.transformacion)
+    );
+
+    if (
+        !coeficientes.every(Number.isFinite) ||
+        !xtxInversa.flat().every(Number.isFinite)
+    ) {
+        throw new Error(
+            "El ajuste produjo resultados no finitos. Revise la escala, colinealidad y valores extremos de los predictores."
+        );
+    }
+
     const predichos = multiplicarMatrizVector(
-        matrizX,
-        coeficientes
+        disenoEstable.matriz,
+        solucionEstable.coeficientes
     );
     const residuos = respuesta.map(
         (valor, indice) => valor - predichos[indice]
     );
-    const mediaY = media(respuesta);
     const sct = incluirIntercepto
-        ? sumaCuadrados(respuesta, mediaY)
+        ? variacionY
         : respuesta.reduce((total, valor) => total + valor ** 2, 0);
     const sce = residuos.reduce(
         (total, residuo) => total + residuo ** 2,
@@ -437,10 +650,11 @@ export function ajustarRegresion({
     const pModelo = glModelo > 0
         ? valorPF(f, glModelo, gradosLibertadError)
         : null;
-    const tCritico = cuantileStudentAproximado(
+    const tCritico = cuantileStudent(
         0.5 + nivelConfianza / 2,
         gradosLibertadError
     );
+    const alfa = 1 - nivelConfianza;
     const nombresCoeficientes = [
         ...(incluirIntercepto ? ["Intercepto"] : []),
         ...nombres
@@ -474,9 +688,9 @@ export function ajustarRegresion({
         }
     );
 
-    const leverage = matrizX.map((fila) => {
+    const leverage = disenoEstable.matriz.map((fila) => {
         const temporal = multiplicarMatrizVector(
-            xtxInversa,
+            solucionEstable.inversaProducto,
             fila
         );
 
@@ -542,9 +756,9 @@ export function ajustarRegresion({
         `El R² ajustado es ${r2Ajustado.toFixed(4)} y el error estándar de estimación es ${rmse.toFixed(4)}.`,
         pModelo === null
             ? "No se calculó una prueba global del modelo."
-            : pModelo < 0.05
+            : pModelo < alfa
                 ? `El modelo global es estadísticamente significativo (F = ${f.toFixed(4)}, p ${pModelo < 0.001 ? "< 0.001" : `= ${pModelo.toFixed(4)}`}).`
-                : `El modelo global no alcanza significación estadística al 5 % (F = ${f.toFixed(4)}, p = ${pModelo.toFixed(4)}).`,
+                : `El modelo global no alcanza significación estadística con α = ${alfa.toFixed(3)} (F = ${f.toFixed(4)}, p = ${pModelo.toFixed(4)}).`,
         vif.some((fila) => fila.vif >= 10)
             ? "Se detectó multicolinealidad severa en al menos un predictor (VIF ≥ 10)."
             : vif.some((fila) => fila.vif >= 5)
@@ -564,7 +778,15 @@ export function ajustarRegresion({
         n,
         numeroPredictores: predictores.length,
         incluirIntercepto,
+        nivelConfianza,
+        alfa,
         nombresPredictores: nombres,
+        estabilizacion: {
+            medias: disenoEstable.medias,
+            escalas: disenoEstable.escalas,
+            coeficientesEstandarizados:
+                solucionEstable.coeficientes
+        },
         coeficientes: tablaCoeficientes,
         ajuste: {
             r2,
@@ -644,10 +866,48 @@ export function predecirRegresion(modelo, nuevosPredictores) {
         );
     }
 
-    const valores = nuevosPredictores.map(Number);
+    const valores = nuevosPredictores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
 
     if (!valores.every(Number.isFinite)) {
         throw new Error("Los valores predictores deben ser numéricos.");
+    }
+
+    if (
+        modelo.estabilizacion?.medias?.length ===
+            modelo.numeroPredictores &&
+        modelo.estabilizacion?.escalas?.length ===
+            modelo.numeroPredictores &&
+        modelo.estabilizacion?.coeficientesEstandarizados?.length ===
+            modelo.coeficientes.length
+    ) {
+        const filaEstable = [
+            ...(modelo.incluirIntercepto ? [1] : []),
+            ...valores.map(
+                (valor, indice) =>
+                    (
+                        valor -
+                        modelo.estabilizacion.medias[indice]
+                    ) /
+                    modelo.estabilizacion.escalas[indice]
+            )
+        ];
+        return filaEstable.reduce(
+            (total, valor, indice) =>
+                total +
+                valor *
+                modelo.estabilizacion
+                    .coeficientesEstandarizados[indice],
+            0
+        );
     }
 
     const betas = modelo.coeficientes.map(

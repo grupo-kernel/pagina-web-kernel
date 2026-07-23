@@ -1,4 +1,4 @@
-import kernel from "../../assets/ElKernel.png";
+import kernel from "../../assets/ElKernel.webp";
 
 export function createHeader() {
     return `

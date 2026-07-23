@@ -171,7 +171,7 @@ export function CalculadoraFiabilidadCuestionarios() {
                     <button
                         type="submit"
                         data-action="analizar"
-                        class="inline-flex items-center justify-center bg-amber-600 text-white font-black rounded-xl px-7 py-4 hover:bg-amber-700 transition-colors shadow-lg disabled:opacity-60"
+                        class="inline-flex items-center justify-center bg-amber-700 text-white font-black rounded-xl px-7 py-4 hover:bg-amber-800 transition-colors shadow-lg disabled:opacity-60"
                     >
                         Analizar fiabilidad
                         <span class="ml-2" aria-hidden="true">→</span>
@@ -580,24 +580,27 @@ function crearTablaItems(resultado) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Estadísticos de fiabilidad y revisión por ítem
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Ítem</th>
-                        <th class="px-4 py-3 text-right">Media</th>
-                        <th class="px-4 py-3 text-right">DE</th>
-                        <th class="px-4 py-3 text-right">Ítem–total</th>
-                        <th class="px-4 py-3 text-right">Alfa sin ítem</th>
-                        <th class="px-4 py-3 text-right">Carga</th>
-                        <th class="px-4 py-3 text-left">Revisión</th>
+                        <th scope="col" class="px-4 py-3 text-left">Ítem</th>
+                        <th scope="col" class="px-4 py-3 text-right">Media</th>
+                        <th scope="col" class="px-4 py-3 text-right">DE</th>
+                        <th scope="col" class="px-4 py-3 text-right">Ítem–total</th>
+                        <th scope="col" class="px-4 py-3 text-right">Alfa sin ítem</th>
+                        <th scope="col" class="px-4 py-3 text-right">Carga</th>
+                        <th scope="col" class="px-4 py-3 text-left">Revisión</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${resultado.items.map((item) => `
                         <tr class="${item.alertas.length ? "bg-amber-50" : ""}">
-                            <td class="px-4 py-3 font-black text-slate-900">
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">
                                 ${item.indice}. ${escapar(item.nombre)}
                                 ${item.invertido ? '<span class="ml-2 rounded-full bg-violet-100 px-2 py-1 text-[10px] text-violet-800">Invertido</span>' : ""}
-                            </td>
+                            </th>
                             <td class="px-4 py-3 text-right">${formatear(item.media, 3)}</td>
                             <td class="px-4 py-3 text-right">${formatear(item.desviacion, 3)}</td>
                             <td class="px-4 py-3 text-right font-black">${formatear(item.correlacionItemTotal, 3)}</td>

@@ -509,6 +509,61 @@ function comparacionesTRelacionadas(
     const comparaciones = pares(
         mediciones,
         (medicion1, medicion2) => {
+            const diferencias = medicion1.valores.map(
+                (valor, indice) =>
+                    valor - medicion2.valores[indice]
+            );
+            const diferenciaMedia = media(diferencias);
+            const sumaCuadradosDiferencias =
+                diferencias.reduce(
+                    (suma, valor) =>
+                        suma +
+                        (valor - diferenciaMedia) ** 2,
+                    0
+                );
+            const escala = Math.max(
+                1,
+                ...diferencias.map(Math.abs)
+            );
+            const diferenciasConstantes =
+                Math.sqrt(
+                    sumaCuadradosDiferencias /
+                    Math.max(diferencias.length - 1, 1)
+                ) <=
+                Number.EPSILON * escala * 10;
+
+            if (diferenciasConstantes) {
+                const sinDiferencia =
+                    Math.abs(diferenciaMedia) <=
+                    Number.EPSILON * escala * 10;
+
+                return {
+                    medicion1: medicion1.nombre,
+                    medicion2: medicion2.nombre,
+                    diferenciaMedia,
+                    estadisticoT: sinDiferencia
+                        ? 0
+                        : Math.sign(diferenciaMedia) *
+                            Infinity,
+                    gradosLibertad:
+                        diferencias.length - 1,
+                    valorP: sinDiferencia ? 1 : 0,
+                    intervaloConfianza: {
+                        inferior: diferenciaMedia,
+                        superior: diferenciaMedia,
+                        nivel: nivelConfianza
+                    },
+                    dZ: sinDiferencia
+                        ? 0
+                        : Math.sign(diferenciaMedia) *
+                            Infinity,
+                    advertencia:
+                        sinDiferencia
+                            ? "Las diferencias son idénticamente cero; no existe cambio entre estas mediciones."
+                            : "Las diferencias son constantes y no tienen error estándar estimable; la diferencia observada es exacta dentro de estos datos."
+                };
+            }
+
             const resultado =
                 pruebaTStudentRelacionadas(
                     medicion1.valores,

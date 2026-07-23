@@ -866,15 +866,18 @@ function crearDescriptivos(resultado) {
                 </header>
                 <div class="overflow-x-auto">
                     <table class="w-full min-w-[700px] text-sm">
+                        <caption class="sr-only">
+                            Estadísticos descriptivos de la variable cuantitativa por categoría
+                        </caption>
                         <thead class="bg-slate-100 text-slate-700">
                             <tr>
-                                <th class="text-left px-5 py-3">Categoría</th>
-                                <th class="text-right px-5 py-3">n</th>
-                                <th class="text-right px-5 py-3">Media</th>
-                                <th class="text-right px-5 py-3">Mediana</th>
-                                <th class="text-right px-5 py-3">DE</th>
-                                <th class="text-right px-5 py-3">Mínimo</th>
-                                <th class="text-right px-5 py-3">Máximo</th>
+                                <th scope="col" class="text-left px-5 py-3">Categoría</th>
+                                <th scope="col" class="text-right px-5 py-3">n</th>
+                                <th scope="col" class="text-right px-5 py-3">Media</th>
+                                <th scope="col" class="text-right px-5 py-3">Mediana</th>
+                                <th scope="col" class="text-right px-5 py-3">DE</th>
+                                <th scope="col" class="text-right px-5 py-3">Mínimo</th>
+                                <th scope="col" class="text-right px-5 py-3">Máximo</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200">
@@ -896,14 +899,17 @@ function crearDescriptivos(resultado) {
             </header>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[700px] text-sm">
+                    <caption class="sr-only">
+                        Estadísticos descriptivos de las variables analizadas
+                    </caption>
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <th class="text-left px-5 py-3">Variable</th>
-                            <th class="text-right px-5 py-3">Media</th>
-                            <th class="text-right px-5 py-3">Mediana</th>
-                            <th class="text-right px-5 py-3">DE</th>
-                            <th class="text-right px-5 py-3">Mínimo</th>
-                            <th class="text-right px-5 py-3">Máximo</th>
+                            <th scope="col" class="text-left px-5 py-3">Variable</th>
+                            <th scope="col" class="text-right px-5 py-3">Media</th>
+                            <th scope="col" class="text-right px-5 py-3">Mediana</th>
+                            <th scope="col" class="text-right px-5 py-3">DE</th>
+                            <th scope="col" class="text-right px-5 py-3">Mínimo</th>
+                            <th scope="col" class="text-right px-5 py-3">Máximo</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200">
@@ -923,9 +929,9 @@ function crearDescriptivos(resultado) {
 function crearFilaVariable(variable) {
     return `
         <tr>
-            <td class="px-5 py-3 font-bold text-slate-900">
+            <th scope="row" class="px-5 py-3 text-left font-bold text-slate-900">
                 ${escaparHTML(variable.nombre)}
-            </td>
+            </th>
             <td class="px-5 py-3 text-right">${formatearNumero(variable.media)}</td>
             <td class="px-5 py-3 text-right">${formatearNumero(variable.mediana)}</td>
             <td class="px-5 py-3 text-right">${formatearNumero(variable.desviacionEstandar)}</td>
@@ -938,9 +944,9 @@ function crearFilaVariable(variable) {
 function crearFilaGrupo(grupo) {
     return `
         <tr>
-            <td class="px-5 py-3 font-bold text-slate-900">
+            <th scope="row" class="px-5 py-3 text-left font-bold text-slate-900">
                 ${escaparHTML(grupo.categoria)}
-            </td>
+            </th>
             <td class="px-5 py-3 text-right">${grupo.n}</td>
             <td class="px-5 py-3 text-right">${formatearNumero(grupo.media)}</td>
             <td class="px-5 py-3 text-right">${formatearNumero(grupo.mediana)}</td>

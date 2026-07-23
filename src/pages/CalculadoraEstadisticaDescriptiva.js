@@ -649,24 +649,27 @@ function crearTablaFrecuencias(resultado) {
             </h3>
             <div class="overflow-x-auto rounded-2xl border border-slate-200">
                 <table class="min-w-full text-sm">
+                    <caption class="sr-only">
+                        Distribución de frecuencias absolutas, relativas y acumuladas
+                    </caption>
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <th class="px-4 py-3 text-left font-black">${agrupado ? "Intervalo" : "Valor"}</th>
-                            ${agrupado ? '<th class="px-4 py-3 text-right font-black">Marca</th>' : ""}
-                            <th class="px-4 py-3 text-right font-black">f</th>
-                            <th class="px-4 py-3 text-right font-black">fr</th>
-                            <th class="px-4 py-3 text-right font-black">F</th>
-                            <th class="px-4 py-3 text-right font-black">Fr</th>
+                            <th scope="col" class="px-4 py-3 text-left font-black">${agrupado ? "Intervalo" : "Valor"}</th>
+                            ${agrupado ? '<th scope="col" class="px-4 py-3 text-right font-black">Marca</th>' : ""}
+                            <th scope="col" class="px-4 py-3 text-right font-black">f</th>
+                            <th scope="col" class="px-4 py-3 text-right font-black">fr</th>
+                            <th scope="col" class="px-4 py-3 text-right font-black">F</th>
+                            <th scope="col" class="px-4 py-3 text-right font-black">Fr</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         ${resultado.tablaFrecuencias.map((fila) => `
                             <tr>
-                                <td class="px-4 py-3 text-slate-800 font-semibold">
+                                <th scope="row" class="px-4 py-3 text-left text-slate-800 font-semibold">
                                     ${agrupado
                                         ? `[${formatear(fila.intervalo.inferior)}, ${formatear(fila.intervalo.superior)})`
                                         : formatear(fila.valor)}
-                                </td>
+                                </th>
                                 ${agrupado ? `<td class="px-4 py-3 text-right">${formatear(fila.marcaClase)}</td>` : ""}
                                 <td class="px-4 py-3 text-right">${fila.frecuencia}</td>
                                 <td class="px-4 py-3 text-right">${formatearPorcentaje(fila.frecuenciaRelativa)}</td>

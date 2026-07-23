@@ -50,7 +50,6 @@ export const fichasMetodologicasEvaluacionEducativa = {
         ejemplo:
             "Se analizan 40 preguntas de una prueba de matemática aplicada a 120 estudiantes para identificar preguntas extremadamente fáciles, distractores no funcionales y preguntas con discriminación negativa.",
         referencias: [
-            "Classical Test Theory and Item Analysis references commonly used in educational measurement.",
             "Crocker, L., & Algina, J. (1986). Introduction to Classical and Modern Test Theory.",
             "Ebel, R. L., & Frisbie, D. A. (1991). Essentials of Educational Measurement.",
             "Haladyna, T. M. (2004). Developing and Validating Multiple-Choice Test Items."

@@ -9,6 +9,41 @@ const sort = (xs) =>
 const nearZero = (valor) =>
     Math.abs(valor) < EPS ? 0 : valor;
 
+function mediaEstable(valores) {
+    const n = valores.length;
+    return valores.reduce(
+        (total, valor) => total + valor / n,
+        0
+    );
+}
+
+function validarResultadosFinitos(valor, ruta = "resultado") {
+    if (
+        typeof valor === "number" &&
+        !Number.isFinite(valor)
+    ) {
+        throw new Error(
+            `Los datos generan un ${ruta} no finito. Reduzca la escala de los valores o revise observaciones extremas.`
+        );
+    }
+
+    if (Array.isArray(valor)) {
+        valor.forEach((elemento, indice) =>
+            validarResultadosFinitos(
+                elemento,
+                `${ruta}[${indice}]`
+            )
+        );
+    } else if (valor && typeof valor === "object") {
+        Object.entries(valor).forEach(([clave, elemento]) =>
+            validarResultadosFinitos(
+                elemento,
+                `${ruta}.${clave}`
+            )
+        );
+    }
+}
+
 function quantile(sorted, p) {
     if (!sorted.length) {
         throw new Error(
@@ -215,7 +250,7 @@ function frequencyTable(xs) {
 function rawSummary(values) {
     const xs = sort(values);
     const n = xs.length;
-    const media = sum(xs) / n;
+    const media = mediaEstable(xs);
     const mediana = quantile(xs, 0.5);
     const q1 = quantile(xs, 0.25);
     const q3 = quantile(xs, 0.75);
@@ -431,13 +466,13 @@ function weightedFrequencyTable(filas, n) {
 }
 
 function weightedSummary(filas, n) {
-    const total = sum(
+    const media = sum(
         filas.map(
             ({ valor, frecuencia }) =>
-                valor * frecuencia
+                valor * (frecuencia / n)
         )
     );
-    const media = total / n;
+    const total = media * n;
     const mediana = weightedQuantile(
         filas,
         n,
@@ -705,13 +740,13 @@ function groupedSummary(classes) {
             ({ frecuencia }) => frecuencia
         )
     );
-    const total = sum(
+    const media = sum(
         classes.map(
             ({ marcaClase, frecuencia }) =>
-                marcaClase * frecuencia
+                marcaClase * (frecuencia / n)
         )
     );
-    const media = total / n;
+    const total = media * n;
     const momentos = weightedMoments(
         classes.map(
             ({ marcaClase, frecuencia }) => ({
@@ -864,6 +899,10 @@ export function analizarDatosIndividuales(values) {
     const xs = validateValues(values);
     const resumen = rawSummary(xs);
     const tablaFrecuencias = frequencyTable(xs);
+    validarResultadosFinitos(
+        { resumen, tablaFrecuencias },
+        "análisis descriptivo"
+    );
 
     return {
         tipoDatos: "individuales",
@@ -890,6 +929,10 @@ export function analizarDatosConFrecuencias({
     const resumen = weightedSummary(filas, n);
     const tablaFrecuencias =
         weightedFrequencyTable(filas, n);
+    validarResultadosFinitos(
+        { resumen, tablaFrecuencias },
+        "análisis descriptivo"
+    );
 
     return {
         tipoDatos: "frecuencias",
@@ -914,6 +957,10 @@ export function analizarDatosAgrupados(classes) {
     const normalizadas = validateClasses(classes);
     const resumen = groupedSummary(normalizadas);
     const tablaFrecuencias = classTable(normalizadas);
+    validarResultadosFinitos(
+        { resumen, tablaFrecuencias },
+        "análisis descriptivo"
+    );
 
     return {
         tipoDatos: "intervalos",

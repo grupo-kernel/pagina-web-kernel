@@ -251,8 +251,15 @@ export function CalculadoraRegresionConteo() {
         try {
             const valores = [...prediccion.querySelectorAll("[data-predictor]")]
                 .sort((a, b) => Number(a.dataset.predictor) - Number(b.dataset.predictor))
-                .map((entrada) => Number(entrada.value));
-            const exposicion = Number(prediccion.elements.exposicion.value);
+                .map((entrada) =>
+                    entrada.value.trim() === ""
+                        ? NaN
+                        : Number(entrada.value)
+                );
+            const exposicion =
+                prediccion.elements.exposicion.value.trim() === ""
+                    ? NaN
+                    : Number(prediccion.elements.exposicion.value);
             const predicho = predecirRegresionConteo(
                 ultimoResultado,
                 valores,
@@ -278,7 +285,7 @@ function guia(titulo, texto) {
 }
 
 function separarFila(fila) {
-    return fila.trim().split(/[,;\t]+/).map((valor) => valor.trim());
+    return fila.trim().split(/[,;\t]/).map((valor) => valor.trim());
 }
 
 function obtenerSolicitud(formulario) {
@@ -290,7 +297,11 @@ function obtenerSolicitud(formulario) {
         throw new Error("Introduzca al menos seis observaciones y, opcionalmente, una fila de encabezados.");
     }
 
-    const primeraNumerica = filas[0].every((valor) => Number.isFinite(Number(valor)));
+    const primeraNumerica = filas[0].every(
+        (valor) =>
+            valor !== "" &&
+            Number.isFinite(Number(valor))
+    );
     const nombres = primeraNumerica
         ? filas[0].map((_, i) => i === 0 ? "Conteo" : `X${i}`)
         : filas.shift();
@@ -311,6 +322,11 @@ function obtenerSolicitud(formulario) {
 
     const matriz = filas.map((fila, i) =>
         fila.map((valor, j) => {
+            if (valor === "") {
+                throw new Error(
+                    `La celda de la fila ${i + 1}, columna ${j + 1} está vacía.`
+                );
+            }
             const numero = Number(valor);
             if (!Number.isFinite(numero)) {
                 throw new Error(`El valor de la fila ${i + 1}, columna ${j + 1} no es numérico.`);
@@ -414,21 +430,24 @@ function tablaCoeficientes(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Coeficientes y razones de incidencia del modelo de conteo
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Término</th>
-                        <th class="px-4 py-3 text-right">B</th>
-                        <th class="px-4 py-3 text-right">EE</th>
-                        <th class="px-4 py-3 text-right">z</th>
-                        <th class="px-4 py-3 text-right">p</th>
-                        <th class="px-4 py-3 text-right">IRR</th>
-                        <th class="px-4 py-3 text-right">IC de la IRR</th>
+                        <th scope="col" class="px-4 py-3 text-left">Término</th>
+                        <th scope="col" class="px-4 py-3 text-right">B</th>
+                        <th scope="col" class="px-4 py-3 text-right">EE</th>
+                        <th scope="col" class="px-4 py-3 text-right">z</th>
+                        <th scope="col" class="px-4 py-3 text-right">p</th>
+                        <th scope="col" class="px-4 py-3 text-right">IRR</th>
+                        <th scope="col" class="px-4 py-3 text-right">IC de la IRR</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${modelo.coeficientes.map((fila) => `
                         <tr>
-                            <td class="px-4 py-3 font-black text-slate-900">${escapar(fila.termino)}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${escapar(fila.termino)}</th>
                             <td class="px-4 py-3 text-right">${formatear(fila.estimacion, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.errorEstandar, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.z, 4)}</td>
@@ -451,13 +470,16 @@ function tablaVif(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnóstico de multicolinealidad mediante tolerancia y VIF
+                </caption>
                 <thead class="bg-slate-100 text-slate-700">
-                    <tr><th class="px-4 py-3 text-left">Predictor</th><th class="px-4 py-3 text-right">Tolerancia</th><th class="px-4 py-3 text-right">VIF</th><th class="px-4 py-3 text-left">Lectura</th></tr>
+                    <tr><th scope="col" class="px-4 py-3 text-left">Predictor</th><th scope="col" class="px-4 py-3 text-right">Tolerancia</th><th scope="col" class="px-4 py-3 text-right">VIF</th><th scope="col" class="px-4 py-3 text-left">Lectura</th></tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${modelo.diagnosticos.vif.map((fila) => `
                         <tr>
-                            <td class="px-4 py-3 font-black">${escapar(fila.variable)}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black">${escapar(fila.variable)}</th>
                             <td class="px-4 py-3 text-right">${formatear(fila.tolerancia, 4)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.vif, 4)}</td>
                             <td class="px-4 py-3">${fila.vif >= 10 ? "Severa" : fila.vif >= 5 ? "Moderada" : "Aceptable"}</td>
@@ -473,15 +495,18 @@ function tablaDiagnosticos(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-[460px]">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnósticos del modelo de conteo por observación
+                </caption>
                 <thead class="bg-slate-950 text-white sticky top-0">
                     <tr>
-                        <th class="px-4 py-3 text-right">Obs.</th>
-                        <th class="px-4 py-3 text-right">Observado</th>
-                        <th class="px-4 py-3 text-right">Ajustado</th>
-                        <th class="px-4 py-3 text-right">Tasa</th>
-                        <th class="px-4 py-3 text-right">Residuo P.</th>
-                        <th class="px-4 py-3 text-right">Leverage</th>
-                        <th class="px-4 py-3 text-right">Cook</th>
+                        <th scope="col" class="px-4 py-3 text-right">Obs.</th>
+                        <th scope="col" class="px-4 py-3 text-right">Observado</th>
+                        <th scope="col" class="px-4 py-3 text-right">Ajustado</th>
+                        <th scope="col" class="px-4 py-3 text-right">Tasa</th>
+                        <th scope="col" class="px-4 py-3 text-right">Residuo P.</th>
+                        <th scope="col" class="px-4 py-3 text-right">Leverage</th>
+                        <th scope="col" class="px-4 py-3 text-right">Cook</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -489,7 +514,7 @@ function tablaDiagnosticos(modelo) {
                         const alerta = Math.abs(fila.residuoPearson) > 2 || fila.distanciaCook > 4 / modelo.n;
                         return `
                             <tr class="${alerta ? "bg-red-50" : ""}">
-                                <td class="px-4 py-3 text-right font-black">${fila.observacion}</td>
+                                <th scope="row" class="px-4 py-3 text-right font-black">${fila.observacion}</th>
                                 <td class="px-4 py-3 text-right">${fila.observado}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.ajustado, 5)}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.tasaAjustada, 5)}</td>
@@ -547,7 +572,9 @@ function formularioPrediccion(modelo) {
 
 function crearVistaResultados(resultado, metadatos) {
     const modelo = resultado.seleccionado;
-    const significativo = modelo.pruebaGlobal.p !== null && modelo.pruebaGlobal.p < 0.05;
+    const significativo =
+        modelo.pruebaGlobal.p !== null &&
+        modelo.pruebaGlobal.p < (modelo.alfa ?? 0.05);
 
     return `
         <div class="rounded-3xl bg-slate-950 text-white p-6 md:p-9 shadow-2xl">
@@ -557,7 +584,7 @@ function crearVistaResultados(resultado, metadatos) {
                     <h2 class="text-3xl md:text-4xl font-black mb-3">${nombreModelo(modelo)}</h2>
                     <p class="text-slate-200 leading-relaxed max-w-4xl">${escapar(resultado.comparacion.criterioSeleccion)}</p>
                 </div>
-                <span class="inline-flex self-start rounded-2xl px-5 py-3 font-black ${significativo ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30" : "bg-amber-500/20 text-amber-200 border border-amber-400/30"}">${significativo ? "Modelo global significativo" : "Modelo global no significativo al 5 %"}</span>
+                <span class="inline-flex self-start rounded-2xl px-5 py-3 font-black ${significativo ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30" : "bg-amber-500/20 text-amber-200 border border-amber-400/30"}">${significativo ? "Modelo global significativo" : `Modelo global no significativo con α = ${(modelo.alfa ?? 0.05).toFixed(3)}`}</span>
             </div>
             <div class="flex flex-wrap gap-3 mt-7">
                 <button data-action="exportar-csv" type="button" class="rounded-xl bg-white text-slate-950 px-5 py-3 font-black hover:bg-slate-100">Exportar CSV</button>

@@ -159,7 +159,7 @@ function crearTarjetaModelo({
             borde: "border-amber-200",
             fondo: "bg-amber-50",
             etiqueta: "text-amber-700",
-            boton: "bg-amber-600 hover:bg-amber-700",
+            boton: "bg-amber-700 hover:bg-amber-800",
             icono: "bg-amber-100 text-amber-700 border-amber-200"
         },
         indigo: {

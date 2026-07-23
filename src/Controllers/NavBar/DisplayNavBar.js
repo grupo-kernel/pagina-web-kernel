@@ -19,10 +19,7 @@ export function DisplayNavBar(iconoMenu, navBar) {
     consultaEscritorio.addEventListener("change", () => {
         sincronizarMenuConViewport(navBar);
     });
-
-    document.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape" || navBar.classList.contains("hidden")) return;
-        cerrarMenuMovil(navBar);
-        iconoMenu.focus?.();
+    window.addEventListener("hashchange", () => {
+        cerrarMenuMovil(navBar, { restaurarFoco: false });
     });
 }

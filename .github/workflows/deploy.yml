@@ -3,11 +3,19 @@ name: Deploy Vite App to GitHub Pages
 on:
   push:
     branches:
-      - El-Kernel-2.0   
+      - El-Kernel-2.0
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -17,9 +25,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --no-audit --no-fund
+
+      - name: Validate calculators, methodology and protected routes
+        run: npm run test:all
 
       - name: Build Tailwind CSS
         run: npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css
@@ -27,9 +39,13 @@ jobs:
       - name: Build project (Vite)
         run: npm run build
 
+      - name: Validate generated route chunks
+        run: npm run test:dist
+
       - name: Deploy to GitHub Pages (gh-pages)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          keep_files: true
           cname: www.grupoelkernel.com

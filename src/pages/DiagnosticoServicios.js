@@ -158,7 +158,7 @@ export function DiagnosticoServicios() {
                         <div class="mb-5 flex items-center gap-3">
                             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[#0f5b5d] ring-1 ring-emerald-200">${iconoLaboratorio("bx-group", "text-xl")}</span>
                             <div>
-                                <p class="text-xs font-black uppercase tracking-widest text-[#b37a2a]">Paso 1</p>
+                                <p class="text-xs font-black uppercase tracking-widest text-[#805615]">Paso 1</p>
                                 <h2 id="titulo-identificacion-diagnostico" class="text-2xl font-black text-slate-950">Identificación y contacto</h2>
                             </div>
                         </div>
@@ -182,7 +182,7 @@ export function DiagnosticoServicios() {
                         <div class="mb-5 flex items-center gap-3">
                             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-[#9a671d] ring-1 ring-amber-200">${iconoLaboratorio("bx-check-shield", "text-xl")}</span>
                             <div>
-                                <p class="text-xs font-black uppercase tracking-widest text-[#b37a2a]">Paso 2</p>
+                                <p class="text-xs font-black uppercase tracking-widest text-[#805615]">Paso 2</p>
                                 <h2 id="titulo-necesidad-diagnostico" class="text-2xl font-black text-slate-950">Necesidad y alcance preliminar</h2>
                             </div>
                         </div>
@@ -264,7 +264,7 @@ export function DiagnosticoServicios() {
 
                 <aside class="space-y-5">
                     <section class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                        <p class="text-xs font-black uppercase tracking-widest text-[#b37a2a]">Qué ocurrirá después</p>
+                        <p class="text-xs font-black uppercase tracking-widest text-[#805615]">Qué ocurrirá después</p>
                         <ol class="mt-5 space-y-4">
                             ${[
                                 "Revisión inicial de la necesidad y la información enviada.",

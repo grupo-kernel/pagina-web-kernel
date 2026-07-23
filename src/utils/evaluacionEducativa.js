@@ -250,14 +250,55 @@ function gruposExtremos(totales, proporcion) {
             Math.floor(n * proporcion)
         )
     );
-    const orden = totales
-        .map((total, indice) => ({ total, indice }))
-        .sort((a, b) => b.total - a.total || a.indice - b.indice);
+    const construirPesos = (descendente) => {
+        const niveles = new Map();
+
+        totales.forEach((total, indice) => {
+            if (!niveles.has(total)) {
+                niveles.set(total, []);
+            }
+            niveles.get(total).push(indice);
+        });
+
+        const puntuaciones = [...niveles.keys()].sort(
+            (a, b) => descendente ? b - a : a - b
+        );
+        const pesos = Array(n).fill(0);
+        let restantes = tamano;
+        let huboAjuste = false;
+
+        for (const puntuacion of puntuaciones) {
+            if (restantes <= EPS) break;
+            const indices = niveles.get(puntuacion);
+            const peso = Math.min(1, restantes / indices.length);
+            indices.forEach((indice) => {
+                pesos[indice] = peso;
+            });
+            if (peso < 1) huboAjuste = true;
+            restantes -= peso * indices.length;
+        }
+
+        return {
+            pesos,
+            indices: pesos
+                .map((peso, indice) => ({ peso, indice }))
+                .filter((fila) => fila.peso > EPS)
+                .map((fila) => fila.indice),
+            huboAjuste
+        };
+    };
+    const superior = construirPesos(true);
+    const inferior = construirPesos(false);
 
     return {
         tamano,
-        superiores: orden.slice(0, tamano).map((fila) => fila.indice),
-        inferiores: orden.slice(-tamano).map((fila) => fila.indice)
+        superiores: superior.indices,
+        inferiores: inferior.indices,
+        pesosSuperiores: superior.pesos,
+        pesosInferiores: inferior.pesos,
+        empatesAjustados:
+            superior.huboAjuste ||
+            inferior.huboAjuste
     };
 }
 
@@ -266,7 +307,9 @@ function analizarDistractores({
     clave,
     nombres,
     superiores,
-    inferiores
+    inferiores,
+    pesosSuperiores,
+    pesosInferiores
 }) {
     return nombres.map((nombre, indiceItem) => {
         const opciones = [...new Set([
@@ -278,18 +321,40 @@ function analizarDistractores({
             const seleccionTotal = respuestas.filter(
                 (fila) => fila[indiceItem] === opcion
             ).length;
-            const seleccionSuperior = superiores.filter(
-                (indice) => respuestas[indice][indiceItem] === opcion
-            ).length;
-            const seleccionInferior = inferiores.filter(
-                (indice) => respuestas[indice][indiceItem] === opcion
-            ).length;
+            const seleccionSuperior = superiores.reduce(
+                (total, indice) =>
+                    total +
+                    (
+                        respuestas[indice][indiceItem] === opcion
+                            ? pesosSuperiores[indice]
+                            : 0
+                    ),
+                0
+            );
+            const seleccionInferior = inferiores.reduce(
+                (total, indice) =>
+                    total +
+                    (
+                        respuestas[indice][indiceItem] === opcion
+                            ? pesosInferiores[indice]
+                            : 0
+                    ),
+                0
+            );
             const esClave = opcion === clave[indiceItem];
             const proporcionTotal = seleccionTotal / respuestas.length;
+            const totalSuperior = pesosSuperiores.reduce(
+                (total, peso) => total + peso,
+                0
+            );
+            const totalInferior = pesosInferiores.reduce(
+                (total, peso) => total + peso,
+                0
+            );
             const proporcionSuperior = seleccionSuperior /
-                Math.max(superiores.length, 1);
+                Math.max(totalSuperior, 1);
             const proporcionInferior = seleccionInferior /
-                Math.max(inferiores.length, 1);
+                Math.max(totalInferior, 1);
             const funcional = esClave
                 ? null
                 : proporcionTotal >= 0.05 &&
@@ -416,7 +481,9 @@ export function analizarEvaluacionEducativa({
             clave: validacion.claveNormalizada,
             nombres: validacion.nombres,
             superiores: grupos.superiores,
-            inferiores: grupos.inferiores
+            inferiores: grupos.inferiores,
+            pesosSuperiores: grupos.pesosSuperiores,
+            pesosInferiores: grupos.pesosInferiores
         })
         : validacion.nombres.map((nombre, indice) => ({
             indice: indice + 1,
@@ -438,12 +505,26 @@ export function analizarEvaluacionEducativa({
             )
         );
         const puntoBiserial = correlacion(columna, totalSinItem);
-        const aciertosSuperiores = grupos.superiores.filter(
-            (fila) => matriz[fila][indice] === 1
-        ).length;
-        const aciertosInferiores = grupos.inferiores.filter(
-            (fila) => matriz[fila][indice] === 1
-        ).length;
+        const aciertosSuperiores = grupos.superiores.reduce(
+            (total, fila) =>
+                total +
+                (
+                    matriz[fila][indice] === 1
+                        ? grupos.pesosSuperiores[fila]
+                        : 0
+                ),
+            0
+        );
+        const aciertosInferiores = grupos.inferiores.reduce(
+            (total, fila) =>
+                total +
+                (
+                    matriz[fila][indice] === 1
+                        ? grupos.pesosInferiores[fila]
+                        : 0
+                ),
+            0
+        );
         const proporcionSuperior = aciertosSuperiores / grupos.tamano;
         const proporcionInferior = aciertosInferiores / grupos.tamano;
         const discriminacion = proporcionSuperior - proporcionInferior;
@@ -509,6 +590,11 @@ export function analizarEvaluacionEducativa({
             "Cada grupo extremo contiene menos de cinco estudiantes; interprete la discriminación con mucha cautela."
         );
     }
+    if (grupos.empatesAjustados) {
+        advertencias.push(
+            "Los empates en los puntos de corte de los grupos extremos se distribuyeron mediante ponderación fraccionaria para evitar que el orden de las filas altere la discriminación."
+        );
+    }
     if (filasExcluidas > 0) {
         advertencias.push(
             `Se excluyeron ${filasExcluidas} filas por respuestas ausentes o incompletas.`
@@ -559,7 +645,19 @@ export function analizarEvaluacionEducativa({
             ),
             idsInferiores: grupos.inferiores.map(
                 (indice) => validacion.ids[indice]
-            )
+            ),
+            ponderacionesSuperiores:
+                grupos.superiores.map((indice) => ({
+                    id: validacion.ids[indice],
+                    peso: grupos.pesosSuperiores[indice]
+                })),
+            ponderacionesInferiores:
+                grupos.inferiores.map((indice) => ({
+                    id: validacion.ids[indice],
+                    peso: grupos.pesosInferiores[indice]
+                })),
+            empatesAjustados:
+                grupos.empatesAjustados
         },
         matrizPuntuada: matriz,
         puntuaciones,

@@ -1,4 +1,4 @@
-import heroQuienes from "../../assets/QuienesSomos.png";
+import heroQuienes from "../../assets/QuienesSomos.webp";
 
 export function createHero() {
 

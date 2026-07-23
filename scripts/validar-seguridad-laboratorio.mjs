@@ -13,6 +13,14 @@ const loginSource = await readFile(
   new URL("../src/auth/login.js", import.meta.url),
   "utf8"
 );
+const guardSource = await readFile(
+  new URL("../src/auth/authGuard.js", import.meta.url),
+  "utf8"
+);
+const laboratorioSource = await readFile(
+  new URL("../src/pages/LaboratorioKernel.js", import.meta.url),
+  "utf8"
+);
 
 const bloqueProtegido = rutaSource.match(
   /const RUTAS_PROTEGIDAS = new Set\(\[([\s\S]*?)\]\);/
@@ -97,6 +105,51 @@ assert.match(
   rutaSource,
   /function crearCargador\(importador, exportacion, mensaje\)/,
   "Las rutas diferidas deben utilizar el cargador seguro y verificable."
+);
+assert.match(
+  rutaSource,
+  /importarConReintento/,
+  "La carga diferida debe recuperarse de fallos transitorios."
+);
+assert.match(
+  rutaSource,
+  /esErrorAutenticacionTransitorio/,
+  "La verificación de sesión debe reintentarse una vez ante fallos transitorios."
+);
+assert.match(
+  rutaSource,
+  /navegacionActiva/,
+  "El enrutador debe invalidar las navegaciones asíncronas obsoletas."
+);
+assert.match(
+  rutaSource,
+  /aria-busy/,
+  "El contenido principal debe comunicar su estado de carga."
+);
+assert.match(
+  rutaSource,
+  /import\("\.\.\/auth\/authGuard\.js"\)/,
+  "Firebase debe cargarse solamente al abrir una ruta protegida."
+);
+assert.doesNotMatch(
+  rutaSource,
+  /^import\s+.*authGuard/m,
+  "El guard de Firebase no debe formar parte de la carga pública inicial."
+);
+assert.doesNotMatch(
+  laboratorioSource,
+  /esperarAutenticacion|crearLogin/,
+  "El Laboratorio no debe repetir el guard que ya ejecuta el enrutador."
+);
+assert.match(
+  guardSource,
+  /kernel\/auth-timeout/,
+  "La espera de Firebase debe terminar de forma controlada si la red no responde."
+);
+assert.match(
+  guardSource,
+  /promesaEstadoInicial/,
+  "La inicialización de Firebase debe compartirse entre navegaciones concurrentes."
 );
 
 const modulosDiferidos = [

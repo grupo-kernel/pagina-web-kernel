@@ -1,4 +1,4 @@
-import kernelLogo from "../../assets/ElKernel.png";
+import kernelLogo from "../../assets/ElKernel.webp";
 import { contenidoCards } from "../../data/CardContenido.js";
 import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 import { proyecto } from "../../data/proyectoContenido.js";
@@ -67,7 +67,7 @@ function tarjetaLinea(linea, indice) {
         <article class="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl md:p-6">
             <div class="flex items-center justify-between gap-4">
                 <span class="flex h-11 min-w-11 items-center justify-center rounded-xl bg-emerald-50 px-3 text-sm font-black text-[#0f5b5d] ring-1 ring-emerald-200">${String(indice + 1).padStart(2, "0")}</span>
-                <span class="text-xs font-black uppercase tracking-widest text-slate-400">Línea de investigación</span>
+                <span class="text-xs font-black uppercase tracking-widest text-slate-600">Línea de investigación</span>
             </div>
             <h3 class="mt-5 text-xl font-black leading-tight text-slate-950">${escapar(String(linea.title || "").trim())}</h3>
             <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600 md:text-base">${escapar(linea.desarrollo)}</p>
@@ -110,7 +110,7 @@ function bloqueAnalytics() {
         <section class="mx-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:mx-6 md:p-8 lg:mx-8 xl:mx-10" aria-labelledby="titulo-actividad-portada">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Comunidad digital</p>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Comunidad digital</p>
                     <h2 id="titulo-actividad-portada" class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Actividad del sitio</h2>
                 </div>
                 <p id="analytics-actualizado" class="text-sm text-slate-500">Cargando estadísticas…</p>
@@ -217,7 +217,7 @@ export function CrearPortadaKernel2026() {
         <section class="mx-4 sm:mx-6 lg:mx-8 xl:mx-10" aria-labelledby="titulo-lineas-portada">
             <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <p class="text-sm font-black uppercase tracking-[0.18em] text-[#b37a2a]">Base científica</p>
+                    <p class="text-sm font-black uppercase tracking-[0.18em] text-[#805615]">Base científica</p>
                     <h2 id="titulo-lineas-portada" class="mt-2 text-3xl font-black text-slate-950 md:text-5xl">Líneas de investigación destacadas</h2>
                     <p class="mt-3 max-w-3xl text-base leading-relaxed text-slate-600">La portada muestra una selección; la página de investigación conserva las nueve líneas completas.</p>
                 </div>
@@ -232,7 +232,7 @@ export function CrearPortadaKernel2026() {
             <div>
                 <div class="mb-6 flex items-end justify-between gap-4">
                     <div>
-                        <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Proyección científica</p>
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Proyección científica</p>
                         <h2 class="mt-2 text-3xl font-black text-slate-950 md:text-4xl">Propuestas de investigación</h2>
                     </div>
                     <a href="#/proyectos" class="hidden font-black text-[#0f5b5d] hover:text-[#083f40] sm:inline-flex sm:items-center sm:gap-2">Ver proyectos ${iconoLaboratorio("bx-right-arrow-alt", "text-xl")}</a>
@@ -241,7 +241,7 @@ export function CrearPortadaKernel2026() {
             </div>
 
             <aside class="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-8">
-                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Equipo especializado</p>
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Equipo especializado</p>
                 <h2 class="mt-2 text-3xl font-black text-slate-950 md:text-4xl">Conocimiento académico conectado con problemas reales</h2>
                 <p class="mt-4 leading-relaxed text-slate-600">El grupo reúne experiencia en métodos numéricos, EDPs, optimización, álgebra, estadística, educación matemática, diseño curricular y desarrollo de herramientas científicas.</p>
                 <div class="mt-6 grid grid-cols-2 gap-3">

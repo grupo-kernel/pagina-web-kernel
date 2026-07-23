@@ -6,7 +6,16 @@ function validarVector(nombre, valores, minimo = 5) {
         throw new Error(`${nombre} debe contener al menos ${minimo} observaciones.`);
     }
 
-    const numericos = valores.map(Number);
+    const numericos = valores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
     if (!numericos.every(Number.isFinite)) {
         throw new Error(`${nombre} contiene valores no numéricos o no finitos.`);
     }
@@ -332,7 +341,49 @@ function ajustarIrls({
         pesos
     ).covarianza;
 
+    if (
+        !beta.every(Number.isFinite) ||
+        !mu.every(Number.isFinite) ||
+        !varianzas.every(Number.isFinite) ||
+        !covarianza.flat().every(Number.isFinite) ||
+        !Number.isFinite(alpha)
+    ) {
+        throw new Error(
+            "El ajuste produjo resultados no finitos. Revise valores extremos, exposición y escala de los predictores."
+        );
+    }
+
     return { beta, mu, alpha, covarianza, convergio, iteraciones, varianzas };
+}
+
+function estimarAlphaConMediaFija(y, mu) {
+    const logMinimo = Math.log(1e-8);
+    const logMaximo = Math.log(1e4);
+    const razonAurea = (Math.sqrt(5) - 1) / 2;
+    let a = logMinimo;
+    let b = logMaximo;
+    let c = b - razonAurea * (b - a);
+    let d = a + razonAurea * (b - a);
+    let fc = logLikNegativa(y, mu, Math.exp(c));
+    let fd = logLikNegativa(y, mu, Math.exp(d));
+
+    for (let i = 0; i < 100; i += 1) {
+        if (fc > fd) {
+            b = d;
+            d = c;
+            fd = fc;
+            c = b - razonAurea * (b - a);
+            fc = logLikNegativa(y, mu, Math.exp(c));
+        } else {
+            a = c;
+            c = d;
+            fc = fd;
+            d = a + razonAurea * (b - a);
+            fd = logLikNegativa(y, mu, Math.exp(d));
+        }
+    }
+
+    return Math.exp((a + b) / 2);
 }
 
 function calcularVif(predictores, nombres) {
@@ -427,6 +478,7 @@ function ajustarModelo({
     const aic = -2 * logLik + 2 * numeroParametros;
     const bic = -2 * logLik + Math.log(n) * numeroParametros;
     const zCritico = cuantileNormal(0.5 + nivelConfianza / 2);
+    const alfaSignificacion = 1 - nivelConfianza;
     const nombresCoeficientes = [
         ...(incluirIntercepto ? ["Intercepto"] : []),
         ...nombres
@@ -453,14 +505,30 @@ function ajustarModelo({
         };
     });
 
-    const matrizNula = Array.from({ length: n }, () => [1]);
-    const nulo = ajustarIrls({
-        matrizX: matrizNula,
-        y,
-        offset,
-        modelo,
-        alphaInicial: ajuste.alpha
-    });
+    const nulo = incluirIntercepto
+        ? ajustarIrls({
+            matrizX: Array.from({ length: n }, () => [1]),
+            y,
+            offset,
+            modelo,
+            alphaInicial: ajuste.alpha
+        })
+        : (() => {
+            const mu = offset.map((valor) =>
+                Math.exp(
+                    Math.max(
+                        -LIMITE_ETA,
+                        Math.min(LIMITE_ETA, valor)
+                    )
+                )
+            );
+            return {
+                mu,
+                alpha: modelo === "negativa"
+                    ? estimarAlphaConMediaFija(y, mu)
+                    : 0
+            };
+        })();
     const logLikNulo = modelo === "poisson"
         ? logLikPoisson(y, nulo.mu)
         : logLikNegativa(y, nulo.mu, nulo.alpha);
@@ -520,6 +588,8 @@ function ajustarModelo({
         n,
         numeroPredictores: predictores.length,
         incluirIntercepto,
+        nivelConfianza,
+        alfa: alfaSignificacion,
         nombresPredictores: nombres,
         convergencia: {
             convergio: ajuste.convergio,
@@ -575,14 +645,15 @@ function ajustarModelo({
 
 function construirInterpretacion(resultado) {
     const seleccionado = resultado.seleccionado;
+    const alfa = seleccionado.alfa ?? 0.05;
     const nombre = seleccionado.tipoModelo === "poisson"
         ? "regresión de Poisson"
         : "regresión binomial negativa";
     const mensajes = [
         `Se seleccionó ${nombre} para modelar la media del conteo mediante un enlace logarítmico.`,
-        seleccionado.pruebaGlobal.p !== null && seleccionado.pruebaGlobal.p < 0.05
+        seleccionado.pruebaGlobal.p !== null && seleccionado.pruebaGlobal.p < alfa
             ? `El modelo global mejora significativamente al modelo nulo (χ² = ${seleccionado.pruebaGlobal.chiCuadrado.toFixed(4)}, gl = ${seleccionado.pruebaGlobal.gradosLibertad}, p ${seleccionado.pruebaGlobal.p < 0.001 ? "< 0.001" : `= ${seleccionado.pruebaGlobal.p.toFixed(4)}`}).`
-            : "El modelo global no alcanza significación estadística al 5 %.",
+            : `El modelo global no alcanza significación estadística con α = ${alfa.toFixed(3)}.`,
         `El índice de dispersión de Pearson es ${seleccionado.dispersion.indice.toFixed(3)}.`,
         seleccionado.diagnosticos.observacionesInfluyentes.length
             ? `Se identificaron ${seleccionado.diagnosticos.observacionesInfluyentes.length} observaciones potencialmente influyentes.`
@@ -673,6 +744,8 @@ export function ajustarRegresionConteo({
     const resultado = {
         tipoAnalisis: "regresion-conteo",
         modeloSolicitado: modelo,
+        nivelConfianza,
+        alfa: 1 - nivelConfianza,
         seleccionado,
         comparacion: {
             poisson: {
@@ -712,8 +785,25 @@ export function predecirRegresionConteo(
         throw new Error(`Debe proporcionar ${modelo.numeroPredictores} valores predictores.`);
     }
 
-    const valores = nuevosPredictores.map(Number);
-    const exp = Number(exposicion);
+    const valores = nuevosPredictores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
+    const exp =
+        exposicion === null ||
+        exposicion === undefined ||
+        (
+            typeof exposicion === "string" &&
+            exposicion.trim() === ""
+        )
+            ? NaN
+            : Number(exposicion);
     if (!valores.every(Number.isFinite) || !(exp > 0)) {
         throw new Error("Los predictores deben ser numéricos y la exposición debe ser positiva.");
     }

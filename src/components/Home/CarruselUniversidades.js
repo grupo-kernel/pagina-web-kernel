@@ -182,7 +182,7 @@ export function CrearCarruselUniversidades() {
 
             <div class="flex min-h-full flex-col p-5 sm:p-6 lg:p-8">
                 <div class="flex-1">
-                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Institución vinculada</p>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Institución vinculada</p>
                     <p data-universidad-sigla class="mt-5 text-4xl font-black leading-none tracking-tight text-[#0f5b5d] sm:text-5xl">
                         ${escapar(primera.sigla)}
                     </p>

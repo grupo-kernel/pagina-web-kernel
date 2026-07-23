@@ -1,4 +1,4 @@
-import kernelLogo from "../../assets/ElKernel.png";
+import kernelLogo from "../../assets/ElKernel.webp";
 
 function tamanoClase(compacto) {
     return compacto

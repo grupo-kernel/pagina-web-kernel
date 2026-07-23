@@ -745,6 +745,50 @@ export function pruebaSpearman(
     };
 }
 
+function valorPExactoKendallSinEmpates(n, sObservado) {
+    const maximoInversiones = n * (n - 1) / 2;
+    let distribucion = [1];
+
+    for (let cantidad = 2; cantidad <= n; cantidad += 1) {
+        const maximoActual =
+            cantidad * (cantidad - 1) / 2;
+        const siguiente =
+            Array(maximoActual + 1).fill(0);
+
+        for (
+            let inversiones = 0;
+            inversiones < distribucion.length;
+            inversiones += 1
+        ) {
+            for (
+                let nuevas = 0;
+                nuevas < cantidad;
+                nuevas += 1
+            ) {
+                siguiente[inversiones + nuevas] +=
+                    distribucion[inversiones];
+            }
+        }
+        distribucion = siguiente;
+    }
+
+    const umbral = Math.abs(sObservado);
+    let masaExtrema = 0;
+    let masaTotal = 0;
+
+    distribucion.forEach((cantidad, inversiones) => {
+        const s = maximoInversiones - 2 * inversiones;
+        masaTotal += cantidad;
+        if (Math.abs(s) >= umbral) {
+            masaExtrema += cantidad;
+        }
+    });
+
+    return limitarProbabilidad(
+        masaExtrema / masaTotal
+    );
+}
+
 export function pruebaKendall(
     x,
     y,
@@ -939,8 +983,16 @@ export function pruebaKendall(
     const z = errorEstandarS === 0
         ? 0
         : s / errorEstandarS;
-    const valorP =
-        limitarProbabilidad(
+    const usarExacta =
+        tamaniosX.length === 0 &&
+        tamaniosY.length === 0 &&
+        datos.n <= 50;
+    const valorP = usarExacta
+        ? valorPExactoKendallSinEmpates(
+            datos.n,
+            s
+        )
+        : limitarProbabilidad(
             2 *
             (
                 1 -
@@ -983,8 +1035,8 @@ export function pruebaKendall(
             valor: tauB
         },
         estadistico: {
-            simbolo: "z",
-            valor: z
+            simbolo: usarExacta ? "S" : "z",
+            valor: usarExacta ? s : z
         },
         gradosLibertad: null,
         valorP,
@@ -1031,7 +1083,9 @@ export function pruebaKendall(
             s,
             varianzaS,
             aproximacionInferencial:
-                "Aproximación normal bilateral con corrección de la varianza por empates."
+                usarExacta
+                    ? "Distribución exacta bilateral de Kendall sin empates."
+                    : "Aproximación normal bilateral con corrección de la varianza por empates."
         },
         diagnosticos: [
             "Tau-b resulta especialmente útil con escalas ordinales y numerosos empates.",

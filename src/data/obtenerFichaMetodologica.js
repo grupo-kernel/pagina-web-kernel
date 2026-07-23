@@ -25,9 +25,16 @@ import {
 import {
     fichasMetodologicasTamanoMuestra
 } from "./fichasMetodologicasTamanoMuestra.js";
+import {
+    fichasMetodologicasComplementarias
+} from "./fichasMetodologicasComplementarias.js";
+import {
+    obtenerMetadatosFichaMetodologica
+} from "./metadatosFichasMetodologicas.js";
 
 export function obtenerFichaMetodologica(id) {
-    return (
+    const ficha = (
+        fichasMetodologicasComplementarias[id] ||
         fichasMetodologicasTamanoMuestra[id] ||
         fichasMetodologicasEvaluacionEducativa[id] ||
         fichasMetodologicasFiabilidad[id] ||
@@ -38,4 +45,11 @@ export function obtenerFichaMetodologica(id) {
         fichasMetodologicasRelacionadas[id] ||
         obtenerFichaBase(id)
     );
+
+    if (!ficha) return undefined;
+
+    return {
+        ...ficha,
+        ...(obtenerMetadatosFichaMetodologica(id) || {})
+    };
 }

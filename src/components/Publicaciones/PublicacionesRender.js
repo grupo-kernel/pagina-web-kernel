@@ -85,7 +85,7 @@ export function renderDetallePublicaciones(profesor) {
             <article class="mb-5 rounded-3xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl md:p-6">
                 <div class="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#b37a2a]">Revista científica</p>
+                        <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#805615]">Revista científica</p>
                         <h3 class="mt-1 text-xl font-black leading-tight text-[#071820]">${safeText(revista)}</h3>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">${safeText(datos.descripcion)}</p>
                     </div>
@@ -120,7 +120,7 @@ export function renderDetallePublicaciones(profesor) {
                     <img src="${profesor.img}" alt="${safeText(nombre)}" class="hidden h-16 w-16 rounded-2xl border-2 border-emerald-300 object-cover shadow-lg sm:block">
                     <div>
                         <p class="text-xs font-black uppercase tracking-[0.18em] text-[#efc86f]">Producción científica por investigador</p>
-                        <h2 class="mt-1 text-xl font-black md:text-2xl">${safeText(nombre)}</h2>
+                        <h2 id="titulo-detalle-publicaciones" class="mt-1 text-xl font-black md:text-2xl">${safeText(nombre)}</h2>
                         ${profesor.area ? `<p class="mt-2 text-sm leading-relaxed text-slate-300">${safeText(profesor.area)}</p>` : ""}
                     </div>
                 </div>

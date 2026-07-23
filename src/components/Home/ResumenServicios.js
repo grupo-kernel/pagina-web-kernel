@@ -111,7 +111,7 @@ export function CrearResumenServicios() {
         <div class="px-5 py-10 md:px-8 md:py-14 xl:px-10">
             <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
                 <div>
-                    <p class="text-sm font-black uppercase tracking-[0.18em] text-[#b37a2a]">Servicios profesionales y académicos</p>
+                    <p class="text-sm font-black uppercase tracking-[0.18em] text-[#805615]">Servicios profesionales y académicos</p>
                     <h2 id="titulo-servicios-portada" class="mt-3 max-w-4xl text-3xl font-black leading-tight text-slate-950 md:text-5xl">Capacidades organizadas para resolver necesidades concretas</h2>
                     <p class="mt-5 max-w-3xl text-base leading-relaxed text-slate-600 md:text-lg">La portada presenta las capacidades principales. El catálogo completo reúne 20 áreas con alcance técnico, componentes, entregables, modalidades y principios de trabajo.</p>
                 </div>

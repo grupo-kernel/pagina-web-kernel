@@ -364,6 +364,24 @@ export function CalculadoraTresOMasMedicionesRelacionadas() {
         }
     );
 
+    section.addEventListener("input", (event) => {
+        const campo = event.target.closest(
+            '#formulario-mediciones-relacionadas [data-campo="valores"]'
+        );
+
+        if (!campo) {
+            return;
+        }
+
+        const tarjeta = campo.closest(
+            "[data-medicion]"
+        );
+
+        if (tarjeta) {
+            actualizarContadorTarjeta(tarjeta);
+        }
+    });
+
     return section;
 }
 
@@ -578,24 +596,6 @@ function actualizarContadorTarjeta(tarjeta) {
         : `${cantidad} valores`;
 }
 
-document.addEventListener("input", (event) => {
-    const campo = event.target.closest(
-        '#formulario-mediciones-relacionadas [data-campo="valores"]'
-    );
-
-    if (!campo) {
-        return;
-    }
-
-    const tarjeta = campo.closest(
-        "[data-medicion]"
-    );
-
-    if (tarjeta) {
-        actualizarContadorTarjeta(tarjeta);
-    }
-});
-
 function mostrarError(elemento, mensaje) {
     elemento.textContent = mensaje;
     elemento.classList.remove("hidden");
@@ -751,18 +751,21 @@ function crearTablaDescriptivos(resultado) {
             </header>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[760px] text-sm">
+                    <caption class="sr-only">
+                        Estadísticos descriptivos de cada medición relacionada
+                    </caption>
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <th class="text-left px-5 py-3">Medición</th>
-                            <th class="text-right px-5 py-3">n</th>
-                            <th class="text-right px-5 py-3">Media</th>
-                            <th class="text-right px-5 py-3">Mediana</th>
-                            <th class="text-right px-5 py-3">DE</th>
-                            <th class="text-right px-5 py-3">Mínimo</th>
-                            <th class="text-right px-5 py-3">Máximo</th>
+                            <th scope="col" class="text-left px-5 py-3">Medición</th>
+                            <th scope="col" class="text-right px-5 py-3">n</th>
+                            <th scope="col" class="text-right px-5 py-3">Media</th>
+                            <th scope="col" class="text-right px-5 py-3">Mediana</th>
+                            <th scope="col" class="text-right px-5 py-3">DE</th>
+                            <th scope="col" class="text-right px-5 py-3">Mínimo</th>
+                            <th scope="col" class="text-right px-5 py-3">Máximo</th>
                             ${
                                 resultado.id === "friedman"
-                                    ? '<th class="text-right px-5 py-3">Rango medio</th>'
+                                    ? '<th scope="col" class="text-right px-5 py-3">Rango medio</th>'
                                     : ""
                             }
                         </tr>
@@ -772,7 +775,7 @@ function crearTablaDescriptivos(resultado) {
                             .map(
                                 (medicion) => `
                                     <tr>
-                                        <td class="px-5 py-3 font-bold text-slate-900">${medicion.nombre}</td>
+                                        <th scope="row" class="px-5 py-3 text-left font-bold text-slate-900">${medicion.nombre}</th>
                                         <td class="px-5 py-3 text-right">${medicion.n}</td>
                                         <td class="px-5 py-3 text-right">${formatearNumero(medicion.media)}</td>
                                         <td class="px-5 py-3 text-right">${formatearNumero(medicion.mediana)}</td>
@@ -903,13 +906,16 @@ function crearPostHoc(postHoc) {
             </header>
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[860px] text-sm">
+                    <caption class="sr-only">
+                        Comparaciones por pares entre mediciones con ajuste de Holm
+                    </caption>
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <th class="text-left px-5 py-3">Comparación</th>
-                            <th class="text-right px-5 py-3">Estadístico</th>
-                            <th class="text-right px-5 py-3">p sin ajustar</th>
-                            <th class="text-right px-5 py-3">p Holm</th>
-                            <th class="text-center px-5 py-3">Conclusión</th>
+                            <th scope="col" class="text-left px-5 py-3">Comparación</th>
+                            <th scope="col" class="text-right px-5 py-3">Estadístico</th>
+                            <th scope="col" class="text-right px-5 py-3">p sin ajustar</th>
+                            <th scope="col" class="text-right px-5 py-3">p Holm</th>
+                            <th scope="col" class="text-center px-5 py-3">Conclusión</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200">
@@ -925,9 +931,9 @@ function crearPostHoc(postHoc) {
 
                                     return `
                                         <tr>
-                                            <td class="px-5 py-3 font-bold text-slate-900">
+                                            <th scope="row" class="px-5 py-3 text-left font-bold text-slate-900">
                                                 ${comparacion.medicion1} vs. ${comparacion.medicion2}
-                                            </td>
+                                            </th>
                                             <td class="px-5 py-3 text-right">
                                                 ${formatearNumero(estadistico)}
                                             </td>

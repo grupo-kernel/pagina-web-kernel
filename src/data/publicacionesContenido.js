@@ -1,9 +1,9 @@
 // Imágenes
-import sepulveda from "../assets/sep.png";
-import antmel from "../assets/ant.png";
-import marc from "../assets/marc.png";
-import jose from "../assets/jos.png";
-import natanael from "../assets/nat.png";
+import sepulveda from "../assets/sep.webp";
+import antmel from "../assets/ant.webp";
+import marc from "../assets/marc.webp";
+import jose from "../assets/jos.webp";
+import natanael from "../assets/nat.webp";
 
 export const publicacionesContenido = [
 

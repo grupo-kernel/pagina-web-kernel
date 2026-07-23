@@ -7,6 +7,10 @@ import { fichasMetodologicasRegresion } from "./fichasMetodologicasRegresion.js"
 import { fichasMetodologicasFiabilidad } from "./fichasMetodologicasFiabilidad.js";
 import { fichasMetodologicasEvaluacionEducativa } from "./fichasMetodologicasEvaluacionEducativa.js";
 import { fichasMetodologicasTamanoMuestra } from "./fichasMetodologicasTamanoMuestra.js";
+import { fichasMetodologicasComplementarias } from "./fichasMetodologicasComplementarias.js";
+import {
+    obtenerMetadatosFichaMetodologica
+} from "./metadatosFichasMetodologicas.js";
 
 const COLECCIONES = [
     fichasMetodologicas,
@@ -17,7 +21,8 @@ const COLECCIONES = [
     fichasMetodologicasRegresion,
     fichasMetodologicasFiabilidad,
     fichasMetodologicasEvaluacionEducativa,
-    fichasMetodologicasTamanoMuestra
+    fichasMetodologicasTamanoMuestra,
+    fichasMetodologicasComplementarias
 ];
 
 function textoNormalizado(texto) {
@@ -27,59 +32,19 @@ function textoNormalizado(texto) {
         .toLowerCase();
 }
 
-function categoriaDe(id, ficha) {
-    const texto = textoNormalizado(`${id} ${ficha.nombre}`);
-
-    if (texto.includes("tamano de muestra") || texto.includes("potencia estadistica")) return "Planificación muestral";
-    if (texto.includes("regresion")) return "Regresión";
-    if (texto.includes("fiabilidad") || texto.includes("cronbach") || texto.includes("omega")) return "Instrumentos";
-    if (texto.includes("evaluacion educativa") || texto.includes("analisis clasico") || texto.includes("dificultad")) return "Evaluación educativa";
-    if (texto.includes("pearson") || texto.includes("spearman") || texto.includes("kendall") || texto.includes("correlacion")) return "Correlación";
-    if (texto.includes("chi-cuadrado") || texto.includes("fisher") || texto.includes("cramer") || texto.includes("categorica")) return "Asociación categórica";
-    if (texto.includes("anova") || texto.includes("kruskal") || texto.includes("friedman") || texto.includes("varios grupos")) return "Tres o más grupos";
-    if (texto.includes("t de") || texto.includes("mann") || texto.includes("wilcoxon") || texto.includes("dos grupos") || texto.includes("pareadas")) return "Dos grupos";
-    return "Otros procedimientos";
-}
-
-function tipoDe(id, ficha) {
-    const texto = textoNormalizado(`${id} ${ficha.nombre} ${(ficha.alternativas || []).join(" ")}`);
-    const noParametrica = ["mann", "wilcoxon", "kruskal", "friedman", "spearman", "kendall", "fisher"].some((termino) => texto.includes(termino));
-    const psicometrica = texto.includes("fiabilidad") || texto.includes("evaluacion educativa");
-    const planificacion = texto.includes("tamano de muestra") || texto.includes("potencia estadistica");
-
-    if (psicometrica) return "Psicométrica";
-    if (planificacion) return "Planificación";
-    return noParametrica ? "No paramétrica" : "Paramétrica o modelización";
-}
-
-function rutaDe(id, ficha) {
-    const texto = textoNormalizado(`${id} ${ficha.nombre}`);
-
-    if (texto.includes("tamano de muestra") || texto.includes("potencia estadistica")) return "calculadoraTamanoMuestraPotencia";
-    if (texto.includes("fiabilidad") || texto.includes("cronbach") || texto.includes("omega")) return "calculadoraFiabilidadCuestionarios";
-    if (texto.includes("evaluacion educativa") || texto.includes("analisis clasico")) return "calculadoraEvaluacionEducativa";
-    if (texto.includes("regresion logistica")) return "calculadoraRegresionLogistica";
-    if (texto.includes("regresion de poisson") || texto.includes("binomial negativa")) return "calculadoraRegresionConteo";
-    if (texto.includes("regresion lineal")) return "calculadoraRegresion";
-    if (texto.includes("pearson") || texto.includes("spearman") || texto.includes("kendall")) return "calculadoraRelacionVariables";
-    if (texto.includes("chi-cuadrado") || texto.includes("fisher") || texto.includes("cramer")) return "calculadoraAsociacionCategorica";
-    if (texto.includes("anova de medidas repetidas") || texto.includes("friedman") || texto.includes("mediciones relacionadas")) return "calculadoraTresOMasMedicionesRelacionadas";
-    if (texto.includes("anova") || texto.includes("kruskal")) return "calculadoraTresOMasGrupos";
-    if (texto.includes("pareadas") || texto.includes("wilcoxon") || texto.includes("muestras relacionadas")) return "calculadoraDosMuestrasRelacionadas";
-    if (texto.includes("student") || texto.includes("welch") || texto.includes("mann")) return "calculadoraDosGrupos";
-    return null;
-}
-
 function palabrasClave(id, ficha, categoria, tipo) {
     return textoNormalizado([
         id,
         ficha.nombre,
+        ficha.objetivo,
         ficha.definicion,
         categoria,
         tipo,
         ...(ficha.cuandoUsar || []),
+        ...(ficha.cuandoNoUsar || []),
         ...(ficha.supuestos || []),
-        ...(ficha.alternativas || [])
+        ...(ficha.alternativas || []),
+        ...(ficha.erroresFrecuentes || [])
     ].join(" "));
 }
 
@@ -89,14 +54,17 @@ export function obtenerCatalogoBiblioteca() {
     COLECCIONES.forEach((coleccion) => {
         Object.entries(coleccion || {}).forEach(([id, ficha]) => {
             if (!ficha?.nombre) return;
-            const categoria = categoriaDe(id, ficha);
-            const tipo = tipoDe(id, ficha);
+            const metadatos =
+                obtenerMetadatosFichaMetodologica(id) || {
+                    categoria: "Sin clasificar",
+                    tipo: "Sin clasificar",
+                    ruta: null
+                };
+            const { categoria, tipo } = metadatos;
             mapa.set(id, {
                 id,
                 ...ficha,
-                categoria,
-                tipo,
-                ruta: rutaDe(id, ficha),
+                ...metadatos,
                 palabrasClave: palabrasClave(id, ficha, categoria, tipo)
             });
         });

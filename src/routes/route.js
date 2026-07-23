@@ -11,12 +11,51 @@ import { Contacto } from "../pages/Contacto.js";
 import { herramientas } from "../pages/herramientas.js";
 import { Servicios } from "../pages/Servicios.js";
 import { DiagnosticoServicios } from "../pages/DiagnosticoServicios.js";
-import { esperarAutenticacion } from "../auth/authGuard.js";
-import { crearLogin } from "../auth/login.js";
+
+const RETRASO_REINTENTO_CARGA_MS = 450;
+const CLAVE_RECUPERACION_MODULO = "kernel:recuperacion-modulo";
+let navegacionActiva = 0;
+let promesaAccesoProtegido = null;
+
+function esperar(milisegundos) {
+    return new Promise((resolve) => {
+        window.setTimeout(resolve, milisegundos);
+    });
+}
+
+function esErrorCargaDiferida(error) {
+    const mensaje = String(error?.message || error || "");
+    return /chunkloaderror|failed to fetch dynamically imported module|importing a module script failed|error loading dynamically imported module|networkerror.*module|load failed.*module/i.test(mensaje);
+}
+
+function esErrorAutenticacionTransitorio(error) {
+    return [
+        "kernel/auth-timeout",
+        "auth/network-request-failed"
+    ].includes(error?.code);
+}
+
+async function importarConReintento(importador) {
+    let ultimoError;
+
+    for (let intento = 0; intento < 2; intento += 1) {
+        try {
+            return await importador();
+        } catch (error) {
+            ultimoError = error;
+            if (intento > 0 || !esErrorCargaDiferida(error)) {
+                throw error;
+            }
+            await esperar(RETRASO_REINTENTO_CARGA_MS);
+        }
+    }
+
+    throw ultimoError;
+}
 
 function crearCargador(importador, exportacion, mensaje) {
     return async () => {
-        const modulo = await importador();
+        const modulo = await importarConReintento(importador);
         const fabrica = modulo[exportacion];
 
         if (typeof fabrica !== "function") {
@@ -25,6 +64,23 @@ function crearCargador(importador, exportacion, mensaje) {
 
         return fabrica();
     };
+}
+
+function cargarAccesoProtegido() {
+    if (!promesaAccesoProtegido) {
+        promesaAccesoProtegido = Promise.all([
+            importarConReintento(() => import("../auth/authGuard.js")),
+            importarConReintento(() => import("../auth/login.js"))
+        ]).then(([guard, login]) => ({
+            esperarAutenticacion: guard.esperarAutenticacion,
+            crearLogin: login.crearLogin
+        })).catch((error) => {
+            promesaAccesoProtegido = null;
+            throw error;
+        });
+    }
+
+    return promesaAccesoProtegido;
 }
 
 const cargarLaboratorioKernel = crearCargador(
@@ -185,10 +241,13 @@ export function navigate(route) {
     window.location.hash = `/${route}`;
 }
 
+function obtenerRutaActual() {
+    return window.location.hash.replace("#/", "") || "home";
+}
+
 export function routerInit() {
     const handleRouteChange = () => {
-        const route = window.location.hash.replace("#/", "") || "home";
-        loadRoute(route);
+        loadRoute(obtenerRutaActual());
     };
 
     window.addEventListener("hashchange", handleRouteChange);
@@ -209,17 +268,45 @@ function trackPageView(route, title) {
     previousPageLocation = pageLocation;
 }
 
-function crearVistaLogin() {
+function crearVistaLogin(crearLogin) {
     document.title = "Acceso al Laboratorio | El Kernel";
 
     return crearLogin(() => {
-        window.dispatchEvent(new HashChangeEvent("hashchange"));
+        loadRoute(obtenerRutaActual());
     });
 }
 
-function crearVistaErrorRuta(error) {
+function crearVistaCargando() {
+    const section = document.createElement("section");
+    section.className = "w-full max-w-4xl mx-auto px-4 py-16 md:px-8 font-sans";
+    section.setAttribute("role", "status");
+    section.setAttribute("aria-live", "polite");
+    section.innerHTML = `
+        <div class="rounded-3xl border border-slate-200 bg-white p-7 text-center shadow-lg md:p-10">
+            <div class="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-4 border-slate-200 border-t-[#0f5b5d]" aria-hidden="true"></div>
+            <h1 class="text-2xl font-black text-slate-900">Abriendo la sección…</h1>
+            <p class="mt-2 text-slate-600">Estamos verificando la sesión y preparando el contenido.</p>
+        </div>`;
+    return section;
+}
+
+function mensajeErrorRuta(error) {
+    if (error?.code === "kernel/auth-timeout") {
+        return "La verificación de la sesión tardó más de lo esperado. Compruebe su conexión e inténtelo nuevamente.";
+    }
+
+    if (esErrorCargaDiferida(error)) {
+        return "No fue posible descargar esta sección. Puede tratarse de una interrupción temporal de la conexión.";
+    }
+
+    return "Ocurrió un problema inesperado al preparar esta sección.";
+}
+
+function crearVistaErrorRuta(error, onRetry) {
     const section = document.createElement("section");
     section.className = "w-full max-w-4xl mx-auto px-4 py-12 md:px-8 font-sans";
+    section.setAttribute("role", "alert");
+    section.setAttribute("aria-live", "assertive");
     section.innerHTML = `
         <div class="rounded-3xl border border-red-200 bg-white p-6 md:p-9 shadow-xl">
             <p class="uppercase tracking-widest text-red-700 text-xs font-black mb-2">Error de carga</p>
@@ -234,17 +321,67 @@ function crearVistaErrorRuta(error) {
 
     const mensaje = section.querySelector("[data-mensaje-error-ruta]");
     if (mensaje) {
-        mensaje.textContent = error instanceof Error
-            ? error.message
-            : "Se produjo un error inesperado.";
+        mensaje.textContent = mensajeErrorRuta(error);
     }
 
     section.querySelector("[data-action='reintentar-ruta']")
-        ?.addEventListener("click", () => window.location.reload());
+        ?.addEventListener("click", onRetry);
     section.querySelector("[data-action='volver-portada']")
         ?.addEventListener("click", () => navigate("home"));
 
     return section;
+}
+
+function intentarRecuperacionAutomatica(route, error) {
+    if (!esErrorCargaDiferida(error)) return false;
+
+    try {
+        const registro = JSON.parse(
+            window.sessionStorage.getItem(CLAVE_RECUPERACION_MODULO) || "null"
+        );
+        const ahora = Date.now();
+        const recuperacionReciente = (
+            registro?.route === route &&
+            Number.isFinite(registro?.timestamp) &&
+            ahora - registro.timestamp < 120000
+        );
+
+        if (recuperacionReciente) return false;
+
+        window.sessionStorage.setItem(
+            CLAVE_RECUPERACION_MODULO,
+            JSON.stringify({ route, timestamp: ahora })
+        );
+        window.location.reload();
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function limpiarRecuperacionAutomatica(route) {
+    try {
+        const registro = JSON.parse(
+            window.sessionStorage.getItem(CLAVE_RECUPERACION_MODULO) || "null"
+        );
+        if (registro?.route === route) {
+            window.sessionStorage.removeItem(CLAVE_RECUPERACION_MODULO);
+        }
+    } catch {
+        try {
+            window.sessionStorage.removeItem(CLAVE_RECUPERACION_MODULO);
+        } catch {
+            // El navegador puede bloquear sessionStorage en modo privado.
+        }
+    }
+}
+
+function enfocarTituloPrincipal(contenedor) {
+    const titulo = contenedor.querySelector("h1");
+    if (!titulo) return;
+
+    titulo.setAttribute("tabindex", "-1");
+    titulo.focus({ preventScroll: true });
 }
 
 async function resolverPagina(route, page) {
@@ -252,35 +389,76 @@ async function resolverPagina(route, page) {
         return page.page();
     }
 
+    const {
+        esperarAutenticacion,
+        crearLogin
+    } = await cargarAccesoProtegido();
     const user = await esperarAutenticacion();
-    return user ? page.page() : crearVistaLogin();
+    return user ? page.page() : crearVistaLogin(crearLogin);
 }
 
-async function loadRoute(route) {
+async function loadRoute(route, opciones = {}) {
+    const { intentoAutenticacion = 0 } = opciones;
     const content = document.querySelector("main");
     const page = routes[route];
     if (!content) return;
 
-    content.innerHTML = "";
     if (!page) {
         navigate("home");
         return;
     }
 
+    const idNavegacion = ++navegacionActiva;
     setMainLayout(page.layout);
     document.title = page.title;
+    content.setAttribute("aria-busy", "true");
+    content.replaceChildren(crearVistaCargando());
 
     try {
         const pageElement = await resolverPagina(route, page);
+        if (idNavegacion !== navegacionActiva) return;
+
         if (!(pageElement instanceof Element)) {
             throw new Error("La sección no devolvió un componente válido.");
         }
 
-        content.appendChild(pageElement);
+        content.replaceChildren(pageElement);
+        content.setAttribute("aria-busy", "false");
         window.scrollTo({ top: 0, behavior: "auto" });
+        window.requestAnimationFrame(() => {
+            if (idNavegacion === navegacionActiva) {
+                enfocarTituloPrincipal(content);
+            }
+        });
+        limpiarRecuperacionAutomatica(route);
         trackPageView(route, document.title);
     } catch (error) {
+        if (idNavegacion !== navegacionActiva) return;
+
         console.error(`[Kernel] Error al cargar la ruta ${route}.`, error);
-        content.appendChild(crearVistaErrorRuta(error));
+        if (
+            esErrorAutenticacionTransitorio(error) &&
+            intentoAutenticacion < 1
+        ) {
+            await esperar(650);
+            if (idNavegacion === navegacionActiva) {
+                return loadRoute(route, {
+                    intentoAutenticacion: intentoAutenticacion + 1
+                });
+            }
+            return;
+        }
+
+        if (intentarRecuperacionAutomatica(route, error)) return;
+
+        content.setAttribute("aria-busy", "false");
+        content.replaceChildren(
+            crearVistaErrorRuta(error, () => loadRoute(route))
+        );
+        window.requestAnimationFrame(() => {
+            if (idNavegacion === navegacionActiva) {
+                enfocarTituloPrincipal(content);
+            }
+        });
     }
 }

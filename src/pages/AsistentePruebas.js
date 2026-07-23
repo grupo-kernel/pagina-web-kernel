@@ -6,6 +6,143 @@ import {
     obtenerFichaMetodologica
 } from "../data/obtenerFichaMetodologica.js";
 
+export const PRUEBAS_EJECUTABLES_ASISTENTE = Object.freeze({
+    "t-student-independientes": "student",
+    "t-welch-independientes": "welch",
+    "mann-whitney": "mann-whitney",
+    "t-student-relacionadas": "student-pareada",
+    "wilcoxon-relacionadas": "wilcoxon",
+    "anova-un-factor": "anova-un-factor",
+    "anova-welch": "anova-welch",
+    "kruskal-wallis": "kruskal-wallis",
+    "anova-medidas-repetidas": "anova-medidas-repetidas",
+    friedman: "friedman",
+    pearson: "pearson",
+    "spearman-cuantitativas": "spearman",
+    "spearman-ordinales": "spearman",
+    kendall: "kendall",
+    "punto-biserial": "punto-biserial",
+    "chi-cuadrado-independencia-2x2": "chi-cuadrado-independencia-2x2",
+    "fisher-exacta-2x2": "fisher-exacta-2x2",
+    "chi-cuadrado-independencia-rxc": "chi-cuadrado-independencia-rxc",
+    "fisher-freeman-halton": "fisher-freeman-halton",
+    "chi-cuadrado-independencia-comparacion": "chi-cuadrado-independencia-rxc",
+    "regresion-lineal-simple": "regresion-lineal-simple",
+    "regresion-lineal-multiple": "regresion-lineal-multiple",
+    "regresion-logistica-binaria-simple": "regresion-logistica-binaria-simple",
+    "regresion-logistica-binaria-multiple": "regresion-logistica-binaria-multiple",
+    "regresion-poisson": "regresion-poisson",
+    "regresion-binomial-negativa": "regresion-binomial-negativa",
+    "evaluar-sobredispersion": "evaluar-sobredispersion"
+});
+
+export const DESTINOS_PRUEBAS_ASISTENTE = Object.freeze({
+    student: {
+        almacenamiento: "kernel-prueba-dos-grupos",
+        ruta: "calculadoraDosGrupos"
+    },
+    welch: {
+        almacenamiento: "kernel-prueba-dos-grupos",
+        ruta: "calculadoraDosGrupos"
+    },
+    "mann-whitney": {
+        almacenamiento: "kernel-prueba-dos-grupos",
+        ruta: "calculadoraDosGrupos"
+    },
+    "student-pareada": {
+        almacenamiento: "kernel-prueba-dos-relacionadas",
+        ruta: "calculadoraDosMuestrasRelacionadas"
+    },
+    wilcoxon: {
+        almacenamiento: "kernel-prueba-dos-relacionadas",
+        ruta: "calculadoraDosMuestrasRelacionadas"
+    },
+    "anova-un-factor": {
+        almacenamiento: "kernel-prueba-tres-grupos",
+        ruta: "calculadoraTresOMasGrupos"
+    },
+    "anova-welch": {
+        almacenamiento: "kernel-prueba-tres-grupos",
+        ruta: "calculadoraTresOMasGrupos"
+    },
+    "kruskal-wallis": {
+        almacenamiento: "kernel-prueba-tres-grupos",
+        ruta: "calculadoraTresOMasGrupos"
+    },
+    "anova-medidas-repetidas": {
+        almacenamiento: "kernel-prueba-tres-relacionadas",
+        ruta: "calculadoraTresOMasMedicionesRelacionadas"
+    },
+    friedman: {
+        almacenamiento: "kernel-prueba-tres-relacionadas",
+        ruta: "calculadoraTresOMasMedicionesRelacionadas"
+    },
+    pearson: {
+        almacenamiento: "kernel-prueba-relacion-variables",
+        ruta: "calculadoraRelacionVariables"
+    },
+    spearman: {
+        almacenamiento: "kernel-prueba-relacion-variables",
+        ruta: "calculadoraRelacionVariables"
+    },
+    kendall: {
+        almacenamiento: "kernel-prueba-relacion-variables",
+        ruta: "calculadoraRelacionVariables"
+    },
+    "punto-biserial": {
+        almacenamiento: "kernel-prueba-relacion-variables",
+        ruta: "calculadoraRelacionVariables"
+    },
+    "chi-cuadrado-independencia-2x2": {
+        almacenamiento: "kernel-prueba-asociacion-categorica",
+        ruta: "calculadoraAsociacionCategorica"
+    },
+    "fisher-exacta-2x2": {
+        almacenamiento: "kernel-prueba-asociacion-categorica",
+        ruta: "calculadoraAsociacionCategorica"
+    },
+    "chi-cuadrado-independencia-rxc": {
+        almacenamiento: "kernel-prueba-asociacion-categorica",
+        ruta: "calculadoraAsociacionCategorica"
+    },
+    "fisher-freeman-halton": {
+        almacenamiento: "kernel-prueba-asociacion-categorica",
+        ruta: "calculadoraAsociacionCategorica"
+    },
+    "regresion-lineal-simple": {
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        valor: "simple",
+        ruta: "calculadoraRegresion"
+    },
+    "regresion-lineal-multiple": {
+        almacenamiento: "kernel-tipo-modelo-regresion",
+        valor: "multiple",
+        ruta: "calculadoraRegresion"
+    },
+    "regresion-logistica-binaria-simple": {
+        almacenamiento: null,
+        ruta: "calculadoraRegresionLogistica"
+    },
+    "regresion-logistica-binaria-multiple": {
+        almacenamiento: null,
+        ruta: "calculadoraRegresionLogistica"
+    },
+    "regresion-poisson": {
+        almacenamiento: "kernel-modelo-conteo",
+        valor: "poisson",
+        ruta: "calculadoraRegresionConteo"
+    },
+    "regresion-binomial-negativa": {
+        almacenamiento: "kernel-modelo-conteo",
+        valor: "negativa",
+        ruta: "calculadoraRegresionConteo"
+    },
+    "evaluar-sobredispersion": {
+        almacenamiento: null,
+        ruta: "calculadoraRegresionConteo"
+    }
+});
+
 export function AsistentePruebas() {
     const section = document.createElement("section");
 
@@ -40,10 +177,20 @@ export function AsistentePruebas() {
     `;
 
     const contenedor = section.querySelector("#asistente-pruebas");
+    contenedor.setAttribute("aria-live", "polite");
+    contenedor.setAttribute("aria-atomic", "false");
+
+    const enfocarTitulo = () => {
+        const titulo = contenedor.querySelector("h1");
+        if (!titulo) return;
+        titulo.setAttribute("tabindex", "-1");
+        titulo.focus({ preventScroll: true });
+    };
 
     const mostrar = (html) => {
         contenedor.innerHTML = html;
         window.scrollTo({ top: 0, behavior: "auto" });
+        enfocarTitulo();
     };
 
     const reiniciarEstado = () => {
@@ -126,6 +273,12 @@ export function AsistentePruebas() {
             if (valor === "predecir") {
                 estado.pantalla = "tipo-resultado";
                 mostrar(crearPreguntaTipoResultado());
+                return;
+            }
+
+            if (valor === "instrumento") {
+                estado.pantalla = "tipo-instrumento";
+                mostrar(crearSelectorInstrumentoAsistente());
                 return;
             }
 
@@ -375,6 +528,11 @@ export function AsistentePruebas() {
                 crearPrimeraPregunta()
             ],
 
+            "tipo-instrumento": () => [
+                "objetivo",
+                crearPrimeraPregunta()
+            ],
+
             "numero-predictores": () => [
                 "tipo-resultado",
                 crearPreguntaTipoResultado()
@@ -488,152 +646,33 @@ export function AsistentePruebas() {
         return;
     }
 
-    const destinos = {
-        student: {
-            almacenamiento:
-                "kernel-prueba-dos-grupos",
-            ruta:
-                "calculadoraDosGrupos"
-        },
-
-        welch: {
-            almacenamiento:
-                "kernel-prueba-dos-grupos",
-            ruta:
-                "calculadoraDosGrupos"
-        },
-
-        "mann-whitney": {
-            almacenamiento:
-                "kernel-prueba-dos-grupos",
-            ruta:
-                "calculadoraDosGrupos"
-        },
-
-        "student-pareada": {
-            almacenamiento:
-                "kernel-prueba-dos-relacionadas",
-            ruta:
-                "calculadoraDosMuestrasRelacionadas"
-        },
-
-        wilcoxon: {
-            almacenamiento:
-                "kernel-prueba-dos-relacionadas",
-            ruta:
-                "calculadoraDosMuestrasRelacionadas"
-        },
-
-        "anova-un-factor": {
-            almacenamiento:
-                "kernel-prueba-tres-grupos",
-            ruta:
-                "calculadoraTresOMasGrupos"
-        },
-
-        "anova-welch": {
-            almacenamiento:
-                "kernel-prueba-tres-grupos",
-            ruta:
-                "calculadoraTresOMasGrupos"
-        },
-
-        "kruskal-wallis": {
-    almacenamiento:
-        "kernel-prueba-tres-grupos",
-    ruta:
-        "calculadoraTresOMasGrupos"
-},
-
-"anova-medidas-repetidas": {
-    almacenamiento:
-        "kernel-prueba-tres-relacionadas",
-    ruta:
-        "calculadoraTresOMasMedicionesRelacionadas"
-},
-
-friedman: {
-    almacenamiento:
-        "kernel-prueba-tres-relacionadas",
-    ruta:
-        "calculadoraTresOMasMedicionesRelacionadas"
-},
-
-pearson: {
-    almacenamiento:
-        "kernel-prueba-relacion-variables",
-    ruta:
-        "calculadoraRelacionVariables"
-},
-
-spearman: {
-    almacenamiento:
-        "kernel-prueba-relacion-variables",
-    ruta:
-        "calculadoraRelacionVariables"
-},
-
-kendall: {
-    almacenamiento:
-        "kernel-prueba-relacion-variables",
-    ruta:
-        "calculadoraRelacionVariables"
-},
-
-"punto-biserial": {
-    almacenamiento:
-        "kernel-prueba-relacion-variables",
-    ruta:
-        "calculadoraRelacionVariables"
-},
-
-"chi-cuadrado-independencia-2x2": {
-    almacenamiento:
-        "kernel-prueba-asociacion-categorica",
-    ruta:
-        "calculadoraAsociacionCategorica"
-},
-
-"fisher-exacta-2x2": {
-    almacenamiento:
-        "kernel-prueba-asociacion-categorica",
-    ruta:
-        "calculadoraAsociacionCategorica"
-},
-
-"chi-cuadrado-independencia-rxc": {
-    almacenamiento:
-        "kernel-prueba-asociacion-categorica",
-    ruta:
-        "calculadoraAsociacionCategorica"
-},
-
-"fisher-freeman-halton": {
-    almacenamiento:
-        "kernel-prueba-asociacion-categorica",
-    ruta:
-        "calculadoraAsociacionCategorica"
-}
-        
-    };
-
     const destino =
-        destinos[prueba];
+        DESTINOS_PRUEBAS_ASISTENTE[prueba];
 
     if (!destino) {
         return;
     }
 
-    sessionStorage.setItem(
-        destino.almacenamiento,
-        prueba
-    );
+    if (destino.almacenamiento) {
+        sessionStorage.setItem(
+            destino.almacenamiento,
+            destino.valor || prueba
+        );
+    }
 
     window.location.hash =
         `/${destino.ruta}`;
 
     return;
 }
+
+    if (accion === "abrir-ruta") {
+        const ruta = boton.dataset.ruta;
+        if (ruta) {
+            window.location.hash = `/${ruta}`;
+        }
+        return;
+    }
 
     if (accion === "ver-ficha") {
         const fichaId =
@@ -803,7 +842,7 @@ function crearPantallaInicial() {
 function crearPrimeraPregunta() {
     return crearPantallaPregunta({
         paso: 1,
-        total: 6,
+        total: null,
         tituloPaso: "Objetivo del análisis",
         pregunta:
             "¿Cuál es el objetivo principal de su investigación?",
@@ -1256,8 +1295,9 @@ function crearPantallaPregunta({
     opciones,
     accionVolver = "volver"
 }) {
-    const progreso =
-        Math.round((paso / total) * 100);
+    const progreso = total
+        ? Math.round((paso / total) * 100)
+        : null;
 
     return `
         <section class="rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden">
@@ -1265,7 +1305,9 @@ function crearPantallaPregunta({
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
                         <p class="text-sky-300 uppercase tracking-widest text-xs font-black mb-2">
-                            Paso ${paso} de ${total}
+                            ${total
+                                ? `Paso ${paso} de ${total}`
+                                : "Paso inicial"}
                         </p>
 
                         <h1 class="text-3xl md:text-4xl font-black">
@@ -1273,17 +1315,21 @@ function crearPantallaPregunta({
                         </h1>
                     </div>
 
-                    <span class="inline-flex rounded-full bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">
-                        Progreso: ${progreso} %
-                    </span>
+                    ${total
+                        ? `<span class="inline-flex rounded-full bg-white/10 border border-white/10 px-4 py-2 text-sm font-bold">Progreso: ${progreso} %</span>`
+                        : ""}
                 </div>
 
-                <div class="w-full h-2 bg-white/10 rounded-full mt-6 overflow-hidden">
-                    <div
-                        class="h-full bg-sky-400 rounded-full"
-                        style="width: ${progreso}%"
-                    ></div>
-                </div>
+                ${total
+                    ? `
+                        <div class="w-full h-2 bg-white/10 rounded-full mt-6 overflow-hidden" aria-hidden="true">
+                            <div
+                                class="h-full bg-sky-400 rounded-full"
+                                style="width: ${progreso}%"
+                            ></div>
+                        </div>
+                    `
+                    : ""}
             </header>
 
             <div class="px-6 py-8 md:px-10 md:py-10">
@@ -1621,66 +1667,7 @@ function crearResultadoPrediccion(estado) {
 }
 
 function obtenerPruebaEjecutable(id) {
-    const pruebasDisponibles = {
-        "t-student-independientes":
-            "student",
-
-        "t-welch-independientes":
-            "welch",
-
-        "mann-whitney":
-            "mann-whitney",
-
-        "t-student-relacionadas":
-            "student-pareada",
-
-        "wilcoxon-relacionadas":
-            "wilcoxon",
-
-        "anova-un-factor":
-            "anova-un-factor",
-
-        "anova-welch":
-            "anova-welch",
-
-        "kruskal-wallis":
-            "kruskal-wallis",
-
-        "anova-medidas-repetidas":
-            "anova-medidas-repetidas",
-
-        friedman:
-            "friedman",
-
-pearson:
-    "pearson",
-
-"spearman-cuantitativas":
-    "spearman",
-
-"spearman-ordinales":
-    "spearman",
-
-kendall:
-    "kendall",
-
-"punto-biserial":
-    "punto-biserial",
-
-"chi-cuadrado-independencia-2x2":
-    "chi-cuadrado-independencia-2x2",
-
-"fisher-exacta-2x2":
-    "fisher-exacta-2x2",
-
-"chi-cuadrado-independencia-rxc":
-    "chi-cuadrado-independencia-rxc",
-
-"fisher-freeman-halton":
-    "fisher-freeman-halton"
-    };
-
-    return pruebasDisponibles[id] || "";
+    return PRUEBAS_EJECUTABLES_ASISTENTE[id] || "";
 }
 
 function crearResultado(recomendacion) {
@@ -1744,6 +1731,7 @@ function crearResultado(recomendacion) {
                     )}
 
                     ${crearFichaResultado(
+                        fichaDisponible?.etiquetaEfecto ||
                         "Tamaño del efecto",
                         recomendacion.efecto
                     )}
@@ -1908,17 +1896,39 @@ function crearFichaMetodologicaCompleta(ficha, fichaId) {
                     ficha.definicion
                 )}
 
+                ${crearSeccionTextoFicha(
+                    "Objetivo",
+                    ficha.objetivo
+                )}
+
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                     ${crearSeccionListaFicha(
                         "¿Cuándo utilizarla?",
                         ficha.cuandoUsar
                     )}
 
-                    ${crearSeccionListaFicha(
-                        "Supuestos",
-                        ficha.supuestos
-                    )}
+                    ${
+                        ficha.cuandoNoUsar?.length
+                            ? crearSeccionListaFicha(
+                                "¿Cuándo no utilizarla?",
+                                ficha.cuandoNoUsar,
+                                "advertencia"
+                            )
+                            : crearSeccionListaFicha(
+                                "Supuestos",
+                                ficha.supuestos
+                            )
+                    }
                 </div>
+
+                ${
+                    ficha.cuandoNoUsar?.length
+                        ? crearSeccionListaFicha(
+                            "Supuestos",
+                            ficha.supuestos
+                        )
+                        : ""
+                }
 
                 ${crearHipotesisFicha(ficha.hipotesis)}
 
@@ -1929,6 +1939,7 @@ function crearFichaMetodologicaCompleta(ficha, fichaId) {
                     )}
 
                     ${crearSeccionTextoFicha(
+                        ficha.etiquetaEfecto ||
                         "Tamaño del efecto",
                         ficha.efecto
                     )}
@@ -2147,10 +2158,79 @@ function crearReporteApaFicha(reporteAPA) {
     `;
 }
 
+function crearSelectorInstrumentoAsistente() {
+    return `
+        <section class="rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+            <header class="bg-slate-950 text-white px-6 py-8 md:px-10">
+                <p class="uppercase tracking-widest text-amber-300 text-xs font-black mb-2">
+                    Paso 2 de 2 · Evaluación de instrumentos
+                </p>
+                <h1 class="text-3xl md:text-4xl font-black">
+                    ¿Qué tipo de instrumento desea analizar?
+                </h1>
+                <p class="mt-4 max-w-3xl text-slate-200 leading-relaxed">
+                    Seleccione la herramienta según la estructura de las respuestas y el propósito de la evaluación.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 px-6 py-8 md:px-10 md:py-10">
+                <article class="rounded-3xl border border-amber-200 bg-amber-50 p-6 flex flex-col">
+                    <p class="uppercase tracking-widest text-amber-700 text-xs font-black mb-2">
+                        Escala o cuestionario
+                    </p>
+                    <h2 class="text-2xl font-black text-slate-900 mb-3">
+                        Fiabilidad de cuestionarios
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Analice alfa de Cronbach, omega, KR-20, correlación ítem–total, recodificación e intervalos bootstrap.
+                    </p>
+                    <button
+                        type="button"
+                        data-action="abrir-ruta"
+                        data-ruta="calculadoraFiabilidadCuestionarios"
+                        class="mt-auto rounded-xl bg-amber-600 px-6 py-4 text-white font-black hover:bg-amber-700 transition-colors"
+                    >
+                        Analizar cuestionario →
+                    </button>
+                </article>
+
+                <article class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 flex flex-col">
+                    <p class="uppercase tracking-widest text-emerald-700 text-xs font-black mb-2">
+                        Prueba de conocimientos
+                    </p>
+                    <h2 class="text-2xl font-black text-slate-900 mb-3">
+                        Evaluación educativa
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Examine dificultad, discriminación, punto-biserial, KR-20 y funcionamiento de distractores.
+                    </p>
+                    <button
+                        type="button"
+                        data-action="abrir-ruta"
+                        data-ruta="calculadoraEvaluacionEducativa"
+                        class="mt-auto rounded-xl bg-emerald-700 px-6 py-4 text-white font-black hover:bg-emerald-800 transition-colors"
+                    >
+                        Analizar prueba →
+                    </button>
+                </article>
+
+                <div class="md:col-span-2">
+                    <button
+                        type="button"
+                        data-action="volver"
+                        class="inline-flex items-center justify-center border border-slate-300 text-slate-700 font-black rounded-xl px-6 py-3 hover:bg-slate-50"
+                    >
+                        ← Elegir otro objetivo
+                    </button>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
 function crearModuloEnDesarrollo(valor) {
     const nombres = {
         predecir: "Predicción y modelización",
-        instrumento: "Evaluación de instrumentos",
         otro: "Otros análisis"
     };
 
@@ -2165,7 +2245,7 @@ function crearModuloEnDesarrollo(valor) {
             </h1>
 
             <p class="text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto">
-                Esta rama se incorporará en la siguiente fase. Ya están activas la comparación de grupos, la relación entre variables y la asociación categórica.
+                Esta rama se incorporará en una fase posterior. Ya están activas la comparación de grupos, la relación entre variables, la asociación categórica, la predicción y la evaluación de instrumentos.
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center gap-3 mt-8">

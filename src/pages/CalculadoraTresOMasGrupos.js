@@ -694,19 +694,22 @@ function crearTablaDescriptivos(resultado) {
 
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[850px] text-sm">
+                    <caption class="sr-only">
+                        Estadísticos descriptivos de cada grupo independiente
+                    </caption>
                     <thead class="bg-slate-50 text-slate-700">
                         <tr>
-                            <th class="text-left px-5 py-4 font-black">Grupo</th>
-                            <th class="text-right px-4 py-4 font-black">n</th>
-                            <th class="text-right px-4 py-4 font-black">Media</th>
-                            <th class="text-right px-4 py-4 font-black">Mediana</th>
-                            <th class="text-right px-4 py-4 font-black">DE</th>
-                            <th class="text-right px-4 py-4 font-black">Varianza</th>
-                            <th class="text-right px-4 py-4 font-black">Mín.</th>
-                            <th class="text-right px-4 py-4 font-black">Máx.</th>
+                            <th scope="col" class="text-left px-5 py-4 font-black">Grupo</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">n</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Media</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Mediana</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">DE</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Varianza</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Mín.</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Máx.</th>
                             ${
                                 esKruskal
-                                    ? '<th class="text-right px-4 py-4 font-black">Rango medio</th>'
+                                    ? '<th scope="col" class="text-right px-4 py-4 font-black">Rango medio</th>'
                                     : ""
                             }
                         </tr>
@@ -716,9 +719,9 @@ function crearTablaDescriptivos(resultado) {
                             .map(
                                 (grupo) => `
                                     <tr>
-                                        <td class="px-5 py-4 font-bold text-slate-900">
+                                        <th scope="row" class="px-5 py-4 text-left font-bold text-slate-900">
                                             ${escaparHTML(grupo.nombre)}
-                                        </td>
+                                        </th>
                                         <td class="px-4 py-4 text-right">${grupo.n}</td>
                                         <td class="px-4 py-4 text-right">${formatearNumero(grupo.media)}</td>
                                         <td class="px-4 py-4 text-right">${formatearNumero(grupo.mediana)}</td>
@@ -755,12 +758,15 @@ function crearDetallesGlobales(resultado) {
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full min-w-[650px] text-sm">
+                        <caption class="sr-only">
+                            Descomposición de la varianza del ANOVA de un factor
+                        </caption>
                         <thead>
                             <tr>
-                                <th class="text-left px-5 py-4 font-black">Fuente</th>
-                                <th class="text-right px-4 py-4 font-black">SC</th>
-                                <th class="text-right px-4 py-4 font-black">gl</th>
-                                <th class="text-right px-4 py-4 font-black">CM</th>
+                                <th scope="col" class="text-left px-5 py-4 font-black">Fuente</th>
+                                <th scope="col" class="text-right px-4 py-4 font-black">SC</th>
+                                <th scope="col" class="text-right px-4 py-4 font-black">gl</th>
+                                <th scope="col" class="text-right px-4 py-4 font-black">CM</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-blue-100">
@@ -847,9 +853,9 @@ function crearDetallesGlobales(resultado) {
 function crearFilaAnova(nombre, fila) {
     return `
         <tr>
-            <td class="px-5 py-4 font-bold text-slate-900">
+            <th scope="row" class="px-5 py-4 text-left font-bold text-slate-900">
                 ${nombre}
-            </td>
+            </th>
             <td class="px-4 py-4 text-right">
                 ${formatearNumero(fila.sumaCuadrados)}
             </td>
@@ -953,15 +959,18 @@ function crearTablaPostHoc(resultado) {
 
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[980px] text-sm">
+                    <caption class="sr-only">
+                        Comparaciones múltiples entre grupos con valores p ajustados
+                    </caption>
                     <thead>
                         <tr>
-                            <th class="text-left px-5 py-4 font-black">Comparación</th>
-                            <th class="text-right px-4 py-4 font-black">Diferencia</th>
-                            <th class="text-right px-4 py-4 font-black">Estadístico</th>
-                            <th class="text-right px-4 py-4 font-black">gl</th>
-                            <th class="text-right px-4 py-4 font-black">p ajustado</th>
-                            <th class="text-left px-4 py-4 font-black">IC</th>
-                            <th class="text-center px-4 py-4 font-black">Resultado</th>
+                            <th scope="col" class="text-left px-5 py-4 font-black">Comparación</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Diferencia</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">Estadístico</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">gl</th>
+                            <th scope="col" class="text-right px-4 py-4 font-black">p ajustado</th>
+                            <th scope="col" class="text-left px-4 py-4 font-black">IC</th>
+                            <th scope="col" class="text-center px-4 py-4 font-black">Resultado</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-fuchsia-100">
@@ -994,9 +1003,9 @@ function crearFilaPostHoc(comparacion) {
 
     return `
         <tr>
-            <td class="px-5 py-4 font-bold text-slate-900">
+            <th scope="row" class="px-5 py-4 text-left font-bold text-slate-900">
                 ${escaparHTML(comparacion.grupo1)} vs. ${escaparHTML(comparacion.grupo2)}
-            </td>
+            </th>
             <td class="px-4 py-4 text-right">
                 ${formatearNumero(diferencia)}
             </td>

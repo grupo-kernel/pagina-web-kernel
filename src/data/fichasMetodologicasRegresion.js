@@ -1,5 +1,64 @@
-const fichaRegresionLineal = {
-    nombre: "Regresión lineal",
+const fichaRegresionLinealSimple = {
+    nombre: "Regresión lineal simple",
+    objetivo:
+        "Explicar o predecir el valor medio de una variable cuantitativa mediante un único predictor.",
+    definicion:
+        "Modelo que representa el valor medio de una variable dependiente cuantitativa como una función lineal de un solo predictor, estimada habitualmente mediante mínimos cuadrados ordinarios.",
+    cuandoUsar: [
+        "La variable dependiente es cuantitativa continua.",
+        "Existe un único predictor definido por la pregunta de investigación.",
+        "Se desea estimar el cambio medio de la respuesta por unidad del predictor o realizar predicciones.",
+        "La relación observada es aproximadamente lineal en el rango estudiado."
+    ],
+    cuandoNoUsar: [
+        "Cuando deben controlarse simultáneamente otros predictores o factores de confusión.",
+        "Cuando la variable dependiente es dicotómica, ordinal o un conteo.",
+        "Cuando la relación es claramente no lineal y una recta carece de justificación.",
+        "Cuando las observaciones son dependientes y esa estructura no está modelada."
+    ],
+    hipotesis: {
+        h0: "La pendiente poblacional es igual a cero; el predictor no presenta una asociación lineal con la media de la respuesta.",
+        h1: "La pendiente poblacional difiere de cero."
+    },
+    supuestos: [
+        "Independencia entre las observaciones.",
+        "Relación aproximadamente lineal entre la respuesta y el predictor.",
+        "Varianza residual aproximadamente constante.",
+        "Residuos aproximadamente normales para la inferencia clásica, especialmente en muestras pequeñas.",
+        "Ausencia de observaciones excesivamente influyentes sin explicación sustantiva."
+    ],
+    estadistico:
+        "La prueba t evalúa la pendiente y es equivalente a la prueba F global con un predictor. R² resume la proporción de variabilidad de la respuesta asociada linealmente con ese predictor.",
+    efecto:
+        "Pendiente no estandarizada con intervalo de confianza, coeficiente estandarizado o r cuando sea pertinente, R² y medidas de error como RMSE o MAE.",
+    reporteAPA:
+        "Informe F(1, gl2), p, R², pendiente B, error estándar, t, p e IC 95 %. Describa el rango del predictor y los diagnósticos de linealidad, residuos e influencia.",
+    posthoc: [],
+    alternativas: [
+        "Correlación de Pearson cuando el objetivo se limita a cuantificar una asociación lineal simétrica.",
+        "Términos polinómicos, splines u otros modelos no lineales cuando la forma lo justifique.",
+        "Regresión robusta cuando persisten heterocedasticidad u observaciones influyentes.",
+        "Regresión lineal múltiple cuando deban incorporarse dos o más predictores."
+    ],
+    erroresFrecuentes: [
+        "Interpretar la pendiente observacional como un efecto causal.",
+        "Extrapolar fuera del rango observado del predictor.",
+        "Omitir el diagrama de dispersión y el análisis de residuos.",
+        "Confundir una pendiente significativa con una capacidad predictiva elevada.",
+        "Introducir varios predictores y continuar denominando simple al modelo."
+    ],
+    ejemplo:
+        "Se modela la calificación final únicamente a partir de las horas semanales de estudio.",
+    referencias: [
+        "Kutner, M. H., Nachtsheim, C. J., Neter, J., & Li, W. (2005). Applied Linear Statistical Models.",
+        "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An Introduction to Statistical Learning."
+    ]
+};
+
+const fichaRegresionLinealMultiple = {
+    nombre: "Regresión lineal múltiple",
+    objetivo:
+        "Explicar o predecir una variable cuantitativa mediante dos o más predictores y estimar asociaciones parciales manteniendo constantes los demás.",
     definicion:
         "Modelo que representa el valor medio de una variable dependiente cuantitativa como combinación lineal de uno o varios predictores, estimando los coeficientes habitualmente mediante mínimos cuadrados ordinarios.",
     cuandoUsar: [
@@ -7,6 +66,12 @@ const fichaRegresionLineal = {
         "Se desea explicar cambios medios, controlar covariables o realizar predicciones.",
         "La relación entre la respuesta y cada predictor cuantitativo es aproximadamente lineal, manteniendo constantes los demás.",
         "El diseño y la teoría justifican la inclusión de los predictores."
+    ],
+    cuandoNoUsar: [
+        "Cuando la variable dependiente no es cuantitativa continua.",
+        "Cuando el tamaño muestral no permite estimar de forma estable la cantidad de parámetros propuesta.",
+        "Cuando los predictores son redundantes o existe multicolinealidad que impide interpretar los efectos parciales.",
+        "Cuando la dependencia, no linealidad o heterocedasticidad esenciales no pueden modelarse adecuadamente."
     ],
     hipotesis: {
         h0: "En la prueba global, todos los coeficientes de pendiente son iguales a cero; para cada predictor, su coeficiente parcial es igual a cero.",
@@ -50,8 +115,68 @@ const fichaRegresionLineal = {
     ]
 };
 
-const fichaRegresionLogistica = {
-    nombre: "Regresión logística binaria",
+const fichaRegresionLogisticaSimple = {
+    nombre: "Regresión logística binaria simple",
+    objetivo:
+        "Modelar la probabilidad de un resultado dicotómico mediante un único predictor.",
+    definicion:
+        "Modelo lineal generalizado que relaciona un predictor con la probabilidad de un evento dicotómico mediante la función logit.",
+    cuandoUsar: [
+        "La variable dependiente contiene exactamente dos categorías y se define explícitamente el evento.",
+        "Existe un único predictor establecido por la pregunta de investigación.",
+        "Se desea estimar una odds ratio no ajustada o predecir la probabilidad del evento.",
+        "La cantidad de eventos y no eventos permite estimar la pendiente."
+    ],
+    cuandoNoUsar: [
+        "Cuando deben controlarse factores de confusión o varios predictores simultáneamente.",
+        "Cuando la respuesta tiene más de dos categorías.",
+        "Cuando existe separación completa sin utilizar un método penalizado apropiado.",
+        "Cuando las observaciones agrupadas o repetidas se tratan como independientes."
+    ],
+    hipotesis: {
+        h0: "El coeficiente del predictor es igual a cero y su odds ratio es igual a 1.",
+        h1: "El coeficiente del predictor difiere de cero y su odds ratio difiere de 1."
+    },
+    supuestos: [
+        "Resultado correctamente codificado y categoría del evento claramente definida.",
+        "Independencia entre observaciones.",
+        "Relación aproximadamente lineal entre un predictor cuantitativo y el logit del evento.",
+        "Ausencia de separación completa o cuasicompleta.",
+        "Cantidad suficiente de eventos y no eventos.",
+        "Revisión de observaciones influyentes, discriminación y calibración."
+    ],
+    estadistico:
+        "La prueba de razón de verosimilitudes compara el modelo de un predictor con el modelo de solo intercepto; la prueba Wald evalúa su coeficiente. La curva ROC y el AUC resumen discriminación.",
+    efecto:
+        "Odds ratio no ajustada con intervalo de confianza, coeficiente B, pseudo-R², AUC y medidas de calibración.",
+    reporteAPA:
+        "Informe χ² de razón de verosimilitudes, gl, p, coeficiente B, error estándar, z, p, OR e IC 95 %. Identifique el evento y describa discriminación, calibración e influencia.",
+    posthoc: [],
+    alternativas: [
+        "Regresión logística binaria múltiple cuando deban controlarse otros predictores.",
+        "Regresión logística penalizada cuando existe separación o pocos eventos.",
+        "Regresión logística multinomial u ordinal cuando el resultado no es dicotómico.",
+        "Modelos mixtos o GEE cuando las observaciones están agrupadas o repetidas."
+    ],
+    erroresFrecuentes: [
+        "No indicar cuál categoría fue codificada como evento.",
+        "Interpretar la odds ratio como riesgo relativo.",
+        "Presentar una odds ratio simple como si estuviera ajustada por covariables.",
+        "Usar solamente exactitud para evaluar la predicción.",
+        "Confundir discriminación elevada con calibración adecuada."
+    ],
+    ejemplo:
+        "Se estima la probabilidad de aprobar una asignatura únicamente a partir de las horas semanales de estudio.",
+    referencias: [
+        "Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). Applied Logistic Regression.",
+        "Harrell, F. E. (2015). Regression Modeling Strategies."
+    ]
+};
+
+const fichaRegresionLogisticaMultiple = {
+    nombre: "Regresión logística binaria múltiple",
+    objetivo:
+        "Modelar la probabilidad de un resultado dicotómico mediante varios predictores y estimar odds ratios ajustadas.",
     definicion:
         "Modelo lineal generalizado que relaciona uno o varios predictores con la probabilidad de un evento dicotómico mediante la función logit y estima razones de probabilidades ajustadas.",
     cuandoUsar: [
@@ -59,6 +184,12 @@ const fichaRegresionLogistica = {
         "Se desea explicar o predecir la probabilidad de un evento.",
         "Se requiere controlar simultáneamente uno o varios predictores.",
         "La cantidad de eventos y no eventos es suficiente para la complejidad del modelo."
+    ],
+    cuandoNoUsar: [
+        "Cuando la respuesta no posee exactamente dos categorías.",
+        "Cuando la cantidad de eventos es insuficiente para la complejidad del modelo.",
+        "Cuando existe separación completa sin regularización o corrección apropiada.",
+        "Cuando la dependencia entre observaciones no está modelada."
     ],
     hipotesis: {
         h0: "En la prueba global, todos los coeficientes de los predictores son iguales a cero; en cada prueba Wald, el coeficiente evaluado es igual a cero y su odds ratio es igual a 1.",
@@ -205,22 +336,10 @@ const fichaBinomialNegativa = {
 };
 
 export const fichasMetodologicasRegresion = {
-    "regresion-lineal-simple": {
-        ...fichaRegresionLineal,
-        nombre: "Regresión lineal simple"
-    },
-    "regresion-lineal-multiple": {
-        ...fichaRegresionLineal,
-        nombre: "Regresión lineal múltiple"
-    },
-    "regresion-logistica-binaria-simple": {
-        ...fichaRegresionLogistica,
-        nombre: "Regresión logística binaria simple"
-    },
-    "regresion-logistica-binaria-multiple": {
-        ...fichaRegresionLogistica,
-        nombre: "Regresión logística binaria múltiple"
-    },
+    "regresion-lineal-simple": fichaRegresionLinealSimple,
+    "regresion-lineal-multiple": fichaRegresionLinealMultiple,
+    "regresion-logistica-binaria-simple": fichaRegresionLogisticaSimple,
+    "regresion-logistica-binaria-multiple": fichaRegresionLogisticaMultiple,
     "regresion-poisson": fichaPoisson,
     "regresion-binomial-negativa": fichaBinomialNegativa
 };

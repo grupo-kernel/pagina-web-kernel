@@ -1,6 +1,6 @@
 // Tarjeta principal de portada
 
-import kernelLogo from "../../assets/ElKernel.png";
+import kernelLogo from "../../assets/ElKernel.webp";
 import { publicacionesContenido } from "../../data/publicacionesContenido.js";
 
 function getDOI(pub) {

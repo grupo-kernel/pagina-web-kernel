@@ -25,11 +25,11 @@ export function CalculadoraRegresionCompleta() {
             <div class="relative z-10 max-w-4xl">
                 <button
                     type="button"
-                    data-action="volver-laboratorio"
+                    data-action="volver-regresion"
                     class="inline-flex items-center gap-2 text-sky-300 font-black hover:text-white transition-colors mb-7"
                 >
                     <span aria-hidden="true">←</span>
-                    Volver al laboratorio
+                    Volver a modelos de regresión
                 </button>
 
                 <p class="uppercase tracking-[0.20em] text-sky-300 text-xs md:text-sm font-black mb-3">
@@ -280,7 +280,11 @@ export function CalculadoraRegresionCompleta() {
         try {
             const valores = [
                 ...event.target.querySelectorAll("[data-predictor]")
-            ].map((entrada) => Number(entrada.value));
+            ].map((entrada) =>
+                entrada.value.trim() === ""
+                    ? NaN
+                    : Number(entrada.value)
+            );
             const prediccion = predecirRegresion(
                 ultimoModelo,
                 valores
@@ -314,8 +318,8 @@ export function CalculadoraRegresionCompleta() {
 
         const accion = boton.dataset.action;
 
-        if (accion === "volver-laboratorio") {
-            window.location.hash = "/laboratorioKernel";
+        if (accion === "volver-regresion") {
+            window.location.hash = "/regresionModelos";
             return;
         }
 
@@ -393,7 +397,7 @@ function actualizarMarcador(formulario) {
 function separarFila(fila) {
     return fila
         .trim()
-        .split(/[,;\t]+/)
+        .split(/[,;\t]/)
         .map((valor) => valor.trim());
 }
 
@@ -418,7 +422,9 @@ function obtenerSolicitud(formulario) {
     }
 
     const primeraNumerica = filas[0].every(
-        (valor) => Number.isFinite(Number(valor))
+        (valor) =>
+            valor !== "" &&
+            Number.isFinite(Number(valor))
     );
     const nombres = primeraNumerica
         ? filas[0].map(
@@ -443,6 +449,11 @@ function obtenerSolicitud(formulario) {
 
     const matriz = filas.map((fila, indiceFila) =>
         fila.map((valor, indiceColumna) => {
+            if (valor === "") {
+                throw new Error(
+                    `La celda de la fila ${indiceFila + 1}, columna ${indiceColumna + 1} está vacía.`
+                );
+            }
             const convertido = Number(valor);
 
             if (!Number.isFinite(convertido)) {
@@ -674,25 +685,28 @@ function tablaCoeficientes(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Coeficientes e inferencia del modelo de regresión lineal
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Término</th>
-                        <th class="px-4 py-3 text-right">Coeficiente</th>
-                        <th class="px-4 py-3 text-right">Error estándar</th>
-                        <th class="px-4 py-3 text-right">t</th>
-                        <th class="px-4 py-3 text-right">p</th>
-                        <th class="px-4 py-3 text-right">IC inferior</th>
-                        <th class="px-4 py-3 text-right">IC superior</th>
+                        <th scope="col" class="px-4 py-3 text-left">Término</th>
+                        <th scope="col" class="px-4 py-3 text-right">Coeficiente</th>
+                        <th scope="col" class="px-4 py-3 text-right">Error estándar</th>
+                        <th scope="col" class="px-4 py-3 text-right">t</th>
+                        <th scope="col" class="px-4 py-3 text-right">p</th>
+                        <th scope="col" class="px-4 py-3 text-right">IC inferior</th>
+                        <th scope="col" class="px-4 py-3 text-right">IC superior</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${modelo.coeficientes.map((fila) => `
                         <tr>
-                            <td class="px-4 py-3 font-black text-slate-900">${escaparHtml(fila.termino)}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${escaparHtml(fila.termino)}</th>
                             <td class="px-4 py-3 text-right">${formatear(fila.estimacion, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.errorEstandar, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.t, 4)}</td>
-                            <td class="px-4 py-3 text-right font-black ${fila.p < 0.05 ? "text-emerald-700" : "text-slate-700"}">${formatearP(fila.p)}</td>
+                            <td class="px-4 py-3 text-right font-black ${fila.p < (modelo.alfa ?? 0.05) ? "text-emerald-700" : "text-slate-700"}">${formatearP(fila.p)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.intervaloConfianza.inferior, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.intervaloConfianza.superior, 6)}</td>
                         </tr>
@@ -734,20 +748,23 @@ function tablaAnova(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Análisis de varianza del modelo de regresión lineal
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Fuente</th>
-                        <th class="px-4 py-3 text-right">Suma de cuadrados</th>
-                        <th class="px-4 py-3 text-right">gl</th>
-                        <th class="px-4 py-3 text-right">Media cuadrática</th>
-                        <th class="px-4 py-3 text-right">F</th>
-                        <th class="px-4 py-3 text-right">p</th>
+                        <th scope="col" class="px-4 py-3 text-left">Fuente</th>
+                        <th scope="col" class="px-4 py-3 text-right">Suma de cuadrados</th>
+                        <th scope="col" class="px-4 py-3 text-right">gl</th>
+                        <th scope="col" class="px-4 py-3 text-right">Media cuadrática</th>
+                        <th scope="col" class="px-4 py-3 text-right">F</th>
+                        <th scope="col" class="px-4 py-3 text-right">p</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${filas.map((fila) => `
                         <tr>
-                            <td class="px-4 py-3 font-black text-slate-900">${fila.fuente}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${fila.fuente}</th>
                             <td class="px-4 py-3 text-right">${formatear(fila.sc, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.gl, 0)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.mc, 6)}</td>
@@ -773,12 +790,15 @@ function tablaVif(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnóstico de multicolinealidad mediante tolerancia y VIF
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Predictor</th>
-                        <th class="px-4 py-3 text-right">Tolerancia</th>
-                        <th class="px-4 py-3 text-right">VIF</th>
-                        <th class="px-4 py-3 text-left">Lectura</th>
+                        <th scope="col" class="px-4 py-3 text-left">Predictor</th>
+                        <th scope="col" class="px-4 py-3 text-right">Tolerancia</th>
+                        <th scope="col" class="px-4 py-3 text-right">VIF</th>
+                        <th scope="col" class="px-4 py-3 text-left">Lectura</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -791,7 +811,7 @@ function tablaVif(modelo) {
 
                         return `
                             <tr>
-                                <td class="px-4 py-3 font-black text-slate-900">${escaparHtml(fila.variable)}</td>
+                                <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${escaparHtml(fila.variable)}</th>
                                 <td class="px-4 py-3 text-right">${formatear(fila.tolerancia, 4)}</td>
                                 <td class="px-4 py-3 text-right font-black">${formatear(fila.vif, 4)}</td>
                                 <td class="px-4 py-3">${lectura}</td>
@@ -808,15 +828,18 @@ function tablaDiagnosticos(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-[440px]">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnósticos de residuos e influencia por observación
+                </caption>
                 <thead class="bg-slate-950 text-white sticky top-0">
                     <tr>
-                        <th class="px-4 py-3 text-right">Obs.</th>
-                        <th class="px-4 py-3 text-right">Observado</th>
-                        <th class="px-4 py-3 text-right">Predicho</th>
-                        <th class="px-4 py-3 text-right">Residuo</th>
-                        <th class="px-4 py-3 text-right">Residuo est.</th>
-                        <th class="px-4 py-3 text-right">Leverage</th>
-                        <th class="px-4 py-3 text-right">Cook</th>
+                        <th scope="col" class="px-4 py-3 text-right">Obs.</th>
+                        <th scope="col" class="px-4 py-3 text-right">Observado</th>
+                        <th scope="col" class="px-4 py-3 text-right">Predicho</th>
+                        <th scope="col" class="px-4 py-3 text-right">Residuo</th>
+                        <th scope="col" class="px-4 py-3 text-right">Residuo est.</th>
+                        <th scope="col" class="px-4 py-3 text-right">Leverage</th>
+                        <th scope="col" class="px-4 py-3 text-right">Cook</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -827,7 +850,7 @@ function tablaDiagnosticos(modelo) {
 
                         return `
                             <tr class="${alerta ? "bg-red-50" : ""}">
-                                <td class="px-4 py-3 text-right font-black">${fila.observacion}</td>
+                                <th scope="row" class="px-4 py-3 text-right font-black">${fila.observacion}</th>
                                 <td class="px-4 py-3 text-right">${formatear(fila.observado, 6)}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.predicho, 6)}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.residuo, 6)}</td>
@@ -888,7 +911,8 @@ function formularioPrediccion(modelo, metadatos) {
 
 function crearVistaResultados(modelo, metadatos) {
     const significativo =
-        modelo.anova.p !== null && modelo.anova.p < 0.05;
+        modelo.anova.p !== null &&
+        modelo.anova.p < (modelo.alfa ?? 0.05);
     const porcentaje = formatear(modelo.ajuste.r2 * 100, 2);
 
     return `
@@ -907,7 +931,7 @@ function crearVistaResultados(modelo, metadatos) {
                 </div>
 
                 <span class="inline-flex self-start rounded-2xl px-5 py-3 font-black ${significativo ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30" : "bg-amber-500/20 text-amber-200 border border-amber-400/30"}">
-                    ${significativo ? "Modelo global significativo" : "Modelo global no significativo al 5 %"}
+                    ${significativo ? "Modelo global significativo" : `Modelo global no significativo con α = ${(modelo.alfa ?? 0.05).toFixed(3)}`}
                 </span>
             </div>
 

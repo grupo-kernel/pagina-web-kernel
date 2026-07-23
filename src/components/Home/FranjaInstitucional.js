@@ -26,7 +26,7 @@ export function CrearFranjaInstitucional({ integrantes, servicios, lineas, publi
 
     section.innerHTML = `
         <header class="p-5 md:p-7">
-            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Vinculación institucional</p>
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Vinculación institucional</p>
             <h2 id="titulo-confianza-portada" class="mt-2 max-w-4xl text-2xl font-black leading-tight text-slate-950 md:text-3xl">
                 Instituciones presentes en nuestra trayectoria científica
             </h2>

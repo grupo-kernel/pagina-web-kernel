@@ -6,7 +6,16 @@ function validarVector(nombre, valores, minimo = 5) {
         throw new Error(`${nombre} debe contener al menos ${minimo} observaciones.`);
     }
 
-    const numericos = valores.map(Number);
+    const numericos = valores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
 
     if (!numericos.every(Number.isFinite)) {
         throw new Error(`${nombre} contiene valores no numéricos o no finitos.`);
@@ -422,6 +431,17 @@ function ajustarIrls(matrizX, y, opciones = {}) {
     );
     const covarianza = invertirMatriz(informacionFinal);
 
+    if (
+        !beta.every(Number.isFinite) ||
+        !probabilidades.every(Number.isFinite) ||
+        !covarianza.flat().every(Number.isFinite) ||
+        !Number.isFinite(logLikAnterior)
+    ) {
+        throw new Error(
+            "El ajuste produjo resultados no finitos. Revise valores extremos, escala de los predictores y separación."
+        );
+    }
+
     return {
         beta,
         probabilidades,
@@ -811,6 +831,7 @@ export function ajustarRegresionLogisticaBinaria({
     const zCritico = cuantileNormal(
         0.5 + nivelConfianza / 2
     );
+    const alfa = 1 - nivelConfianza;
     const nombresCoeficientes = [
         ...(incluirIntercepto ? ["Intercepto"] : []),
         ...nombres
@@ -903,12 +924,12 @@ export function ajustarRegresionLogisticaBinaria({
         clasificacionPerfecta && coeficienteExtremo;
 
     const interpretacion = [
-        pModelo !== null && pModelo < 0.05
+        pModelo !== null && pModelo < alfa
             ? `El modelo global mejora significativamente al modelo nulo (χ² = ${chiCuadradoModelo.toFixed(4)}, gl = ${glModelo}, p ${pModelo < 0.001 ? "< 0.001" : `= ${pModelo.toFixed(4)}`}).`
-            : `El modelo global no alcanza significación estadística al 5 % (χ² = ${chiCuadradoModelo.toFixed(4)}, gl = ${glModelo}, p = ${pModelo?.toFixed(4) ?? "no disponible"}).`,
+            : `El modelo global no alcanza significación estadística con α = ${alfa.toFixed(3)} (χ² = ${chiCuadradoModelo.toFixed(4)}, gl = ${glModelo}, p = ${pModelo?.toFixed(4) ?? "no disponible"}).`,
         `El área bajo la curva ROC es ${roc.auc.toFixed(4)}, lo que resume la capacidad del modelo para ordenar casos positivos por encima de casos negativos.`,
         `Con umbral ${umbral.toFixed(2)}, la exactitud es ${(matrizConfusion.exactitud * 100).toFixed(2)} %, la sensibilidad es ${matrizConfusion.sensibilidad === null ? "no calculable" : `${(matrizConfusion.sensibilidad * 100).toFixed(2)} %`} y la especificidad es ${matrizConfusion.especificidad === null ? "no calculable" : `${(matrizConfusion.especificidad * 100).toFixed(2)} %`}.`,
-        hosmerLemeshow.p !== null && hosmerLemeshow.p >= 0.05
+        hosmerLemeshow.p !== null && hosmerLemeshow.p >= alfa
             ? `La prueba de Hosmer–Lemeshow no detecta una discrepancia significativa entre probabilidades observadas y esperadas (p = ${hosmerLemeshow.p.toFixed(4)}).`
             : `La prueba de Hosmer–Lemeshow sugiere revisar la calibración del modelo (p ${hosmerLemeshow.p !== null && hosmerLemeshow.p < 0.001 ? "< 0.001" : `= ${hosmerLemeshow.p?.toFixed(4) ?? "no disponible"}`}).`,
         vif.some((fila) => fila.vif >= 10)
@@ -933,6 +954,7 @@ export function ajustarRegresionLogisticaBinaria({
         incluirIntercepto,
         nombresPredictores: nombres,
         nivelConfianza,
+        alfa,
         convergencia: {
             convergio: ajuste.convergio,
             iteraciones: ajuste.iteraciones,
@@ -1012,7 +1034,16 @@ export function predecirRegresionLogistica(
         throw new Error("El umbral de clasificación debe estar entre 0 y 1.");
     }
 
-    const valores = nuevosPredictores.map(Number);
+    const valores = nuevosPredictores.map((valor) =>
+        valor === null ||
+        valor === undefined ||
+        (
+            typeof valor === "string" &&
+            valor.trim() === ""
+        )
+            ? NaN
+            : Number(valor)
+    );
 
     if (!valores.every(Number.isFinite)) {
         throw new Error("Los valores predictores deben ser numéricos.");

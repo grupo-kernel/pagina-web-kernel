@@ -9,12 +9,13 @@ const TODAS_LAS_NOTICIAS = Object.freeze([
     noticiaMescyt2026,
     ...newsData.filter((item) => !IDS_ESPECIALES.has(item.id))
 ]);
+let cerrarModalNoticiaActivo = null;
 
 export function initNewsModalController(rootElement) {
     if (!rootElement) return;
 
     rootElement.addEventListener("click", (event) => {
-        const trigger = event.target.closest("[data-news-btn], [data-news-card]");
+        const trigger = event.target.closest("[data-news-btn]");
         if (!trigger || !rootElement.contains(trigger)) return;
 
         const newsId = trigger.dataset.newsBtn || trigger.dataset.newsCard;
@@ -27,12 +28,12 @@ export function initNewsModalController(rootElement) {
             return;
         }
 
-        openNewsModal(selectedNews);
+        openNewsModal(selectedNews, trigger);
     });
 }
 
-function openNewsModal(news) {
-    document.querySelector("#newsModal")?.remove();
+function openNewsModal(news, trigger) {
+    cerrarModalNoticiaActivo?.({ restaurarFoco: false });
 
     const wrapper = document.createElement("div");
     wrapper.innerHTML = newsModal(news);
@@ -43,17 +44,73 @@ function openNewsModal(news) {
         return;
     }
 
+    const overflowAnterior = document.body.style.overflow;
     document.body.appendChild(modal);
     document.body.style.overflow = "hidden";
 
-    const closeModal = () => {
+    const previouslyFocused =
+        trigger instanceof HTMLElement ? trigger : document.activeElement;
+    let cerrado = false;
+
+    const closeModal = ({ restaurarFoco = true } = {}) => {
+        if (cerrado) return;
+        cerrado = true;
         modal.remove();
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", handleEscape);
+        document.body.style.overflow = overflowAnterior;
+        document.removeEventListener("keydown", handleKeyboard);
+        window.removeEventListener("hashchange", handleHashChange);
+        if (cerrarModalNoticiaActivo === closeModal) {
+            cerrarModalNoticiaActivo = null;
+        }
+
+        if (
+            restaurarFoco &&
+            previouslyFocused instanceof HTMLElement &&
+            previouslyFocused.isConnected
+        ) {
+            previouslyFocused.focus();
+        }
     };
 
-    const handleEscape = (event) => {
-        if (event.key === "Escape") closeModal();
+    const handleHashChange = () => {
+        closeModal({ restaurarFoco: false });
+    };
+
+    const handleKeyboard = (event) => {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            closeModal();
+            return;
+        }
+
+        if (event.key !== "Tab") return;
+
+        const focusable = Array.from(
+            modal.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+        ).filter(
+            (element) =>
+                element instanceof HTMLElement &&
+                element.getAttribute("aria-hidden") !== "true"
+        );
+
+        if (!focusable.length) {
+            event.preventDefault();
+            modal.focus();
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
     };
 
     modal.querySelectorAll("[data-close-modal]").forEach((button) => {
@@ -64,6 +121,8 @@ function openNewsModal(news) {
         if (event.target === modal) closeModal();
     });
 
-    document.addEventListener("keydown", handleEscape);
+    cerrarModalNoticiaActivo = closeModal;
+    document.addEventListener("keydown", handleKeyboard);
+    window.addEventListener("hashchange", handleHashChange);
     modal.querySelector("[data-close-modal]")?.focus();
 }

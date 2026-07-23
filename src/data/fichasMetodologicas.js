@@ -1,6 +1,6 @@
 export const fichasMetodologicas = {
     "chi-cuadrado-independencia-2x2": {
-        nombre: "Prueba chi-cuadrado de independencia",
+        nombre: "Chi-cuadrado de independencia para tabla 2 × 2",
         definicion:
             "Prueba inferencial utilizada para evaluar si dos variables categóricas son estadísticamente independientes.",
 
@@ -118,7 +118,7 @@ export const fichasMetodologicas = {
     },
 
     "chi-cuadrado-independencia-rxc": {
-        nombre: "Prueba chi-cuadrado de independencia",
+        nombre: "Chi-cuadrado de independencia para tabla r × c",
 
         definicion:
             "Evalúa la asociación entre variables categóricas organizadas en una tabla de contingencia de dimensión r × c.",

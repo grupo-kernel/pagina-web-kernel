@@ -93,7 +93,7 @@ export function CrearProcesoYAplicaciones() {
 
     section.innerHTML = `
         <article class="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-8">
-            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Cómo trabajamos</p>
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Cómo trabajamos</p>
             <h2 class="mt-2 text-3xl font-black text-slate-950 md:text-4xl">De la necesidad a una solución verificable</h2>
             <p class="mt-4 leading-relaxed text-slate-600">El proceso completo tiene siete etapas en el catálogo; en la portada se resume en cinco momentos que facilitan la comprensión y la contratación.</p>
             <ol class="mt-7">
@@ -107,7 +107,7 @@ export function CrearProcesoYAplicaciones() {
 
         <div>
             <div class="mb-6">
-                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#b37a2a]">Aplicaciones demostrativas</p>
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#805615]">Aplicaciones demostrativas</p>
                 <h2 class="mt-2 text-3xl font-black text-slate-950 md:text-4xl">Ejemplos de cómo puede estructurarse un proyecto</h2>
                 <p class="mt-3 max-w-4xl text-sm leading-relaxed text-slate-600 md:text-base">Estos escenarios son ilustrativos y no se presentan como casos de clientes. Su propósito es mostrar la relación entre necesidad, intervención y producto verificable.</p>
             </div>

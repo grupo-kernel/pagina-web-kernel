@@ -135,7 +135,7 @@ export function renderDetalleContenido(profesor) {
                             Perfil académico
                         </p>
 
-                        <h2 class="text-xl md:text-2xl font-bold leading-tight">
+                        <h2 id="titulo-detalle-formacion" class="text-xl md:text-2xl font-bold leading-tight">
                             ${safeText(profesor.name)}
                         </h2>
 
@@ -154,9 +154,11 @@ export function renderDetalleContenido(profesor) {
                 <button 
                     id="close-modal" 
                     type="button"
+                    aria-label="Cerrar el perfil académico"
                     class="md:hidden text-white hover:text-sky-400 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          class="h-8 w-8" 
+                         aria-hidden="true"
                          fill="none" 
                          viewBox="0 0 24 24" 
                          stroke="currentColor">

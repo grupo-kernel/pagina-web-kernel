@@ -1,26 +1,36 @@
-function cerrarSelector() {
-    document.querySelector(
-        "[data-selector-instrumento='true']"
-    )?.remove();
+let destruirSelector = null;
+
+function cerrarSelector({ restaurarFoco = true } = {}) {
+    if (destruirSelector) {
+        const destruir = destruirSelector;
+        destruirSelector = null;
+        destruir(restaurarFoco);
+        return;
+    }
+
+    document.querySelector("[data-selector-instrumento='true']")?.remove();
 }
 
 function crearSelectorInstrumento() {
-    cerrarSelector();
+    cerrarSelector({ restaurarFoco: false });
 
+    const elementoAnterior = document.activeElement;
+    const overflowAnterior = document.body.style.overflow;
     const fondo = document.createElement("div");
     fondo.dataset.selectorInstrumento = "true";
     fondo.className = `
-        fixed inset-0 z-[100]
+        fixed inset-0 z-[500]
         bg-slate-950/70 backdrop-blur-sm
         flex items-center justify-center
-        p-4
+        overflow-y-auto p-4
     `;
     fondo.innerHTML = `
         <section
-            class="w-full max-w-4xl rounded-3xl bg-white border border-slate-200 shadow-2xl overflow-hidden"
+            class="w-full max-w-4xl max-h-[calc(100svh-2rem)] rounded-3xl bg-white border border-slate-200 shadow-2xl overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-labelledby="titulo-selector-instrumento"
+            aria-describedby="descripcion-selector-instrumento"
         >
             <header class="bg-slate-950 text-white px-6 py-7 md:px-9">
                 <div class="flex items-start justify-between gap-5">
@@ -36,12 +46,12 @@ function crearSelectorInstrumento() {
                         type="button"
                         data-action="cerrar-selector-instrumento"
                         class="rounded-xl border border-white/20 bg-white/10 px-4 py-2 font-black hover:bg-white/20"
-                        aria-label="Cerrar"
+                        aria-label="Cerrar el selector de tipo de instrumento"
                     >
                         ×
                     </button>
                 </div>
-                <p class="text-slate-200 leading-relaxed mt-4 max-w-3xl">
+                <p id="descripcion-selector-instrumento" class="text-slate-200 leading-relaxed mt-4 max-w-3xl">
                     Seleccione la herramienta según la naturaleza de las respuestas y el propósito del análisis.
                 </p>
             </header>
@@ -66,7 +76,8 @@ function crearSelectorInstrumento() {
                     <button
                         type="button"
                         data-route-instrumento="calculadoraFiabilidadCuestionarios"
-                        class="mt-auto rounded-xl bg-amber-600 px-6 py-4 text-white font-black hover:bg-amber-700 transition-colors"
+                        class="mt-auto rounded-xl bg-amber-700 px-6 py-4 text-white font-black hover:bg-amber-800 transition-colors"
+                        aria-label="Abrir la calculadora de cuestionarios y fiabilidad"
                     >
                         Analizar cuestionario
                     </button>
@@ -92,6 +103,7 @@ function crearSelectorInstrumento() {
                         type="button"
                         data-route-instrumento="calculadoraEvaluacionEducativa"
                         class="mt-auto rounded-xl bg-emerald-700 px-6 py-4 text-white font-black hover:bg-emerald-800 transition-colors"
+                        aria-label="Abrir la calculadora de evaluación educativa"
                     >
                         Analizar prueba
                     </button>
@@ -100,13 +112,61 @@ function crearSelectorInstrumento() {
         </section>
     `;
 
+    const controlesFoco = () => [...fondo.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((control) => control.getAttribute("aria-hidden") !== "true");
+
+    const manejarTecla = (event) => {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            cerrarSelector();
+            return;
+        }
+
+        if (event.key !== "Tab") return;
+        const controles = controlesFoco();
+        if (!controles.length) {
+            event.preventDefault();
+            return;
+        }
+
+        const primero = controles[0];
+        const ultimo = controles.at(-1);
+        if (event.shiftKey && document.activeElement === primero) {
+            event.preventDefault();
+            ultimo.focus();
+        } else if (!event.shiftKey && document.activeElement === ultimo) {
+            event.preventDefault();
+            primero.focus();
+        }
+    };
+
+    const manejarCambioRuta = () => {
+        cerrarSelector({ restaurarFoco: false });
+    };
+
+    destruirSelector = (restaurarFoco) => {
+        document.removeEventListener("keydown", manejarTecla);
+        window.removeEventListener("hashchange", manejarCambioRuta);
+        fondo.remove();
+        document.body.style.overflow = overflowAnterior;
+
+        if (
+            restaurarFoco &&
+            elementoAnterior instanceof HTMLElement &&
+            elementoAnterior.isConnected
+        ) {
+            elementoAnterior.focus();
+        }
+    };
+
     fondo.addEventListener("click", (event) => {
         const ruta = event.target.closest(
             "[data-route-instrumento]"
         )?.dataset.routeInstrumento;
 
         if (ruta) {
-            cerrarSelector();
+            cerrarSelector({ restaurarFoco: false });
             window.location.hash = `/${ruta}`;
             return;
         }
@@ -122,6 +182,9 @@ function crearSelectorInstrumento() {
     });
 
     document.body.appendChild(fondo);
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", manejarTecla);
+    window.addEventListener("hashchange", manejarCambioRuta);
     fondo.querySelector(
         "[data-route-instrumento]"
     )?.focus();

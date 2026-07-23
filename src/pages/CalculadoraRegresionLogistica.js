@@ -282,7 +282,11 @@ export function CalculadoraRegresionLogistica() {
             ...formularioPrediccion.querySelectorAll(
                 "[data-predictor]"
             )
-        ].map((input) => Number(input.value));
+        ].map((input) =>
+            input.value.trim() === ""
+                ? NaN
+                : Number(input.value)
+        );
         const salida = formularioPrediccion.querySelector(
             "#resultado-prediccion-logistica"
         );
@@ -377,7 +381,7 @@ function crearGuia(titulo, texto) {
 function separarFila(fila) {
     return fila
         .trim()
-        .split(/[,;\t]+/)
+        .split(/[,;\t]/)
         .map((valor) => valor.trim());
 }
 
@@ -402,7 +406,9 @@ function obtenerSolicitud(formulario) {
     }
 
     const primeraNumerica = filas[0].every(
-        (valor) => Number.isFinite(Number(valor))
+        (valor) =>
+            valor !== "" &&
+            Number.isFinite(Number(valor))
     );
     const nombres = primeraNumerica
         ? filas[0].map(
@@ -425,6 +431,11 @@ function obtenerSolicitud(formulario) {
 
     const matriz = filas.map((fila, indiceFila) =>
         fila.map((valor, indiceColumna) => {
+            if (valor === "") {
+                throw new Error(
+                    `La celda de la fila ${indiceFila + 1}, columna ${indiceColumna + 1} está vacía.`
+                );
+            }
             const numero = Number(valor);
 
             if (!Number.isFinite(numero)) {
@@ -585,7 +596,10 @@ function crearAlertas(modelo) {
         });
     }
 
-    if (modelo.calibracion.p !== null && modelo.calibracion.p < 0.05) {
+    if (
+        modelo.calibracion.p !== null &&
+        modelo.calibracion.p < (modelo.alfa ?? 0.05)
+    ) {
         alertas.push({
             nivel: "medio",
             titulo: "Calibración cuestionable",
@@ -662,21 +676,24 @@ function tablaCoeficientes(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Coeficientes y razones de momios del modelo logístico
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Término</th>
-                        <th class="px-4 py-3 text-right">B</th>
-                        <th class="px-4 py-3 text-right">Error est.</th>
-                        <th class="px-4 py-3 text-right">z</th>
-                        <th class="px-4 py-3 text-right">p</th>
-                        <th class="px-4 py-3 text-right">OR</th>
-                        <th class="px-4 py-3 text-right">IC de OR</th>
+                        <th scope="col" class="px-4 py-3 text-left">Término</th>
+                        <th scope="col" class="px-4 py-3 text-right">B</th>
+                        <th scope="col" class="px-4 py-3 text-right">Error est.</th>
+                        <th scope="col" class="px-4 py-3 text-right">z</th>
+                        <th scope="col" class="px-4 py-3 text-right">p</th>
+                        <th scope="col" class="px-4 py-3 text-right">OR</th>
+                        <th scope="col" class="px-4 py-3 text-right">IC de OR</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${modelo.coeficientes.map((fila) => `
-                        <tr class="${fila.p < 0.05 ? "bg-rose-50" : ""}">
-                            <td class="px-4 py-3 font-black text-slate-900">${escaparHtml(fila.termino)}</td>
+                        <tr class="${fila.p < (modelo.alfa ?? 0.05) ? "bg-rose-50" : ""}">
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${escaparHtml(fila.termino)}</th>
                             <td class="px-4 py-3 text-right">${formatear(fila.estimacion, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.errorEstandar, 6)}</td>
                             <td class="px-4 py-3 text-right">${formatear(fila.z, 4)}</td>
@@ -705,16 +722,19 @@ function tablaAjuste(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Indicadores de ajuste del modelo logístico
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Indicador</th>
-                        <th class="px-4 py-3 text-right">Valor</th>
+                        <th scope="col" class="px-4 py-3 text-left">Indicador</th>
+                        <th scope="col" class="px-4 py-3 text-right">Valor</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${filas.map(([nombre, valor]) => `
                         <tr>
-                            <td class="px-4 py-3 font-black text-slate-900">${nombre}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${nombre}</th>
                             <td class="px-4 py-3 text-right">${formatear(valor, 6)}</td>
                         </tr>
                     `).join("")}
@@ -739,16 +759,19 @@ function tablaClasificacion(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Métricas de clasificación del modelo logístico
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Métrica</th>
-                        <th class="px-4 py-3 text-right">Resultado</th>
+                        <th scope="col" class="px-4 py-3 text-left">Métrica</th>
+                        <th scope="col" class="px-4 py-3 text-right">Resultado</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     ${filas.map(([nombre, valor]) => `
                         <tr>
-                            <td class="px-4 py-3 font-black text-slate-900">${nombre}</td>
+                            <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${nombre}</th>
                             <td class="px-4 py-3 text-right">${valor === null ? "—" : `${formatear(valor * 100, 2)} %`}</td>
                         </tr>
                     `).join("")}
@@ -770,12 +793,15 @@ function tablaVif(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnóstico de multicolinealidad mediante tolerancia y VIF
+                </caption>
                 <thead class="bg-slate-950 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left">Predictor</th>
-                        <th class="px-4 py-3 text-right">Tolerancia</th>
-                        <th class="px-4 py-3 text-right">VIF</th>
-                        <th class="px-4 py-3 text-left">Lectura</th>
+                        <th scope="col" class="px-4 py-3 text-left">Predictor</th>
+                        <th scope="col" class="px-4 py-3 text-right">Tolerancia</th>
+                        <th scope="col" class="px-4 py-3 text-right">VIF</th>
+                        <th scope="col" class="px-4 py-3 text-left">Lectura</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -788,7 +814,7 @@ function tablaVif(modelo) {
 
                         return `
                             <tr>
-                                <td class="px-4 py-3 font-black text-slate-900">${escaparHtml(fila.variable)}</td>
+                                <th scope="row" class="px-4 py-3 text-left font-black text-slate-900">${escaparHtml(fila.variable)}</th>
                                 <td class="px-4 py-3 text-right">${formatear(fila.tolerancia, 4)}</td>
                                 <td class="px-4 py-3 text-right font-black">${formatear(fila.vif, 4)}</td>
                                 <td class="px-4 py-3">${lectura}</td>
@@ -805,16 +831,19 @@ function tablaDiagnosticos(modelo) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-[460px]">
             <table class="min-w-full text-sm">
+                <caption class="sr-only">
+                    Diagnósticos de clasificación, residuos e influencia por observación
+                </caption>
                 <thead class="bg-slate-950 text-white sticky top-0">
                     <tr>
-                        <th class="px-4 py-3 text-right">Obs.</th>
-                        <th class="px-4 py-3 text-right">Y</th>
-                        <th class="px-4 py-3 text-right">Probabilidad</th>
-                        <th class="px-4 py-3 text-right">Clase</th>
-                        <th class="px-4 py-3 text-right">Residuo Pearson</th>
-                        <th class="px-4 py-3 text-right">Residuo deviance</th>
-                        <th class="px-4 py-3 text-right">Leverage</th>
-                        <th class="px-4 py-3 text-right">Cook</th>
+                        <th scope="col" class="px-4 py-3 text-right">Obs.</th>
+                        <th scope="col" class="px-4 py-3 text-right">Y</th>
+                        <th scope="col" class="px-4 py-3 text-right">Probabilidad</th>
+                        <th scope="col" class="px-4 py-3 text-right">Clase</th>
+                        <th scope="col" class="px-4 py-3 text-right">Residuo Pearson</th>
+                        <th scope="col" class="px-4 py-3 text-right">Residuo deviance</th>
+                        <th scope="col" class="px-4 py-3 text-right">Leverage</th>
+                        <th scope="col" class="px-4 py-3 text-right">Cook</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
@@ -827,7 +856,7 @@ function tablaDiagnosticos(modelo) {
 
                         return `
                             <tr class="${alerta ? "bg-red-50" : ""}">
-                                <td class="px-4 py-3 text-right font-black">${fila.observacion}</td>
+                                <th scope="row" class="px-4 py-3 text-right font-black">${fila.observacion}</th>
                                 <td class="px-4 py-3 text-right">${fila.observado}</td>
                                 <td class="px-4 py-3 text-right">${formatear(fila.probabilidad, 6)}</td>
                                 <td class="px-4 py-3 text-right font-black">${fila.clasePredicha}</td>
@@ -889,7 +918,8 @@ function formularioPrediccion(modelo) {
 
 function crearVistaResultados(modelo, metadatos) {
     const significativo =
-        modelo.pruebaGlobal.p !== null && modelo.pruebaGlobal.p < 0.05;
+        modelo.pruebaGlobal.p !== null &&
+        modelo.pruebaGlobal.p < (modelo.alfa ?? 0.05);
 
     return `
         <div class="rounded-3xl bg-slate-950 text-white p-6 md:p-9 shadow-2xl">
@@ -907,7 +937,7 @@ function crearVistaResultados(modelo, metadatos) {
                 </div>
 
                 <span class="inline-flex self-start rounded-2xl px-5 py-3 font-black ${significativo ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30" : "bg-amber-500/20 text-amber-200 border border-amber-400/30"}">
-                    ${significativo ? "Modelo global significativo" : "Modelo global no significativo al 5 %"}
+                    ${significativo ? "Modelo global significativo" : `Modelo global no significativo con α = ${(modelo.alfa ?? 0.05).toFixed(3)}`}
                 </span>
             </div>
 

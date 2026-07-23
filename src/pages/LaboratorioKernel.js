@@ -1,5 +1,3 @@
-import { crearLogin } from "../auth/login.js";
-import { esperarAutenticacion } from "../auth/authGuard.js";
 import { cerrarSesion } from "../auth/authService.js";
 import { MODULOS_LABORATORIO } from "../data/modulosLaboratorio.js";
 import { iconoLaboratorio } from "../utils/iconosLaboratorio.js";
@@ -27,25 +25,27 @@ function crearPilar({ titulo, descripcion, iconoNombre, fondo, color, borde }) {
 
 function crearTarjetaModulo(modulo) {
     return `
-        <article class="group h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" data-modulo-id="${escapar(modulo.id)}">
-            <div class="flex h-full items-start gap-4">
+        <article class="h-full" data-modulo-id="${escapar(modulo.id)}">
+            <a
+                href="#/${escapar(modulo.ruta)}"
+                data-route="${escapar(modulo.ruta)}"
+                class="group block h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-[#bdd8d2] hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-[#bdd8d2]"
+                aria-label="Abrir el módulo ${escapar(modulo.titulo)}"
+            >
+              <div class="flex h-full items-start gap-4">
                 <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border transition-transform duration-300 group-hover:scale-110 ${modulo.fondoIcono} ${modulo.colorIcono} ${modulo.bordeIcono}">
                     ${iconoLaboratorio(modulo.icono, "text-3xl")}
                 </div>
                 <div class="flex h-full min-w-0 flex-col">
                     <h3 class="mb-2 text-xl font-black text-slate-900">${escapar(modulo.titulo)}</h3>
                     <p class="text-sm leading-relaxed text-slate-600">${escapar(modulo.descripcion)}</p>
-                    <button
-                        type="button"
-                        data-route="${escapar(modulo.ruta)}"
-                        class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-black text-[#0D6EFD] transition-colors hover:text-blue-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"
-                        aria-label="Explorar ${escapar(modulo.titulo)}"
-                    >
+                    <span class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-black text-[#0f5b5d] transition-colors group-hover:text-[#0a4648]" aria-hidden="true">
                         Explorar
                         ${iconoLaboratorio("bx-right-arrow-alt", "text-xl")}
-                    </button>
+                    </span>
                 </div>
-            </div>
+              </div>
+            </a>
         </article>
     `;
 }
@@ -55,15 +55,7 @@ function navegar(ruta) {
     window.location.hash = `/${ruta}`;
 }
 
-export async function LaboratorioKernel() {
-    const usuario = await esperarAutenticacion();
-
-    if (!usuario) {
-        return crearLogin(() => {
-            window.dispatchEvent(new HashChangeEvent("hashchange"));
-        });
-    }
-
+export function LaboratorioKernel() {
     const section = document.createElement("section");
     section.className = "w-full max-w-7xl mx-auto px-4 py-10 md:px-8 font-sans";
     section.innerHTML = `
@@ -77,7 +69,7 @@ export async function LaboratorioKernel() {
             <button
                 id="cerrar-sesion-kernel"
                 type="button"
-                class="absolute right-5 top-5 z-20 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-white/20 disabled:cursor-wait disabled:opacity-60"
+                class="relative z-20 mb-8 ml-auto flex rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-white/20 disabled:cursor-wait disabled:opacity-60 sm:absolute sm:right-5 sm:top-5 sm:mb-0"
             >
                 Cerrar sesión
             </button>
@@ -178,6 +170,7 @@ export async function LaboratorioKernel() {
     section.addEventListener("click", (event) => {
         const controlRuta = event.target.closest("[data-route]");
         if (!controlRuta || !section.contains(controlRuta)) return;
+        event.preventDefault();
         navegar(controlRuta.dataset.route);
     });
 

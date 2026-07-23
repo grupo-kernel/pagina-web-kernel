@@ -1,13 +1,13 @@
-import kernelLogo from "../../assets/ElKernel.png";
-import congreso1 from "../../assets/congreso1.jpeg";
-import congreso2 from "../../assets/congreso2.jpeg";
-import congreso3 from "../../assets/congreso3.jpeg";
-import congreso4 from "../../assets/congreso4.jpeg";
-import congreso5 from "../../assets/congreso5.jpeg";
-import congreso6 from "../../assets/congreso6.jpeg";
-import congreso7 from "../../assets/congreso7.jpeg";
-import congreso8 from "../../assets/congreso8.jpeg";
-import congreso9 from "../../assets/congreso9.jpeg";
+import kernelLogo from "../../assets/ElKernel.webp";
+import congreso1 from "../../assets/congreso1.webp";
+import congreso2 from "../../assets/congreso2.webp";
+import congreso3 from "../../assets/congreso3.webp";
+import congreso4 from "../../assets/congreso4.webp";
+import congreso5 from "../../assets/congreso5.webp";
+import congreso6 from "../../assets/congreso6.webp";
+import congreso7 from "../../assets/congreso7.webp";
+import congreso8 from "../../assets/congreso8.webp";
+import congreso9 from "../../assets/congreso9.webp";
 
 const REGISTRO_PANEL = Object.freeze([
     congreso3,

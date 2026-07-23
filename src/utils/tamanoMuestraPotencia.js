@@ -54,6 +54,250 @@ function normalCdf(z) {
     return 0.5 * (1 + s * erf);
 }
 
+function logGamma(z) {
+    const coeficientes = [
+        676.5203681218851,
+        -1259.1392167224028,
+        771.3234287776531,
+        -176.6150291621406,
+        12.507343278161,
+        -0.13857109526572,
+        9.98436957801957e-6,
+        1.50563273514931e-7
+    ];
+
+    if (z < 0.5) {
+        return Math.log(Math.PI) -
+            Math.log(Math.sin(Math.PI * z)) -
+            logGamma(1 - z);
+    }
+
+    const zm1 = z - 1;
+    let suma = 0.9999999999998099;
+    coeficientes.forEach((coeficiente, indice) => {
+        suma += coeficiente / (zm1 + indice + 1);
+    });
+    const t = zm1 + coeficientes.length - 0.5;
+
+    return 0.5 * Math.log(2 * Math.PI) +
+        (zm1 + 0.5) * Math.log(t) -
+        t +
+        Math.log(suma);
+}
+
+function gammaRegularizadaP(a, x) {
+    if (!(a > 0) || x < 0 || !Number.isFinite(x)) {
+        if (x === Infinity && a > 0) return 1;
+        throw new Error("No fue posible evaluar la distribución gamma.");
+    }
+    if (x === 0) return 0;
+
+    const maxIteraciones = 500;
+    const tolerancia = 1e-14;
+
+    if (x < a + 1) {
+        let termino = 1 / a;
+        let suma = termino;
+        let ap = a;
+
+        for (let i = 1; i <= maxIteraciones; i += 1) {
+            ap += 1;
+            termino *= x / ap;
+            suma += termino;
+            if (Math.abs(termino) <= Math.abs(suma) * tolerancia) break;
+        }
+
+        return clamp(
+            suma * Math.exp(-x + a * Math.log(x) - logGamma(a))
+        );
+    }
+
+    let b = x + 1 - a;
+    let c = 1 / 1e-300;
+    let d = 1 / Math.max(Math.abs(b), 1e-300) * Math.sign(b || 1);
+    let h = d;
+
+    for (let i = 1; i <= maxIteraciones; i += 1) {
+        const an = -i * (i - a);
+        b += 2;
+        d = an * d + b;
+        if (Math.abs(d) < 1e-300) d = 1e-300;
+        c = b + an / c;
+        if (Math.abs(c) < 1e-300) c = 1e-300;
+        d = 1 / d;
+        const delta = d * c;
+        h *= delta;
+        if (Math.abs(delta - 1) <= tolerancia) break;
+    }
+
+    const q = Math.exp(-x + a * Math.log(x) - logGamma(a)) * h;
+    return clamp(1 - q);
+}
+
+function fraccionBetaContinua(a, b, x) {
+    const maxIteraciones = 500;
+    const tolerancia = 3e-14;
+    const minimo = 1e-300;
+    const qab = a + b;
+    const qap = a + 1;
+    const qam = a - 1;
+    let c = 1;
+    let d = 1 - qab * x / qap;
+
+    if (Math.abs(d) < minimo) d = minimo;
+    d = 1 / d;
+    let h = d;
+
+    for (let m = 1; m <= maxIteraciones; m += 1) {
+        const m2 = 2 * m;
+        let aa = m * (b - m) * x /
+            ((qam + m2) * (a + m2));
+
+        d = 1 + aa * d;
+        if (Math.abs(d) < minimo) d = minimo;
+        c = 1 + aa / c;
+        if (Math.abs(c) < minimo) c = minimo;
+        d = 1 / d;
+        h *= d * c;
+
+        aa = -(a + m) * (qab + m) * x /
+            ((a + m2) * (qap + m2));
+        d = 1 + aa * d;
+        if (Math.abs(d) < minimo) d = minimo;
+        c = 1 + aa / c;
+        if (Math.abs(c) < minimo) c = minimo;
+        d = 1 / d;
+        const delta = d * c;
+        h *= delta;
+
+        if (Math.abs(delta - 1) <= tolerancia) break;
+    }
+
+    return h;
+}
+
+function betaRegularizada(x, a, b) {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+
+    const frente = Math.exp(
+        logGamma(a + b) -
+        logGamma(a) -
+        logGamma(b) +
+        a * Math.log(x) +
+        b * Math.log1p(-x)
+    );
+
+    if (x < (a + 1) / (a + b + 2)) {
+        return clamp(frente * fraccionBetaContinua(a, b, x) / a);
+    }
+
+    return clamp(
+        1 - frente * fraccionBetaContinua(b, a, 1 - x) / b
+    );
+}
+
+function cdfChiCuadrado(x, gl) {
+    return gammaRegularizadaP(gl / 2, x / 2);
+}
+
+function cdfF(x, gl1, gl2) {
+    if (x <= 0) return 0;
+    if (x === Infinity) return 1;
+    const razon = gl1 * x / (gl1 * x + gl2);
+    return betaRegularizada(razon, gl1 / 2, gl2 / 2);
+}
+
+function cuantileDistribucion(cdf, p) {
+    let inferior = 0;
+    let superior = 1;
+
+    while (cdf(superior) < p && superior < 1e12) {
+        superior *= 2;
+    }
+
+    for (let i = 0; i < 120; i += 1) {
+        const medio = (inferior + superior) / 2;
+        if (cdf(medio) < p) inferior = medio;
+        else superior = medio;
+    }
+
+    return (inferior + superior) / 2;
+}
+
+function sumaPoissonCentrada(mediaPoisson, componente) {
+    if (mediaPoisson <= EPS) return componente(0);
+
+    const moda = Math.floor(mediaPoisson);
+    let pesoModa = Math.exp(
+        -mediaPoisson +
+        moda * Math.log(mediaPoisson) -
+        logGamma(moda + 1)
+    );
+    let suma = pesoModa * componente(moda);
+    let masa = pesoModa;
+    let peso = pesoModa;
+
+    for (let j = moda + 1; j < moda + 100000; j += 1) {
+        peso *= mediaPoisson / j;
+        suma += peso * componente(j);
+        masa += peso;
+        if (peso < 1e-15 && j > mediaPoisson) break;
+    }
+
+    peso = pesoModa;
+    for (let j = moda - 1; j >= 0; j -= 1) {
+        peso *= (j + 1) / mediaPoisson;
+        suma += peso * componente(j);
+        masa += peso;
+        if (peso < 1e-15 && j < mediaPoisson) break;
+    }
+
+    return clamp(suma / Math.max(masa, EPS));
+}
+
+function cdfChiCuadradoNoCentral(x, gl, noCentralidad) {
+    return sumaPoissonCentrada(
+        noCentralidad / 2,
+        (j) => cdfChiCuadrado(x, gl + 2 * j)
+    );
+}
+
+function cdfFNoCentral(x, gl1, gl2, noCentralidad) {
+    if (x <= 0) return 0;
+    const razon = gl1 * x / (gl1 * x + gl2);
+    return sumaPoissonCentrada(
+        noCentralidad / 2,
+        (j) => betaRegularizada(
+            razon,
+            gl1 / 2 + j,
+            gl2 / 2
+        )
+    );
+}
+
+function buscarTamanoMinimo(potencia, objetivo, minimo) {
+    let inferior = Math.max(2, Math.ceil(minimo));
+    let superior = inferior;
+
+    while (potencia(superior) < objetivo) {
+        if (superior >= 1e7) {
+            throw new Error(
+                "El tamaño requerido supera el límite de cálculo. Revise el tamaño del efecto."
+            );
+        }
+        superior = Math.ceil(superior * 1.5 + 1);
+    }
+
+    while (inferior < superior) {
+        const medio = Math.floor((inferior + superior) / 2);
+        if (potencia(medio) >= objetivo) superior = medio;
+        else inferior = medio + 1;
+    }
+
+    return inferior;
+}
+
 function zAlpha(alpha, colas) {
     return cuantileNormal(1 - probabilidad("Alpha", alpha) / (Number(colas) === 1 ? 1 : 2));
 }
@@ -157,22 +401,96 @@ function anova(p, c) {
     const f = positivo("El tamaño del efecto f", Math.abs(p.efecto));
     const g = Math.trunc(positivo("El número de grupos", p.grupos));
     if (g < 2) throw new Error("ANOVA requiere al menos dos grupos.");
-    const z = zAlpha(c.alpha, 1) + cuantileNormal(c.potencia);
-    return { n: z ** 2 * (g - 1) / f ** 2 + g, grupos: g, detalle: "ANOVA de un factor con grupos equilibrados; aproximación conservadora.", efecto: `f = ${f}; grupos = ${g}`, potencia: (n) => potenciaNormal(f * Math.sqrt(Math.max(n / (g - 1), EPS)), c.alpha, 1) };
+    const potencia = (n) => {
+        const total = Math.floor(Number(n));
+        if (total <= g) return 0;
+        const gl1 = g - 1;
+        const gl2 = total - g;
+        const critico = cuantileDistribucion(
+            (x) => cdfF(x, gl1, gl2),
+            1 - c.alpha
+        );
+        return clamp(
+            1 - cdfFNoCentral(
+                critico,
+                gl1,
+                gl2,
+                f ** 2 * total
+            )
+        );
+    };
+    const n = buscarTamanoMinimo(
+        potencia,
+        c.potencia,
+        g + 2
+    );
+    return {
+        n,
+        grupos: g,
+        detalle: "ANOVA de un factor con grupos equilibrados mediante la distribución F no central.",
+        efecto: `f = ${f}; grupos = ${g}`,
+        potencia
+    };
 }
 
 function chiCuadrado(p, c) {
     const w = positivo("El tamaño del efecto w", Math.abs(p.efecto));
     const gl = Math.trunc(positivo("Los grados de libertad", p.gl));
-    const z = zAlpha(c.alpha, 1) + cuantileNormal(c.potencia);
-    return { n: z ** 2 * gl / w ** 2, detalle: "Chi-cuadrado de asociación o bondad de ajuste; aproximación de no centralidad.", efecto: `w = ${w}; gl = ${gl}`, potencia: (n) => potenciaNormal(w * Math.sqrt(Math.max(n / gl, EPS)), c.alpha, 1) };
+    const critico = cuantileDistribucion(
+        (x) => cdfChiCuadrado(x, gl),
+        1 - c.alpha
+    );
+    const potencia = (n) => {
+        const total = Math.floor(Number(n));
+        if (total <= 0) return 0;
+        return clamp(
+            1 - cdfChiCuadradoNoCentral(
+                critico,
+                gl,
+                total * w ** 2
+            )
+        );
+    };
+    const n = buscarTamanoMinimo(potencia, c.potencia, 2);
+    return {
+        n,
+        detalle: "Chi-cuadrado de asociación o bondad de ajuste mediante la distribución chi-cuadrado no central.",
+        efecto: `w = ${w}; gl = ${gl}`,
+        potencia
+    };
 }
 
 function regresionLineal(p, c) {
     const f2 = positivo("El tamaño del efecto f²", Math.abs(p.efecto));
     const u = Math.trunc(positivo("El número de predictores", p.predictores));
-    const z = zAlpha(c.alpha, 1) + cuantileNormal(c.potencia);
-    return { n: z ** 2 / f2 + u + 1, detalle: "Regresión lineal múltiple mediante f² de Cohen; aproximación de planificación.", efecto: `f² = ${f2}; predictores = ${u}`, potencia: (n) => potenciaNormal(Math.sqrt(f2 * Math.max(n - u - 1, 1)), c.alpha, 1) };
+    const potencia = (n) => {
+        const total = Math.floor(Number(n));
+        const gl2 = total - u - 1;
+        if (gl2 <= 0) return 0;
+        const critico = cuantileDistribucion(
+            (x) => cdfF(x, u, gl2),
+            1 - c.alpha
+        );
+        return clamp(
+            1 - cdfFNoCentral(
+                critico,
+                u,
+                gl2,
+                f2 * total
+            )
+        );
+    };
+    const n = buscarTamanoMinimo(
+        potencia,
+        c.potencia,
+        u + 3
+    );
+    return {
+        n,
+        detalle: "Regresión lineal múltiple mediante f² de Cohen y la distribución F no central.",
+        efecto: `f² = ${f2}; predictores = ${u}`,
+        potencia
+    };
 }
 
 function regresionLogistica(p, c) {

@@ -507,7 +507,7 @@ function renderizarTabla(
     const encabezados = Array.from(
         { length: numeroColumnas },
         (_, indice) => `
-            <th class="min-w-[145px] bg-slate-100 px-3 py-3">
+            <th scope="col" class="min-w-[145px] bg-slate-100 px-3 py-3">
                 <input
                     type="text"
                     data-etiqueta-columna="${indice}"
@@ -550,7 +550,7 @@ function renderizarTabla(
 
             return `
                 <tr class="border-t border-slate-200">
-                    <th class="sticky left-0 min-w-[170px] bg-slate-50 px-3 py-3 z-10">
+                    <th scope="row" class="sticky left-0 min-w-[170px] bg-slate-50 px-3 py-3 z-10">
                         <input
                             type="text"
                             data-etiqueta-fila="${indiceFila}"
@@ -570,9 +570,12 @@ function renderizarTabla(
 
     contenedor.innerHTML = `
         <table class="min-w-full text-sm">
+            <caption class="sr-only">
+                Tabla editable de frecuencias observadas por categorías de fila y columna
+            </caption>
             <thead>
                 <tr>
-                    <th class="sticky left-0 min-w-[170px] bg-slate-200 px-3 py-3 text-left font-black text-slate-700 z-20">
+                    <th scope="col" class="sticky left-0 min-w-[170px] bg-slate-200 px-3 py-3 text-left font-black text-slate-700 z-20">
                         Categorías
                     </th>
                     ${encabezados}
@@ -973,7 +976,7 @@ function crearTablaResultados(resultado) {
         tabla.etiquetasColumnas
             .map(
                 (etiqueta) => `
-                    <th class="px-4 py-3 text-center min-w-[150px]">
+                    <th scope="col" class="px-4 py-3 text-center min-w-[150px]">
                         ${escaparHTML(etiqueta)}
                     </th>
                 `
@@ -984,7 +987,7 @@ function crearTablaResultados(resultado) {
         .map(
             (fila, indiceFila) => `
                 <tr class="border-t border-slate-200">
-                    <th class="sticky left-0 bg-slate-50 px-4 py-4 text-left font-black text-slate-900 z-10">
+                    <th scope="row" class="sticky left-0 bg-slate-50 px-4 py-4 text-left font-black text-slate-900 z-10">
                         ${escaparHTML(
                             tabla.etiquetasFilas[indiceFila]
                         )}
@@ -1038,9 +1041,12 @@ function crearTablaResultados(resultado) {
             </header>
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
+                    <caption class="sr-only">
+                        Frecuencias observadas, esperadas y residuos ajustados por categoría
+                    </caption>
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <th class="sticky left-0 bg-slate-200 px-4 py-3 text-left z-20">
+                            <th scope="col" class="sticky left-0 bg-slate-200 px-4 py-3 text-left z-20">
                                 Categoría
                             </th>
                             ${encabezados}
