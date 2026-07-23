@@ -318,3 +318,13 @@
     outline-offset: 3px !important;
     box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.94) !important;
 }
+
+/*
+ * El enrutador enfoca el h1 para anunciar cada cambio de página a lectores
+ * de pantalla. Al no ser un control interactivo, no necesita el contorno
+ * visual que algunos navegadores dibujan incluso con tabindex="-1".
+ */
+:where(h1, h2, h3, h4, h5, h6)[tabindex="-1"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}

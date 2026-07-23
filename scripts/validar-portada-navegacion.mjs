@@ -71,6 +71,10 @@ const pie = await readFile(
     new URL("../src/components/Footer/Footer.js", import.meta.url),
     "utf8"
 );
+const estilos = await readFile(
+    new URL("../src/css/style.css", import.meta.url),
+    "utf8"
+);
 
 assert.equal(MODULOS_LABORATORIO.length, 9, "El laboratorio debe mantener nueve módulos.");
 
@@ -152,6 +156,21 @@ assert.match(procesoAplicaciones, /no se presentan como casos de clientes/i);
 assert.match(rutas, /home:\s*\{\s*page:\s*CreatePageHome,\s*layout:\s*"full"/);
 assert.match(rutas, /servicios:\s*\{\s*page:\s*Servicios/);
 assert.match(rutas, /diagnosticoServicios:\s*\{\s*page:\s*DiagnosticoServicios/);
+assert.match(
+    rutas,
+    /titulo\.setAttribute\("tabindex", "-1"\)[\s\S]*?titulo\.focus\(\{ preventScroll: true \}\)/,
+    "El cambio de ruta debe conservar el foco semántico en el título."
+);
+assert.match(
+    estilos,
+    /:where\(h1, h2, h3, h4, h5, h6\)\[tabindex="-1"\]:focus\s*\{[\s\S]*?outline:\s*none\s*!important;[\s\S]*?box-shadow:\s*none\s*!important;/,
+    "Los títulos enfocados por el enrutador no deben mostrar un contorno visual."
+);
+assert.match(
+    estilos,
+    /\[tabindex\]:not\(\[tabindex="-1"\]\)[\s\S]*?:focus-visible/,
+    "Los controles navegables deben conservar un indicador visible de foco."
+);
 
 assert.match(navegacion, /itemRuta\("servicios",\s*"Servicios"/);
 assert.match(navegacion, /data-route="diagnosticoServicios"/);
