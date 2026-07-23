@@ -1,4 +1,5 @@
 import { renderMMehbPoster } from "./MMehbPoster.js";
+import { renderMescytPoster } from "./MescytPoster.js";
 
 function safeText(value) {
     return String(value ?? "")
@@ -7,6 +8,12 @@ function safeText(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+}
+
+function renderPoster(visualType) {
+    if (visualType === "mmehb-2026") return renderMMehbPoster();
+    if (visualType === "mescyt-cic-2026") return renderMescytPoster();
+    return "";
 }
 
 export function newsModal({
@@ -25,9 +32,7 @@ export function newsModal({
         ? `<ul class="space-y-3">${content.list.map((item) => `<li class="flex items-start gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#0b5963]"></span><span>${safeText(item)}</span></li>`).join("")}</ul>`
         : "";
 
-    const poster = visualType === "mmehb-2026"
-        ? `<div class="mb-7">${renderMMehbPoster()}</div>`
-        : "";
+    const poster = renderPoster(visualType);
 
     return `
         <div role="dialog" aria-modal="true" aria-labelledby="titulo-modal-noticia" id="newsModal" class="fixed inset-0 z-[500] flex items-center justify-center bg-slate-950/75 p-3 backdrop-blur-sm md:p-6">
@@ -45,7 +50,7 @@ export function newsModal({
                 </header>
 
                 <div class="flex-1 overflow-y-auto px-5 py-6 md:px-9 md:py-8">
-                    ${poster}
+                    ${poster ? `<div class="mb-7">${poster}</div>` : ""}
                     <div class="space-y-5 text-base leading-relaxed text-slate-700 md:text-lg">${paragraphs}</div>
                     ${list ? `<section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-5 md:p-7"><h3 class="mb-5 text-xl font-black text-slate-950">Datos principales</h3>${list}</section>` : ""}
                 </div>

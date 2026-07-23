@@ -1,5 +1,6 @@
 import { newsData } from "../../data/newsData.js";
 import { noticiaMMehb2026 } from "../../data/newsMMehb2026.js";
+import { noticiaMescyt2026 } from "../../data/newsMescyt2026.js";
 import { newsHero } from "./NewsHero.js";
 import { newsGrid } from "./NewsGrid.js";
 import { newsCTA } from "./NewsCTA.js";
@@ -16,7 +17,12 @@ export function createNews() {
     const section = document.createElement("section");
     section.className = "w-full bg-slate-100 font-sans";
 
-    const orderedNews = ordenarNoticias([noticiaMMehb2026, ...newsData.filter((item) => item.id !== noticiaMMehb2026.id)]);
+    const idsEspeciales = new Set([noticiaMMehb2026.id, noticiaMescyt2026.id]);
+    const orderedNews = ordenarNoticias([
+        noticiaMMehb2026,
+        noticiaMescyt2026,
+        ...newsData.filter((item) => !idsEspeciales.has(item.id))
+    ]);
     const featuredNews = orderedNews.find((news) => news.featured) || orderedNews[0];
 
     section.innerHTML = `
