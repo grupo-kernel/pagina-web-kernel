@@ -50,7 +50,7 @@ export function publicacionesComponent() {
                         <div>
                             <p class="text-xs font-black uppercase tracking-[0.2em] text-[#efc86f]">Producción científica del Grupo El Kernel</p>
                             <h1 class="mt-3 text-4xl font-black leading-tight md:text-6xl">Publicaciones con rigor, trazabilidad e impacto</h1>
-                            <p class="mt-5 max-w-4xl text-base leading-relaxed text-slate-300 md:text-lg">Explore la producción por investigador, revista, editorial, año, cuartil y DOI. Las identidades editoriales permiten reconocer rápidamente el ecosistema de publicación de cada trabajo.</p>
+                            <p class="mt-5 max-w-4xl text-base leading-relaxed text-slate-300 md:text-lg">Explore la producción por investigador con el nombre completo de la revista, editorial, identificación bibliográfica, modelo de publicación, año, cuartil, autores y DOI.</p>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             ${[[stats.total,"Artículos únicos"],[stats.investigadores,"Investigadores"],[stats.q1,"Artículos Q1"],[stats.periodo,"Periodo registrado"]].map(([valor,etiqueta]) => `<article class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-black text-white md:text-3xl">${valor}</p><p class="mt-1 text-xs font-bold uppercase tracking-wide text-emerald-200">${etiqueta}</p></article>`).join("")}
@@ -62,7 +62,7 @@ export function publicacionesComponent() {
                     <aside class="max-h-[430px] overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 p-4 custom-scrollbar md:max-h-none">
                         <p class="text-xs font-black uppercase tracking-[0.18em] text-[#b37a2a]">Autores del grupo</p>
                         <h2 class="mt-1 text-2xl font-black text-slate-950">Seleccione un investigador</h2>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-600">La ficha muestra sus revistas, cuartiles, periodo y acceso directo a cada publicación.</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">La ficha muestra revistas, editoriales, cuartiles, periodo, DOI y acceso al documento cuando está disponible.</p>
                         <div class="mt-5 flex flex-col gap-4">${publicacionesContenido.map((p) => renderProfesorItem(p, Number(p.id) === Number(selectedId))).join("")}</div>
                     </aside>
 
