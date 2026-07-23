@@ -25,7 +25,7 @@ function numeroLocal(texto) {
     return Number.isFinite(valor) ? valor : null;
 }
 
-function leerTabla(contenedor) {
+export function leerTabla(contenedor) {
     const tabla = contenedor.querySelector("table");
     if (!tabla) return null;
 
@@ -35,7 +35,7 @@ function leerTabla(contenedor) {
 
     const filas = [...tabla.querySelectorAll("tbody tr")]
         .map((fila) => {
-            const celdas = [...fila.querySelectorAll("td")];
+            const celdas = [...fila.children];
             const frecuencia = Number(
                 celdas[agrupados ? 2 : 1]?.textContent.trim()
             );
