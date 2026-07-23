@@ -1,10 +1,13 @@
 import { newsData } from "../../data/newsData.js";
 import { noticiaMMehb2026 } from "../../data/newsMMehb2026.js";
+import { noticiaMescyt2026 } from "../../data/newsMescyt2026.js";
 import { newsModal } from "../../components/Noticias/NewsModal.js";
 
+const IDS_ESPECIALES = new Set([noticiaMMehb2026.id, noticiaMescyt2026.id]);
 const TODAS_LAS_NOTICIAS = Object.freeze([
     noticiaMMehb2026,
-    ...newsData.filter((item) => item.id !== noticiaMMehb2026.id)
+    noticiaMescyt2026,
+    ...newsData.filter((item) => !IDS_ESPECIALES.has(item.id))
 ]);
 
 export function initNewsModalController(rootElement) {
