@@ -13,6 +13,7 @@ on:
       - "data/journal_quartiles.json"
       - "scripts/sync_publications.py"
       - "scripts/validate_data.py"
+      - "scripts/validate_frontend.py"
       - ".github/workflows/sync-publications.yml"
 
 permissions:
@@ -39,6 +40,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Validar frontend
+        run: python scripts/validate_frontend.py
+
       - name: Validar datos de entrada
         run: python scripts/validate_data.py
 
@@ -54,6 +58,7 @@ jobs:
       - name: Validar catálogo resultante
         run: |
           python scripts/validate_data.py
+          python scripts/validate_frontend.py
           git diff --check
 
       - name: Guardar cambios del catálogo
