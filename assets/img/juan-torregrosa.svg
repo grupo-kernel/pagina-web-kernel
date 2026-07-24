@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Juan Ramón Torregrosa Sánchez</title>
+  <desc id="desc">Identificador institucional con las iniciales JT</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a2540"/>
+      <stop offset="1" stop-color="#0b6fb8"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="160" fill="url(#g)"/>
+  <circle cx="160" cy="160" r="145" fill="none" stroke="#ffffff" stroke-opacity=".32" stroke-width="3"/>
+  <text x="160" y="184" text-anchor="middle" fill="#ffffff" font-family="Georgia, Times New Roman, serif" font-size="86" font-weight="700">JT</text>
+</svg>
