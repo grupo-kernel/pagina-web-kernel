@@ -1,0 +1,71 @@
+name: Sincronizar publicaciones
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 07 * * 1"
+  push:
+    branches:
+      - main
+      - agent/miembros-cordero-torregrosa
+    paths:
+      - "data/researchers.json"
+      - "data/journal_quartiles.json"
+      - "scripts/sync_publications.py"
+      - "scripts/validate_data.py"
+      - ".github/workflows/sync-publications.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publication-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validar datos de entrada
+        run: python scripts/validate_data.py
+
+      - name: Consultar fuentes bibliográficas
+        env:
+          CROSSREF_MAILTO: mleonardo@itla.edu.do
+          ORCID_ACCESS_TOKEN: ${{ secrets.ORCID_ACCESS_TOKEN }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          HTTP_TIMEOUT: "30"
+          SYNC_STRICT: "0"
+        run: python scripts/sync_publications.py
+
+      - name: Validar catálogo resultante
+        run: |
+          python scripts/validate_data.py
+          git diff --check
+
+      - name: Guardar cambios del catálogo
+        shell: bash
+        run: |
+          if git diff --quiet -- data/publications.json; then
+            echo "No se detectaron publicaciones nuevas ni cambios de metadatos."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/publications.json
+          git commit -m "Actualizar catálogo automatizado de publicaciones"
+          git push
