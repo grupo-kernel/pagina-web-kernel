@@ -1,333 +1,163 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Publicaciones - Grupo Kernel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 2rem;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-        }
-        .glass-card {
-            background: rgba(255,255,255,0.89);
-            border-radius: 1.2rem;
-            box-shadow: 0 4px 20px rgba(70,130,180,0.12), 0 1.5px 8px rgba(20,44,93,0.03);
-            padding: 1.7rem 2rem;
-            margin-bottom: 2.2rem;
-            border-left: 8px solid #a0c6ff;
-            backdrop-filter: blur(4px);
-            transition: box-shadow 0.2s;
-            position: relative;
-        }
-        .glass-card:hover {
-            box-shadow: 0 8px 30px rgba(20,50,100,0.12), 0 1.5px 14px rgba(50,120,180,0.10);
-            border-left-color: #3a8fd4;
-        }
-        .pub-title {
-            font-size: 1.21rem;
-            font-weight: 600;
-            color: #0a2c5d;
-            margin-bottom: 0.3rem;
-        }
-        .pub-meta {
-            font-size: 1.05rem;
-            color: #2574b6;
-            margin-bottom: 0.15rem;
-        }
-        .pub-icons {
-            font-size: 1.2rem;
-            color: #1b8fc4;
-            margin-right: 0.4rem;
-            vertical-align: middle;
-        }
-        .pub-doi {
-            font-size: 1rem;
-            color: #2071b2;
-            word-break: break-all;
-            display: inline-block;
-        }
-        .badge-journal {
-            background: #3a8fd4;
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.35em 0.8em;
-            border-radius: 1.1em;
-            margin-right: 0.5em;
-        }
-        .badge-year {
-            background: #fcba03;
-            color: #fff;
-            font-size: 0.95rem;
-            font-weight: 700;
-            padding: 0.3em 1em;
-            border-radius: 1.3em;
-            vertical-align: middle;
-            margin-right: 0.7em;
-        }
-        .badge-quartile {
-            background: #46d18d;
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 0.27em 0.8em;
-            border-radius: 1.1em;
-            margin-right: 0.5em;
-        }
-        h2 {
-            font-weight: bold;
-            letter-spacing: 0.01em;
-        }
-        .author-icon {
-            font-size: 2rem;
-            color: #2a5298;
-            vertical-align: middle;
-            margin-right: 0.4em;
-        }
-        .nav-pills .nav-link {
-            font-size: 1.15rem;
-            font-weight: 500;
-            color: #1b8fc4;
-            margin-bottom: 0.5rem;
-            border-radius: 1.2rem;
-        }
-        .nav-pills .nav-link.active {
-            background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-            color: #fff !important;
-        }
-        /* BOTÓN FLOTANTE */
-        .btn-inicio-flotante {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 16px rgba(13,59,102,0.16);
-            padding: 0.8rem 1.6rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background-color: #1594e9;
-            color: #fff;
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-        .btn-inicio-flotante:hover {
-            background: #34c9a3;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(13,59,102,0.23);
-            text-decoration: none;
-        }
-        @media (max-width: 600px) {
-            .glass-card { padding: 1.2rem 0.6rem;}
-            .pub-title { font-size: 1.07rem;}
-            .badge-journal, .badge-year, .badge-quartile { font-size: 0.8rem; }
-            .btn-inicio-flotante {
-                right: 12px;
-                bottom: 10px;
-                padding: 0.7rem 1.1rem;
-                font-size: 1rem;
-            }
-        }
-        .navbar-nav .nav-link {
-            font-weight: bold !important;
-            font-style: italic !important;
-        }
-        .navbar-nav .nav-link {
-            font-size: 1.7rem !important;
-            font-weight: bold !important;
-            font-style: italic !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Catálogo formal y filtrable de artículos científicos del Grupo El Kernel, con DOI, autores, revistas y cuartiles documentados.">
+<title>Publicaciones científicas | El Kernel</title>
+<link rel="icon" href="ElKernel.png" type="image/png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="assets/css/kernel.css" rel="stylesheet">
 </head>
 <body>
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
   <div class="container">
-    <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <a class="navbar-brand kernel-brand" href="index.html" aria-label="Inicio de El Kernel">
+      <img src="ElKernel.png" alt="" width="48" height="48">
+      <span>El Kernel</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav"
+            aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú de navegación">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold" href="publicaciones.html">Publicaciones</a></li>
-        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+    <div class="collapse navbar-collapse" id="kernelNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li><li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li><li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li><li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li><li class="nav-item"><a class="nav-link active" href="publicaciones.html" aria-current="page">Publicaciones</a></li><li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li><li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
       </ul>
     </div>
   </div>
 </nav>
+<main id="contenido">
+  <header class="page-header">
+    <div class="container page-header-inner">
+      <p class="hero-kicker"><i class="bi bi-journal-richtext" aria-hidden="true"></i> Producción científica</p>
+      <h1 class="page-title">Publicaciones del Grupo El Kernel</h1>
+      <p class="page-lead">
+        Catálogo bibliográfico normalizado con DOI, coautorías, revistas y cuartiles identificados por fuente,
+        año y categoría. La colección inicial se concentra en Alicia Cordero y Juan Ramón Torregrosa.
+      </p>
+      <div class="page-meta">
+        <span class="meta-pill"><i class="bi bi-files" aria-hidden="true"></i> <span data-stat="publications">38</span> artículos únicos</span>
+        <span class="meta-pill"><i class="bi bi-patch-check" aria-hidden="true"></i> <span data-stat="verified-quartiles">11</span> cuartiles verificados</span>
+        <span class="meta-pill"><i class="bi bi-calendar-check" aria-hidden="true"></i> Actualización: <span id="catalogUpdated">24 de julio de 2026</span></span>
+      </div>
+    </div>
+  </header>
 
-<div class="container">
-    <h2 class="text-center text-primary mb-5">
-      <i class="bi bi-journal-richtext author-icon"></i> Publicaciones del Grupo de Investigación Kernel
-    </h2>
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-eyebrow">Indicadores del catálogo</p>
+        <h2 class="section-title">Cobertura y trazabilidad</h2>
+        <p class="section-intro">
+          Los conteos institucionales mostrados para los investigadores proceden de sus perfiles UPV y pueden diferir
+          del catálogo local, ORCID, Scopus o Web of Science por criterios de cobertura y fecha de actualización.
+        </p>
+      </div>
+      <div id="publicationMetrics" class="metrics-grid" aria-live="polite">
+        <div class="loading-state">Calculando indicadores bibliográficos…</div>
+      </div>
+      <div id="researcherSpotlight" class="researcher-grid mt-4" aria-live="polite"></div>
+    </div>
+  </section>
 
-    <!-- PESTAÑAS DE AUTORES -->
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <div class="nav flex-column nav-pills" id="pub-tabs" role="tablist" aria-orientation="vertical">
-          <button class="nav-link active" id="miguel-tab" data-bs-toggle="pill" data-bs-target="#miguel" type="button" role="tab">Miguel A. Leonardo</button>
-          <button class="nav-link" id="antmel-tab" data-bs-toggle="pill" data-bs-target="#antmel" type="button" role="tab">Antmel Rodríguez</button>
-          <button class="nav-link" id="marckelly-tab" data-bs-toggle="pill" data-bs-target="#marckelly" type="button" role="tab">Marc-Kelly Jean Philippe</button>
-          <button class="nav-link" id="josealberto-tab" data-bs-toggle="pill" data-bs-target="#josealberto" type="button" role="tab">José Alberto Reyes</button>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-eyebrow">Consulta bibliográfica</p>
+        <h2 class="section-title">Buscar y filtrar publicaciones</h2>
+        <p class="section-intro">Los filtros se aplican sobre títulos, autores, revistas, años, DOI y cuartiles.</p>
+      </div>
+
+      <form class="filter-panel" role="search" onsubmit="return false;">
+        <div class="filter-grid">
+          <div>
+            <label class="form-label" for="searchInput">Buscar</label>
+            <input class="form-control" id="searchInput" type="search" placeholder="Título, autor, revista o DOI" autocomplete="off">
+          </div>
+          <div>
+            <label class="form-label" for="authorFilter">Investigador</label>
+            <select class="form-select" id="authorFilter">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="yearFilter">Año</label>
+            <select class="form-select" id="yearFilter">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="quartileFilter">Cuartil</label>
+            <select class="form-select" id="quartileFilter">
+              <option value="">Todos</option>
+              <option value="Q1">Q1</option>
+              <option value="Q2">Q2</option>
+              <option value="Q3">Q3</option>
+              <option value="Q4">Q4</option>
+              <option value="pending">Pendiente</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div class="results-meta">
+        <p class="mb-0" id="resultsCount" aria-live="polite">Preparando resultados…</p>
+        <div class="legend" aria-label="Estado de los cuartiles">
+          <span class="legend-item"><span class="legend-dot verified"></span> Evidencia directa</span>
+          <span class="legend-item"><span class="legend-dot provisional"></span> Provisional o heredado</span>
+          <span class="legend-item"><span class="legend-dot pending"></span> Pendiente</span>
         </div>
       </div>
-      <div class="col-md-9">
-       <div class="tab-content" id="pub-tabs-content">
-  <!-- Miguel -->
-  <div class="tab-pane fade show active" id="miguel" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mathematics and Computers in Simulation</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Increasing in three units the order of convergence of iterative methods for solving nonlinear systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.1016/j.matcom.2024.05.001" target="_blank">10.1016/j.matcom.2024.05.001</a>
+
+      <div class="callout mb-4">
+        <strong>Criterio de calidad:</strong> un cuartil no se infiere por el nombre de la revista. Se publica junto con
+        su fuente, año y categoría; cuando falta alguno de estos elementos, el registro se identifica como provisional
+        o pendiente de revisión.
+      </div>
+
+      <div id="publicationsList" class="publications-list" aria-live="polite">
+        <div class="loading-state">Cargando publicaciones…</div>
+      </div>
+      <div class="load-more-wrap">
+        <button id="loadMoreButton" class="btn-load-more" type="button" hidden>
+          <i class="bi bi-plus-circle" aria-hidden="true"></i> Mostrar más publicaciones
+        </button>
       </div>
     </div>
-    <div class="glass-card">
-      <span class="badge-year">2023</span>
-      <span class="badge-journal">Mathematics</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/math11204238" target="_blank">10.3390/math11204238</a>
+  </section>
+</main>
+<footer class="kernel-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-title mb-2">Grupo de Investigación El Kernel</p>
+        <p class="mb-0">Métodos numéricos, ecuaciones no lineales, optimización, álgebra aplicada y educación matemática.</p>
+      </div>
+      <div>
+        <p class="footer-title mb-2">Catálogo institucional</p>
+        <p class="mb-1"><strong data-stat="members">9</strong> investigadores.</p>
+        <p class="mb-0"><strong data-stat="publications">38</strong> artículos únicos registrados.</p>
+      </div>
+      <div>
+        <p class="footer-title mb-2">Enlaces</p>
+        <div class="footer-links">
+          <a href="equipo.html">Equipo de investigación</a>
+          <a href="publicaciones.html">Producción científica</a>
+          <a href="https://github.com/grupo-kernel/pagina-web-kernel" target="_blank" rel="noopener noreferrer">Repositorio GitHub</a>
+        </div>
       </div>
     </div>
-    <div class="glass-card">
-      <span class="badge-year">2022</span>
-      <span class="badge-journal">Algorithms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a15100387" target="_blank">10.3390/a15100387</a>
-      </div>
+    <div class="footer-bottom">
+      © 2026 Grupo de Investigación El Kernel. Datos bibliográficos actualizados el
+      <span data-stat="updated-at">24 de julio de 2026</span>.
     </div>
   </div>
-
-  <!-- Antmel -->
-  <div class="tab-pane fade" id="antmel" role="tabpanel">
-    <!-- Nuevo 2025 -->
-    <div class="glass-card">
-      <span class="badge-year">2025</span>
-      <span class="badge-journal">Journal of Computational Methods in Sciences and Engineering</span>
-      <span class="badge-quartile">Q4</span>
-      <div class="pub-title">About the stability of self-accelerating parameters in vectorial iterative methods without memory</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.1177/14727978251361407" target="_blank">10.1177/14727978251361407</a>
-      </div>
-    </div>
-    <!-- 2024 -->
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mathematics</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier García Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://www.mdpi.com/2227-7390/12/21/3341" target="_blank">10.3390/math12213341</a>
-      </div>
-    </div>
-    <!-- 2023 -->
-    <div class="glass-card">
-      <span class="badge-year">2023</span>
-      <span class="badge-journal">Algorithms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier García Maimó, Antmel Rodríguez-Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a16030163" target="_blank">10.3390/a16030163</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Marc-Kelly Jean Philippe -->
-  <div class="tab-pane fade" id="marckelly" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2025</span>
-      <span class="badge-journal">Mathematische Nachrichten</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Groups with triangle-free graphs on 𝒑-regular classes</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" target="_blank">10.1002/mana.202400554</a>
-      </div>
-    </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mediterranean Journal of Mathematics</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Groups whose common divisor graph on p-regular classes has diameter three</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://link.springer.com/article/10.1007/s00009-024-02782-2" target="_blank">10.1007/s00009-024-02782-2</a>
-      </div>
-    </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Bulletin of the Malaysian Mathematical Sciences Society</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Some properties of Normal Subgroups Determined from Character Tables</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://link.springer.com/article/10.1007/s40840-024-01684-6" target="_blank">10.1007/s40840-024-01684-6</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- José Alberto Reyes -->
-  <div class="tab-pane fade" id="josealberto" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Axioms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations</div>
-      <div class="pub-meta">Autor: José Alberto Reyes Reyes</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        <a class="pub-doi" href="https://www.mdpi.com/2075-1680/13/1/34" target="_blank">https://www.mdpi.com/2075-1680/13/1/34</a>
-        <span> [<a href="https://www.mdpi.com/2075-1680/13/1/34/pdf" target="_blank">PDF</a>]</span>
-      </div>
-    </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Computation</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Convergence and Stability Analysis of High-Order Derivative-Free Methods for Nonlinear Equations</div>
-      <div class="pub-meta">Autor: José Alberto Reyes Reyes</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/computation13060142" target="_blank">10.3390/computation13060142</a>
-      </div>
-    </div>
-  </div>
-</div>
-          <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio">
-    <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
-    <span class="d-none d-md-inline">Inicio</span>
-</a>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/site-stats.js"></script>
+<script src="assets/js/publicaciones.js"></script>
 </body>
 </html>
