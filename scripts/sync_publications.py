@@ -208,10 +208,15 @@ def author_orcid(author: dict[str, Any]) -> str:
     return match.group(0).upper() if match else ""
 
 
+def compact_mapping(value: dict[str, Any] | None) -> dict[str, Any]:
+    """Devuelve una copia sin campos nulos para evitar cambios cosméticos."""
+    return {key: copy.deepcopy(item) for key, item in (value or {}).items() if item is not None}
+
+
 def quartile_for(journal: str, year: int, entries: dict[str, Any]) -> dict[str, Any]:
     exact = entries.get(f"{normalize_text(journal)}|{year}")
     if exact:
-        return copy.deepcopy(exact)
+        return compact_mapping(exact)
     return {"year": year, "status": "pending"}
 
 
@@ -336,8 +341,12 @@ def apply_quartile_map(publications: list[dict[str, Any]], entries: dict[str, An
         journal = str(publication.get("journal") or "")
         year = int(publication.get("year") or 0)
         exact = entries.get(f"{normalize_text(journal)}|{year}")
-        if exact and publication.get("quartile") != exact:
-            publication["quartile"] = copy.deepcopy(exact)
+        if not exact:
+            continue
+        candidate = compact_mapping(exact)
+        current = compact_mapping(publication.get("quartile"))
+        if current != candidate:
+            publication["quartile"] = candidate
             updated += 1
     return updated
 
