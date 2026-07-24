@@ -141,8 +141,9 @@ def validate(root: Path) -> int:
             except ValueError:
                 fail(errors, f"{prefix}: fecha inválida '{date}'.")
 
+        inherited_ids = [] if publication.get("useDefaultResearcherIds") is False else default_researcher_ids
         linked = list(dict.fromkeys([
-            *default_researcher_ids,
+            *inherited_ids,
             *(publication.get("researcherIds") or []),
         ]))
         if not linked:
