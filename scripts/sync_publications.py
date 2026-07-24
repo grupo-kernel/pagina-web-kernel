@@ -60,7 +60,9 @@ def normalize_text(value: Any) -> str:
 
 
 def first(value: Any) -> Any:
-    return value[0] if isinstance(value, list) and value else value
+    if isinstance(value, list):
+        return value[0] if value else None
+    return value
 
 
 def record_id(doi: str) -> str:
@@ -229,6 +231,8 @@ def record_from_crossref(
     year = int(published[:4])
     authors = [author_name(author) for author in item.get("author") or []]
     authors = [name for name in authors if name]
+    if not authors:
+        return None
     linked = {matched_researcher}
     for author in item.get("author") or []:
         researcher_id = orcid_map.get(author_orcid(author))
@@ -257,6 +261,8 @@ def record_from_crossref(
 
 
 def record_from_orcid(summary: dict[str, Any], researcher: dict[str, Any], quartiles: dict[str, Any]) -> dict[str, Any] | None:
+    if str(summary.get("type") or "").lower() != "journal-article":
+        return None
     doi = orcid_doi(summary)
     title = clean((((summary.get("title") or {}).get("title") or {}).get("value")))
     journal_raw = summary.get("journal-title") or {}
@@ -316,6 +322,14 @@ def merge(existing: dict[str, Any], incoming: dict[str, Any]) -> bool:
     return changed
 
 
+def remember(discovered: dict[str, dict[str, Any]], record: dict[str, Any]) -> None:
+    current = discovered.get(record["doi"])
+    if current is None:
+        discovered[record["doi"]] = record
+    else:
+        merge(current, record)
+
+
 def synchronize(args: argparse.Namespace) -> int:
     root = Path(args.root).resolve()
     researchers_data = load(root / "data/researchers.json")
@@ -344,7 +358,7 @@ def synchronize(args: argparse.Namespace) -> int:
                     quartiles=quartiles,
                 )
                 if record:
-                    discovered[record["doi"]] = record
+                    remember(discovered, record)
         except RuntimeError as error:
             print(f"AVISO: consulta Crossref incompleta: {error}", file=sys.stderr)
 
@@ -356,7 +370,12 @@ def synchronize(args: argparse.Namespace) -> int:
             for researcher in researchers:
                 for summary in orcid_summaries(str(researcher["orcid"]), token):
                     doi = orcid_doi(summary)
-                    if not doi or doi in discovered or doi in by_doi:
+                    if not doi:
+                        continue
+                    if doi in discovered:
+                        discovered[doi]["researcherIds"] = merge_strings(
+                            discovered[doi].get("researcherIds"), [researcher["id"]]
+                        )
                         continue
                     crossref_item = crossref_by_doi(doi, args.mailto)
                     record = (
@@ -370,7 +389,7 @@ def synchronize(args: argparse.Namespace) -> int:
                         else record_from_orcid(summary, researcher, quartiles)
                     )
                     if record:
-                        discovered[doi] = record
+                        remember(discovered, record)
         except RuntimeError as error:
             print(f"AVISO: ORCID no disponible: {error}", file=sys.stderr)
     elif not args.crossref_only:
