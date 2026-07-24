@@ -327,9 +327,30 @@
       state.researchers = Array.isArray(researcherData.researchers)
         ? researcherData.researchers
         : [];
-      state.publications = Array.isArray(publicationData.publications)
+      const defaultResearcherIds = Array.isArray(publicationData.defaultResearcherIds)
+        ? publicationData.defaultResearcherIds
+        : [];
+      const defaultMetadataSources = Array.isArray(publicationData.defaultMetadataSources)
+        ? publicationData.defaultMetadataSources
+        : [];
+      const rawPublications = Array.isArray(publicationData.publications)
         ? publicationData.publications
         : [];
+
+      state.publications = rawPublications.map((publication) => ({
+        ...publication,
+        url: publication.url || `https://doi.org/${publication.doi}`,
+        researcherIds: [
+          ...new Set([
+            ...defaultResearcherIds,
+            ...(publication.researcherIds || [])
+          ])
+        ],
+        metadataSources:
+          publication.metadataSources?.length
+            ? publication.metadataSources
+            : defaultMetadataSources
+      }));
       state.filtered = [...state.publications];
 
       renderMetrics();
