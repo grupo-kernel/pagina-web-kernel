@@ -89,6 +89,32 @@ jobs:
           SYNC_STRICT: "0"
         run: python scripts/sync_publications.py
 
+      - name: Ignorar cambios exclusivamente temporales
+        shell: bash
+        run: |
+          git show HEAD:data/publications.json > /tmp/publications-before.json
+          python - <<'PY'
+          import copy
+          import json
+          from pathlib import Path
+
+          before_path = Path("/tmp/publications-before.json")
+          after_path = Path("data/publications.json")
+          before = json.loads(before_path.read_text(encoding="utf-8"))
+          after = json.loads(after_path.read_text(encoding="utf-8"))
+
+          def stable(payload):
+              result = copy.deepcopy(payload)
+              result.pop("generated_at", None)
+              return result
+
+          if stable(before) == stable(after):
+              after_path.write_text(before_path.read_text(encoding="utf-8"), encoding="utf-8")
+              print("No hay cambios bibliográficos; se conserva la fecha anterior.")
+          else:
+              print("Se detectaron cambios bibliográficos reales.")
+          PY
+
       - name: Validar catálogo resultante
         run: |
           python scripts/validate_data.py
