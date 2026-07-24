@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-24T20:50:37Z",
+  "generated_at": "2026-07-24T20:53:44Z",
   "catalog_status": "automated",
   "counting_method": "DOI normalizado; si no existe DOI, identificador OpenAlex o título normalizado + año",
   "coverage_note": "Registros públicos recuperados por ORCID desde Crossref y, cuando existen credenciales configuradas, ORCID Public API y OpenAlex.",
