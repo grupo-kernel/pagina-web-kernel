@@ -1,0 +1,103 @@
+name: Actualizar catálogo de publicaciones
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 7 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-publications
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    name: Sincronizar ORCID y Crossref
+    runs-on: ubuntu-latest
+    if: github.repository == 'grupo-kernel/pagina-web-kernel'
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sincronizar publicaciones
+        env:
+          CROSSREF_MAILTO: ${{ vars.CROSSREF_MAILTO }}
+          ORCID_CLIENT_ID: ${{ secrets.ORCID_CLIENT_ID }}
+          ORCID_CLIENT_SECRET: ${{ secrets.ORCID_CLIENT_SECRET }}
+        run: |
+          if [ -z "$CROSSREF_MAILTO" ]; then
+            export CROSSREF_MAILTO="mleonardo@itla.edu.do"
+          fi
+          python scripts/sync_publications.py
+
+      - name: Validar datos
+        run: python scripts/validate_data.py
+
+      - name: Detectar cambios
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/publications.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar rama automática
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          BRANCH: automation/publications
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$BRANCH:refs/remotes/origin/$BRANCH" || true
+          git checkout -B "$BRANCH"
+          git add data/publications.json
+          git commit -m "Actualiza catálogo automático de publicaciones"
+          git push --force-with-lease origin "$BRANCH"
+
+      - name: Crear o actualizar solicitud de cambios
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: automation/publications
+        shell: bash
+        run: |
+          PR_NUMBER=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          BODY=$(cat <<'EOF'
+          ## Actualización automática
+
+          Esta solicitud incorpora publicaciones descubiertas mediante identificadores ORCID y metadatos Crossref.
+
+          - Los registros se deduplican por DOI.
+          - Las correcciones editoriales existentes se conservan.
+          - Los cuartiles solo se asignan mediante el mapa manual verificado por revista y año.
+          - Los registros nuevos sin evidencia de cuartil permanecen pendientes de revisión.
+
+          Antes de fusionar, revise autoría, tipo documental y cuartil.
+          EOF
+          )
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr edit "$PR_NUMBER" --title "Actualización automática de publicaciones" --body "$BODY"
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Actualización automática de publicaciones" \
+              --body "$BODY"
+          fi
+
+      - name: Resumen sin cambios
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "El catálogo ya estaba actualizado."
