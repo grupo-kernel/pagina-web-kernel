@@ -330,6 +330,18 @@ def remember(discovered: dict[str, dict[str, Any]], record: dict[str, Any]) -> N
         merge(current, record)
 
 
+def apply_quartile_map(publications: list[dict[str, Any]], entries: dict[str, Any]) -> int:
+    updated = 0
+    for publication in publications:
+        journal = str(publication.get("journal") or "")
+        year = int(publication.get("year") or 0)
+        exact = entries.get(f"{normalize_text(journal)}|{year}")
+        if exact and publication.get("quartile") != exact:
+            publication["quartile"] = copy.deepcopy(exact)
+            updated += 1
+    return updated
+
+
 def synchronize(args: argparse.Namespace) -> int:
     root = Path(args.root).resolve()
     researchers_data = load(root / "data/researchers.json")
@@ -337,12 +349,17 @@ def synchronize(args: argparse.Namespace) -> int:
     quartile_data = load(root / "data/journal-quartiles.json")
     exclusions = load(root / "data/excluded-publications.json")
 
-    researchers = [r for r in researchers_data.get("researchers", []) if r.get("syncPublications")]
+    all_researchers = researchers_data.get("researchers", [])
+    researchers = [r for r in all_researchers if r.get("syncPublications")]
     publications = publications_data.get("publications", [])
     quartiles = quartile_data.get("entries", {})
     excluded_dois = {normalize_doi(value) for value in exclusions.get("dois", [])}
     excluded_titles = {normalize_text(value) for value in exclusions.get("titles", [])}
-    orcid_map = {str(r.get("orcid") or "").upper(): r["id"] for r in researchers}
+    orcid_map = {
+        str(r.get("orcid") or "").upper(): r["id"]
+        for r in all_researchers
+        if r.get("orcid")
+    }
     by_doi = {normalize_doi(p.get("doi")): p for p in publications if normalize_doi(p.get("doi"))}
     discovered: dict[str, dict[str, Any]] = {}
 
@@ -396,6 +413,7 @@ def synchronize(args: argparse.Namespace) -> int:
         print("ORCID: sin credenciales; se mantiene la consulta Crossref por ORCID.", file=sys.stderr)
 
     added = enriched = 0
+    quartiles_updated = apply_quartile_map(publications, quartiles)
     for doi, incoming in discovered.items():
         if doi in excluded_dois or normalize_text(incoming.get("title")) in excluded_titles:
             continue
@@ -407,14 +425,17 @@ def synchronize(args: argparse.Namespace) -> int:
             by_doi[doi] = incoming
             added += 1
 
-    changed = bool(added or enriched)
+    changed = bool(added or enriched or quartiles_updated)
     if changed:
         publications.sort(key=lambda p: (int(p.get("year") or 0), str(p.get("date") or "")), reverse=True)
         publications_data["updatedAt"] = dt.date.today().isoformat()
         publications_data["publications"] = publications
         if not args.dry_run:
             save(root / "data/publications.json", publications_data)
-    print(f"Nuevos: {added}; enriquecidos: {enriched}; total local: {len(publications)}.")
+    print(
+        f"Nuevos: {added}; enriquecidos: {enriched}; "
+        f"cuartiles actualizados: {quartiles_updated}; total local: {len(publications)}."
+    )
     if args.dry_run:
         print("Simulación: no se escribieron cambios.")
     return 0
