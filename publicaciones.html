@@ -1,163 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Publicaciones - Grupo Kernel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 2rem;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-        }
-        .glass-card {
-            background: rgba(255,255,255,0.89);
-            border-radius: 1.2rem;
-            box-shadow: 0 4px 20px rgba(70,130,180,0.12), 0 1.5px 8px rgba(20,44,93,0.03);
-            padding: 1.7rem 2rem;
-            margin-bottom: 2.2rem;
-            border-left: 8px solid #a0c6ff;
-            backdrop-filter: blur(4px);
-            transition: box-shadow 0.2s;
-            position: relative;
-        }
-        .glass-card:hover {
-            box-shadow: 0 8px 30px rgba(20,50,100,0.12), 0 1.5px 14px rgba(50,120,180,0.10);
-            border-left-color: #3a8fd4;
-        }
-        .pub-title {
-            font-size: 1.21rem;
-            font-weight: 600;
-            color: #0a2c5d;
-            margin-bottom: 0.3rem;
-        }
-        .pub-meta {
-            font-size: 1.05rem;
-            color: #2574b6;
-            margin-bottom: 0.15rem;
-        }
-        .pub-icons {
-            font-size: 1.2rem;
-            color: #1b8fc4;
-            margin-right: 0.4rem;
-            vertical-align: middle;
-        }
-        .pub-doi {
-            font-size: 1rem;
-            color: #2071b2;
-            word-break: break-all;
-            display: inline-block;
-        }
-        .badge-journal {
-            background: #3a8fd4;
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.35em 0.8em;
-            border-radius: 1.1em;
-            margin-right: 0.5em;
-        }
-        .badge-year {
-            background: #fcba03;
-            color: #fff;
-            font-size: 0.95rem;
-            font-weight: 700;
-            padding: 0.3em 1em;
-            border-radius: 1.3em;
-            vertical-align: middle;
-            margin-right: 0.7em;
-        }
-        .badge-quartile {
-            background: #46d18d;
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 0.27em 0.8em;
-            border-radius: 1.1em;
-            margin-right: 0.5em;
-        }
-        h2 {
-            font-weight: bold;
-            letter-spacing: 0.01em;
-        }
-        .author-icon {
-            font-size: 2rem;
-            color: #2a5298;
-            vertical-align: middle;
-            margin-right: 0.4em;
-        }
-        .nav-pills .nav-link {
-            font-size: 1.15rem;
-            font-weight: 500;
-            color: #1b8fc4;
-            margin-bottom: 0.5rem;
-            border-radius: 1.2rem;
-        }
-        .nav-pills .nav-link.active {
-            background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-            color: #fff !important;
-        }
-        /* BOTÓN FLOTANTE */
-        .btn-inicio-flotante {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 16px rgba(13,59,102,0.16);
-            padding: 0.8rem 1.6rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background-color: #1594e9;
-            color: #fff;
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-        .btn-inicio-flotante:hover {
-            background: #34c9a3;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(13,59,102,0.23);
-            text-decoration: none;
-        }
-        @media (max-width: 600px) {
-            .glass-card { padding: 1.2rem 0.6rem;}
-            .pub-title { font-size: 1.07rem;}
-            .badge-journal, .badge-year, .badge-quartile { font-size: 0.8rem; }
-            .btn-inicio-flotante {
-                right: 12px;
-                bottom: 10px;
-                padding: 0.7rem 1.1rem;
-                font-size: 1rem;
-            }
-        }
-        .navbar-nav .nav-link {
-            font-weight: bold !important;
-            font-style: italic !important;
-        }
-        .navbar-nav .nav-link {
-            font-size: 1.7rem !important;
-            font-weight: bold !important;
-            font-style: italic !important;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Catálogo verificable de publicaciones del Grupo de Investigación El Kernel, con DOI, autores y cuartiles contextualizados.">
+  <title>Publicaciones | Grupo de Investigación El Kernel</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/css/kernel.css" rel="stylesheet">
+  <style>
+    .metrics-callout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; margin-top: 1rem; }
+    .metrics-callout article { padding: .9rem 1rem; border: 1px solid #dfe9ef; border-radius: 12px; background: #f8fbfd; }
+    .metrics-callout strong { display: block; color: var(--navy); font-family: Georgia,"Times New Roman",serif; font-size: 1.8rem; line-height: 1; }
+    .metrics-callout span { display: block; margin-top: .35rem; color: var(--muted); font-size: .78rem; }
+    .sync-status { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .65rem; border-radius: 999px; color: #155a48; background: #dff5ec; font-size: .75rem; font-weight: 800; }
+    .catalog-layout { display: grid; grid-template-columns: minmax(230px,290px) minmax(0,1fr); gap: 1.25rem; align-items: start; }
+    .filter-section + .filter-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e7eef2; }
+    .filter-title { margin: 0 0 .55rem; color: var(--navy); font-size: .82rem; font-weight: 850; letter-spacing: .02em; }
+    .filter-actions { display: grid; gap: .55rem; margin-top: 1rem; }
+    .sort-select { width: min(100%,240px); }
+    .publication-source { color: #708594; font-size: .78rem; }
+    .copy-feedback { min-height: 1.3rem; margin-top: .6rem; color: #155a48; font-size: .76rem; font-weight: 700; }
+    .source-legend { display: grid; gap: .6rem; margin-top: .9rem; }
+    .source-legend div { display: grid; grid-template-columns: 38px 1fr; gap: .55rem; align-items: start; color: var(--muted); font-size: .78rem; }
+    .source-legend strong { color: var(--navy); }
+    @media (max-width: 991.98px) { .catalog-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 575.98px) { .metrics-callout { grid-template-columns: 1fr; } .publication-toolbar { align-items: stretch; flex-direction: column; } .sort-select { width: 100%; } }
+  </style>
 </head>
 <body>
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
   <div class="container">
-    <a class="navbar-brand" href="index.html"><b><i>El Kernel</i></b></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
+    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="kernelNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
         <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
         <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
         <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold" href="publicaciones.html">Publicaciones</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="publicaciones.html">Publicaciones</a></li>
         <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
         <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
       </ul>
@@ -165,169 +50,307 @@
   </div>
 </nav>
 
-<div class="container">
-    <h2 class="text-center text-primary mb-5">
-      <i class="bi bi-journal-richtext author-icon"></i> Publicaciones del Grupo de Investigación Kernel
-    </h2>
+<main id="contenido">
+  <header class="page-header">
+    <div class="container">
+      <span class="eyebrow"><i class="bi bi-journal-richtext"></i> Producción científica verificable</span>
+      <h1>Publicaciones del Grupo El Kernel</h1>
+      <p>Catálogo deduplicado por DOI, con autores, revista, fecha, procedencia de los metadatos y cuartil identificado por sistema, categoría y año.</p>
+    </div>
+  </header>
 
-    <!-- PESTAÑAS DE AUTORES -->
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <div class="nav flex-column nav-pills" id="pub-tabs" role="tablist" aria-orientation="vertical">
-          <button class="nav-link active" id="miguel-tab" data-bs-toggle="pill" data-bs-target="#miguel" type="button" role="tab">Miguel A. Leonardo</button>
-          <button class="nav-link" id="antmel-tab" data-bs-toggle="pill" data-bs-target="#antmel" type="button" role="tab">Antmel Rodríguez</button>
-          <button class="nav-link" id="marckelly-tab" data-bs-toggle="pill" data-bs-target="#marckelly" type="button" role="tab">Marc-Kelly Jean Philippe</button>
-          <button class="nav-link" id="josealberto-tab" data-bs-toggle="pill" data-bs-target="#josealberto" type="button" role="tab">José Alberto Reyes</button>
+  <section class="container" aria-label="Indicadores del catálogo">
+    <div class="stats-grid">
+      <article class="stat-card"><span class="value" id="catalogTotal">—</span><span class="label">Registros únicos en el catálogo</span><span class="detail">Una coautoría se contabiliza una sola vez</span></article>
+      <article class="stat-card"><span class="value" id="latestYear">—</span><span class="label">Año más reciente</span><span class="detail">Según la fecha bibliográfica disponible</span></article>
+      <article class="stat-card"><span class="value" id="quartileTotal">—</span><span class="label">Registros con cuartil documentado</span><span class="detail">JCR o SJR con año y fuente</span></article>
+    </div>
+  </section>
+
+  <section class="section-block pb-4">
+    <div class="container">
+      <div class="content-card">
+        <div class="row g-4 align-items-start">
+          <div class="col-lg-7">
+            <span class="section-kicker">Cobertura bibliográfica</span>
+            <h2>Inventario automatizable y métricas separadas</h2>
+            <p>El número de artículos declarado por cada perfil institucional no equivale al total único del grupo: Alicia Cordero y Juan Ramón Torregrosa comparten numerosas coautorías. Por ello, el catálogo cuenta cada DOI una sola vez y presenta las métricas individuales por separado.</p>
+            <div class="data-note">El cuartil corresponde a una revista, una categoría, un sistema bibliométrico y un año determinados. No se presenta como una propiedad permanente del artículo.</div>
+          </div>
+          <div class="col-lg-5">
+            <span class="sync-status"><i class="bi bi-arrow-repeat"></i> Catálogo preparado para sincronización</span>
+            <div class="metrics-callout" id="profileMetrics">
+              <article><strong>253</strong><span>Artículos de revista de Alicia Cordero · perfil institucional UPV</span></article>
+              <article><strong>298</strong><span>Artículos de revista de Juan R. Torregrosa · perfil institucional UPV</span></article>
+            </div>
+            <p class="publication-source mb-0 mt-2" id="generatedAt">Cargando fecha de actualización…</p>
+          </div>
         </div>
       </div>
-      <div class="col-md-9">
-       <div class="tab-content" id="pub-tabs-content">
-  <!-- Miguel -->
-  <div class="tab-pane fade show active" id="miguel" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mathematics and Computers in Simulation</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Increasing in three units the order of convergence of iterative methods for solving nonlinear systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.1016/j.matcom.2024.05.001" target="_blank">10.1016/j.matcom.2024.05.001</a>
-      </div>
     </div>
-    <div class="glass-card">
-      <span class="badge-year">2023</span>
-      <span class="badge-journal">Mathematics</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo-Sepúlveda, Juan R. Torregrosa, María P. Vassileva</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/math11204238" target="_blank">10.3390/math11204238</a>
-      </div>
-    </div>
-    <div class="glass-card">
-      <span class="badge-year">2022</span>
-      <span class="badge-journal">Algorithms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Miguel A. Leonardo Sepúlveda, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a15100387" target="_blank">10.3390/a15100387</a>
-      </div>
-    </div>
-  </div>
+  </section>
 
-  <!-- Antmel -->
-  <div class="tab-pane fade" id="antmel" role="tabpanel">
-    <!-- Nuevo 2025 -->
-    <div class="glass-card">
-      <span class="badge-year">2025</span>
-      <span class="badge-journal">Journal of Computational Methods in Sciences and Engineering</span>
-      <span class="badge-quartile">Q4</span>
-      <div class="pub-title">About the stability of self-accelerating parameters in vectorial iterative methods without memory</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier G. Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.1177/14727978251361407" target="_blank">10.1177/14727978251361407</a>
-      </div>
-    </div>
-    <!-- 2024 -->
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mathematics</span>
-      <span class="badge-quartile">Q1</span>
-      <div class="pub-title">Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier García Maimó, Antmel Rodríguez Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://www.mdpi.com/2227-7390/12/21/3341" target="_blank">10.3390/math12213341</a>
-      </div>
-    </div>
-    <!-- 2023 -->
-    <div class="glass-card">
-      <span class="badge-year">2023</span>
-      <span class="badge-journal">Algorithms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems</div>
-      <div class="pub-meta">Autores: Alicia Cordero, Javier García Maimó, Antmel Rodríguez-Cabral, Juan R. Torregrosa</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/a16030163" target="_blank">10.3390/a16030163</a>
-      </div>
-    </div>
-  </div>
+  <section class="section-block pt-3">
+    <div class="container">
+      <div class="catalog-layout">
+        <aside class="filter-panel" aria-label="Filtros del catálogo">
+          <div class="filter-section">
+            <h2 class="filter-title">Buscar</h2>
+            <label for="searchInput">Título, revista, autor o DOI</label>
+            <input class="form-control" id="searchInput" type="search" autocomplete="off" placeholder="Ej.: sistemas no lineales">
+          </div>
+          <div class="filter-section">
+            <h2 class="filter-title">Año</h2>
+            <label for="yearFilter">Año de publicación</label>
+            <select class="form-select" id="yearFilter"><option value="all">Todos los años</option></select>
+          </div>
+          <div class="filter-section">
+            <h2 class="filter-title">Cuartil</h2>
+            <label for="quartileFilter">Clasificación documentada</label>
+            <select class="form-select" id="quartileFilter">
+              <option value="all">Todos</option>
+              <option value="Q1">Q1</option>
+              <option value="Q2">Q2</option>
+              <option value="Q3">Q3</option>
+              <option value="Q4">Q4</option>
+              <option value="pending">Pendiente de verificación</option>
+            </select>
+          </div>
+          <div class="filter-section">
+            <h2 class="filter-title">Investigador</h2>
+            <div class="researcher-filter-list" id="researcherFilters" role="group" aria-label="Filtrar por investigador">
+              <button class="researcher-filter active" type="button" data-researcher="all">Todos los investigadores</button>
+            </div>
+          </div>
+          <div class="filter-actions">
+            <button class="btn-kernel-outline" id="clearFilters" type="button"><i class="bi bi-x-circle"></i> Limpiar filtros</button>
+          </div>
+          <div class="filter-section">
+            <h2 class="filter-title">Lectura del cuartil</h2>
+            <div class="source-legend">
+              <div><span class="pub-chip pub-chip--q1">Q1</span><span>Primer cuartil en la fuente, categoría y año indicados.</span></div>
+              <div><span class="pub-chip pub-chip--pending">—</span><span>Información bibliométrica todavía no verificada en el catálogo.</span></div>
+            </div>
+          </div>
+        </aside>
 
-  <!-- Marc-Kelly Jean Philippe -->
-  <div class="tab-pane fade" id="marckelly" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2025</span>
-      <span class="badge-journal">Mathematische Nachrichten</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Groups with triangle-free graphs on 𝒑-regular classes</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://onlinelibrary.wiley.com/doi/10.1002/mana.202400554" target="_blank">10.1002/mana.202400554</a>
+        <div>
+          <div class="publication-toolbar">
+            <div>
+              <div class="publication-count" id="resultCount" aria-live="polite">Cargando publicaciones…</div>
+              <div class="publication-source" id="coverageNote"></div>
+            </div>
+            <div class="sort-select">
+              <label class="visually-hidden" for="sortSelect">Ordenar publicaciones</label>
+              <select class="form-select" id="sortSelect">
+                <option value="date-desc">Más recientes primero</option>
+                <option value="date-asc">Más antiguas primero</option>
+                <option value="title-asc">Título A–Z</option>
+                <option value="journal-asc">Revista A–Z</option>
+              </select>
+            </div>
+          </div>
+          <div class="publication-list" id="publicationList" aria-live="polite">
+            <div class="loading-state"><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Cargando catálogo bibliográfico…</div>
+          </div>
+          <div class="copy-feedback" id="copyFeedback" aria-live="polite"></div>
+        </div>
       </div>
     </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Mediterranean Journal of Mathematics</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Groups whose common divisor graph on p-regular classes has diameter three</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://link.springer.com/article/10.1007/s00009-024-02782-2" target="_blank">10.1007/s00009-024-02782-2</a>
-      </div>
-    </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Bulletin of the Malaysian Mathematical Sciences Society</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Some properties of Normal Subgroups Determined from Character Tables</div>
-      <div class="pub-meta">Autor: Marc-Kelly Jean Philippe Jean</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://link.springer.com/article/10.1007/s40840-024-01684-6" target="_blank">10.1007/s40840-024-01684-6</a>
-      </div>
-    </div>
-  </div>
+  </section>
+</main>
 
-  <!-- José Alberto Reyes -->
-  <div class="tab-pane fade" id="josealberto" role="tabpanel">
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Axioms</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations</div>
-      <div class="pub-meta">Autor: José Alberto Reyes Reyes</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        <a class="pub-doi" href="https://www.mdpi.com/2075-1680/13/1/34" target="_blank">https://www.mdpi.com/2075-1680/13/1/34</a>
-        <span> [<a href="https://www.mdpi.com/2075-1680/13/1/34/pdf" target="_blank">PDF</a>]</span>
-      </div>
+<footer class="kernel-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Metadatos abiertos, DOI normalizado y procedencia documentada.</p></div>
+      <div><strong>Investigadores</strong><div><a href="equipo.html#alicia-cordero">Alicia Cordero</a></div><div><a href="equipo.html#juan-torregrosa">Juan R. Torregrosa</a></div></div>
+      <div><strong>Metodología</strong><div><a href="docs/publication-sync.md">Sincronización bibliográfica</a></div><div><a href="https://github.com/grupo-kernel/pagina-web-kernel" target="_blank" rel="noopener">Repositorio</a></div></div>
     </div>
-    <div class="glass-card">
-      <span class="badge-year">2024</span>
-      <span class="badge-journal">Computation</span>
-      <span class="badge-quartile">Q2</span>
-      <div class="pub-title">Convergence and Stability Analysis of High-Order Derivative-Free Methods for Nonlinear Equations</div>
-      <div class="pub-meta">Autor: José Alberto Reyes Reyes</div>
-      <div class="pub-meta">
-        <i class="bi bi-link-45deg pub-icons"></i>
-        DOI: <a class="pub-doi" href="https://doi.org/10.3390/computation13060142" target="_blank">10.3390/computation13060142</a>
-      </div>
-    </div>
+    <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
   </div>
-</div>
-          <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio">
-    <span style="font-size:1.3em;line-height:1"><i class="bi bi-house-door"></i></span>
-    <span class="d-none d-md-inline">Inicio</span>
-</a>
+</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function () {
+  const state = { researcher: "all", search: "", year: "all", quartile: "all", sort: "date-desc" };
+  let researchers = [];
+  let publications = [];
+  const researcherMap = new Map();
+
+  const elements = {
+    list: document.getElementById("publicationList"),
+    resultCount: document.getElementById("resultCount"),
+    coverageNote: document.getElementById("coverageNote"),
+    search: document.getElementById("searchInput"),
+    year: document.getElementById("yearFilter"),
+    quartile: document.getElementById("quartileFilter"),
+    sort: document.getElementById("sortSelect"),
+    researcherFilters: document.getElementById("researcherFilters"),
+    copyFeedback: document.getElementById("copyFeedback")
+  };
+
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
+  const normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const normalizedDoi = (value) => String(value ?? "").trim().replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, "").replace(/^doi:\s*/i, "");
+
+  function formatDate(value) {
+    if (!value) return "Fecha no disponible";
+    const parsed = new Date(`${value}T00:00:00Z`);
+    if (Number.isNaN(parsed.getTime())) return escapeHtml(value);
+    return new Intl.DateTimeFormat("es-ES", {day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(parsed);
+  }
+
+  function quartileMarkup(record) {
+    const quartile = record.quartile;
+    if (!quartile) {
+      return {
+        badge: '<span class="pub-chip pub-chip--pending"><i class="bi bi-hourglass-split"></i>Cuartil pendiente</span>',
+        detail: '<div class="quartile-detail">No se muestra una clasificación hasta disponer de sistema, categoría, año y fuente verificable.</div>'
+      };
+    }
+    const cssClass = `pub-chip--${String(quartile.quartile).toLowerCase()}`;
+    const sourceLink = quartile.source_url ? `<a href="${escapeHtml(quartile.source_url)}" target="_blank" rel="noopener">consultar fuente</a>` : "fuente no enlazada";
+    return {
+      badge: `<span class="pub-chip ${cssClass}"><i class="bi bi-award"></i>${escapeHtml(quartile.quartile)} · ${escapeHtml(quartile.system)}</span>`,
+      detail: `<div class="quartile-detail"><strong>${escapeHtml(quartile.system)} ${escapeHtml(quartile.metric_year)}</strong> · ${escapeHtml(quartile.category)} · ${sourceLink}.</div>`
+    };
+  }
+
+  function publicationCard(record) {
+    const quartile = quartileMarkup(record);
+    const doi = normalizedDoi(record.doi);
+    const primaryUrl = record.url || (doi ? `https://doi.org/${doi}` : "");
+    const authorNames = (record.authors || []).join(", ") || "Autoría no disponible";
+    const groupAuthors = (record.researcher_ids || []).map(id => researcherMap.get(id)?.name).filter(Boolean);
+    const groupLine = groupAuthors.length ? `<div class="publication-source mt-1">Miembros del grupo: ${groupAuthors.map(escapeHtml).join(", ")}</div>` : "";
+    return `<article class="publication-card">
+      <div class="publication-meta">
+        <span class="pub-chip pub-chip--year"><i class="bi bi-calendar3"></i>${escapeHtml(record.year)}</span>
+        <span class="pub-chip pub-chip--journal"><i class="bi bi-journal"></i>${escapeHtml(record.journal)}</span>
+        ${quartile.badge}
+      </div>
+      <h2>${escapeHtml(record.title)}</h2>
+      <p class="authors"><strong>Autores:</strong> ${escapeHtml(authorNames)}</p>
+      ${groupLine}
+      <div class="publication-source mt-2"><i class="bi bi-calendar-check me-1"></i>${formatDate(record.publication_date)} · Metadatos: ${escapeHtml(record.source || "fuente no especificada")}</div>
+      ${quartile.detail}
+      <div class="publication-actions">
+        ${primaryUrl ? `<a href="${escapeHtml(primaryUrl)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Abrir publicación</a>` : ""}
+        ${doi ? `<a href="https://doi.org/${escapeHtml(doi)}" target="_blank" rel="noopener"><i class="bi bi-link-45deg me-1"></i>DOI: ${escapeHtml(doi)}</a><button class="btn btn-link p-0 copy-doi" type="button" data-doi="${escapeHtml(doi)}"><i class="bi bi-copy me-1"></i>Copiar DOI</button>` : '<span class="publication-source">DOI no disponible</span>'}
+      </div>
+    </article>`;
+  }
+
+  function filteredPublications() {
+    const search = normalize(state.search.trim());
+    const result = publications.filter(record => {
+      const researcherMatch = state.researcher === "all" || (record.researcher_ids || []).includes(state.researcher);
+      const yearMatch = state.year === "all" || String(record.year) === state.year;
+      const recordQuartile = record.quartile?.quartile || "pending";
+      const quartileMatch = state.quartile === "all" || recordQuartile === state.quartile;
+      const searchable = normalize([record.title,record.journal,(record.authors || []).join(" "),record.doi,record.year].join(" "));
+      const searchMatch = !search || searchable.includes(search);
+      return researcherMatch && yearMatch && quartileMatch && searchMatch;
+    });
+    result.sort((left,right) => {
+      if (state.sort === "date-asc") return String(left.publication_date).localeCompare(String(right.publication_date));
+      if (state.sort === "title-asc") return String(left.title).localeCompare(String(right.title),"es",{sensitivity:"base"});
+      if (state.sort === "journal-asc") return String(left.journal).localeCompare(String(right.journal),"es",{sensitivity:"base"});
+      return String(right.publication_date).localeCompare(String(left.publication_date));
+    });
+    return result;
+  }
+
+  function render() {
+    const records = filteredPublications();
+    elements.resultCount.textContent = `${records.length.toLocaleString("es-ES")} ${records.length === 1 ? "publicación" : "publicaciones"} mostradas de ${publications.length.toLocaleString("es-ES")}`;
+    elements.list.innerHTML = records.length ? records.map(publicationCard).join("") : '<div class="empty-state"><i class="bi bi-search fs-3 d-block mb-2"></i>No hay publicaciones que coincidan con los filtros seleccionados.</div>';
+    elements.list.querySelectorAll(".copy-doi").forEach(button => button.addEventListener("click", () => copyDoi(button.dataset.doi)));
+  }
+
+  function renderResearcherFilters() {
+    const idsWithPublications = new Set(publications.flatMap(record => record.researcher_ids || []));
+    const options = researchers.filter(researcher => idsWithPublications.has(researcher.id));
+    elements.researcherFilters.innerHTML = `<button class="researcher-filter ${state.researcher === "all" ? "active" : ""}" type="button" data-researcher="all">Todos los investigadores</button>${options.map(researcher => `<button class="researcher-filter ${state.researcher === researcher.id ? "active" : ""}" type="button" data-researcher="${escapeHtml(researcher.id)}">${escapeHtml(researcher.name)}</button>`).join("")}`;
+    elements.researcherFilters.querySelectorAll(".researcher-filter").forEach(button => button.addEventListener("click", () => {
+      state.researcher = button.dataset.researcher;
+      elements.researcherFilters.querySelectorAll(".researcher-filter").forEach(item => item.classList.toggle("active", item === button));
+      const url = new URL(window.location.href);
+      if (state.researcher === "all") url.searchParams.delete("autor"); else url.searchParams.set("autor", state.researcher);
+      history.replaceState(null,"",url);
+      render();
+    }));
+  }
+
+  function renderYears() {
+    const years = [...new Set(publications.map(record => Number(record.year)).filter(Number.isFinite))].sort((a,b) => b-a);
+    elements.year.innerHTML = '<option value="all">Todos los años</option>' + years.map(year => `<option value="${year}">${year}</option>`).join("");
+  }
+
+  function renderProfileMetrics() {
+    const selected = researchers.filter(researcher => ["alicia-cordero","juan-torregrosa"].includes(researcher.id));
+    const markup = selected.map(researcher => {
+      const metric = (researcher.publication_metrics || []).find(item => item.label === "Artículos de revista");
+      if (!metric) return "";
+      return `<article><strong>${Number(metric.value).toLocaleString("es-ES")}</strong><span>${escapeHtml(metric.label)} de ${escapeHtml(researcher.name)} · ${escapeHtml(metric.source)} (${escapeHtml(metric.as_of)})</span></article>`;
+    }).join("");
+    if (markup) document.getElementById("profileMetrics").innerHTML = markup;
+  }
+
+  async function copyDoi(doi) {
+    try {
+      await navigator.clipboard.writeText(doi);
+      elements.copyFeedback.textContent = `DOI copiado: ${doi}`;
+    } catch (error) {
+      const input = document.createElement("textarea");
+      input.value = doi; document.body.appendChild(input); input.select(); document.execCommand("copy"); input.remove();
+      elements.copyFeedback.textContent = `DOI copiado: ${doi}`;
+    }
+    window.setTimeout(() => { elements.copyFeedback.textContent = ""; }, 3000);
+  }
+
+  function updateIndicators(payload) {
+    document.getElementById("catalogTotal").textContent = publications.length.toLocaleString("es-ES");
+    const latest = Math.max(...publications.map(record => Number(record.year) || 0));
+    document.getElementById("latestYear").textContent = latest || "—";
+    document.getElementById("quartileTotal").textContent = publications.filter(record => record.quartile).length.toLocaleString("es-ES");
+    elements.coverageNote.textContent = payload.coverage_note || "";
+    const date = payload.generated_at ? new Date(payload.generated_at) : null;
+    document.getElementById("generatedAt").textContent = date && !Number.isNaN(date.getTime()) ? `Catálogo actualizado: ${new Intl.DateTimeFormat("es-ES",{dateStyle:"long",timeStyle:"short"}).format(date)}` : "Fecha de actualización no disponible";
+  }
+
+  function clearFilters() {
+    Object.assign(state,{researcher:"all",search:"",year:"all",quartile:"all",sort:"date-desc"});
+    elements.search.value = ""; elements.year.value = "all"; elements.quartile.value = "all"; elements.sort.value = "date-desc";
+    history.replaceState(null,"",window.location.pathname);
+    renderResearcherFilters(); render();
+  }
+
+  Promise.all([
+    fetch("data/researchers.json",{cache:"no-store"}).then(response => { if (!response.ok) throw new Error("No se pudo cargar researchers.json"); return response.json(); }),
+    fetch("data/publications.json",{cache:"no-store"}).then(response => { if (!response.ok) throw new Error("No se pudo cargar publications.json"); return response.json(); })
+  ]).then(([researcherPayload,publicationPayload]) => {
+    researchers = researcherPayload.researchers || [];
+    publications = publicationPayload.records || [];
+    researchers.forEach(researcher => researcherMap.set(researcher.id,researcher));
+    const requestedResearcher = new URLSearchParams(window.location.search).get("autor");
+    if (requestedResearcher && researchers.some(researcher => researcher.id === requestedResearcher)) state.researcher = requestedResearcher;
+    renderYears(); renderResearcherFilters(); renderProfileMetrics(); updateIndicators(publicationPayload); render();
+  }).catch(error => {
+    console.error(error);
+    elements.resultCount.textContent = "Error al cargar el catálogo";
+    elements.list.innerHTML = '<div class="error-state"><i class="bi bi-exclamation-triangle fs-3 d-block mb-2"></i>No fue posible cargar los datos bibliográficos. Revise los archivos JSON del repositorio.</div>';
+  });
+
+  elements.search.addEventListener("input", event => { state.search = event.target.value; render(); });
+  elements.year.addEventListener("change", event => { state.year = event.target.value; render(); });
+  elements.quartile.addEventListener("change", event => { state.quartile = event.target.value; render(); });
+  elements.sort.addEventListener("change", event => { state.sort = event.target.value; render(); });
+  document.getElementById("clearFilters").addEventListener("click", clearFilters);
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
