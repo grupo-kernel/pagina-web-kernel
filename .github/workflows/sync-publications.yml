@@ -1,0 +1,136 @@
+name: Sincronizar publicaciones
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 07 * * 1"
+  push:
+    branches:
+      - main
+      - agent/miembros-cordero-torregrosa
+    paths:
+      - "data/researchers.json"
+      - "data/journal_quartiles.json"
+      - "scripts/sync_publications.py"
+      - "scripts/validate_data.py"
+      - "scripts/validate_frontend.py"
+      - ".github/workflows/sync-publications.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "data/researchers.json"
+      - "data/publications.json"
+      - "data/journal_quartiles.json"
+      - "index.html"
+      - "equipo.html"
+      - "quienes_somos.html"
+      - "publicaciones.html"
+      - "assets/css/kernel.css"
+      - "scripts/sync_publications.py"
+      - "scripts/validate_data.py"
+      - "scripts/validate_frontend.py"
+      - ".github/workflows/sync-publications.yml"
+
+concurrency:
+  group: publication-sync-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validar datos
+        run: python scripts/validate_data.py
+
+      - name: Validar frontend
+        run: python scripts/validate_frontend.py
+
+      - name: Comprobar formato del cambio
+        run: git diff --check origin/${{ github.base_ref || github.ref_name }}...HEAD || git diff --check
+
+  sync:
+    if: github.event_name != 'pull_request' && github.actor != 'github-actions[bot]'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Consultar fuentes bibliográficas
+        env:
+          CROSSREF_MAILTO: mleonardo@itla.edu.do
+          ORCID_ACCESS_TOKEN: ${{ secrets.ORCID_ACCESS_TOKEN }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          HTTP_TIMEOUT: "30"
+          SYNC_STRICT: "0"
+        run: python scripts/sync_publications.py
+
+      - name: Ignorar cambios exclusivamente temporales
+        shell: bash
+        run: |
+          git show HEAD:data/publications.json > /tmp/publications-before.json
+          python - <<'PY'
+          import copy
+          import json
+          from pathlib import Path
+
+          before_path = Path("/tmp/publications-before.json")
+          after_path = Path("data/publications.json")
+          before = json.loads(before_path.read_text(encoding="utf-8"))
+          after = json.loads(after_path.read_text(encoding="utf-8"))
+
+          def stable(payload):
+              result = copy.deepcopy(payload)
+              result.pop("generated_at", None)
+              return result
+
+          if stable(before) == stable(after):
+              after_path.write_text(before_path.read_text(encoding="utf-8"), encoding="utf-8")
+              print("No hay cambios bibliográficos; se conserva la fecha anterior.")
+          else:
+              print("Se detectaron cambios bibliográficos reales.")
+          PY
+
+      - name: Validar catálogo resultante
+        run: |
+          python scripts/validate_data.py
+          python scripts/validate_frontend.py
+          git diff --check
+
+      - name: Guardar cambios del catálogo
+        shell: bash
+        run: |
+          if git diff --quiet -- data/publications.json; then
+            echo "No se detectaron publicaciones nuevas ni cambios de metadatos."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/publications.json
+          git commit -m "Actualizar catálogo automatizado de publicaciones"
+          git push

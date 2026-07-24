@@ -1,446 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Index | El Kernel</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <style>
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, rgb(11,32,96) 0%, #2498fb 100%);
-      font-family: 'Segoe UI', sans-serif;
-      overflow-x: hidden;
-    }
-    .hero-section {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      justify-content: center;
-      min-height: 60vh;
-      padding-top: 2vw;
-      position: relative;
-      z-index: 2;
-      gap: 2vw;
-    }
-    .hero-content {
-      flex: 1.2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      z-index: 3;
-      margin-top: 0;
-      position: relative;
-      max-width: 780px;
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    /* NUEVO: Título en dos líneas, grande y centrado */
-    .main-title {
-      text-align: center;
-      font-size: clamp(2.1rem, 3.8vw, 4.5rem);
-      font-weight: 900;
-      font-style: italic;
-      color: #fff;
-      line-height: 1.07;
-      margin-top: 1vw;
-      margin-bottom: 0.22em;
-      letter-spacing: 0.7px;
-      text-shadow: 0 6px 22px #05204488;
-    }
-    .main-title span {
-      display: block;
-    }
-    .main-desc {
-      text-align: center;
-      font-size: clamp(1.1rem, 1.65vw, 2.1rem);
-      font-weight: 500;
-      color: #fff;
-      margin-bottom: 0.35em;
-      margin-top: 0.1em;
-      text-shadow: 0 4px 16px #05336699;
-      letter-spacing: 0.2px;
-      line-height: 1.19;
-    }
-    .main-quote {
-      text-align: center;
-      font-size: clamp(1rem, 1.15vw, 1.6rem);
-      font-style: italic;
-      color: #e5fdff;
-      font-weight: 700;
-      margin-bottom: 1.5em;
-      text-shadow: 0 2px 10px #022950cc;
-      letter-spacing: 0.2px;
-    }
-    .kernel-logo {
-      width: 240px;
-      max-width: 22vw;
-      margin: 0.7vw auto 0.4vw auto;
-      display: block;
-      opacity: 1 !important;
-      filter: none !important;
-    }
-    .carousel-uni-section {
-      flex: 1;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      min-height: 700px;
-      z-index: 2;
-    }
-    .uni-carousel-container {
-      background: rgba(255,255,255,0.94);
-      border-radius: 2.3rem;
-      box-shadow: 0 14px 54px #1b6dc130, 0 2px 18px #1492ff24;
-      padding: 2.5rem 2.3rem 2.1rem 2.3rem;
-      width: 650px;
-      max-width: 98vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      margin-right: 1vw;
-      margin-bottom: 0.9vw;
-      border: 3px solid #53bfff44;
-    }
-    .uni-img {
-      width: 620px;
-      height: 330px;
-      object-fit: cover;
-      border-radius: 1.25rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 8px 32px #38bbff33;
-      border: 4px solid #70cbf9;
-      background: #fff;
-      transition: box-shadow 0.22s;
-    }
-    .uni-name {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #0984e3;
-      background: rgba(240,250,255,0.98);
-      border-radius: 1.2em;
-      padding: 0.3em 2.2em;
-      margin-top: -0.7em;
-      margin-bottom: 0.1em;
-      text-align: center;
-      box-shadow: 0 2px 8px #96dafc33;
-      letter-spacing: 0.035em;
-      border: 2.2px solid #73d3f9;
-    }
-    .carousel-controls {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 0.1em 0 0.7em 0;
-    }
-    .carousel-btn {
-      background: #379af4;
-      border: none;
-      color: #fff;
-      font-size: 2.2em;
-      border-radius: 50%;
-      width: 64px; height: 64px;
-      transition: background 0.2s;
-      opacity: 0.93;
-      box-shadow: 0 2px 10px #84d0fc50;
-    }
-    .carousel-btn:hover { background: #2267a2; opacity: 1;}
-    .nav-btns {
-      display: flex;
-      justify-content: center;
-      gap: 1.1vw;
-      margin: 0.7em 0 1.15em 0;
-      flex-wrap: wrap;
-      z-index: 4;
-      position: relative;
-    }
-    .main-btn {
-      font-size: 1.18rem;
-      padding: 0.6em 2em;
-      font-weight: 700;
-      border: none;
-      border-radius: 2.5em;
-      background: linear-gradient(90deg, #2ec7f3 0%, #55fa93 100%);
-      color: #fff;
-      margin: 0 0.14em;
-      box-shadow: 0 4px 18px #1cb3f830;
-      transition: background 0.18s, box-shadow 0.16s;
-      outline: none;
-      margin-bottom: 0.2em;
-      display: flex; align-items: center; gap: 0.7em;
-    }
-    .main-btn i { font-size: 1.3em; }
-    .main-btn:nth-child(2) {
-      background: linear-gradient(90deg, #ffe19b 0%, #ffa97b 100%);
-      color: #184d59;
-    }
-    .main-btn:nth-child(3) {
-      background: linear-gradient(90deg, #53fff7 0%, #33d57f 100%);
-      color: #05385e;
-    }
-    .main-btn:active, .main-btn:focus { outline: 2px solid #179fff; }
-    .stats-section {
-      display: flex;
-      justify-content: center;
-      gap: 3vw;
-      margin: 2em 0 1em 0;
-      font-size: 2.1rem;
-      font-weight: 800;
-      color: #fff;
-      text-shadow: 0 3px 12px #122447, 0 1.5px 6px #1ca0ff44;
-    }
-    .stat-item {
-      text-align: center;
-      min-width: 130px;
-    }
-    .stat-item span {
-      color: #f5f8fa;
-      font-size: 2.4rem;
-      font-weight: 900;
-      display: block;
-      line-height: 1.1;
-    }
-    .stat-label {
-      font-size: 1.1rem;
-      color: #f5faff;
-      font-weight: 600;
-      margin-top: -0.18em;
-      display: block;
-      text-shadow: 0 1px 6px #0b123c88;
-    }
-    .social-section {
-      display: flex;
-      justify-content: center;
-      gap: 2vw;
-      margin-bottom: 2em;
-      margin-top: 0.7em;
-    }
-    .social-link {
-      font-size: 1.7rem;
-      color: #fff;
-      transition: color 0.2s;
-      margin: 0 0.12em;
-      text-shadow: 0 2px 6px #1115;
-    }
-    .social-link:hover { color: #27d3f6; }
-    footer {
-      background: #232c32;
-      color: #fff;
-      padding: 2.5em 0 1.5em 0;
-      font-size: 1.06rem;
-      margin-top: 1.5em;
-    }
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 1em;
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-    .footer-logo img {
-      width: 46px;
-      height: 46px;
-      border-radius: 1.1em;
-      background: #fff;
-      padding: 2px;
-      box-shadow: 0 2px 7px #1397e180;
-    }
-    .footer-links a {
-      color: #a9e2fb;
-      text-decoration: none;
-      font-weight: 700;
-      margin: 0 1.2em;
-    }
-    .footer-links a:hover { text-decoration: underline; }
-    @media (max-width: 1100px) {
-      .hero-section { flex-direction: column; align-items: center; justify-content: flex-start;}
-      .carousel-uni-section { margin: 1.2em 0 0 0; }
-      .uni-carousel-container { margin-right: 0; }
-      .uni-img { width: 90vw; height: 28vw; min-height: 120px;}
-    }
-    @media (max-width: 700px) {
-      .main-title { font-size: 2.1rem; }
-      .main-desc, .main-quote { font-size: 1.1rem; }
-      .kernel-logo { width: 120px; }
-      .uni-carousel-container { width: 96vw; padding: 1.1rem 0.4rem;}
-      .uni-img { width: 95vw; height: 22vw; min-height: 90px;}
-      .carousel-uni-section { justify-content: center;}
-      .stats-section { flex-direction: column; gap: 1.2em;}
-      .nav-btns { flex-direction: column; gap: 0.32em;}
-      .footer-row { flex-direction: column; align-items: flex-start; gap: 1.3em;}
-    }
-    .navbar-nav .nav-link {
-      font-size: 1.4rem !important;
-      font-weight: bold !important;
-      font-style: italic !important;
-    }
-  </style>
+  <meta name="description" content="Grupo de Investigación El Kernel: métodos numéricos, sistemas no lineales, EDPs, álgebra y educación matemática.">
+  <title>Grupo de Investigación El Kernel</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/css/kernel.css" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <img src="ElKernel.png" alt="Logo El Kernel" style="height: 46px; border-radius: 1.5em; margin-right: 0.8em; background:#fff;">
-        <b><i>El Kernel</i></b>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="quienes_somos.html"><b><i>Quiénes Somos</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="equipo.html"><b><i>Equipo</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="lineas.html"><b><i>Líneas</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="proyectos.html"><b><i>Proyectos</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="publicaciones.html"><b><i>Publicaciones</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="noticias.html"><b><i>Noticias</i></b></a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html"><b><i>Contacto</i></b></a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <!-- HERO -->
-  <section class="hero-section container-fluid position-relative">
-    <div class="hero-content">
-      <div class="main-title">
-        <span>Grupo de</span>
-        <span>Investigación</span>
-      </div>
-      <div class="main-desc">
-        Exploramos EDPs no lineales, Métodos iterativos,<br>
-        Análisis Matricial, Diseño de algoritmos y Educación Matemática.
-      </div>
-      <div class="main-quote">
-        “Innovando en la frontera entre matemática y educación”
-      </div>
-      <!-- LOGO sin opacidad ni filtro -->
-      <img src="ElKernel.png" class="kernel-logo" alt="Logo Kernel">
-      <!-- Botones principales -->
-      <div class="nav-btns">
-        <a href="equipo.html" class="main-btn">
-          <i class="bi bi-people"></i>
-          <b><span style="color:#111; text-decoration: underline;">Equipo</span></b>
-        </a>
-        <a href="publicaciones.html" class="main-btn"><i class="bi bi-journal-richtext"></i> <b>Publicaciones</b></a>
-        <a href="noticias.html" class="main-btn"><i class="bi bi-megaphone"></i> <b>Noticias</b></a>
+<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand kernel-brand" href="index.html">
+      <img src="ElKernel.png" alt="">
+      <span>El Kernel</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="kernelNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
+        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="contenido">
+  <header class="kernel-hero">
+    <div class="container">
+      <span class="eyebrow"><i class="bi bi-diagram-3"></i> Investigación matemática colaborativa</span>
+      <h1>Grupo de Investigación El Kernel</h1>
+      <p class="lead">Desarrollamos investigación rigurosa en métodos numéricos, sistemas no lineales, ecuaciones en derivadas parciales, álgebra y educación matemática.</p>
+      <div class="hero-actions">
+        <a class="btn-kernel" href="equipo.html"><i class="bi bi-people"></i> Conocer el equipo</a>
+        <a class="btn-kernel-outline" href="publicaciones.html"><i class="bi bi-journal-richtext"></i> Explorar publicaciones</a>
       </div>
     </div>
-    <!-- Carrusel universidades derecha -->
-    <div class="carousel-uni-section">
-      <div class="uni-carousel-container">
-        <div class="carousel-controls mb-1">
-          <button class="carousel-btn" id="prevUni"><i class="bi bi-chevron-left"></i></button>
-          <button class="carousel-btn" id="nextUni"><i class="bi bi-chevron-right"></i></button>
+  </header>
+
+  <section class="container" aria-label="Indicadores del grupo">
+    <div class="stats-grid">
+      <article class="stat-card">
+        <span class="value" id="memberCount">9</span>
+        <span class="label">Investigadores miembros</span>
+        <span class="detail">Miembros nacionales e internacionales</span>
+      </article>
+      <article class="stat-card">
+        <span class="value" id="publicationHeadline">300+</span>
+        <span class="label">Artículos de revista en la producción declarada</span>
+        <span class="detail">Cota conservadora; sin sumar dos veces coautorías</span>
+      </article>
+      <article class="stat-card">
+        <span class="value" id="catalogCount">17</span>
+        <span class="label">Registros iniciales verificados en el catálogo</span>
+        <span class="detail">El inventario crecerá mediante sincronización automática</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-kicker">Ámbitos de trabajo</span>
+        <h2>Investigación, formación y transferencia</h2>
+        <p>El grupo articula matemática pura, aplicada y educación para producir resultados verificables y fortalecer redes académicas nacionales e internacionales.</p>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <article class="feature-card">
+            <span class="feature-icon"><i class="bi bi-bezier2"></i></span>
+            <h3>Métodos numéricos</h3>
+            <p>Métodos iterativos de alto orden, esquemas libres de Jacobiano, estabilidad y dinámica.</p>
+          </article>
         </div>
-        <img src="isfodosu.png" class="uni-img" id="uniImg" alt="Universidad">
-        <div class="uni-name" id="uniName">ISFODOSU</div>
+        <div class="col-md-4">
+          <article class="feature-card">
+            <span class="feature-icon"><i class="bi bi-braces-asterisk"></i></span>
+            <h3>Matemática pura y aplicada</h3>
+            <p>EDPs no lineales, análisis matricial, optimización, álgebra abstracta y teoría de grupos.</p>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="feature-card">
+            <span class="feature-icon"><i class="bi bi-mortarboard"></i></span>
+            <h3>Educación matemática</h3>
+            <p>Diseño curricular, formación docente, innovación pedagógica y recursos de aprendizaje.</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
-  <!-- Estadísticas -->
-  <div class="stats-section">
-    <div class="stat-item">
-      <span>7+</span>
-      <div class="stat-label">Miembros principales</div>
-    </div>
-    <div class="stat-item">
-      <span>15+</span>
-      <div class="stat-label">Artículos publicados</div>
-    </div>
-    <div class="stat-item">
-      <span>0</span>
-      <div class="stat-label">Proyectos en curso</div>
-    </div>
-  </div>
-  <!-- Redes sociales -->
-  <div class="social-section">
-    <a href="https://www.linkedin.com" target="_blank" class="social-link"><i class="bi bi-linkedin"></i></a>
-    <a href="#" target="_blank" class="social-link"><i class="bi bi-share"></i></a>
-    <a href="https://github.com/grupo-kernel" target="_blank" class="social-link"><i class="bi bi-github"></i></a>
-    <a href="mailto:mleonardo@itla.edu.do" class="social-link"><i class="bi bi-envelope"></i></a>
-  </div>
-  <!-- Footer -->
-  <footer>
+
+  <section class="section-block pt-0" aria-labelledby="nuevosMiembrosTitulo">
     <div class="container">
-      <div class="footer-row">
-        <div class="footer-logo">
-          <img src="ElKernel.png" alt="Logo Kernel"> Grupo de Investigación
-          <div class="text-secondary small">Explorando EDPs no lineales, Métodos iterativos y más.</div>
-        </div>
-        <div>
-          <span class="fw-bold" style="color:#48e1f7">Contacto:</span>
-          <div><a href="mailto:mleonardo@itla.edu.do" class="text-light" style="text-decoration:underline;">mleonardo@itla.edu.do</a></div>
-          <div class="text-secondary small">República Dominicana</div>
-          <div>
-            <a href="https://grupoelkernel.com" class="text-info" target="_blank" style="text-decoration:none;">
-              grupoelkernel.com
-            </a>
+      <div class="section-heading">
+        <span class="section-kicker">Colaboración internacional</span>
+        <h2 id="nuevosMiembrosTitulo">Nuevos miembros del Grupo El Kernel</h2>
+        <p>Se incorporan dos investigadores de la Universitat Politècnica de València, con amplia trayectoria en análisis numérico y métodos iterativos.</p>
+      </div>
+      <div id="newMembers" class="team-grid" aria-live="polite">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block pt-0">
+    <div class="container">
+      <div class="content-card">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-8">
+            <span class="section-kicker">Trazabilidad bibliográfica</span>
+            <h2>Publicaciones con DOI, fuente y cuartil contextualizado</h2>
+            <p class="mb-0">El catálogo distingue el sistema de clasificación —JCR, SJR o CiteScore—, la categoría y el año de la métrica. Cuando no existe una fuente pública verificable, el cuartil se mantiene expresamente pendiente.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a class="btn-kernel" href="publicaciones.html"><i class="bi bi-search"></i> Consultar catálogo</a>
           </div>
         </div>
-        <div class="footer-links">
-          <a href="https://www.isfodosu.edu.do" target="_blank">ISFODOSU</a>
-          <a href="https://uasd.edu.do" target="_blank">UASD</a>
-          <a href="https://itla.edu.do" target="_blank">ITLA</a>
-        </div>
-      </div>
-      <div class="text-secondary small mt-2">
-        © 2025 Grupo de Investigación El Kernel — Todos los derechos reservados
       </div>
     </div>
-  </footer>
+  </section>
+</main>
 
-  <script>
-    // Carrusel de universidades JS
-    const universidades = [
-      { img: 'isfodosu.png', nombre: 'ISFODOSU', link: 'https://www.isfodosu.edu.do' },
-      { img: 'uasd.png', nombre: 'UASD', link: 'https://uasd.edu.do' },
-      { img: 'itla.png', nombre: 'ITLA', link: 'https://itla.edu.do' }
-    ];
-    let uniIdx = 0;
-    const uniImg = document.getElementById('uniImg');
-    const uniName = document.getElementById('uniName');
+<footer class="kernel-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-title">Grupo de Investigación El Kernel</div>
+        <p class="mb-0">Matemática, computación científica y educación al servicio del conocimiento.</p>
+      </div>
+      <div>
+        <strong>Secciones</strong>
+        <div><a href="equipo.html">Equipo</a></div>
+        <div><a href="publicaciones.html">Publicaciones</a></div>
+        <div><a href="proyectos.html">Proyectos</a></div>
+      </div>
+      <div>
+        <strong>Contacto</strong>
+        <div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div>
+        <div><a href="https://github.com/grupo-kernel" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </div>
+    <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
+  </div>
+</footer>
 
-    function mostrarUniversidad(idx) {
-      uniImg.src = universidades[idx].img;
-      uniName.textContent = universidades[idx].nombre;
-      uniImg.parentNode.href = universidades[idx].link || "#";
-    }
+<script>
+(function () {
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
+  const profileLink = (member) => member.institutional_profile || (member.orcid ? `https://orcid.org/${member.orcid}` : "equipo.html");
 
-    document.getElementById('prevUni').onclick = function() {
-      uniIdx = (uniIdx - 1 + universidades.length) % universidades.length;
-      mostrarUniversidad(uniIdx);
-    }
-    document.getElementById('nextUni').onclick = function() {
-      uniIdx = (uniIdx + 1) % universidades.length;
-      mostrarUniversidad(uniIdx);
-    }
+  function renderNewMembers(members) {
+    const target = document.getElementById("newMembers");
+    target.innerHTML = members.map(member => {
+      const metric = (member.publication_metrics || []).find(item => item.label === "Artículos de revista");
+      return `<article class="team-card member-highlight">
+        <div class="team-card__top">
+          <img class="team-photo" src="${escapeHtml(member.image)}" alt="Identificador de ${escapeHtml(member.name)}">
+          <div><div class="team-badges"><span class="badge-soft"><i class="bi bi-globe-europe-africa"></i>${escapeHtml(member.member_type)}</span></div>
+          <h2>${escapeHtml(member.name)}, ${escapeHtml(member.display_degree)}</h2><p class="team-role">${escapeHtml(member.role)}</p></div>
+        </div>
+        <div class="team-card__body"><p>${escapeHtml(member.bio)}</p>
+          ${metric ? `<div class="profile-metrics"><div class="profile-metric"><strong>${Number(metric.value).toLocaleString("es-ES")}</strong><span>${escapeHtml(metric.label)} · ${escapeHtml(metric.source)}</span></div></div>` : ""}
+          <div class="team-links"><a href="${escapeHtml(profileLink(member))}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Perfil verificado</a><a href="equipo.html#${escapeHtml(member.id)}"><i class="bi bi-person-vcard"></i> Ficha del grupo</a></div>
+        </div>
+      </article>`;
+    }).join("");
+  }
 
-    // Clic en imagen lleva a universidad
-    uniImg.onclick = () => {
-      window.open(universidades[uniIdx].link, '_blank');
-    }
-    uniName.onclick = () => {
-      window.open(universidades[uniIdx].link, '_blank');
-    }
-    // Automático cada 5 segundos
-    setInterval(() => {
-      uniIdx = (uniIdx + 1) % universidades.length;
-      mostrarUniversidad(uniIdx);
-    }, 5000);
-    // Inicializa
-    mostrarUniversidad(0);
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  Promise.all([
+    fetch("data/researchers.json", {cache:"no-store"}).then(response => { if (!response.ok) throw new Error("researchers.json"); return response.json(); }),
+    fetch("data/publications.json", {cache:"no-store"}).then(response => { if (!response.ok) throw new Error("publications.json"); return response.json(); })
+  ]).then(([researchersData, publicationsData]) => {
+    document.getElementById("memberCount").textContent = researchersData.group.member_count;
+    document.getElementById("publicationHeadline").textContent = researchersData.group.publication_headline;
+    document.getElementById("catalogCount").textContent = publicationsData.summary?.unique_catalog_records ?? publicationsData.records?.length ?? 0;
+    renderNewMembers(researchersData.researchers.filter(member => ["alicia-cordero","juan-torregrosa"].includes(member.id)));
+  }).catch(error => {
+    console.error(error);
+    document.getElementById("newMembers").innerHTML = '<div class="error-state">Los datos del equipo no pudieron cargarse. Consulte la página de Equipo.</div>';
+  });
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

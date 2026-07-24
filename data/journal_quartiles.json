@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-24",
+  "policy": {
+    "description": "Cada cuartil debe indicar sistema, categoría y año. Si no existe una fuente pública verificable, la interfaz muestra 'Pendiente de verificación'.",
+    "preferred_order": [
+      "JCR",
+      "SJR",
+      "CiteScore"
+    ],
+    "note": "El cuartil pertenece a la revista y a una categoría/año concretos; no es una propiedad permanente del artículo."
+  },
+  "journals": {
+    "mathematics": {
+      "name": "Mathematics",
+      "issn": [
+        "2227-7390"
+      ],
+      "aliases": [
+        "Mathematics (Switzerland)"
+      ],
+      "quartile": "Q1",
+      "system": "JCR",
+      "category": "Mathematics",
+      "metric_year": 2025,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.mdpi.com/journal/mathematics/stats"
+    },
+    "algorithms": {
+      "name": "Algorithms",
+      "issn": [
+        "1999-4893"
+      ],
+      "aliases": [],
+      "quartile": "Q2",
+      "system": "JCR",
+      "category": "Computer Science, Theory and Methods",
+      "metric_year": 2025,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.mdpi.com/journal/algorithms/stats"
+    },
+    "axioms": {
+      "name": "Axioms",
+      "issn": [
+        "2075-1680"
+      ],
+      "aliases": [],
+      "quartile": "Q2",
+      "system": "JCR",
+      "category": "Mathematics, Applied",
+      "metric_year": 2025,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.mdpi.com/journal/axioms/stats"
+    },
+    "computation": {
+      "name": "Computation",
+      "issn": [
+        "2079-3197"
+      ],
+      "aliases": [],
+      "quartile": "Q2",
+      "system": "JCR",
+      "category": "Mathematics, Interdisciplinary Applications",
+      "metric_year": 2025,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.mdpi.com/journal/computation/stats"
+    },
+    "mathematics-and-computers-in-simulation": {
+      "name": "Mathematics and Computers in Simulation",
+      "issn": [
+        "0378-4754"
+      ],
+      "aliases": [],
+      "quartile": "Q1",
+      "system": "SJR",
+      "category": "Mejor cuartil de la revista",
+      "metric_year": 2024,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.scimagojr.com/journalsearch.php?q=12166&tip=sid"
+    },
+    "applied-mathematics-and-computation": {
+      "name": "Applied Mathematics and Computation",
+      "issn": [
+        "0096-3003"
+      ],
+      "aliases": [],
+      "quartile": "Q1",
+      "system": "SJR",
+      "category": "Computational Mathematics",
+      "metric_year": 2024,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.scimagojr.com/journalrank.php?category=2605"
+    },
+    "symmetry": {
+      "name": "Symmetry",
+      "issn": [
+        "2073-8994"
+      ],
+      "aliases": [],
+      "quartile": "Q2",
+      "system": "JCR",
+      "category": "Multidisciplinary Sciences",
+      "metric_year": 2025,
+      "verified_at": "2026-07-24",
+      "source_url": "https://www.mdpi.com/journal/symmetry/stats"
+    }
+  }
+}

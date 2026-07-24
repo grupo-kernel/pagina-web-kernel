@@ -1,189 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Quiénes Somos | El Kernel</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <style>
-    body {
-      min-height: 100vh;
-      background: linear-gradient(120deg, #86e3ce 0%, #d0e6fa 100%);
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .navbar {
-      background: rgba(255,255,255,0.95);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    }
-    .main-card {
-      background: #fff;
-      border-radius: 1.7rem;
-      box-shadow: 0 6px 32px rgba(0,120,255,0.07), 0 1.5px 8px rgba(50,90,170,0.04);
-      padding: 2.8rem 2rem 2.5rem 2rem;
-      margin: 3rem auto 2.5rem auto;
-      max-width: 1050px;
-    }
-    h2 {
-      font-size: 2.7rem;
-      font-weight: 900;
-      color: #1283da;
-      letter-spacing: 0.04em;
-      margin-bottom: 2rem;
-    }
-    h4, h5 {
-      font-weight: 700;
-      color: #177ba7;
-      margin-top: 2rem;
-    }
-    .bi {
-      color: #44aaff;
-      font-size: 2rem;
-      margin-right: 0.5rem;
-      vertical-align: middle;
-    }
-    .card-section {
-      border-left: 5px solid #aee8fa;
-      padding-left: 1.3rem;
-      margin-bottom: 1.7rem;
-      background: #f5fbff;
-      border-radius: 0.5rem;
-    }
-    .custom-list {
-      padding-left: 1.5rem;
-      font-size: 1.15rem;
-    }
-    .custom-list li {
-      margin-bottom: 0.7rem;
-      padding-left: 0.2rem;
-    }
-    .values-list li strong {
-      color: #1283da;
-    }
-    .quote {
-      font-size: 1.4rem;
-      color: #2d97c7;
-      font-weight: 600;
-      margin: 2.5rem 0 0 0;
-      padding: 0.7rem;
-      background: #e3f3fa;
-      border-radius: 1rem;
-      border-left: 6px solid #44aaff;
-      box-shadow: 0 3px 10px rgba(60,150,210,0.06);
-    }
-    .logo-navbar {
-      height: 80px;
-      margin-right: 18px;
-      vertical-align: middle;
-      border-radius: 50%;
-      border: 2px solid #1ba6f3;
-      background: #fff;
-      opacity: 0.6;  
-      transition: opacity 0.3s;
-    }
-    .navbar-nav .nav-link {
-      font-weight: bold !important;
-      font-style: italic !important;
-    }
-    /* ----------- Justificar texto y listas ----------- */
-    .text-justify {
-      text-align: justify !important;
-    }
-    .custom-list.text-justify,
-    .custom-list.text-justify li,
-    .values-list.text-justify,
-    .values-list.text-justify li {
-      text-align: justify !important;
-    }
-     .navbar-nav .nav-link {
-  font-size: 1.7rem !important;
-  font-weight: bold !important;
-  font-style: italic !important;
-}
-  </style>
+  <meta name="description" content="Misión, visión y objetivos del Grupo de Investigación El Kernel.">
+  <title>Quiénes somos | Grupo de Investigación El Kernel</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/css/kernel.css" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light sticky-top mb-2">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="kernelNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="quienes_somos.html">Quiénes somos</a></li>
+        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="contenido">
+  <header class="page-header">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <img src="ElKernel.png" alt="Logo El Kernel" class="logo-navbar">
-        El Kernel
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-        </ul>
+      <span class="eyebrow"><i class="bi bi-diagram-3"></i> Identidad institucional</span>
+      <h1>Quiénes somos</h1>
+      <p>El Grupo de Investigación El Kernel reúne actualmente a <strong><span id="memberCount">9</span> investigadores</strong> de República Dominicana y España, comprometidos con la generación y transferencia de conocimiento matemático.</p>
+    </div>
+  </header>
+
+  <section class="section-block">
+    <div class="container">
+      <div class="content-card mb-4">
+        <span class="section-kicker">El grupo</span>
+        <h2>Una comunidad académica multidisciplinaria</h2>
+        <p>El Kernel desarrolla investigación en métodos numéricos, ecuaciones en derivadas parciales no lineales, sistemas no lineales, optimización, análisis matricial, álgebra y educación matemática. La incorporación de investigadores de la Universitat Politècnica de València fortalece la colaboración internacional y la continuidad de líneas de trabajo compartidas.</p>
+        <p class="mb-0">La organización combina producción científica, formación de investigadores, acompañamiento de tesis, innovación curricular y divulgación, con énfasis en la trazabilidad de sus resultados y en el acceso verificable a las publicaciones.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <article class="content-card"><span class="feature-icon"><i class="bi bi-bullseye"></i></span><h2>Misión</h2><p>Promover la generación y aplicación de conocimiento matemático mediante investigaciones rigurosas, formación de recursos humanos altamente capacitados y soluciones innovadoras para problemas académicos, científicos, tecnológicos y educativos.</p></article>
+        </div>
+        <div class="col-lg-6">
+          <article class="content-card"><span class="feature-icon"><i class="bi bi-eye"></i></span><h2>Visión</h2><p>Consolidarnos como referente nacional e internacional en matemática pura, aplicada y educación matemática, distinguiéndonos por la excelencia científica, la colaboración interdisciplinaria y la formación de nuevas generaciones.</p></article>
+        </div>
       </div>
     </div>
-  </nav>
+  </section>
 
- <section class="main-card shadow">
-  <div class="text-center mb-3">
-    <h2><i class="bi bi-people-fill"></i> ¿Quiénes Somos?</h2>
-  </div>
-  <div class="mb-4 fs-5 text-justify" style="color:#1c4b5e;">
-    <p>
-      <strong>El Grupo de Investigación El Kernel</strong> es una comunidad académica multidisciplinaria dedicada a la investigación, la innovación y la transferencia de conocimiento en 
-      <span style="color:#2994cf;">métodos numéricos, ecuaciones en derivadas parciales no lineales, optimización, álgebra y educación matemática</span>.
-      Nuestro grupo está formado por docentes e investigadores adscritos a prestigiosas instituciones de educación superior de la República Dominicana, con una fuerte vocación hacia el desarrollo científico, tecnológico y pedagógico del país y de la región.
-    </p>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6 card-section">
-      <h4><i class="bi bi-bullseye"></i> Misión</h4>
-      <p class="fs-5 text-justify">
-        Promover la generación y aplicación de conocimiento matemático mediante el desarrollo de investigaciones rigurosas, la formación de recursos humanos altamente capacitados y la implementación de soluciones innovadoras para problemas complejos en ámbitos académicos, científicos y tecnológicos, con un fuerte enfoque en el impacto educativo.
-      </p>
+  <section class="section-block pt-0">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <article class="content-card">
+            <span class="section-kicker">Objetivos</span><h2>Prioridades académicas</h2>
+            <ul class="timeline-list">
+              <li>Diseñar y analizar métodos numéricos eficientes para ecuaciones, sistemas no lineales y EDPs.</li>
+              <li>Investigar problemas de álgebra, análisis matricial, grupos finitos y caracteres.</li>
+              <li>Desarrollar estrategias y recursos para la enseñanza y el aprendizaje de la matemática.</li>
+              <li>Formar jóvenes investigadores mediante mentoría, tesis y colaboración científica.</li>
+              <li>Construir redes de cooperación con universidades y comunidades académicas internacionales.</li>
+              <li>Difundir resultados con metadatos verificables, DOI normalizado y procedencia documentada.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="col-lg-5">
+          <article class="content-card">
+            <span class="section-kicker">Valores</span><h2>Principios de actuación</h2>
+            <ul class="timeline-list">
+              <li><strong>Rigor científico:</strong> solidez metodológica y verificabilidad.</li>
+              <li><strong>Innovación:</strong> búsqueda de soluciones originales y útiles.</li>
+              <li><strong>Colaboración:</strong> trabajo plural, responsable e interdisciplinario.</li>
+              <li><strong>Integridad:</strong> trazabilidad de fuentes, autorías y métricas.</li>
+              <li><strong>Compromiso educativo:</strong> ciencia al servicio de la formación.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
     </div>
-    <div class="col-md-6 card-section">
-      <h4><i class="bi bi-eye-fill"></i> Visión</h4>
-      <p class="fs-5 text-justify">
-        Ser un referente nacional e internacional en investigación matemática, matemática pura y aplicada, con especial énfasis en Métodos iterativos, Optimización, Álgebra abstracta, Análisis matricial y Educación Matemática. Distinguirnos por la excelencia científica, la colaboración interdisciplinaria y el compromiso con el mejoramiento de la enseñanza y el aprendizaje de las matemáticas.
-      </p>
-    </div>
-  </div>
+  </section>
+</main>
 
-  <div class="row mt-4">
-    <div class="col card-section">
-      <h4><i class="bi bi-flag-fill"></i> ¿Cuáles son nuestros objetivos?</h4>
-      <ul class="custom-list fs-5 text-justify">
-        <li>Diseñar y analizar nuevos métodos numéricos para la resolución eficiente de EDP´s y sistemas no lineales.</li>
-        <li>Realizar investigaciones en el ámbito del álgebra, de manera especial en problemas matriciales, matrices combinadas y teoría de grupos finitos.</li>
-        <li>Desarrollar recursos y estrategias didácticas para la enseñanza de la matemática en contextos reales.</li>
-        <li>Promover la formación de jóvenes investigadores mediante programas de mentoría y colaboración científica.</li>
-        <li>Apoyar la formación continua de docentes en estrategias pedagógicas activas, recursos innovadores y metodologías centradas en el estudiante, a través de talleres, seminarios, publicaciones y experiencias de aula investigadas y sistematizadas.</li>
-        <li>Establecer redes de colaboración con instituciones académicas, organismos públicos y privados, y comunidades educativas de la República Dominicana y el Caribe, para compartir buenas prácticas, generar conocimiento colectivo y contribuir a la mejora continua de la educación matemática en la región.</li>
-        <li>Fomentar la integración de enfoques interdisciplinarios, como el modelo STEAM (Ciencia, Tecnología, Ingeniería, Artes y Matemáticas), para enriquecer las experiencias educativas y propiciar aprendizajes significativos en ambientes presenciales, virtuales y mixtos.</li>
-      </ul>
+<footer class="kernel-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Innovando en la frontera entre matemática y educación.</p></div>
+      <div><strong>Conozca el grupo</strong><div><a href="equipo.html">Equipo</a></div><div><a href="lineas.html">Líneas</a></div></div>
+      <div><strong>Resultados</strong><div><a href="publicaciones.html">Publicaciones</a></div><div><a href="proyectos.html">Proyectos</a></div></div>
     </div>
+    <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
   </div>
-
-  <div class="row mt-2">
-    <div class="col card-section">
-      <h4><i class="bi bi-award-fill"></i> Valores</h4>
-      <ul class="custom-list values-list fs-5 text-justify">
-        <li><strong>Rigor científico:</strong> Compromiso con la calidad, la veracidad y la solidez metodológica.</li>
-        <li><strong>Innovación:</strong> Búsqueda constante de soluciones originales y útiles.</li>
-        <li><strong>Colaboración:</strong> Trabajo en equipo, horizontal y plural.</li>
-        <li><strong>Responsabilidad social:</strong> Ciencia al servicio del desarrollo educativo y humano.</li>
-        <li><strong>Excelencia docente:</strong> Compromiso con la formación y el impacto pedagógico.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="text-center">
-    <p class="quote">“Transformamos la matemática en herramienta para el cambio educativo, científico y social.”</p>
-  </div>
-</section>
+</footer>
+<script>
+fetch("data/researchers.json", {cache:"no-store"}).then(response => response.ok ? response.json() : Promise.reject(new Error("researchers.json"))).then(data => { document.getElementById("memberCount").textContent = data.group.member_count; }).catch(error => console.error(error));
+document.getElementById("currentYear").textContent = new Date().getFullYear();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
