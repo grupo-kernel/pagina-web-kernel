@@ -1,454 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Equipo | El Kernel</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta name="description" content="Investigadores del Grupo de Investigación El Kernel.">
+  <title>Equipo | Grupo de Investigación El Kernel</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/css/kernel.css" rel="stylesheet">
   <style>
-    body {
-      background: linear-gradient(120deg, #e7f1ff 0%, #fafbfc 100%);
-      font-family: 'Segoe UI', sans-serif;
-      min-height: 100vh;
-    }
-    .equipo-perfil {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #1594e9;
-      margin-bottom: 6px;
-    }
-    .nav-tabs .nav-link {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #178ac9;
-      border: none;
-      border-radius: 1.2rem 1.2rem 0 0;
-      background: #f7fcfe;
-      margin-right: 6px;
-      padding: 0.85rem 2.1rem;
-    }
-    .nav-tabs .nav-link.active {
-      color: #fff !important;
-      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-      box-shadow: 0 4px 24px rgba(21,148,233,0.07);
-    }
-    .tab-content {
-      background: #fff;
-      border-radius: 0 1.4rem 1.4rem 1.4rem;
-      box-shadow: 0 8px 36px rgba(21,148,233,0.06);
-      padding: 2.2rem 2rem;
-      margin-top: -1px;
-      min-height: 620px;
-    }
-    .formacion-lista li, .formacion li { margin-bottom: 0.45rem; }
-    .grado { font-weight: bold; color: #178ac9; }
-    .subnav-pills .nav-link, .nav-pills .nav-link {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 0.7rem;
-      color: #1594e9;
-      background: #f3fcf8;
-      border-radius: 1.2rem;
-      transition: background 0.2s, color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.65rem 1.1rem;
-    }
-    .subnav-pills .nav-link.active, .nav-pills .nav-link.active {
-      background: linear-gradient(90deg, #1594e9 60%, #34c9a3 100%);
-      color: #fff !important;
-      box-shadow: 0 2px 12px rgba(21,148,233,0.09);
-    }
-    .titulo-miembro { font-size: 2rem; font-weight: 700; color: #1594e9; margin-bottom: 1.5rem;}
-    .perfiles-redes a {
-      margin: 0 0.25rem;
-      font-size: 1.2rem;
-      text-decoration: none;
-      color: #1291c6;
-      transition: color 0.15s;
-      display: inline-block;
-    }
-    .perfiles-redes a:hover {
-      color: #00394e;
-    }
-    @media (max-width: 900px) {
-      .tab-content { min-height: 0; padding: 1.2rem 0.7rem; }
-      .nav-tabs .nav-link { padding: 0.65rem 1.1rem; font-size: 1.1rem; }
-    }
-    .navbar-nav .nav-link {
-      font-weight: bold !important;
-      font-style: italic !important;
-    }
-     .navbar-nav .nav-link {
-  font-size: 1.7rem !important;
-  font-weight: bold !important;
-  font-style: italic !important;
-}
+    .team-details { margin-top: .9rem; border-top: 1px solid #e5edf2; padding-top: .8rem; }
+    .team-details summary { cursor: pointer; color: var(--blue-dark); font-size: .82rem; font-weight: 800; }
+    .team-details h3 { margin: .9rem 0 .35rem; color: var(--navy); font-size: .9rem; font-weight: 800; }
+    .team-details ul { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: .82rem; }
+    .team-details li + li { margin-top: .35rem; }
+    .team-card:target { outline: 4px solid rgba(199,149,44,.35); scroll-margin-top: 100px; }
   </style>
-  <!-- ICONOS: fontawesome para logos de redes -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">El Kernel</a>
-      <div class="collapse navbar-collapse">
-       <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-          <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-          <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-          <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <div class="container py-5">
-    <!-- Tabs principales -->
-    <ul class="nav nav-tabs mb-4" id="mainTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="equipo-tab" data-bs-toggle="tab" data-bs-target="#equipo" type="button" role="tab" aria-controls="equipo" aria-selected="true">
-          Equipo
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="formacion-tab" data-bs-toggle="tab" data-bs-target="#formacion" type="button" role="tab" aria-controls="formacion" aria-selected="false">
-          Formación Académica
-        </button>
-      </li>
-    </ul>
-    <div class="tab-content" id="mainTabContent">
-      <!-- TAB 1: EQUIPO GENERAL -->
-      <div class="tab-pane fade show active" id="equipo" role="tabpanel" aria-labelledby="equipo-tab">
-        <h2 class="text-center text-primary mb-4">Equipo de Investigación</h2>
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-          <!-- Miguel -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="miguel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Miguel">
-                <h5 class="card-title">Miguel A. Leonardo Sepúlveda, Ph.D</h5>
-                <h6 class="text-muted">Investigador en Métodos Numéricos, EDPs y Educación Matemática</h6>
-                <p><strong>Áreas:</strong> Métodos iterativos de alto orden, métodos libres de Jacobiano, EDPs no lineales, optimización, diseño curricular, educación matemática, formación docente.</p>
-                <p><strong>Afiliaciones:</strong> ITLA, ISFODOSU</p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:miguel.leonardo@isfodosu.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <a href="https://orcid.org/0000-0003-4199-6484" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-                  <a href="https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
-                  <a href="https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es" title="Google Scholar" target="_blank"><i class="fa-brands fa-google"></i></a>
-                  <!-- Ajusta el link de Scholar si tienes uno diferente -->
-                </div>
-                <p class="small">
-                  Doctor en Matemática con enfoque en métodos numéricos avanzados. Asesor de tesis de posgrado y pregrado. Diseñador y rediseñador de programas curriculares universitarios. Investigador en métodos libres de Jacobiano, análisis numérico y formación de docentes.
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- Natanael -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="natanael.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Natanael">
-                <h5 class="card-title">Natanael Ureña Castillo, M.Sc</h5>
-                <h6 class="text-muted">Optimización, entrenamiento de redes neuronales, formación docente</h6>
-                <p><strong>Áreas:</strong> Métodos iterativos, optimización, redes neuronales, ciencias actuariales, matemática computacional, formación docente.</p>
-                <p><strong>Afiliaciones:</strong> ISFODOSU, ITLA, INTEC</p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:natanael.urena@isfodosu.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <a href="https://orcid.org/0000-0001-9186-1778" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-                  <a href="https://www.researchgate.net/profile/Natanael-Urena-Castillo" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
-                  <!-- Si tiene Google Scholar agrega aquí -->
-                </div>
-                <p class="small">Especialista en métodos iterativos, optimización y redes neuronales aplicadas a problemas complejos y riesgos. Docente universitario y asesor en proyectos de investigación matemática.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Randy -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="randy.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Randy">
-                <h5 class="card-title">Randy Leonardo, M.Sc</h5>
-                <h6 class="text-muted">Álgebra Lineal, Matrices combinadas, Educación Matemática</h6>
-                <p><strong>Áreas:</strong> Álgebra lineal, matriz combinada, formación docente, innovación educativa.</p>
-                <p><strong>Afiliación:</strong> UASD, ISFODOSU </p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:rleonardo36@uasd.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <a href="https://orcid.org/0000-0002-9493-7165" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-                  <a href="https://www.researchgate.net/profile/Randy-Leonardo" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
-                  <!-- Agrega Scholar si tiene -->
-                </div>
-                <p class="small">Investigador en álgebra y docencia, co-investigador de proyectos de matrices combinadas. Ponente en congresos nacionales.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Antmel -->
-<div class="col">
-  <div class="card text-center">
-    <div class="card-body">
-      <img src="antmel.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Antmel Rodríguez Cabral, Ph.D">
-      <h5 class="card-title">Antmel Rodríguez Cabral, Ph.D</h5>
-      <h6 class="text-muted">
-        Especialista en dinámica compleja y dinámica real de métodos iterativos para sistemas no lineales
-      </h6>
-      <p class="mb-2" style="font-size:0.95rem;"><em>Recientemente defendió su tesis doctoral (Doctor en Matemática).</em></p>
-      <p><strong>Áreas:</strong> EDPs, sistemas no lineales, planos/dinámicas compleja y real, análisis complejo, educación matemática.</p>
-      <p><strong>Afiliación:</strong> UASD, ISFODOSU</p>
-      <div class="perfiles-redes mb-2">
-        <a href="mailto:arodriguez05@uasd.edu.do" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-        <a href="https://orcid.org/0000-0003-4502-0307" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-        <a href="https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
-      </div>
-      <p class="small">
-        Profesor universitario e investigador en métodos numéricos, EDPs y planos dinámicos; ponente en congresos internacionales.
-      </p>
+<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="kernelNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="equipo.html">Equipo</a></li>
+        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+      </ul>
     </div>
   </div>
-</div>
+</nav>
 
-          <!-- Marino -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="marino.png" class="rounded-circle mb-3 equipo-perfil" alt="Marino">
-                <h5 class="card-title">Marino Brito Guillén, M.Sc</h5>
-                <h6 class="text-muted">Gestión universitaria, Matemática Educativa, Educación</h6>
-                <p><strong>Áreas:</strong> Educación matemática, gestión universitaria, álgebra, cálculo, formación docente.</p>
-                <p><strong>Afiliaciones:</strong> ISFODOSU</p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:marinobg@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <!-- Si tiene ORCID, RG, Scholar, LinkedIn -->
-                </div>
-                <p class="small">Ex-vicerrector académico, profesor universitario y consultor educativo. Experto en desarrollo curricular y formación docente.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Marc-Kelly Jean Philippe Jean -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="marckelly.jpg" class="rounded-circle mb-3 equipo-perfil" alt="Marc-Kelly Jean Philippe">
-                <h5 class="card-title">Marc-Kelly Jean Philippe Jean, Ph.D</h5>
-                <h6 class="text-muted">Álgebra Abstracta, Grupos Finitos y Caracteres</h6>
-                <p><strong>Áreas:</strong> Álgebra, matemática pura, educación matemática, recursos educativos.</p>
-                <p><strong>Afiliaciones:</strong> UASD</p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:marckelly21@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <a href="https://orcid.org/0000-0003-2278-5315" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-                  <a href="https://www.researchgate.net/profile/Marc-Kelly-Jean-Philippe" title="ResearchGate" target="_blank"><i class="fa-brands fa-researchgate"></i></a>
-                  <a href="https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/" title="LinkedIn" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                  <a href="https://scholar.google.com/citations?hl=es&user=KDxk4vYAAAAJ" title="Google Scholar" target="_blank"><i class="fa-brands fa-google"></i></a>
-                </div>
-                <p class="small">Profesor adjunto, asesor y conferencista en álgebra, con experiencia en investigación y divulgación científica internacional.</p>
-              </div>
-            </div>
-          </div>
-          <!-- José Alberto Reyes Reyes -->
-          <div class="col">
-            <div class="card text-center">
-              <div class="card-body">
-                <img src="josealberto.jpg" class="rounded-circle mb-3 equipo-perfil" alt="José Alberto Reyes">
-                <h5 class="card-title">José Alberto Reyes Reyes, M.Sc</h5>
-                <h6 class="text-muted">Métodos Iterativos, Educación Matemática</h6>
-                <p><strong>Áreas:</strong> Matemática pura, métodos iterativos, análisis de estabilidad, innovación educativa.</p>
-                <p><strong>Afiliaciones:</strong> UASD</p>
-                <div class="perfiles-redes mb-2">
-                  <a href="mailto:Josereyes0187@gmail.com" title="Correo" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                  <a href="https://orcid.org/0000-0001-9397-7571" title="ORCID" target="_blank"><i class="fa-brands fa-orcid"></i></a>
-                  
-                </div>
-                <p class="small">Docente universitario y de postgrado. Investigador en métodos numéricos y asesor de tesis en análisis de estabilidad y convergencia.</p>
-              </div>
-            </div>
-          </div>
-        </div>
+<main id="contenido">
+  <header class="page-header">
+    <div class="container">
+      <span class="eyebrow"><i class="bi bi-people"></i> Comunidad académica</span>
+      <h1>Equipo de investigación</h1>
+      <p><strong id="memberCountHeader">9 investigadores</strong> vinculados por el trabajo colaborativo en matemática pura, aplicada y educación matemática.</p>
+    </div>
+  </header>
+
+  <section class="section-block">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-kicker">Integrantes</span>
+        <h2>Perfiles académicos y líneas de especialización</h2>
+        <p>Las fichas se generan desde un único registro de datos para mantener nombres, afiliaciones, perfiles científicos y producción bibliográfica de forma coherente.</p>
       </div>
 
-      <!-- TAB 2: FORMACIÓN ACADÉMICA -->
-      <div class="tab-pane fade" id="formacion" role="tabpanel" aria-labelledby="formacion-tab">
-        <h2 class="text-center mb-4 text-primary titulo-miembro">Formación Académica del Equipo</h2>
-        <div class="row">
-          <div class="col-md-4 mb-4 mb-md-0">
-            <!-- PESTAÑAS VERTICALES CON FOTOS -->
-            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <button class="nav-link active" id="miguel-tab" data-bs-toggle="pill" data-bs-target="#miguel" type="button" role="tab" aria-controls="miguel" aria-selected="true">
-                <img src="miguel.jpg" class="equipo-perfil" alt="Miguel"> Miguel A. Leonardo Sepúlveda
-              </button>
-              <button class="nav-link" id="natanael-tab" data-bs-toggle="pill" data-bs-target="#natanael" type="button" role="tab" aria-controls="natanael" aria-selected="false">
-                <img src="natanael.jpg" class="equipo-perfil" alt="Natanael"> Natanael Ureña Castillo
-              </button>
-              <button class="nav-link" id="antmel-tab" data-bs-toggle="pill" data-bs-target="#antmel" type="button" role="tab" aria-controls="antmel" aria-selected="false">
-                <img src="antmel.jpg" class="equipo-perfil" alt="Antmel"> Antmel Rodríguez Cabral
-              </button>
-              <button class="nav-link" id="randy-tab" data-bs-toggle="pill" data-bs-target="#randy" type="button" role="tab" aria-controls="randy" aria-selected="false">
-                <img src="randy.jpg" class="equipo-perfil" alt="Randy"> Randy Leonardo
-              </button>
-              <button class="nav-link" id="marino-tab" data-bs-toggle="pill" data-bs-target="#marino" type="button" role="tab" aria-controls="marino" aria-selected="false">
-                <img src="marino.png" class="equipo-perfil" alt="Marino"> Marino Brito Guillén
-              </button>
-              <button class="nav-link" id="marckelly-tab" data-bs-toggle="pill" data-bs-target="#marckelly" type="button" role="tab" aria-controls="marckelly" aria-selected="false">
-                <img src="marckelly.jpg" class="equipo-perfil" alt="Marc-Kelly"> Marc-Kelly Jean Philippe Jean
-              </button>
-              <button class="nav-link" id="josealberto-tab" data-bs-toggle="pill" data-bs-target="#josealberto" type="button" role="tab" aria-controls="josealberto" aria-selected="false">
-                <img src="josealberto.jpg" class="equipo-perfil" alt="José Alberto"> Jose Alberto Reyes Reyes
-              </button>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="tab-content" id="v-pills-tabContent">
-              <!-- MIGUEL -->
-              <div class="tab-pane fade show active" id="miguel" role="tabpanel" aria-labelledby="miguel-tab">
-                <h4>Miguel A. Leonardo Sepúlveda, Ph.D.</h4>
-                <ul class="formacion">
-  <li><span class="grado">Doctorado en Matemática</span> – INTEC (2019-2024). Estancias doctorales en Universitat Politècnica de València (España). Defendido con éxito en 2024.</li>
-  <li><span class="grado">Maestría en Matemática</span> – Instituto Tecnológico de Santo Domingo (INTEC, 2017).</li>
-  <li><span class="grado">Especialidad en Planificación y Desarrollo Curricular</span> – Universitat de Barcelona (2019).</li>
-  <li><span class="grado">Licenciatura en Educación, Mención Matemática y Física</span> – Universidad Dominicana O&M (2011).</li>
-  <li><span class="grado">Diplomado en Formación Lasallista</span> – Universidad La Salle, México (2016).</li>
-  <li><span class="grado">Investigador</span> – Carrera Nacional de Investigadores (Ciencias Físico-Químicas y Matemáticas).</li>
-</ul>
+      <div class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar miembros">
+        <button class="btn-kernel filter-member active" type="button" data-filter="all">Todos</button>
+        <button class="btn-kernel-outline filter-member" type="button" data-filter="República Dominicana">República Dominicana</button>
+        <button class="btn-kernel-outline filter-member" type="button" data-filter="España">España</button>
+      </div>
 
-                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-                <ul>
-                  <li>Diseñador, rediseñador y coordinador curricular de programas de Maestría en Matemática Superior y Licenciatura en Matemática y Física, ISFODOSU.</li>
-                  <li>Docente de Matemática, ITLA e ISFODOSU (2016-presente).</li>
-                  <li>Docente universitario de matemática, cálculo, ecuaciones diferenciales, Variable Compleja (INTEC, 2017-2024).</li>
-                  <li>Docente de secundaria y preuniversitaria (2007–2016), coordinador y asesor de diplomados y planes educativos.</li>
-                </ul>
-              </div>
-              <!-- NATANAEL -->
-              <div class="tab-pane fade" id="natanael" role="tabpanel" aria-labelledby="natanael-tab">
-                <h4>Natanael Ureña Castillo</h4>
-                <ul class="formacion">
-  <li><span class="grado">Doctorado en Matemática</span> – INTEC (en curso, 2019-actualidad).</li>
-  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2005-2008).</li>
-  <li><span class="grado">Especialidad en Cálculo Actuarial</span> – INTEC.</li>
-  <li><span class="grado">Licenciatura en Educación, Mención Matemáticas</span> – UASD (2000-2004).</li>
-  <li><span class="grado">Certificado de Estudios Superiores en Educación</span> – UASD (2000-2003).</li>
-</ul>
+      <div id="teamGrid" class="team-grid" aria-live="polite">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+      <div id="teamError" class="error-state d-none" role="alert"></div>
+    </div>
+  </section>
+</main>
 
-                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-                <ul>
-                  <li>Docente universitario de matemática, cálculo y ecuaciones diferenciales (INTEC, UASD).</li>
-                  <li>Director de secundaria y asesor en competencias académicas y economía.</li>
-                  <li>Ponente en congresos nacionales e internacionales.</li>
-                </ul>
-              </div>
-              <!-- ANTMEL -->
-<div class="tab-pane fade" id="antmel" role="tabpanel" aria-labelledby="antmel-tab">
-  <h4>Antmel Rodríguez Cabral</h4>
-  <ul class="formacion">
-  <li><span class="grado">Doctorado en Matemática Pura</span> – INTEC (defendido con éxito, 2025, con máxima calificación).</li>
-  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2015-2017).</li>
-  <li><span class="grado">Ingeniería Civil</span> – INTEC.</li>
-  <li><span class="grado">Investigador Adscrito</span> – Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas.</li>
-</ul>
+<footer class="kernel-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Una red académica de República Dominicana y España.</p></div>
+      <div><strong>Producción científica</strong><div><a href="publicaciones.html">Catálogo de publicaciones</a></div><div><a href="lineas.html">Líneas de investigación</a></div></div>
+      <div><strong>Contacto</strong><div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div></div>
+    </div>
+    <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
+  </div>
+</footer>
 
-  <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-  <ul>
-    <li>Profesor universitario de matemáticas (UASD, UFHEC, UAPA, UTESA, UTESUR).</li>
-    <li>Ponente y colaborador en congresos (RELME, MESCyT, UASD, entre otros).</li>
-    <li>Capacitación en inglés avanzado, AutoCAD, ajedrez y plataformas tecnológicas.</li>
-  </ul>
-  <p class="mt-3 text-muted">
-    <em>Especialista en dinámica compleja y dinámica real de métodos iterativos para sistemas no lineales.</em>
-  </p>
-</div>
+<script>
+(function () {
+  let allMembers = [];
+  const teamGrid = document.getElementById("teamGrid");
+  const errorBox = document.getElementById("teamError");
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
 
-              <!-- RANDY -->
-              <div class="tab-pane fade" id="randy" role="tabpanel" aria-labelledby="randy-tab">
-                <h4>Randy Leonardo</h4>
-                <ul class="formacion">
-  <li><span class="grado">Maestría en Matemática</span> – INTEC (2011).</li>
-  <li><span class="grado">Licenciatura en Matemática</span> – UASD (2008).</li>
-  <li><span class="grado">Diplomados en Educación en Línea y Modelos SCORM</span> – ILCE (2013, 2014).</li>
-  <li><span class="grado">Investigador Titular</span> – Carrera Nacional de Investigadores en Ciencias Físico-Químicas y Matemáticas.</li>
-</ul>
-
-                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-                <ul>
-                  <li>Docente de matemática en INTEC, UASD e ISFODOSU (2009–presente).</li>
-                  <li>Co-investigador en Álgebra Lineal y Matriz Combinada.</li>
-                  <li>Ponente en congresos y seminarios nacionales e internacionales.</li>
-                </ul>
-              </div>
-              <!-- MARINO -->
-              <div class="tab-pane fade" id="marino" role="tabpanel" aria-labelledby="marino-tab">
-                <h4>Marino Brito Guillén</h4>
-                <ul class="formacion">
-                  <li><span class="grado">Máster Internacional de Gestión Universitaria</span> – Universidades Alcalá de Henares, La Rioja, Castilla La Mancha y Rey Juan Carlos</li>
-                  <li><span class="grado">Maestría en Matemática</span> – Pontificia Universidad Católica Madre y Maestra (1996)</li>
-                  <li><span class="grado">Postgrado en Matemática</span> – Pontificia Universidad Católica Madre y Maestra (1995)</li>
-                  <li><span class="grado">Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas</span> – Universidad Eugenio María de Hostos (1991)</li>
-                  <li><span class="grado">Maestro Normal Primario</span> – Escuela Normal Américo Lugo (1984)</li>
-                  <li><span class="grado">Diplomado en Gerencia Social Ignaciana</span> – Pontificia Universidad Javeriana, Colombia (2009)</li>
-                  <li><span class="grado">Cursos, talleres y seminarios en pedagogía, matemática, topología y evaluación universitaria</span></li>
-                <ul class="formacion">
-  <li><span class="grado">Máster Internacional en Gestión Universitaria</span> – Universidades Alcalá de Henares, La Rioja, Castilla La Mancha y Rey Juan Carlos.</li>
-  <li><span class="grado">Maestría en Matemática</span> – PUCMM (1996).</li>
-  <li><span class="grado">Postgrado en Matemática</span> – PUCMM (1995).</li>
-  <li><span class="grado">Licenciatura en Educación, Mención Ciencias Físicas y Matemáticas</span> – Universidad Eugenio María de Hostos (1991).</li>
-  <li><span class="grado">Maestro Normal Primario</span> – Escuela Normal Américo Lugo (1984).</li>
-  <li><span class="grado">Diplomado en Gerencia Social Ignaciana</span> – Pontificia Universidad Javeriana, Colombia (2009).</li>
-</ul>
-
-              </div>
-              <!-- MARC-KELLY JEAN PHILIPPE JEAN -->
-              <div class="tab-pane fade" id="marckelly" role="tabpanel" aria-labelledby="marckelly-tab">
-                <h4>Marc-Kelly Jean Philippe Jean, Ph.D</h4>
-                <ul class="formacion">
-  <li><span class="grado">Doctorado en Matemática</span> – Programa interuniversitario UASD-INTEC-PUCMM (defendido con éxito, 2025, con máxima calificación).</li>
-  <li><span class="grado">Maestría en Matemática</span> – UASD (2023).</li>
-  <li><span class="grado">Maestría en Matemática</span> – UTESA (2015).</li>
-  <li><span class="grado">Licenciatura en Matemática Pura</span> – UASD (2011).</li>
-  <li><span class="grado">Diplomado en Desarrollo de Competencias Didácticas</span> – Universidad Santander, España (2024).</li>
-  <li><span class="grado">Bachillerato Humanístico</span> – Colegio Mi Hogar Cristiano, La Romana (2004).</li>
-</ul>
-
-                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-                <ul>
-                  <li>Profesor adjunto y monitor en la Escuela de Matemáticas de la UASD (2012–actualidad).</li>
-                  <li>Tutor virtual y profesor en UCE y Loyola.</li>
-                  <li>Asesor, árbitro y conferencista en investigación en álgebra y educación matemática.</li>
-                  <li>Ponente en congresos nacionales e internacionales (MESCYT, UASD, APEC, REDOME).</li>
-                </ul>
-              </div>
-              <!-- JOSE ALBERTO REYES REYES -->
-              <div class="tab-pane fade" id="josealberto" role="tabpanel" aria-labelledby="josealberto-tab">
-                <h4>José Alberto Reyes Reyes, M.Sc</h4>
-                <ul class="formacion">
-  <li><span class="grado">Doctorado en Matemáticas</span> – INTEC (en proceso, tesis en curso).</li>
-  <li><span class="grado">Maestría en Matemática Pura</span> – UASD (2014-2016).</li>
-  <li><span class="grado">Magíster en Matemáticas</span> – UTESA (2013-2015).</li>
-  <li><span class="grado">Máster en Educación y Nuevas Tecnologías</span> – UDIMA, España (2012-2013).</li>
-  <li><span class="grado">Licenciatura en Matemáticas</span> – UASD (2007-2011).</li>
-  <li><span class="grado">Diplomado en Fundamentos del Análisis de Variable Real</span> – UCE (2011-2012).</li>
-  <li><span class="grado">Diplomado en Competencias Digitales</span> – Red Qualitas/Microsoft (2020).</li>
-</ul>
-
-                <h6 class="mt-3"><b>Experiencia relevante:</b></h6>
-                <ul>
-                  <li>Docente universitario y de postgrado en matemáticas, UASD.</li>
-                  <li>Investigador en métodos iterativos, análisis de estabilidad y convergencia.</li>
-                  <li>Consultor en innovación educativa y tecnologías para la educación matemática.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+  function externalLink(url, icon, label) {
+    if (!url) return "";
+    return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><i class="bi ${icon}"></i>${escapeHtml(label)}</a>`;
+  }
+  function metricMarkup(metrics) {
+    if (!Array.isArray(metrics) || metrics.length === 0) return "";
+    return `<div class="profile-metrics">${metrics.map(metric => `<div class="profile-metric"><strong>${Number(metric.value).toLocaleString("es-ES")}</strong><span>${escapeHtml(metric.label)} · ${escapeHtml(metric.source)} (${escapeHtml(metric.as_of)})</span></div>`).join("")}</div>`;
+  }
+  function detailsMarkup(member) {
+    const formation = Array.isArray(member.formation) ? member.formation : [];
+    const experience = Array.isArray(member.experience) ? member.experience : [];
+    if (!formation.length && !experience.length) return "";
+    return `<details class="team-details"><summary>Formación y experiencia</summary>
+      ${formation.length ? `<h3>Formación académica</h3><ul>${formation.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+      ${experience.length ? `<h3>Experiencia relevante</h3><ul>${experience.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+    </details>`;
+  }
+  function memberCard(member) {
+    const highlighted = ["alicia-cordero","juan-torregrosa"].includes(member.id);
+    const title = `${member.name}${member.display_degree ? `, ${member.display_degree}` : ""}`;
+    const areas = (member.areas || []).slice(0,4);
+    const orcidUrl = member.orcid ? `https://orcid.org/${member.orcid}` : "";
+    return `<article class="team-card ${highlighted ? "member-highlight" : ""}" id="${escapeHtml(member.id)}" data-country="${escapeHtml(member.country)}">
+      <div class="team-card__top"><img class="team-photo" src="${escapeHtml(member.image)}" alt="Perfil de ${escapeHtml(member.name)}" loading="lazy">
+        <div><div class="team-badges"><span class="badge-soft"><i class="bi bi-person-check"></i>${escapeHtml(member.member_type)}</span><span class="badge-soft"><i class="bi bi-geo-alt"></i>${escapeHtml(member.country)}</span></div><h2>${escapeHtml(title)}</h2><p class="team-role">${escapeHtml(member.role)}</p></div>
+      </div>
+      <div class="team-card__body"><div class="team-badges">${areas.map(area => `<span class="badge-soft">${escapeHtml(area)}</span>`).join("")}</div><p>${escapeHtml(member.bio)}</p>
+        ${metricMarkup(member.publication_metrics)}${detailsMarkup(member)}
+        <div class="team-links">
+          ${externalLink(member.institutional_profile,"bi-building","UPV")}
+          ${externalLink(orcidUrl,"bi-person-badge","ORCID")}
+          ${externalLink(member.repository_profile,"bi-archive","Repositorio")}
+          ${externalLink(member.scholar,"bi-mortarboard","Scholar")}
+          ${externalLink(member.researchgate,"bi-journal-bookmark","ResearchGate")}
+          ${externalLink(member.linkedin,"bi-linkedin","LinkedIn")}
+          ${member.email ? `<a href="mailto:${escapeHtml(member.email)}"><i class="bi bi-envelope"></i>Correo</a>` : ""}
+          <a href="publicaciones.html?autor=${encodeURIComponent(member.id)}"><i class="bi bi-journal-richtext"></i>Publicaciones</a>
         </div>
       </div>
-      <!-- FIN TAB 2 -->
-   <!-- BOTÓN INICIO FLOTANTE SIEMPRE VISIBLE -->
-  <a href="index.html" class="btn-inicio-flotante" title="Volver al inicio">
-    <span style="font-size:1.3em;line-height:1"><i class="fa-solid fa-house"></i></span>
-    <span class="d-none d-md-inline">Inicio</span>
-  </a>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </article>`;
+  }
+  function render(members) {
+    teamGrid.innerHTML = members.map(memberCard).join("");
+    const hash = window.location.hash;
+    if (hash) requestAnimationFrame(() => { const target = document.querySelector(hash); if (target) target.scrollIntoView({behavior:"smooth",block:"start"}); });
+  }
+
+  fetch("data/researchers.json", {cache:"no-store"})
+    .then(response => { if (!response.ok) throw new Error("No se pudo cargar el registro de investigadores."); return response.json(); })
+    .then(data => { allMembers = data.researchers || []; document.getElementById("memberCountHeader").textContent = `${data.group.member_count} investigadores`; render(allMembers); })
+    .catch(error => { console.error(error); teamGrid.innerHTML = ""; errorBox.textContent = "No fue posible cargar las fichas del equipo. Revise data/researchers.json."; errorBox.classList.remove("d-none"); });
+
+  document.querySelectorAll(".filter-member").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".filter-member").forEach(item => { item.classList.toggle("active", item === button); item.classList.toggle("btn-kernel", item === button); item.classList.toggle("btn-kernel-outline", item !== button); });
+      const filter = button.dataset.filter;
+      render(filter === "all" ? allMembers : allMembers.filter(member => member.country === filter));
+    });
+  });
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
