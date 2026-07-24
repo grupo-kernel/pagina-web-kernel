@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-24T00:00:00Z",
+  "catalog_status": "initial-curated",
+  "counting_method": "DOI normalizado; si no existe DOI, título normalizado + año",
+  "coverage_note": "Catálogo inicial verificado. La automatización incorporará progresivamente los registros públicos encontrados en ORCID, Crossref y, cuando se configure, OpenAlex.",
+  "profile_metrics": {
+    "alicia-cordero": {
+      "journal_articles": 253,
+      "source": "UPV",
+      "as_of": "2026-07-24"
+    },
+    "juan-torregrosa": {
+      "journal_articles": 298,
+      "source": "UPV",
+      "as_of": "2026-07-24"
+    }
+  },
+  "summary": {
+    "unique_catalog_records": 17,
+    "researchers_with_records": 8,
+    "latest_year": 2026
+  },
+  "records": [
+    {
+      "doi": "10.3390/math14101746",
+      "title": "Efficiency and Stability of a New Hybrid Unconstrained Optimization Algorithm with Quasi-Newton Updates and Higher-Order Methods",
+      "journal": "Mathematics",
+      "publication_date": "2026-05-19",
+      "year": 2026,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Javier G. Maimó",
+        "Juan R. Torregrosa",
+        "Natanael Ureña Castillo"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa",
+        "natanael-urena"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/math14101746",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
+    },
+    {
+      "doi": "10.3390/math14071161",
+      "title": "Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis",
+      "journal": "Mathematics",
+      "publication_date": "2026-03-31",
+      "year": 2026,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Miguel A. Leonardo Sepúlveda",
+        "Juan R. Torregrosa",
+        "Antmel Rodríguez Cabral",
+        "María P. Vassileva"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "miguel-leonardo",
+        "juan-torregrosa",
+        "antmel-rodriguez"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/math14071161",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
+    },
+    {
+      "doi": "10.3390/axioms15030186",
+      "title": "Consistency and Quantitative Backward Stability Analysis of the Two-Step Jarratt Method for Nonlinear Systems",
+      "journal": "Axioms",
+      "publication_date": "2026-03-01",
+      "year": 2026,
+      "type": "journal-article",
+      "authors": [
+        "Vahideh Rasouli",
+        "Alicia Cordero",
+        "Taher Lotfi",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/axioms15030186",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q2",
+        "system": "JCR",
+        "category": "Mathematics, Applied",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/axioms/stats",
+        "journal_name": "Axioms"
+      }
+    },
+    {
+      "doi": "10.3390/math13213525",
+      "title": "A New Perspective on the Convergence of Mean-Based Methods for Nonlinear Equations",
+      "journal": "Mathematics",
+      "publication_date": "2025-11-01",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "María Emilia Maldonado Machuca",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/math13213525",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
+    },
+    {
+      "doi": "10.1177/14727978251361407",
+      "title": "About the stability of self-accelerating parameters in vectorial iterative methods without memory",
+      "journal": "Journal of Computational Methods in Sciences and Engineering",
+      "publication_date": "2025-08-05",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Javier G. Maimó",
+        "Antmel Rodríguez Cabral",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "antmel-rodriguez",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.1177/14727978251361407",
+      "import_source": "curated",
+      "quartile": null
+    },
+    {
+      "doi": "10.1016/j.amc.2025.129401",
+      "title": "First optimal vectorial eighth-order iterative scheme for solving non-linear systems",
+      "journal": "Applied Mathematics and Computation",
+      "publication_date": "2025-08-01",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Juan R. Torregrosa",
+        "Paula Triguero-Navarro"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "RIUNET/Crossref",
+      "url": "https://doi.org/10.1016/j.amc.2025.129401",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "SJR",
+        "category": "Computational Mathematics",
+        "metric_year": 2024,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.scimagojr.com/journalrank.php?category=2605",
+        "journal_name": "Applied Mathematics and Computation"
+      }
+    },
+    {
+      "doi": "10.3390/computation13060142",
+      "title": "Stability Analysis and Local Convergence of a New Fourth-Order Optimal Jarratt-Type Iterative Scheme",
+      "journal": "Computation",
+      "publication_date": "2025-06-01",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Eulalia Martínez",
+        "José A. Reyes",
+        "Alicia Cordero",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "jose-alberto-reyes",
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/computation13060142",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q2",
+        "system": "JCR",
+        "category": "Mathematics, Interdisciplinary Applications",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/computation/stats",
+        "journal_name": "Computation"
+      }
+    },
+    {
+      "doi": "10.1002/mma.10754",
+      "title": "New Iterative Procedures for Approximating Different Types of Inverse Matrix: Convergence and Stability",
+      "journal": "Mathematical Methods in the Applied Sciences",
+      "publication_date": "2025-05-30",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Elaine Segura",
+        "Juan R. Torregrosa",
+        "María P. Vassileva"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "RIUNET/Crossref",
+      "url": "https://doi.org/10.1002/mma.10754",
+      "import_source": "curated",
+      "quartile": null
+    },
+    {
+      "doi": "10.1002/mana.202400554",
+      "title": "Groups with triangle-free graphs on p-regular classes",
+      "journal": "Mathematische Nachrichten",
+      "publication_date": "2025-01-01",
+      "year": 2025,
+      "type": "journal-article",
+      "authors": [
+        "Marc-Kelly Jean Philippe Jean"
+      ],
+      "researcher_ids": [
+        "marc-kelly-jean-philippe"
+      ],
+      "source": "DOI/Crossref",
+      "url": "https://doi.org/10.1002/mana.202400554",
+      "import_source": "curated",
+      "quartile": null
+    },
+    {
+      "doi": "10.3390/math12213341",
+      "title": "Two-Step Fifth-Order Efficient Jacobian-Free Iterative Method for Solving Nonlinear Systems",
+      "journal": "Mathematics",
+      "publication_date": "2024-11-01",
+      "year": 2024,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Javier G. Maimó",
+        "Antmel Rodríguez Cabral",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "antmel-rodriguez",
+        "juan-torregrosa"
+      ],
+      "source": "RIUNET/Crossref",
+      "url": "https://doi.org/10.3390/math12213341",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
+    },
+    {
+      "doi": "10.1016/j.matcom.2024.05.001",
+      "title": "Increasing in three units the order of convergence of iterative methods for solving nonlinear systems",
+      "journal": "Mathematics and Computers in Simulation",
+      "publication_date": "2024-09-01",
+      "year": 2024,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Miguel A. Leonardo-Sepúlveda",
+        "Juan R. Torregrosa",
+        "María P. Vassileva"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "miguel-leonardo",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref/RIUNET",
+      "url": "https://doi.org/10.1016/j.matcom.2024.05.001",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "SJR",
+        "category": "Mejor cuartil de la revista",
+        "metric_year": 2024,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.scimagojr.com/journalsearch.php?q=12166&tip=sid",
+        "journal_name": "Mathematics and Computers in Simulation"
+      }
+    },
+    {
+      "doi": "10.1007/s40840-024-01684-6",
+      "title": "Some properties of normal subgroups determined from character tables",
+      "journal": "Bulletin of the Malaysian Mathematical Sciences Society",
+      "publication_date": "2024-01-01",
+      "year": 2024,
+      "type": "journal-article",
+      "authors": [
+        "Marc-Kelly Jean Philippe Jean"
+      ],
+      "researcher_ids": [
+        "marc-kelly-jean-philippe"
+      ],
+      "source": "DOI/Crossref",
+      "url": "https://doi.org/10.1007/s40840-024-01684-6",
+      "import_source": "curated",
+      "quartile": null
+    },
+    {
+      "doi": "10.1007/s00009-024-02782-2",
+      "title": "Groups whose common divisor graph on p-regular classes has diameter three",
+      "journal": "Mediterranean Journal of Mathematics",
+      "publication_date": "2024-01-01",
+      "year": 2024,
+      "type": "journal-article",
+      "authors": [
+        "Marc-Kelly Jean Philippe Jean"
+      ],
+      "researcher_ids": [
+        "marc-kelly-jean-philippe"
+      ],
+      "source": "DOI/Crossref",
+      "url": "https://doi.org/10.1007/s00009-024-02782-2",
+      "import_source": "curated",
+      "quartile": null
+    },
+    {
+      "doi": "10.3390/axioms13010034",
+      "title": "A Robust Family of High-Order Derivative-Free Iterative Methods for Nonlinear Equations",
+      "journal": "Axioms",
+      "publication_date": "2024-01-01",
+      "year": 2024,
+      "type": "journal-article",
+      "authors": [
+        "José Alberto Reyes Reyes"
+      ],
+      "researcher_ids": [
+        "jose-alberto-reyes"
+      ],
+      "source": "DOI/MDPI",
+      "url": "https://doi.org/10.3390/axioms13010034",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q2",
+        "system": "JCR",
+        "category": "Mathematics, Applied",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/axioms/stats",
+        "journal_name": "Axioms"
+      }
+    },
+    {
+      "doi": "10.3390/math11204238",
+      "title": "Enhancing the Convergence Order from p to p+3 in Iterative Methods for Solving Nonlinear Systems of Equations without the Use of Jacobian Matrices",
+      "journal": "Mathematics",
+      "publication_date": "2023-10-01",
+      "year": 2023,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Miguel A. Leonardo-Sepúlveda",
+        "Juan R. Torregrosa",
+        "María P. Vassileva"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "miguel-leonardo",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/math11204238",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
+    },
+    {
+      "doi": "10.3390/a16030163",
+      "title": "Convergence and Stability of a New Parametric Class of Iterative Processes for Nonlinear Systems",
+      "journal": "Algorithms",
+      "publication_date": "2023-03-01",
+      "year": 2023,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Javier G. Maimó",
+        "Antmel Rodríguez Cabral",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "antmel-rodriguez",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/a16030163",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q2",
+        "system": "JCR",
+        "category": "Computer Science, Theory and Methods",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/algorithms/stats",
+        "journal_name": "Algorithms"
+      }
+    },
+    {
+      "doi": "10.3390/a15100387",
+      "title": "Dynamics and Stability on a Family of Optimal Fourth-Order Iterative Methods",
+      "journal": "Algorithms",
+      "publication_date": "2022-10-01",
+      "year": 2022,
+      "type": "journal-article",
+      "authors": [
+        "Alicia Cordero",
+        "Miguel A. Leonardo Sepúlveda",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "miguel-leonardo",
+        "juan-torregrosa"
+      ],
+      "source": "ORCID/Crossref",
+      "url": "https://doi.org/10.3390/a15100387",
+      "import_source": "curated",
+      "quartile": {
+        "quartile": "Q2",
+        "system": "JCR",
+        "category": "Computer Science, Theory and Methods",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/algorithms/stats",
+        "journal_name": "Algorithms"
+      }
+    }
+  ]
+}
