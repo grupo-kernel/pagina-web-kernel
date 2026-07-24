@@ -106,8 +106,12 @@
         teamStatus.textContent = `${researchers.length} investigadores activos en el catálogo institucional del grupo.`;
       }
 
-      if (window.location.hash === "#formacion") {
-        document.getElementById("formacion")?.scrollIntoView({ behavior: "smooth" });
+      const fragment = decodeURIComponent(window.location.hash.slice(1));
+      const fragmentTarget = fragment ? document.getElementById(fragment) : null;
+      if (fragmentTarget) {
+        window.requestAnimationFrame(() => {
+          fragmentTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
       }
     } catch (error) {
       console.error(error);
