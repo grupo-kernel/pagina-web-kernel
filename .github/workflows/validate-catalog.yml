@@ -1,0 +1,83 @@
+name: Validar catálogo y sitio
+
+on:
+  pull_request:
+    paths:
+      - "*.html"
+      - "assets/**"
+      - "data/**"
+      - "scripts/**"
+      - ".github/workflows/**"
+  push:
+    branches: [main]
+    paths:
+      - "*.html"
+      - "assets/**"
+      - "data/**"
+      - "scripts/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validar Python y datos
+        run: |
+          python -m py_compile scripts/sync_publications.py scripts/validate_data.py
+          python scripts/validate_data.py
+
+      - name: Validar JavaScript
+        run: |
+          for file in assets/js/*.js; do
+            node --check "$file"
+          done
+
+      - name: Verificar referencias locales del HTML
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          class References(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.values = []
+
+              def handle_starttag(self, tag, attrs):
+                  attributes = dict(attrs)
+                  for key in ("href", "src"):
+                      if attributes.get(key):
+                          self.values.append(attributes[key])
+
+          pages = [
+              Path("index.html"),
+              Path("quienes_somos.html"),
+              Path("equipo.html"),
+              Path("publicaciones.html"),
+              Path("formacion.html"),
+          ]
+          missing = []
+          for page in pages:
+              parser = References()
+              parser.feed(page.read_text(encoding="utf-8"))
+              for raw in parser.values:
+                  parsed = urlsplit(raw)
+                  if parsed.scheme or raw.startswith(("#", "mailto:", "tel:", "//")):
+                      continue
+                  target = parsed.path
+                  if target and not (page.parent / target).exists():
+                      missing.append(f"{page}: {raw}")
+
+          if missing:
+              raise SystemExit("Referencias locales inexistentes:\n" + "\n".join(missing))
+          print("Referencias HTML correctas.")
+          PY
