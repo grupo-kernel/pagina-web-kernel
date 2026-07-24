@@ -342,7 +342,7 @@
         url: publication.url || `https://doi.org/${publication.doi}`,
         researcherIds: [
           ...new Set([
-            ...defaultResearcherIds,
+            ...(publication.useDefaultResearcherIds === false ? [] : defaultResearcherIds),
             ...(publication.researcherIds || [])
           ])
         ],
