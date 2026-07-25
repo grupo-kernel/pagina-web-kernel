@@ -1,0 +1,38 @@
+name: Kernel Quality Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'core/**'
+      - 'data/**'
+      - 'translations/**'
+      - '.github/workflows/kernel-quality-gate.yml'
+  push:
+    branches: [hito-1-kernel-core]
+    paths:
+      - 'core/**'
+      - 'data/**'
+      - 'translations/**'
+      - '.github/workflows/kernel-quality-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Kernel Core
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run quality gate
+        run: node core/run-quality-gate.mjs
