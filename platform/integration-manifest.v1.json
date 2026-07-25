@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "phase": "2B",
+  "name": "Integración de Kernel Core dentro de la plataforma completa",
+  "status": "branch-preview-not-production",
+  "working_branch": "fase-2b-platform-integration",
+  "public_branch": "gh-pages",
+  "shell_source_sha": "0a86f78a26ebbffe4862208ab6f5ee627b973366",
+  "principle": "Preservar la SPA completa y añadir Kernel Core sin sustituir la carcasa pública.",
+  "preserved_routes": [
+    "home",
+    "servicios",
+    "laboratorioKernel",
+    "lineas",
+    "proyectos",
+    "publicaciones",
+    "herramientas",
+    "quienesSomos",
+    "equipment",
+    "noticias",
+    "contacto",
+    "diagnosticoServicios"
+  ],
+  "institutional_tools": {
+    "itla_xmera": {
+      "route": "herramientas",
+      "label": "ITLA · Xmera",
+      "processing": "local-browser",
+      "required": true
+    },
+    "unapec_banner": {
+      "route": "herramientas",
+      "label": "UNAPEC · Banner",
+      "components": ["1AC", "2PP", "3SP", "4EF"],
+      "required": true
+    }
+  },
+  "laboratory": {
+    "route": "laboratorioKernel",
+    "authentication_required": true,
+    "required_chunks": [
+      "authGuard",
+      "authService",
+      "firebase",
+      "LaboratorioKernel",
+      "AsistentePruebas",
+      "CalculadoraDosGrupos",
+      "CalculadoraDosMuestrasRelacionadas",
+      "CalculadoraTresOMasGrupos",
+      "CalculadoraTresOMasMedicionesRelacionadas",
+      "CalculadoraRelacionVariables",
+      "CalculadoraAsociacionCategorica",
+      "CalculadoraEstadisticaDescriptiva",
+      "CalculadoraFiabilidadCuestionarios",
+      "CalculadoraEvaluacionEducativa",
+      "CalculadoraTamanoMuestraPotencia",
+      "BibliotecaMetodologica",
+      "CalculadoraRegresionCompleta",
+      "CalculadoraRegresionLogistica",
+      "CalculadoraRegresionConteo"
+    ]
+  },
+  "kernel_core_data": {
+    "researchers": "core/data/researchers.v2.json",
+    "projects": "core/data/projects.v2.json",
+    "publications": "core/data/publications.v2.json"
+  },
+  "integration_order": [
+    "platform-preservation-gate",
+    "academic-background-route",
+    "team-nine-researchers",
+    "scientific-profiles",
+    "publications-2",
+    "projects-2",
+    "bilingual-parity",
+    "public-smoke-test"
+  ],
+  "activation": {
+    "enabled": false,
+    "requires_explicit_approval": true,
+    "laboratory_must_pass": true,
+    "xmera_must_pass": true,
+    "banner_must_pass": true
+  }
+}
