@@ -24,7 +24,7 @@ jobs:
   validate:
     name: Validate Kernel Core
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,5 +34,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run quality gate
+      - name: Generate publications candidate
+        run: node core/migrate-publications-v2.mjs
+
+      - name: Run general quality gate
         run: node core/run-quality-gate.mjs
+
+      - name: Validate publications candidate
+        run: node core/validate-publications-v2.mjs
+
+      - name: Verify generated files are reproducible
+        run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
