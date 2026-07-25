@@ -11,6 +11,10 @@ on:
     paths:
       - "data/researchers.json"
       - "data/journal_quartiles.json"
+      - "data/publications.json"
+      - "core/data/researchers.v2.json"
+      - "core/migrate-publications-v2.mjs"
+      - "core/validate-publications-v2.mjs"
       - "scripts/sync_publications.py"
       - "scripts/validate_data.py"
       - "scripts/validate_frontend.py"
@@ -22,6 +26,10 @@ on:
       - "data/researchers.json"
       - "data/publications.json"
       - "data/journal_quartiles.json"
+      - "core/data/researchers.v2.json"
+      - "core/data/publications.v2.json"
+      - "core/migrate-publications-v2.mjs"
+      - "core/validate-publications-v2.mjs"
       - "index.html"
       - "equipo.html"
       - "quienes_somos.html"
@@ -52,11 +60,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Validar datos
         run: python scripts/validate_data.py
 
       - name: Validar frontend
         run: python scripts/validate_frontend.py
+
+      - name: Generar y validar catálogo v2
+        run: |
+          node core/migrate-publications-v2.mjs
+          node core/validate-publications-v2.mjs
 
       - name: Comprobar formato del cambio
         run: git diff --check origin/${{ github.base_ref || github.ref_name }}...HEAD || git diff --check
@@ -79,6 +97,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
       - name: Consultar fuentes bibliográficas
         env:
@@ -115,22 +138,27 @@ jobs:
               print("Se detectaron cambios bibliográficos reales.")
           PY
 
-      - name: Validar catálogo resultante
+      - name: Generar catálogo normalizado v2
+        run: node core/migrate-publications-v2.mjs
+
+      - name: Validar catálogos resultantes
         run: |
           python scripts/validate_data.py
           python scripts/validate_frontend.py
+          node core/validate-publications-v2.mjs
           git diff --check
 
-      - name: Guardar cambios del catálogo
+      - name: Guardar cambios de los catálogos
         shell: bash
         run: |
-          if git diff --quiet -- data/publications.json; then
+          changed="$(git status --porcelain -- data/publications.json core/data/publications.v2.json core/audits/publications-migration-report.json)"
+          if [ -z "$changed" ]; then
             echo "No se detectaron publicaciones nuevas ni cambios de metadatos."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/publications.json
-          git commit -m "Actualizar catálogo automatizado de publicaciones"
+          git add data/publications.json core/data/publications.v2.json core/audits/publications-migration-report.json
+          git commit -m "Actualizar catálogos automatizados de publicaciones"
           git push
