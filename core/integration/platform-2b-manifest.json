@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "phase": "2B",
+  "name": "Integración completa de la plataforma, Xmera y Laboratorio Inteligente",
+  "status": "controlled-integration-not-production",
+  "base_branch": "gh-pages",
+  "target_branch": "gh-pages",
+  "public_activation_requires_explicit_approval": true,
+  "integration_principle": "Preservar la interfaz pública y sus funciones; integrar Kernel Core dentro de ella sin sustituir la carcasa de navegación.",
+  "protected_capabilities": [
+    {
+      "id": "laboratorio-inteligente",
+      "label": "Laboratorio Inteligente de Investigación",
+      "priority": 1,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "xmera",
+      "label": "Xmera",
+      "priority": 2,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "itla",
+      "label": "Herramientas institucionales del ITLA",
+      "priority": 3,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "apec",
+      "label": "Herramientas institucionales de APEC/UNAPEC",
+      "priority": 4,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "calculadoras",
+      "label": "Calculadoras y herramientas de investigación",
+      "priority": 5,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "autenticacion",
+      "label": "Autenticación y control de acceso del Laboratorio",
+      "priority": 6,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "idiomas",
+      "label": "Selector español/inglés y traducción integral",
+      "priority": 7,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    },
+    {
+      "id": "analitica",
+      "label": "Analítica y métricas de uso",
+      "priority": 8,
+      "must_remain_available": true,
+      "must_be_tested_before_activation": true
+    }
+  ],
+  "kernel_core_modules_to_embed": [
+    "team",
+    "academic-background",
+    "scientific-profiles",
+    "publications-2",
+    "projects-2"
+  ],
+  "acceptance_rules": [
+    "La navegación desplegable anterior debe conservarse.",
+    "El Laboratorio Inteligente debe abrir y completar sus recorridos principales.",
+    "Xmera, ITLA y APEC/UNAPEC deben permanecer accesibles.",
+    "Las fotografías de los nueve investigadores deben cargarse.",
+    "Kernel Core debe integrarse por módulos sin sustituir el shell de la SPA.",
+    "No se publicará esta fase sin Quality Gate, revisión visual y aprobación explícita."
+  ]
+}
