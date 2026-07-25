@@ -1,26 +1,18 @@
 {
   "base_url": "https://www.grupoelkernel.com",
-  "cache_key": "e5e64ce0284ed1e0f1e818baf0c40dafa692f4dc",
+  "cache_key": "1ca8d1fbb42e0d10c84b300950dad0ca79fa51e5",
   "passed": false,
   "failures": [
-    "publicaciones.html: faltan marcadores ['core/data/publications.v2.json']",
-    "core/data/publications.v2.json: HTTP Error 404: Not Found"
+    "index.html: faltan marcadores ['Trazabilidad bibliográfica', 'Investigadores miembros', 'formacion.html']",
+    "quienes_somos.html: HTTP Error 404: Not Found",
+    "equipo.html: HTTP Error 404: Not Found",
+    "publicaciones.html: faltan marcadores ['Catálogo verificable', 'metrics-callout']"
   ],
   "checks": [
     {
       "path": "index.html",
       "http_status": 200,
-      "bytes": 10715
-    },
-    {
-      "path": "quienes_somos.html",
-      "http_status": 200,
-      "bytes": 7370
-    },
-    {
-      "path": "equipo.html",
-      "http_status": 200,
-      "bytes": 6854
+      "bytes": 4073
     },
     {
       "path": "formacion.html",
@@ -40,7 +32,7 @@
     {
       "path": "publicaciones.html",
       "http_status": 200,
-      "bytes": 23446
+      "bytes": 16955
     },
     {
       "path": "noticias.html",
@@ -63,9 +55,14 @@
       "bytes": 4022
     },
     {
+      "path": "core/data/publications.v2.json",
+      "http_status": 200,
+      "bytes": 200336
+    },
+    {
       "path": "deployment-version.txt",
       "http_status": 200,
-      "bytes": 162
+      "bytes": 244
     }
   ]
 }
