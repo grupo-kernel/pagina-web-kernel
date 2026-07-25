@@ -9,18 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="assets/css/kernel.css" rel="stylesheet">
-  <style>
-    .kernel-core-preview-note { display:flex; align-items:center; gap:.65rem; margin-bottom:1.2rem; padding:.8rem 1rem; border:1px solid rgba(13,92,99,.2); border-radius:1rem; background:#f1f8f8; color:#124e52; font-size:.82rem; }
-    .kernel-core-preview-note i { font-size:1.05rem; }
-    .team-details { margin-top:.9rem; border-top:1px solid #e5edf2; padding-top:.8rem; }
-    .team-details summary { cursor:pointer; color:var(--blue-dark); font-size:.82rem; font-weight:800; }
-    .team-details h3 { margin:.9rem 0 .35rem; color:var(--navy); font-size:.9rem; font-weight:800; }
-    .team-details ul { margin:0; padding-left:1.15rem; color:var(--muted); font-size:.82rem; }
-    .team-details li + li { margin-top:.35rem; }
-    .team-affiliations { margin:.85rem 0 0; padding:.75rem .85rem; border-radius:.8rem; background:#f7f9fb; color:var(--muted); font-size:.8rem; line-height:1.5; }
-    .team-affiliations strong { color:var(--navy); }
-    .team-card:target { outline:4px solid rgba(199,149,44,.35); scroll-margin-top:100px; }
-  </style>
+  <link href="core/modules/team/team-integration.css" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -55,23 +44,23 @@
   <section class="section-block" data-kernel-core-module="team" data-kernel-core-status="branch-preview-active">
     <div class="container">
       <div class="kernel-core-preview-note" role="status">
-        <i class="bi bi-shield-check"></i>
-        <span>Vista controlada: esta rama carga el equipo desde <code>core/data/researchers.v2.json</code>. La plataforma pública continúa usando su fuente anterior.</span>
+        <i class="bi bi-shield-check" aria-hidden="true"></i>
+        <span>Vista controlada: esta rama carga y renderiza el equipo desde <code>core/data/researchers.v2.json</code>. La plataforma pública continúa usando su fuente anterior.</span>
       </div>
 
       <div class="section-heading">
         <span class="section-kicker">Integrantes</span>
         <h2>Perfiles académicos y líneas de especialización</h2>
-        <p>Las fichas se generan desde el registro normalizado de Kernel Core para mantener orden, afiliaciones, perfiles científicos y relaciones institucionales de forma coherente.</p>
+        <p>Las fichas se generan mediante el renderizador compartido de Kernel Core para conservar el orden institucional, las afiliaciones, los perfiles científicos y las métricas verificadas.</p>
       </div>
 
       <div class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar miembros">
-        <button class="btn-kernel filter-member active" type="button" data-filter="all">Todos</button>
-        <button class="btn-kernel-outline filter-member" type="button" data-filter="República Dominicana">República Dominicana</button>
-        <button class="btn-kernel-outline filter-member" type="button" data-filter="España">España</button>
+        <button class="btn-kernel filter-member active" type="button" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="btn-kernel-outline filter-member" type="button" data-filter="República Dominicana" aria-pressed="false">República Dominicana</button>
+        <button class="btn-kernel-outline filter-member" type="button" data-filter="España" aria-pressed="false">España</button>
       </div>
 
-      <div id="teamGrid" class="team-grid" aria-live="polite" aria-busy="true">
+      <div id="teamGrid" class="kernel-core-team__grid" aria-live="polite" aria-busy="true">
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
       </div>
       <div id="teamError" class="error-state d-none" role="alert"></div>
@@ -90,117 +79,64 @@
   </div>
 </footer>
 
-<script>
-(function () {
-  "use strict";
+<script type="module">
+  import { orderedResearchers, renderResearcherCard } from './core/modules/team/team-renderer.mjs';
 
-  const CORE_SOURCE = "core/data/researchers.v2.json";
+  const CORE_SOURCE = 'core/data/researchers.v2.json';
+  const teamGrid = document.getElementById('teamGrid');
+  const errorBox = document.getElementById('teamError');
+  const countHeader = document.getElementById('memberCountHeader');
+  const filterButtons = [...document.querySelectorAll('.filter-member')];
   let allMembers = [];
-  const teamGrid = document.getElementById("teamGrid");
-  const errorBox = document.getElementById("teamError");
-  const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
-
-  function externalLink(url, icon, label) {
-    if (!url) return "";
-    return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer"><i class="bi ${icon}"></i>${escapeHtml(label)}</a>`;
-  }
-
-  function publicationMetrics(member) {
-    const metrics = Array.isArray(member.metrics?.publications) ? member.metrics.publications : [];
-    if (!metrics.length) return "";
-    return `<div class="profile-metrics">${metrics.map(metric => {
-      const label = metric.type === "journal_articles" ? "Artículos de revista" : metric.type === "scopus_documents" ? "Documentos Scopus" : "Producción registrada";
-      const source = metric.url ? `<a href="${escapeHtml(metric.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(metric.source || "Fuente")}</a>` : escapeHtml(metric.source || "Fuente");
-      return `<div class="profile-metric"><strong>${Number(metric.value).toLocaleString("es-DO")}</strong><span>${label} · ${source}${metric.as_of ? ` (${escapeHtml(metric.as_of)})` : ""}</span></div>`;
-    }).join("")}</div>`;
-  }
-
-  function detailsMarkup(member) {
-    const formation = Array.isArray(member.formation) ? member.formation : [];
-    const experience = Array.isArray(member.experience) ? member.experience : [];
-    if (!formation.length && !experience.length) return "";
-    return `<details class="team-details"><summary>Formación y experiencia</summary>
-      ${formation.length ? `<h3>Formación académica</h3><ul>${formation.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-      ${experience.length ? `<h3>Experiencia relevante</h3><ul>${experience.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-    </details>`;
-  }
-
-  function memberCard(member) {
-    const highlighted = member.member_scope === "international";
-    const memberType = highlighted ? "Miembro internacional" : "Miembro principal";
-    const title = `${member.name}${member.display_degree ? `, ${member.display_degree}` : ""}`;
-    const areas = (member.areas || []).slice(0, 5);
-    const image = member.image?.current || member.image?.canonical || "";
-    const profiles = member.profiles || {};
-    const orcidUrl = profiles.orcid ? `https://orcid.org/${profiles.orcid}` : "";
-    const affiliations = (member.affiliations || []).map(escapeHtml).join(" · ");
-
-    return `<article class="team-card ${highlighted ? "member-highlight" : ""}" id="${escapeHtml(member.id)}" data-country="${escapeHtml(member.country)}" data-member-scope="${escapeHtml(member.member_scope)}">
-      <div class="team-card__top"><img class="team-photo" src="${escapeHtml(image)}" alt="Perfil de ${escapeHtml(member.name)}" loading="lazy">
-        <div><div class="team-badges"><span class="badge-soft"><i class="bi ${highlighted ? "bi-globe-europe-africa" : "bi-person-check"}"></i>${memberType}</span><span class="badge-soft"><i class="bi bi-geo-alt"></i>${escapeHtml(member.country)}</span></div><h2>${escapeHtml(title)}</h2><p class="team-role">${escapeHtml(member.role)}</p></div>
-      </div>
-      <div class="team-card__body"><div class="team-badges">${areas.map(area => `<span class="badge-soft">${escapeHtml(area)}</span>`).join("")}</div><p>${escapeHtml(member.bio)}</p>
-        ${affiliations ? `<div class="team-affiliations"><strong>Afiliaciones:</strong> ${affiliations}</div>` : ""}
-        ${publicationMetrics(member)}${detailsMarkup(member)}
-        <div class="team-links">
-          ${externalLink(profiles.institutional,"bi-building","Perfil institucional")}
-          ${externalLink(orcidUrl,"bi-person-badge","ORCID")}
-          ${externalLink(profiles.repository,"bi-archive","Repositorio")}
-          ${externalLink(profiles.panorama,"bi-bar-chart","Panorama")}
-          ${externalLink(profiles.scholar,"bi-mortarboard","Scholar")}
-          ${externalLink(profiles.researchgate,"bi-journal-bookmark","ResearchGate")}
-          ${externalLink(profiles.linkedin,"bi-linkedin","LinkedIn")}
-          ${member.contact?.email ? `<a href="mailto:${escapeHtml(member.contact.email)}"><i class="bi bi-envelope"></i>Correo</a>` : ""}
-          <a href="publicaciones.html?autor=${encodeURIComponent(member.id)}"><i class="bi bi-journal-richtext"></i>Publicaciones</a>
-        </div>
-      </div>
-    </article>`;
-  }
 
   function render(members) {
-    teamGrid.innerHTML = members.map(memberCard).join("");
-    teamGrid.setAttribute("aria-busy", "false");
+    teamGrid.innerHTML = members.length
+      ? members.map(member => renderResearcherCard(member, 'es', {
+          assetBase: '',
+          publicationsBase: 'publicaciones.html?autor=',
+          showDetails: true
+        })).join('')
+      : '<p class="kernel-core-team-empty">No hay integrantes para el filtro seleccionado.</p>';
+    teamGrid.setAttribute('aria-busy', 'false');
+
     const hash = window.location.hash;
     if (hash) requestAnimationFrame(() => {
       const target = document.querySelector(hash);
-      if (target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
-  fetch(CORE_SOURCE, {cache:"no-store"})
-    .then(response => {
-      if (!response.ok) throw new Error(`No se pudo cargar ${CORE_SOURCE}.`);
-      return response.json();
-    })
-    .then(data => {
-      allMembers = (data.researchers || [])
-        .filter(member => member.status === "active" && member.visibility === "public")
-        .sort((a, b) => Number(a.order) - Number(b.order));
-      document.getElementById("memberCountHeader").textContent = `${allMembers.length} investigadores`;
-      render(allMembers);
-    })
-    .catch(error => {
-      console.error(error);
-      teamGrid.innerHTML = "";
-      teamGrid.setAttribute("aria-busy", "false");
-      errorBox.textContent = `No fue posible cargar las fichas desde ${CORE_SOURCE}. La fuente pública anterior no fue modificada.`;
-      errorBox.classList.remove("d-none");
+  function selectFilter(selected) {
+    filterButtons.forEach(button => {
+      const active = button === selected;
+      button.classList.toggle('active', active);
+      button.classList.toggle('btn-kernel', active);
+      button.classList.toggle('btn-kernel-outline', !active);
+      button.setAttribute('aria-pressed', String(active));
     });
 
-  document.querySelectorAll(".filter-member").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".filter-member").forEach(item => {
-        item.classList.toggle("active", item === button);
-        item.classList.toggle("btn-kernel", item === button);
-        item.classList.toggle("btn-kernel-outline", item !== button);
-      });
-      const filter = button.dataset.filter;
-      render(filter === "all" ? allMembers : allMembers.filter(member => member.country === filter));
-    });
-  });
+    const filter = selected.dataset.filter;
+    render(filter === 'all' ? allMembers : allMembers.filter(member => member.country === filter));
+  }
 
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
-})();
+  filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button)));
+
+  try {
+    const response = await fetch(CORE_SOURCE, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`No se pudo cargar ${CORE_SOURCE}.`);
+    const data = await response.json();
+    allMembers = orderedResearchers(data);
+    countHeader.textContent = `${allMembers.length} investigadores`;
+    render(allMembers);
+  } catch (error) {
+    console.error(error);
+    teamGrid.innerHTML = '';
+    teamGrid.setAttribute('aria-busy', 'false');
+    errorBox.textContent = `No fue posible cargar las fichas desde ${CORE_SOURCE}. La fuente pública anterior no fue modificada.`;
+    errorBox.classList.remove('d-none');
+  }
+
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
