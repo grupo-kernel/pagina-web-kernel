@@ -1,0 +1,183 @@
+name: Finalize Publications 2.0 public deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'core/activation/.publications-v2-fix-trigger'
+      - '.github/workflows/fix-publications-v2-public.yml'
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  finalize:
+    if: github.event.head_commit.message == 'Deploy Publications 2.0 final fix'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Connect the public catalog to v2 data
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('publicaciones.html')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('fetch("data/researchers.json",{cache:"no-store"})', 'fetch("core/data/researchers.v2.json",{cache:"no-store"})')
+          text = text.replace('fetch("data/publications.json",{cache:"no-store"})', 'fetch("core/data/publications.v2.json",{cache:"no-store"})')
+          text = text.replace('No se pudo cargar researchers.json', 'No se pudo cargar researchers.v2.json')
+          text = text.replace('No se pudo cargar publications.json', 'No se pudo cargar publications.v2.json')
+
+          old = '''    researchers = researcherPayload.researchers || [];
+              publications = publicationPayload.records || [];'''
+          new = '''    researchers = researcherPayload.researchers || [];
+              publications = (publicationPayload.records || []).map(record => {
+                const bibliographic = record.bibliographic || {};
+                const identifiers = record.identifiers || {};
+                const quartile = record.metrics?.quartile;
+                return {
+                  ...record,
+                  year: bibliographic.year,
+                  journal: bibliographic.journal,
+                  publication_date: bibliographic.publication_date,
+                  doi: identifiers.doi,
+                  url: identifiers.url,
+                  source: record.provenance?.display_source,
+                  quartile: quartile ? {
+                    quartile: quartile.value,
+                    system: quartile.system,
+                    category: quartile.category,
+                    metric_year: quartile.metric_year,
+                    verified_at: quartile.verified_at,
+                    source_url: quartile.source_url,
+                    journal_name: quartile.journal_name
+                  } : null
+                };
+              });'''
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif 'publications = (publicationPayload.records || []).map(record =>' not in text:
+              raise SystemExit('No se encontró el bloque de asignación bibliográfica esperado.')
+
+          required = [
+              'core/data/researchers.v2.json',
+              'core/data/publications.v2.json',
+              'publications = (publicationPayload.records || []).map(record =>',
+          ]
+          missing = [token for token in required if token not in text]
+          if missing:
+              raise SystemExit(f'La integración v2 quedó incompleta: {missing}')
+          path.write_text(text, encoding='utf-8')
+          PY
+          node core/validate-publications-module.mjs
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('core/data/publications.v2.json').read_text(encoding='utf-8'))
+          assert data['summary']['unique_records'] == 162
+          assert len(data['records']) == 162
+          print('Publications v2 source validated: 162 unique records.')
+          PY
+
+      - name: Commit canonical public integration to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add publicaciones.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Use Publications 2.0 data source in public catalog"
+            git push origin HEAD:main
+          fi
+          echo "MAIN_FIX_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Synchronize Publications 2.0 to gh-pages
+        run: |
+          git fetch origin gh-pages
+          rm -rf /tmp/kernel-gh-pages
+          git worktree add --detach /tmp/kernel-gh-pages origin/gh-pages
+          mkdir -p /tmp/kernel-gh-pages/core/data
+          cp publicaciones.html /tmp/kernel-gh-pages/publicaciones.html
+          cp core/data/publications.v2.json /tmp/kernel-gh-pages/core/data/publications.v2.json
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          path = Path('/tmp/kernel-gh-pages/deployment-version.txt')
+          text = path.read_text(encoding='utf-8') if path.exists() else 'Kernel Core public activation\nsource_merge_sha=6376165ad672554e16c53bab1610edb8793526bd\n'
+          lines = [line for line in text.splitlines() if not line.startswith('publications_v2_fix_sha=')]
+          lines.append(f"publications_v2_fix_sha={os.environ['MAIN_FIX_SHA']}")
+          path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          cd /tmp/kernel-gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add publicaciones.html core/data/publications.v2.json deployment-version.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Deploy Publications 2.0 data source"
+            git push origin HEAD:gh-pages
+          fi
+          echo "GH_PAGES_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Inspect and rebuild GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/pages" | tee pages-settings.json
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" | tee pages-build-request.json
+          for attempt in $(seq 1 48); do
+            payload=$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest")
+            printf '%s\n' "$payload" > pages-build-latest.json
+            status=$(printf '%s' "$payload" | jq -r '.status')
+            commit=$(printf '%s' "$payload" | jq -r '.commit // ""')
+            echo "Attempt ${attempt}: status=${status} commit=${commit}"
+            if [ "$status" = "built" ]; then
+              break
+            fi
+            if [ "$status" = "errored" ]; then
+              exit 1
+            fi
+            sleep 10
+          done
+          test "$(jq -r '.status' pages-build-latest.json)" = "built"
+
+      - name: Run final external smoke test
+        id: smoke
+        continue-on-error: true
+        env:
+          BASE_URL: https://www.grupoelkernel.com
+          CACHE_KEY: ${{ env.GH_PAGES_SHA }}
+          SMOKE_ATTEMPTS: '8'
+          SMOKE_DELAY_SECONDS: '20'
+          SMOKE_RESULT: public-smoke-result.json
+        run: python scripts/public_smoke_test.py
+
+      - name: Upload deployment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-publications-v2-final-deployment
+          path: |
+            pages-settings.json
+            pages-build-request.json
+            pages-build-latest.json
+            public-smoke-result.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Enforce public smoke result
+        if: steps.smoke.outcome == 'failure'
+        run: exit 1
+
+      - name: Remove one-time deployment workflow
+        run: |
+          rm -f core/activation/.publications-v2-fix-trigger
+          rm -f .github/workflows/fix-publications-v2-public.yml
+          git add -A core/activation/.publications-v2-fix-trigger .github/workflows/fix-publications-v2-public.yml
+          git commit -m "Remove one-time Publications 2.0 deployment workflow"
+          git push origin HEAD:main
