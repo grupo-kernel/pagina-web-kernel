@@ -1,0 +1,51 @@
+name: Kernel Platform 2B Discovery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-integracion-plataforma-xmera-laboratorio]
+    paths:
+      - 'scripts/discover_spa_routes.py'
+      - 'assets/**'
+      - 'index.html'
+      - '.github/workflows/kernel-platform-2b-discovery.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-integracion-plataforma-xmera-laboratorio
+          fetch-depth: 0
+      - name: Use Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Discover SPA routes and protected capabilities
+        run: python scripts/discover_spa_routes.py
+      - name: Persist route inventory
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add core/audits/platform-2b-route-inventory.json
+          if git diff --cached --quiet; then
+            echo "Route inventory unchanged."
+            exit 0
+          fi
+          git commit -m "Record Phase 2B SPA route inventory"
+          git pull --rebase origin fase-2b-integracion-plataforma-xmera-laboratorio
+          git push origin HEAD:fase-2b-integracion-plataforma-xmera-laboratorio
+      - name: Upload route inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-2b-route-inventory
+          path: core/audits/platform-2b-route-inventory.json
+          if-no-files-found: warn
+          retention-days: 14
