@@ -68,7 +68,7 @@ export function renderPublicationCard(record, researcherMap = new Map()) {
     ? `<span class="pub-chip pub-chip--${esc(String(quartile.value).toLowerCase())}">${esc(quartile.value)} · ${esc(quartile.system || '')}</span>`
     : '<span class="pub-chip pub-chip--pending">Cuartil pendiente</span>';
   const memberLinks = members.length
-    ? `<p class="publication-members"><strong>Investigadores del grupo:</strong> ${members.map(item => `<a href="scientific-profiles.html?investigador=${esc(item.id)}">${esc(item.name)}</a>`).join(', ')}</p>`
+    ? `<p class="publication-members"><strong>Investigadores del grupo:</strong> ${members.map(item => `<a href="equipo.html#${esc(item.id)}">${esc(item.name)}</a>`).join(', ')}</p>`
     : '';
   const projectLinks = (record.project_ids || []).length
     ? `<p class="publication-projects"><strong>Proyectos vinculados:</strong> ${record.project_ids.map(id => `<a href="proyectos.html?proyecto=${esc(id)}">${esc(id)}</a>`).join(', ')}</p>`
