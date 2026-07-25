@@ -1,0 +1,51 @@
+name: Kernel Global Integration Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [hito-1-kernel-core]
+    paths:
+      - 'core/integration/**'
+      - 'core/validate-global-integration.mjs'
+      - '*.html'
+      - 'translations/**'
+      - 'assets/css/**'
+      - '.github/workflows/kernel-global-integration-gate.yml'
+  push:
+    branches: [fase-1q-global-integration-preview]
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: Validate global integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate global integration
+        run: node core/validate-global-integration.mjs
+      - name: Run Kernel Quality Gate
+        run: |
+          node core/migrate-publications-v2.mjs
+          node core/run-quality-gate.mjs
+          node core/validate-publications-v2.mjs
+          node core/validate-projects-v2.mjs
+          node core/validate-translations.mjs
+          node core/build-relations-index.mjs
+          node core/validate-relations-index.mjs
+      - name: Upload global integration manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-global-integration-manifest
+          path: |
+            core/integration/global-integration-manifest.json
+            core/audits/global-integration-audit.md
+          if-no-files-found: error
+          retention-days: 7
