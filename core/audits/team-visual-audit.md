@@ -1,9 +1,9 @@
-# Auditoría visual del módulo Equipo
+# Auditoría visual y funcional del módulo Equipo
 
 Fecha: 2026-07-25  
 Rama: `fase-1l-team-preview-integration`  
 PR: `#19`  
-Estado: revisión visual superada; no desplegado
+Estado: revisión técnica, visual y funcional superada; no desplegado
 
 ## Entorno validado
 
@@ -11,7 +11,7 @@ Estado: revisión visual superada; no desplegado
 - Renderizador: `core/modules/team/team-renderer.mjs`.
 - Estilos integrados: `core/modules/team/team-integration.css`.
 - Página de integración: `equipo.html`.
-- Quality Gate: ejecución `30159286804`, resultado `success`.
+- Quality Gate: ejecución `30159392321`, resultado `success`.
 - Artefacto: `kernel-team-controlled-preview`.
 
 ## Comprobaciones automáticas
@@ -26,6 +26,20 @@ Estado: revisión visual superada; no desplegado
 | Perfiles con formación y experiencia | 9 | 9 |
 | Columnas calculadas | 3 | 1 |
 | Errores de consola o página | 0 | 0 |
+
+## Prueba funcional de filtros
+
+La lógica usada en `equipo.html` fue ejecutada en navegador con el catálogo v2 completo.
+
+| Acción | Resultado esperado | Resultado obtenido |
+|---|---:|---:|
+| Carga inicial | 9 perfiles | 9 perfiles |
+| Filtro España | 2 perfiles | 2 perfiles |
+| País mostrado después de filtrar España | Solo España | Solo España |
+| `aria-pressed` del filtro España | `true` | `true` |
+| Filtro República Dominicana | 7 perfiles | 7 perfiles |
+| Regreso a Todos | 9 perfiles | 9 perfiles |
+| Errores de consola | 0 | 0 |
 
 ## Resultado visual
 
@@ -50,11 +64,12 @@ Estado: revisión visual superada; no desplegado
 ## Accesibilidad y comportamiento
 
 - Las imágenes incluyen texto alternativo.
-- Los filtros utilizan `aria-pressed`.
+- Los filtros utilizan `aria-pressed` y actualizan correctamente su estado.
 - La cuadrícula utiliza `aria-live` y `aria-busy` durante la carga.
 - Los enlaces externos incluyen `noopener noreferrer`.
 - La hoja de estilos contempla `prefers-reduced-motion`.
 - Cada investigador conserva una ancla estable mediante su identificador.
+- La página muestra un estado vacío explícito si un filtro no produce resultados.
 
 ## Riesgos no bloqueantes
 
@@ -64,7 +79,7 @@ Estado: revisión visual superada; no desplegado
 
 ## Decisión técnica
 
-La integración visual cumple los criterios técnicos y de contenido para ser revisada por el Grupo El Kernel.
+La integración cumple los criterios técnicos, visuales, funcionales y de contenido para ser revisada por el Grupo El Kernel.
 
 Esto no autoriza todavía:
 
