@@ -49,7 +49,7 @@ if (data && config) {
     if (!researcher.profiles?.scholar) warn(`${id}: Google Scholar no registrado.`);
     if (!researcher.profiles?.researchgate) warn(`${id}: ResearchGate no registrado.`);
     if (researcher.image?.current && !(await exists(researcher.image.current))) warn(`${id}: falta imagen actual ${researcher.image.current}.`);
-    if (researcher.image?.canonical && !(await exists(researcher.image.canonical))) warn(`${id}: falta imagen canónica ${researcher.image.canonical}.`);
+    if (researcher.image?.canonical && !(await exists(researcher.image.canonical))) warn(`${id}: falta imagen canónica prevista ${researcher.image.canonical}.`);
   }
 
   const repeatedOrders = duplicates(researchers.map(item => item.order));
@@ -57,7 +57,7 @@ if (data && config) {
   if (repeatedOrders.length) fail(`Órdenes duplicados: ${repeatedOrders.join(', ')}.`);
 
   for (const [key, source] of Object.entries(config.sources)) {
-    if (['researchers', 'manifest'].includes(key)) continue;
+    if (['researchers', 'manifest', 'publications_candidate'].includes(key)) continue;
     const present = await exists(source);
     const required = key === 'publications';
     check(`Fuente ${key}`, present || !required, present ? source : 'pendiente');
