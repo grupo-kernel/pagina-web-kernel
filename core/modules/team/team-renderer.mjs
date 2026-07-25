@@ -16,21 +16,11 @@ export function orderedResearchers(data) {
     .sort((a, b) => Number(a.order) - Number(b.order));
 }
 
-function label(member, locale = DEFAULT_LOCALE) {
+function memberLabel(member, locale = DEFAULT_LOCALE) {
   if (member.member_scope === 'international') {
-    return locale === 'en' ? 'International researcher · El Kernel member' : 'Investigador(a) internacional · Miembro de El Kernel';
+    return locale === 'en' ? 'International member · El Kernel' : 'Miembro internacional · El Kernel';
   }
-  return locale === 'en' ? 'Core researcher · El Kernel member' : 'Investigador(a) principal · Miembro de El Kernel';
-}
-
-function profileLinks(member, locale = DEFAULT_LOCALE) {
-  const links = [];
-  if (member.contact?.email) links.push(`<a href="mailto:${escapeHtml(member.contact.email)}">${locale === 'en' ? 'Email' : 'Correo'}</a>`);
-  if (member.profiles?.orcid) links.push(`<a href="https://orcid.org/${escapeHtml(member.profiles.orcid)}" target="_blank" rel="noopener noreferrer">ORCID</a>`);
-  if (member.profiles?.scholar) links.push(`<a href="${escapeHtml(member.profiles.scholar)}" target="_blank" rel="noopener noreferrer">Scholar</a>`);
-  if (member.profiles?.researchgate) links.push(`<a href="${escapeHtml(member.profiles.researchgate)}" target="_blank" rel="noopener noreferrer">ResearchGate</a>`);
-  if (member.profiles?.institutional) links.push(`<a href="${escapeHtml(member.profiles.institutional)}" target="_blank" rel="noopener noreferrer">UPV</a>`);
-  return links.join('');
+  return locale === 'en' ? 'Core member · El Kernel' : 'Miembro principal · El Kernel';
 }
 
 function resolveAssetPath(value, assetBase = '') {
@@ -39,16 +29,70 @@ function resolveAssetPath(value, assetBase = '') {
   return `${assetBase}${path}`.replace(/\/{2,}/g, '/');
 }
 
+function externalLink(url, label, options = {}) {
+  if (!url) return '';
+  const target = options.newTab === false ? '' : ' target="_blank" rel="noopener noreferrer"';
+  return `<a href="${escapeHtml(url)}"${target}>${escapeHtml(label)}</a>`;
+}
+
+function profileLinks(member, locale = DEFAULT_LOCALE, options = {}) {
+  const links = [];
+  if (member.contact?.email) links.push(externalLink(`mailto:${member.contact.email}`, locale === 'en' ? 'Email' : 'Correo', { newTab: false }));
+  if (member.profiles?.orcid) links.push(externalLink(`https://orcid.org/${member.profiles.orcid}`, 'ORCID'));
+  if (member.profiles?.institutional) links.push(externalLink(member.profiles.institutional, locale === 'en' ? 'Institutional profile' : 'Perfil institucional'));
+  if (member.profiles?.repository) links.push(externalLink(member.profiles.repository, locale === 'en' ? 'Repository' : 'Repositorio'));
+  if (member.profiles?.panorama) links.push(externalLink(member.profiles.panorama, 'Panorama'));
+  if (member.profiles?.scholar) links.push(externalLink(member.profiles.scholar, 'Scholar'));
+  if (member.profiles?.researchgate) links.push(externalLink(member.profiles.researchgate, 'ResearchGate'));
+  if (member.profiles?.linkedin) links.push(externalLink(member.profiles.linkedin, 'LinkedIn'));
+  if (options.publicationsBase) {
+    links.push(externalLink(`${options.publicationsBase}${encodeURIComponent(member.id)}`, locale === 'en' ? 'Publications' : 'Publicaciones', { newTab: false }));
+  }
+  return links.join('');
+}
+
+function metricLabel(type, locale = DEFAULT_LOCALE) {
+  const labels = {
+    journal_articles: { es: 'Artículos de revista', en: 'Journal articles' },
+    scopus_documents: { es: 'Documentos Scopus', en: 'Scopus documents' }
+  };
+  return labels[type]?.[locale] || (locale === 'en' ? 'Recorded output' : 'Producción registrada');
+}
+
+function metricsMarkup(member, locale = DEFAULT_LOCALE) {
+  const metrics = Array.isArray(member.metrics?.publications) ? member.metrics.publications : [];
+  if (!metrics.length) return '';
+  return `<div class="kernel-core-team-card__metrics" aria-label="${locale === 'en' ? 'Publication metrics' : 'Métricas de publicaciones'}">${metrics.map(metric => {
+    const source = metric.url
+      ? `<a href="${escapeHtml(metric.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(metric.source || (locale === 'en' ? 'Source' : 'Fuente'))}</a>`
+      : escapeHtml(metric.source || (locale === 'en' ? 'Source' : 'Fuente'));
+    return `<div><strong>${Number(metric.value).toLocaleString(locale === 'en' ? 'en-US' : 'es-DO')}</strong><span>${escapeHtml(metricLabel(metric.type, locale))}</span><small>${source}${metric.as_of ? ` · ${escapeHtml(metric.as_of)}` : ''}</small></div>`;
+  }).join('')}</div>`;
+}
+
+function detailsMarkup(member, locale = DEFAULT_LOCALE) {
+  const formation = Array.isArray(member.formation) ? member.formation : [];
+  const experience = Array.isArray(member.experience) ? member.experience : [];
+  if (!formation.length && !experience.length) return '';
+  return `<details class="kernel-core-team-card__details">
+    <summary>${locale === 'en' ? 'Education and experience' : 'Formación y experiencia'}</summary>
+    ${formation.length ? `<h4>${locale === 'en' ? 'Academic background' : 'Formación académica'}</h4><ul>${formation.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+    ${experience.length ? `<h4>${locale === 'en' ? 'Relevant experience' : 'Experiencia relevante'}</h4><ul>${experience.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+  </details>`;
+}
+
 export function renderResearcherCard(member, locale = DEFAULT_LOCALE, options = {}) {
   const image = resolveAssetPath(member.image?.current || member.image?.canonical || '', options.assetBase || '');
   const areas = (member.areas || []).map(area => `<span>${escapeHtml(area)}</span>`).join('');
   const affiliations = (member.affiliations || []).map(escapeHtml).join(' · ');
+  const international = member.member_scope === 'international';
+  const details = options.showDetails === false ? '' : detailsMarkup(member, locale);
   return `
-    <article class="kernel-core-team-card" data-kernel-researcher-card="${escapeHtml(member.id)}">
+    <article class="kernel-core-team-card${international ? ' kernel-core-team-card--international' : ''}" id="${escapeHtml(member.id)}" data-kernel-researcher-card="${escapeHtml(member.id)}" data-country="${escapeHtml(member.country)}" data-member-scope="${escapeHtml(member.member_scope)}">
       <div class="kernel-core-team-card__top">
         <img class="kernel-core-team-card__photo" src="${escapeHtml(image)}" alt="${escapeHtml(member.name)}" loading="lazy">
         <div>
-          <span class="kernel-core-team-card__badge">${escapeHtml(label(member, locale))}</span>
+          <span class="kernel-core-team-card__badge">${escapeHtml(memberLabel(member, locale))}</span>
           <h3>${escapeHtml(member.name)}${member.display_degree ? `, ${escapeHtml(member.display_degree)}` : ''}</h3>
           <p class="kernel-core-team-card__role">${escapeHtml(member.role)}</p>
         </div>
@@ -57,8 +101,10 @@ export function renderResearcherCard(member, locale = DEFAULT_LOCALE, options = 
       <div class="kernel-core-team-card__meta">
         <strong>${locale === 'en' ? 'Affiliations' : 'Afiliaciones'}:</strong> ${affiliations}
       </div>
+      ${metricsMarkup(member, locale)}
       <div class="kernel-core-team-card__areas" aria-label="${locale === 'en' ? 'Research areas' : 'Áreas de trabajo'}">${areas}</div>
-      <nav class="kernel-core-team-card__links" aria-label="${locale === 'en' ? 'Researcher links' : 'Enlaces del investigador'}">${profileLinks(member, locale)}</nav>
+      ${details}
+      <nav class="kernel-core-team-card__links" aria-label="${locale === 'en' ? 'Researcher links' : 'Enlaces del investigador'}">${profileLinks(member, locale, options)}</nav>
     </article>`;
 }
 
@@ -78,7 +124,7 @@ export function renderTeamModule(data, options = {}) {
         <span>${members.length} ${locale === 'en' ? 'members' : 'integrantes'}</span>
         <p>${intro}</p>
       </header>
-      <div class="kernel-core-team__grid">${members.map(member => renderResearcherCard(member, locale, { assetBase })).join('')}</div>
+      <div class="kernel-core-team__grid">${members.map(member => renderResearcherCard(member, locale, { ...options, assetBase })).join('')}</div>
     </section>`;
 }
 
@@ -94,7 +140,7 @@ export function renderTeamPreviewDocument(data, options = {}) {
 <link rel="stylesheet" href="./team-preview.css">
 </head>
 <body>
-${renderTeamModule(data, { locale, assetBase })}
+${renderTeamModule(data, { ...options, locale, assetBase })}
 </body>
 </html>`;
 }
