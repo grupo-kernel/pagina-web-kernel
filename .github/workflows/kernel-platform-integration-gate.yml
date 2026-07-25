@@ -54,8 +54,12 @@ jobs:
       - name: Validate platform preservation and data catalogs
         run: |
           mkdir -p ci-results
-          set -o pipefail
-          node platform/validate-platform-integration.mjs 2>&1 | tee ci-results/platform-integration.log
+          set +e
+          node platform/validate-platform-integration.mjs > ci-results/platform-integration.log 2>&1
+          validator_status=$?
+          cat ci-results/platform-integration.log
+          echo "validator_exit=${validator_status}"
+          exit "${validator_status}"
       - name: Verify critical local files
         run: |
           test -f assets/kernel-platform-bridge.js
