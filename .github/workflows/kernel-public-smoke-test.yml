@@ -16,7 +16,7 @@ on:
       - 'core/activation/.public-smoke-trigger'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   smoke:
@@ -42,3 +42,20 @@ jobs:
           path: public-smoke-result.json
           if-no-files-found: warn
           retention-days: 14
+      - name: Persist smoke result in repository
+        if: always()
+        run: |
+          if [ ! -f public-smoke-result.json ]; then
+            printf '{"status":"missing","message":"Smoke test did not produce a result file."}\n' > public-smoke-result.json
+          fi
+          mkdir -p core/activation
+          cp public-smoke-result.json core/activation/public-smoke-result.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add core/activation/public-smoke-result.json
+          if git diff --cached --quiet; then
+            echo "Smoke result unchanged."
+          else
+            git commit -m "Record final public smoke test result"
+            git push origin HEAD:main
+          fi
