@@ -1,0 +1,1580 @@
+{
+  "phase": "2B",
+  "status": "baseline-audited",
+  "root": "/home/runner/work/pagina-web-kernel/pagina-web-kernel",
+  "shell_checks": {
+    "spa_bundle": {
+      "ok": true,
+      "patterns": [
+        "assets/index-[A-Za-z0-9_-]+\\.js"
+      ]
+    },
+    "spa_stylesheet": {
+      "ok": true,
+      "patterns": [
+        "assets/index-[A-Za-z0-9_-]+\\.css"
+      ]
+    },
+    "patch_loader": {
+      "ok": true,
+      "patterns": [
+        "kernel-phase1-patch\\.js",
+        "kernel-members-patch\\.js"
+      ]
+    },
+    "navigation_container": {
+      "ok": true,
+      "patterns": [
+        "data-site-header",
+        "id=[\\\"']header[\\\"']"
+      ]
+    }
+  },
+  "capability_checks": {
+    "laboratorio-inteligente": {
+      "detected": true,
+      "patterns": [
+        "laboratorio\\s+inteligente",
+        "laboratory",
+        "iniciar\\s+asistente"
+      ],
+      "findings": [
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-PjT_4xWQ.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/kernel-i18n-full.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "laboratory",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DOXJSTsG.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-fix.js",
+          "patterns": [
+            "laboratory"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DQR0aCHt.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/AsistentePruebas-9ENxU2k9.js",
+          "patterns": [
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-VOt58Y8K.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BPaMjzpI.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BvOFu7AW.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-h2qbHHhI.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CWzzarC3.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CbCyRZ68.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BHv6h6zS.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-patch.js",
+          "patterns": [
+            "laboratory"
+          ]
+        },
+        {
+          "path": "assets/AsistentePruebas-AX4vqLZX.js",
+          "patterns": [
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/login-BtABpxCq.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CzIoRbYA.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DS0kGDD3.js",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "iniciar\\s+asistente"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "laboratorio\\s+inteligente"
+          ]
+        }
+      ]
+    },
+    "xmera": {
+      "detected": true,
+      "patterns": [
+        "xmera"
+      ],
+      "findings": [
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/kernel-core-platform-bridge.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "xmera"
+          ]
+        }
+      ]
+    },
+    "itla": {
+      "detected": true,
+      "patterns": [
+        "\\bitla\\b"
+      ],
+      "findings": [
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/kernel-core-platform-bridge.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        }
+      ]
+    },
+    "apec": {
+      "detected": true,
+      "patterns": [
+        "\\b(?:un)?apec\\b"
+      ],
+      "findings": [
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/kernel-core-platform-bridge.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        }
+      ]
+    },
+    "herramientas": {
+      "detected": true,
+      "patterns": [
+        "herramientas",
+        "tools"
+      ],
+      "findings": [
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-PjT_4xWQ.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-DWi0kUcL.css",
+          "patterns": [
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/kernel-i18n-full.js",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/index-C883-KT_.css",
+          "patterns": [
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/index-DDHYSPOT.css",
+          "patterns": [
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DOXJSTsG.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-fix.js",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/index-DpElS3Za.css",
+          "patterns": [
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DQR0aCHt.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-BWwYCiJF.css",
+          "patterns": [
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-VOt58Y8K.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BPaMjzpI.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BvOFu7AW.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-h2qbHHhI.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CWzzarC3.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CbCyRZ68.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BHv6h6zS.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-patch.js",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CzIoRbYA.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DS0kGDD3.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "herramientas"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "herramientas"
+          ]
+        }
+      ]
+    },
+    "calculadoras": {
+      "detected": true,
+      "patterns": [
+        "calculador",
+        "calculator"
+      ],
+      "findings": [
+        {
+          "path": "assets/CalculadoraRegresionConteo-C6mup4hf.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTresOMasGrupos-qaUsaMiX.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraAsociacionCategorica-C6Sv3ZqH.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "calculador",
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "calculador",
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTamanoMuestraPotencia-BNDUoN4j.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/ComparacionGrupos-BqmYk_OJ.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTamanoMuestraPotencia-X2l7-NNR.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraEstadisticaDescriptiva-CTrDkMt3.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraEstadisticaDescriptiva-eaKxoA7d.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosGrupos-QPFgs7W4.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRegresionCompleta-CaHvcSxv.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraEvaluacionEducativa-CacwXVdJ.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRelacionVariables-BUOMLhVJ.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosMuestrasRelacionadas-yNAWtDgq.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRegresionConteo-D4IHm9Of.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRelacionVariables-Di98coDP.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRegresionCompleta-CsH8L1EA.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTresOMasMedicionesRelacionadas-DSeSW_yD.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosGrupos-BETxUqA5.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTamanoMuestraPotencia-DLJx5UHY.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-PjT_4xWQ.js",
+          "patterns": [
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosMuestrasRelacionadas-DiigDpmb.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosMuestrasRelacionadas-BKQbMvgs.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraFiabilidadCuestionarios-cvzxa8nN.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTamanoMuestraPotencia-Et-xcV35.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraFiabilidadCuestionarios-w5iUvmdM.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "calculador",
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraEvaluacionEducativa-B3La2UZJ.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTresOMasGrupos-GSLRL4og.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTresOMasMedicionesRelacionadas-DARcoMe_.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/index-DWi0kUcL.css",
+          "patterns": [
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "calculador",
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraTamanoMuestraPotencia-DYzeJEfr.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/RegresionModelos-BOXDXzy8.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/kernel-i18n-full.js",
+          "patterns": [
+            "calculador",
+            "calculator"
+          ]
+        },
+        {
+          "path": "assets/exportacionesCalculadoras-BiNXW7QL.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraDosMuestrasRelacionadas-x5zDrpj6.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraFiabilidadCuestionarios-DOVx2fZg.js",
+          "patterns": [
+            "calculador"
+          ]
+        },
+        {
+          "path": "assets/CalculadoraRegresionLogistica-DVo-UIng.js",
+          "patterns": [
+            "calculador"
+          ]
+        }
+      ]
+    },
+    "autenticacion": {
+      "detected": true,
+      "patterns": [
+        "firebase",
+        "auth",
+        "contrase(?:ñ|n)a",
+        "password"
+      ],
+      "findings": [
+        {
+          "path": "THIRD_PARTY_NOTICES.md",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-PjT_4xWQ.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/firebase-BzP43VG7.js",
+          "patterns": [
+            "firebase",
+            "auth",
+            "password"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DOXJSTsG.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "firebase",
+            "auth",
+            "contrase(?:ñ|n)a",
+            "password"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DQR0aCHt.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-VOt58Y8K.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BPaMjzpI.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/authService-CgfoSPdf.js",
+          "patterns": [
+            "firebase"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BvOFu7AW.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/html2canvas-pro.esm-DJ5UPl8L.js",
+          "patterns": [
+            "password"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/authGuard-CEzcrBkK.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CWzzarC3.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CbCyRZ68.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-BHv6h6zS.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/kernel-stats-patch.js",
+          "patterns": [
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/login-BtABpxCq.js",
+          "patterns": [
+            "firebase",
+            "auth",
+            "contrase(?:ñ|n)a",
+            "password"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-CzIoRbYA.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/LaboratorioKernel-DS0kGDD3.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "firebase",
+            "auth"
+          ]
+        },
+        {
+          "path": "assets/kernel-members-patch.js",
+          "patterns": [
+            "auth"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "firebase"
+          ]
+        }
+      ]
+    },
+    "idiomas": {
+      "detected": true,
+      "patterns": [
+        "kernel-i18n",
+        "español",
+        "english",
+        "language"
+      ],
+      "findings": [
+        {
+          "path": "THIRD_PARTY_NOTICES.md",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "index.html",
+          "patterns": [
+            "kernel-i18n"
+          ]
+        },
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/firebase-BzP43VG7.js",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-DWi0kUcL.css",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/kernel-i18n-full.js",
+          "patterns": [
+            "kernel-i18n",
+            "español",
+            "english",
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-C883-KT_.css",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-DDHYSPOT.css",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-fix.js",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-DpElS3Za.css",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "español",
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-BWwYCiJF.css",
+          "patterns": [
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/kernel-phase1-patch.js",
+          "patterns": [
+            "kernel-i18n",
+            "language"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "core/integration/platform-2b-manifest.json",
+          "patterns": [
+            "español"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "español"
+          ]
+        }
+      ]
+    },
+    "analitica": {
+      "detected": true,
+      "patterns": [
+        "googletagmanager",
+        "gtag\\(",
+        "analytics"
+      ],
+      "findings": [
+        {
+          "path": "index.html",
+          "patterns": [
+            "googletagmanager",
+            "gtag\\("
+          ]
+        },
+        {
+          "path": "assets/index-dTZWtukx.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-BEtvhqLu.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-nIC5HSwi.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/firebase-BzP43VG7.js",
+          "patterns": [
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-Dp3wKgnC.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-DrwzpuTo.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-D0K1MC_o.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-mRBw34pp.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-D9akd3km.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-CFnp3kW1.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-cpxShg-p.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-BTDO7sCz.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "assets/index-NDXUnN2S.js",
+          "patterns": [
+            "gtag\\(",
+            "analytics"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "analytics"
+          ]
+        }
+      ]
+    }
+  },
+  "image_count": 45,
+  "image_candidates": [
+    "assets/ElKernel-BvHOWfRq.webp",
+    "assets/ElKernel-Cuaiz0QC.png",
+    "assets/QuienesSomos-CIhVjMhZ.webp",
+    "assets/QuienesSomos-DS8enKgt.png",
+    "assets/alicia-cordero-photo.svg",
+    "assets/ant-CaQJkcIO.webp",
+    "assets/ant-D2J2W27b.png",
+    "assets/antmel_rodriguez-Bg9WDtoT.jpg",
+    "assets/antmelphd-CVFA8nvm.jpg",
+    "assets/congreso1-CcP8kTTw.jpeg",
+    "assets/congreso1-Dlzvx-ka.webp",
+    "assets/congreso2-BfKcvAvq.webp",
+    "assets/congreso2-Cie2kazW.jpeg",
+    "assets/congreso3-DyZ8NRj-.webp",
+    "assets/congreso3-qKU-9t8-.jpeg",
+    "assets/congreso4-BvAQAgMO.jpeg",
+    "assets/congreso4-CW5mrzjt.webp",
+    "assets/congreso5-CAIcqWSj.webp",
+    "assets/congreso5-tLxlD6bf.jpeg",
+    "assets/congreso6-Bn_P308k.jpeg",
+    "assets/congreso6-Dmygsyh1.webp",
+    "assets/congreso7-AgO7Y0QP.webp",
+    "assets/congreso7-Dxzhr_WU.jpeg",
+    "assets/congreso8-C1ghZJF_.webp",
+    "assets/congreso8-D4x6W49k.jpeg",
+    "assets/congreso9-B4G6zAcD.jpeg",
+    "assets/congreso9-DzusWTvM.webp",
+    "assets/isfodosu-campus-Dxbx_r-n.webp",
+    "assets/jos-B-AHSXzJ.webp",
+    "assets/jos-BToFZdIf.png",
+    "assets/juan-torregrosa-photo.svg",
+    "assets/libro_logica_matematica-C9AWaaqM.jpg",
+    "assets/mar-Cru0HERG.png",
+    "assets/mar-DTryRO3A.webp",
+    "assets/marc-D-jKwb4F.png",
+    "assets/marc-zOfB8o2m.webp",
+    "assets/mark2-DsoQRqwr.jpg",
+    "assets/nat-CaDYa76I.png",
+    "assets/nat-DLA0z3s9.webp",
+    "assets/rad-B3ff1btG.png",
+    "assets/rad-DPyGQI76.webp",
+    "assets/sep-BCMURSaM.png",
+    "assets/sep-Cwhy6xJt.webp",
+    "assets/uasd-campus-B6v1rNpv.webp",
+    "assets/unapec-campus-DqZO-eEo.webp"
+  ],
+  "errors": [],
+  "warnings": [],
+  "next_gate": "Integrar Kernel Core sin perder ninguna capacidad protegida."
+}
