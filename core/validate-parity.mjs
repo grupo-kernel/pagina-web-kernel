@@ -3,11 +3,14 @@ import process from 'node:process';
 
 const read = async path => JSON.parse(await fs.readFile(path, 'utf8'));
 const ids = values => new Set((values || []).map(item => typeof item === 'string' ? item : item?.id).filter(Boolean));
+const checks = [];
 const errors = [];
 const warnings = [];
 const check = (name, ok, detail = '') => {
-  console.log(`${ok ? '✓' : '✗'} ${name}${detail ? ` — ${detail}` : ''}`);
-  if (!ok) errors.push(`${name}${detail ? `: ${detail}` : ''}`);
+  const entry = { name, ok: Boolean(ok), detail: detail || null };
+  checks.push(entry);
+  console.log(`${entry.ok ? '✓' : '✗'} ${name}${detail ? ` — ${detail}` : ''}`);
+  if (!entry.ok) errors.push(`${name}${detail ? `: ${detail}` : ''}`);
 };
 const warn = message => warnings.push(message);
 
@@ -36,7 +39,7 @@ console.log('\n=== PARITY CHECK: PUBLICATIONS ===');
 const sourceRecords = currentPublications.records?.length || 0;
 const candidateSourceRecords = candidatePublications.summary?.source_records || 0;
 const candidateUniqueRecords = candidatePublications.summary?.unique_records || 0;
-const currentUniqueRecords = currentPublications.summary?.unique_catalog_records || null;
+const currentUniqueRecords = currentPublications.summary?.unique_catalog_records ?? null;
 check('Publication migration reads all source records', sourceRecords === candidateSourceRecords, `${candidateSourceRecords}/${sourceRecords}`);
 check('Publication candidate is not empty', candidateUniqueRecords > 0, `${candidateUniqueRecords}`);
 check('Publication candidate does not exceed source records', candidateUniqueRecords <= sourceRecords, `${candidateUniqueRecords}<=${sourceRecords}`);
@@ -59,6 +62,33 @@ check('Relations index covers all researchers', relations.summary?.researchers =
 check('Kernel Core remains inactive', manifest.activation?.enabled === false, `enabled=${manifest.activation?.enabled}`);
 check('Candidate modules remain non-active', [candidateResearchers.status, candidatePublications.status, projects.status, services.status, news.status].every(status => String(status).includes('not-active') || String(status).includes('candidate')));
 
+const report = {
+  schema_version: 1,
+  generated_at: new Date().toISOString(),
+  branch_mode: config.mode,
+  result: errors.length ? 'FAIL' : 'PASS',
+  counts: {
+    checks: checks.length,
+    passed: checks.filter(item => item.ok).length,
+    failed: checks.filter(item => !item.ok).length,
+    warnings: warnings.length
+  },
+  diagnostics: {
+    source_publication_records: sourceRecords,
+    current_publication_unique_summary: currentUniqueRecords,
+    candidate_publication_unique_records: candidateUniqueRecords,
+    candidate_duplicate_records_removed: candidatePublications.summary?.duplicate_records_removed ?? null,
+    current_latest_year: currentPublications.summary?.latest_year ?? null,
+    candidate_latest_year: candidatePublications.summary?.latest_year ?? null
+  },
+  checks,
+  warnings,
+  errors
+};
+
+await fs.mkdir('core/audits', { recursive: true });
+await fs.writeFile('core/audits/parity-runtime-report.json', `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+
 if (warnings.length) {
   console.log('\nPARITY WARNINGS');
   warnings.forEach(item => console.log(`- ${item}`));
@@ -67,5 +97,5 @@ if (errors.length) {
   console.error('\nPARITY ERRORS');
   errors.forEach(item => console.error(`- ${item}`));
 }
-console.log(`\nParity result: ${errors.length ? 'FAIL' : 'PASS'} | errors=${errors.length} | warnings=${warnings.length}`);
+console.log(`\nParity result: ${report.result} | errors=${errors.length} | warnings=${warnings.length}`);
 process.exit(errors.length ? 1 : 0);
