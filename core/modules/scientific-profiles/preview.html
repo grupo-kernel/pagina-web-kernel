@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vista previa · Perfiles científicos</title>
+  <link rel="stylesheet" href="scientific-profiles.css">
+  <style>body{margin:0;background:#f3f6f8;font-family:Inter,Arial,sans-serif;color:#263b49}.preview{max-width:1240px;margin:auto;padding:2rem 1rem}.preview>header{margin-bottom:1.3rem}.preview h1{color:#103b62;margin-bottom:.35rem}.preview>header p{margin:0;color:#607482}</style>
+</head>
+<body>
+  <main class="preview">
+    <header><span>Fase 1N · Vista previa controlada</span><h1>Perfiles científicos</h1><p>Directorio científico del Grupo de Investigación El Kernel.</p></header>
+    <section class="kernel-science-shell" aria-label="Perfiles científicos">
+      <aside id="science-nav" class="kernel-science-nav" aria-label="Investigadores"></aside>
+      <div id="science-profile"></div>
+    </section>
+  </main>
+  <script type="module">
+    import {renderScientificProfilesModule} from './scientific-profiles-renderer.mjs';
+    const data = await fetch('../../data/researchers.v2.json').then(response => {
+      if (!response.ok) throw new Error(`No se pudo cargar el catálogo: ${response.status}`);
+      return response.json();
+    });
+    const params = new URLSearchParams(location.search);
+    const initial = params.get('investigador') || location.hash.slice(1);
+    const nav = document.querySelector('#science-nav');
+    const profile = document.querySelector('#science-profile');
+    function paint(selectedId) {
+      const rendered = renderScientificProfilesModule(data,{selectedId,assetBase:'../../../'});
+      nav.innerHTML = rendered.navigation;
+      profile.innerHTML = rendered.profile;
+      nav.querySelectorAll('[data-science-select]').forEach(button => button.addEventListener('click',() => {
+        const id = button.dataset.scienceSelect;
+        history.replaceState(null,'',`#${id}`);
+        paint(id);
+      }));
+    }
+    paint(initial);
+  </script>
+</body>
+</html>
