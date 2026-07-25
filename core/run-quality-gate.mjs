@@ -35,9 +35,10 @@ if (data && config) {
 
   for (const researcher of researchers) {
     const id = researcher.id || 'sin-id';
+    const email = researcher.contact?.email;
     if (!researcher.name) fail(`${id}: falta nombre.`);
     if (!Number.isInteger(researcher.order)) fail(`${id}: orden inválido.`);
-    if (!researcher.email || !emailPattern.test(researcher.email)) fail(`${id}: correo inválido.`);
+    if (!email || !emailPattern.test(email)) fail(`${id}: correo inválido.`);
     if (!researcher.areas?.length) fail(`${id}: faltan áreas.`);
     if (!researcher.affiliations?.length) fail(`${id}: faltan afiliaciones.`);
     if (!researcher.formation?.length) fail(`${id}: falta formación.`);
@@ -47,8 +48,8 @@ if (data && config) {
     if (!orcid) warn(`${id}: ORCID no registrado.`);
     if (!researcher.profiles?.scholar) warn(`${id}: Google Scholar no registrado.`);
     if (!researcher.profiles?.researchgate) warn(`${id}: ResearchGate no registrado.`);
-    if (researcher.images?.current && !(await exists(researcher.images.current))) warn(`${id}: falta imagen actual ${researcher.images.current}.`);
-    if (researcher.images?.planned && !(await exists(researcher.images.planned))) warn(`${id}: falta imagen prevista ${researcher.images.planned}.`);
+    if (researcher.image?.current && !(await exists(researcher.image.current))) warn(`${id}: falta imagen actual ${researcher.image.current}.`);
+    if (researcher.image?.canonical && !(await exists(researcher.image.canonical))) warn(`${id}: falta imagen canónica ${researcher.image.canonical}.`);
   }
 
   const repeatedOrders = duplicates(researchers.map(item => item.order));
