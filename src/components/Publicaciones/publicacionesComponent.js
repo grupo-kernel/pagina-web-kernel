@@ -160,7 +160,7 @@ export function publicacionesComponent() {
                             <div class="grid grid-cols-2 gap-3">
                                 ${metricasGenerales.map(([valor,etiqueta]) => `<article class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-black text-white md:text-3xl">${valor}</p><p class="mt-1 text-xs font-bold uppercase tracking-wide text-emerald-200">${etiqueta}</p></article>`).join("")}
                             </div>
-                            <p class="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs leading-relaxed text-slate-300">
+                            <p id="kernel-career-publications-note" class="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs leading-relaxed text-slate-300">
                                 ${METRICAS_INSTITUCIONALES.descripcionArticulos}. ${METRICAS_INSTITUCIONALES.notaArticulos}
                             </p>
                         </div>
