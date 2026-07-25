@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kernel Core · Team Preview</title>
   <link rel="stylesheet" href="./team-preview.css">
+  <link rel="stylesheet" href="./team-integration.css">
 </head>
 <body>
-  <main id="team-preview-root" aria-live="polite"></main>
+  <main id="team-preview-root" data-kernel-core-integration="team" aria-live="polite"></main>
   <script type="module">
     import { renderTeamModule } from './team-renderer.mjs';
     const params = new URLSearchParams(location.search);
@@ -18,7 +19,9 @@
     document.documentElement.lang = locale;
     document.getElementById('team-preview-root').innerHTML = renderTeamModule(data, {
       locale,
-      assetBase: '../../../'
+      assetBase: '../../../',
+      publicationsBase: '../../../publicaciones.html?autor=',
+      showDetails: true
     });
   </script>
 </body>
