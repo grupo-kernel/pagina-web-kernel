@@ -46,16 +46,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Check bridge syntax
+      - name: Check bridge and validator syntax
         run: |
           node --check assets/kernel-platform-bridge.js
           node --check assets/kernel-team-core-bridge.js
           node --check assets/kernel-research-core-bridge.js
-      - name: Validate platform preservation and data catalogs
+          node --check platform/validate-platform-integration.mjs
+          node --check platform/validate-institutional-tools.mjs
+      - name: Validate platform, Xmera, Banner and Laboratory
         run: |
           mkdir -p ci-results
           set +e
-          node platform/validate-platform-integration.mjs > ci-results/platform-integration.log 2>&1
+          {
+            node platform/validate-platform-integration.mjs
+            platform_status=$?
+            node platform/validate-institutional-tools.mjs
+            tools_status=$?
+            if [ "${platform_status}" -ne 0 ] || [ "${tools_status}" -ne 0 ]; then
+              exit 1
+            fi
+          } > ci-results/platform-integration.log 2>&1
           validator_status=$?
           cat ci-results/platform-integration.log
           echo "validator_exit=${validator_status}"
