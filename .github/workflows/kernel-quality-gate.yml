@@ -61,5 +61,8 @@ jobs:
       - name: Validate cross-module relations index
         run: node core/validate-relations-index.mjs
 
+      - name: Validate parity before activation
+        run: node core/validate-parity.mjs
+
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
