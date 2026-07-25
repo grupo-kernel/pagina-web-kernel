@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "core_version": "0.1.0",
+  "status": "parallel-not-active",
+  "public_site_untouched": true,
+  "default_locale": "es",
+  "supported_locales": ["es", "en"],
+  "sources": {
+    "researchers": {
+      "path": "data/researchers.json",
+      "required": true,
+      "migration_status": "existing-source",
+      "consumers": ["home", "team", "academic-background", "publications", "projects"]
+    },
+    "publications": {
+      "path": "data/publications.json",
+      "required": true,
+      "migration_status": "existing-source",
+      "consumers": ["home", "publications", "researcher-profile"]
+    },
+    "projects": {
+      "path": "data/projects.json",
+      "required": false,
+      "migration_status": "pending-inventory",
+      "consumers": ["home", "projects", "researcher-profile"]
+    },
+    "services": {
+      "path": "data/services.json",
+      "required": false,
+      "migration_status": "pending-inventory",
+      "consumers": ["home", "services", "contact"]
+    },
+    "news": {
+      "path": "data/news.json",
+      "required": false,
+      "migration_status": "pending-inventory",
+      "consumers": ["home", "news"]
+    },
+    "translations_es": {
+      "path": "translations/es.json",
+      "required": false,
+      "migration_status": "pending-extraction",
+      "consumers": ["all"]
+    },
+    "translations_en": {
+      "path": "translations/en.json",
+      "required": false,
+      "migration_status": "pending-extraction",
+      "consumers": ["all"]
+    }
+  },
+  "activation": {
+    "enabled": false,
+    "strategy": "module-by-module",
+    "rollback": "remove module import and retain current renderer"
+  }
+}
