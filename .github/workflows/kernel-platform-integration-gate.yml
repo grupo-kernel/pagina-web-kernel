@@ -30,7 +30,7 @@ on:
       - '.github/workflows/kernel-platform-integration-gate.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Checkout integration branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
@@ -113,3 +115,31 @@ jobs:
             josealberto.jpg
           if-no-files-found: error
           retention-days: 7
+      - name: Persist integration gate result
+        if: always() && github.event_name == 'push'
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p ci-results
+          cat > ci-results/platform-integration.json <<EOF
+          {
+            "phase": "2B",
+            "status": "${JOB_STATUS}",
+            "run_id": "${RUN_ID}",
+            "validated_sha": "${HEAD_SHA}",
+            "preserved": ["Laboratorio Inteligente", "ITLA · Xmera", "UNAPEC · Banner", "menús", "autenticación"],
+            "integrated": ["Formación académica", "Equipo de 9 investigadores", "Publicaciones 2.0", "Proyectos 2.0"]
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci-results/platform-integration.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Record Phase 2B integration gate result"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration
