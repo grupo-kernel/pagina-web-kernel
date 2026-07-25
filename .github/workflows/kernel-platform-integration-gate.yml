@@ -8,6 +8,7 @@ on:
       - 'index.html'
       - 'assets/kernel-platform-bridge.js'
       - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
       - 'core/data/**'
       - 'platform/**'
       - '*.jpg'
@@ -20,6 +21,7 @@ on:
       - 'index.html'
       - 'assets/kernel-platform-bridge.js'
       - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
       - 'core/data/**'
       - 'platform/**'
       - '*.jpg'
@@ -42,12 +44,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Check bridge syntax
+        run: |
+          node --check assets/kernel-platform-bridge.js
+          node --check assets/kernel-team-core-bridge.js
+          node --check assets/kernel-research-core-bridge.js
       - name: Validate platform preservation and data catalogs
         run: node platform/validate-platform-integration.mjs
       - name: Verify critical local files
         run: |
           test -f assets/kernel-platform-bridge.js
           test -f assets/kernel-team-core-bridge.js
+          test -f assets/kernel-research-core-bridge.js
           test -f core/data/researchers.v2.json
           test -f core/data/projects.v2.json
           test -f core/data/publications.v2.json
@@ -74,8 +82,11 @@ jobs:
           sleep 2
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-platform-bridge.js'
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-team-core-bridge.js'
-          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMACION_ROUTE = "formacion"'
+          curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-research-core-bridge.js'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMATION_ROUTE = "formacion"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-team-core-bridge.js | grep -q 'data-kernel-platform-page="team-nine"'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-research-core-bridge.js | grep -q 'data-kernel-platform-page="publications-2"'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-research-core-bridge.js | grep -q 'data-kernel-platform-page="projects-2"'
           curl --fail --silent http://127.0.0.1:4173/core/data/researchers.v2.json | grep -q '"member_count": 9'
           curl --fail --silent http://127.0.0.1:4173/core/data/projects.v2.json | grep -q '"featured_approved_projects": 10'
           curl --fail --silent http://127.0.0.1:4173/core/data/publications.v2.json | grep -q '"unique_records": 162'
