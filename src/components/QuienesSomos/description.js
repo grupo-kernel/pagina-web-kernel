@@ -1,4 +1,5 @@
 import { publicacionesContenido } from "../../data/publicacionesContenido.js";
+import { METRICAS_INSTITUCIONALES } from "../../data/metricasInstitucionales.js";
 
 function getDOI(pub) {
     return String(pub?.DOI || pub?.doi || "")
@@ -106,19 +107,22 @@ export function createDescription(
                     <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
                             <p class="text-2xl font-black text-slate-900">
-                                ${publicacionesContenido.length}
+                                ${METRICAS_INSTITUCIONALES.integrantes}
                             </p>
                             <p class="text-xs text-slate-500 font-semibold">
                                 Investigadores
                             </p>
                         </div>
 
-                        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+                        <div
+                            class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center"
+                            title="${METRICAS_INSTITUCIONALES.descripcionArticulos}"
+                        >
                             <p class="text-2xl font-black text-slate-900">
-                                ${stats.totalPublicaciones}
+                                ${METRICAS_INSTITUCIONALES.articulosAcumuladosTexto}
                             </p>
                             <p class="text-xs text-slate-500 font-semibold">
-                                Publicaciones
+                                ${METRICAS_INSTITUCIONALES.etiquetaArticulos}
                             </p>
                         </div>
 
@@ -127,7 +131,7 @@ export function createDescription(
                                 ${stats.totalQ1}
                             </p>
                             <p class="text-xs text-slate-500 font-semibold">
-                                Publicaciones Q1
+                                Publicaciones Q1 registradas
                             </p>
                         </div>
 
@@ -140,6 +144,9 @@ export function createDescription(
                             </p>
                         </div>
                     </div>
+                    <p class="mt-4 text-xs leading-relaxed text-slate-500">
+                        ${METRICAS_INSTITUCIONALES.notaArticulos}
+                    </p>
                 </div>
 
                 <div class="space-y-5">
