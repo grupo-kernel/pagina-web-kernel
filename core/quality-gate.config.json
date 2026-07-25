@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "mode": "parallel-not-active",
+  "blocking": {
+    "researcher_count": true,
+    "duplicate_ids": true,
+    "duplicate_orcids": true,
+    "invalid_emails": true,
+    "invalid_orcids": true,
+    "missing_required_files": true,
+    "invalid_json": true
+  },
+  "warnings": {
+    "missing_optional_profiles": true,
+    "missing_planned_images": true,
+    "missing_translations": true,
+    "missing_optional_catalogs": true
+  },
+  "expected": {
+    "researcher_count": 9,
+    "researcher_ids": [
+      "miguel-leonardo",
+      "natanael-urena",
+      "randy-leonardo",
+      "antmel-rodriguez",
+      "marino-brito",
+      "marc-kelly-jean-philippe",
+      "jose-alberto-reyes",
+      "alicia-cordero",
+      "juan-torregrosa"
+    ]
+  },
+  "sources": {
+    "researchers": "core/data/researchers.v2.json",
+    "manifest": "core/manifest.json",
+    "translations_es": "translations/es.json",
+    "translations_en": "translations/en.json",
+    "publications": "data/publications.json",
+    "projects": "data/projects.json",
+    "services": "data/services.json",
+    "news": "data/news.json"
+  }
+}
