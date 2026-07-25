@@ -36,7 +36,7 @@ jobs:
   validate:
     name: Preserve platform and integrate Kernel Core
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - name: Checkout integration branch
         uses: actions/checkout@v4
@@ -103,6 +103,45 @@ jobs:
           curl --fail --silent --output /dev/null http://127.0.0.1:4173/miguel.jpg
           curl --fail --silent --output /dev/null http://127.0.0.1:4173/assets/img/alicia-cordero.svg
           curl --fail --silent --output /dev/null http://127.0.0.1:4173/assets/img/juan-torregrosa.svg
+      - name: Browser smoke test preserved and integrated routes
+        run: |
+          mkdir -p ci-browser
+          python3 -m http.server 4174 >/tmp/kernel-browser-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid' EXIT
+          sleep 2
+          browser="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "$browser"
+          dump_route() {
+            route="$1"
+            output="$2"
+            timeout 40s "$browser" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=12000 --dump-dom "http://127.0.0.1:4174/#/${route}" > "ci-browser/${output}.html" 2> "ci-browser/${output}.stderr"
+          }
+          dump_route herramientas herramientas
+          grep -qi 'Xmera' ci-browser/herramientas.html
+          grep -qi 'Banner' ci-browser/herramientas.html
+          dump_route laboratorioKernel laboratorio
+          grep -Eqi 'Laboratorio|Iniciar sesión|Acceso|Authentication|Sign in' ci-browser/laboratorio.html
+          dump_route equipment equipo
+          grep -q 'data-kernel-platform-page="team-nine"' ci-browser/equipo.html
+          grep -q 'Miguel A. Leonardo' ci-browser/equipo.html
+          dump_route formacion formacion
+          grep -q 'data-kernel-platform-page="academic-background"' ci-browser/formacion.html
+          dump_route publicaciones publicaciones
+          grep -q 'data-kernel-platform-page="publications-2"' ci-browser/publicaciones.html
+          grep -q '162' ci-browser/publicaciones.html
+          dump_route proyectos proyectos
+          grep -q 'data-kernel-platform-page="projects-2"' ci-browser/proyectos.html
+          grep -q '10' ci-browser/proyectos.html
+          printf 'Browser smoke test PASS: Laboratorio, Xmera, Banner, Equipo, Formación, Publicaciones 2.0 y Proyectos 2.0.\n' | tee ci-browser/result.txt
+      - name: Upload browser diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-browser-diagnostic
+          path: ci-browser/**
+          if-no-files-found: warn
+          retention-days: 7
       - name: Upload controlled platform preview
         uses: actions/upload-artifact@v4
         with:
@@ -142,9 +181,10 @@ jobs:
           }
           EOF
           test -f ci-results/platform-integration.log || printf 'Validation did not produce a log.\n' > ci-results/platform-integration.log
+          if [ -f ci-browser/result.txt ]; then cp ci-browser/result.txt ci-results/platform-browser-smoke.log; else printf 'Browser smoke test did not complete.\n' > ci-results/platform-browser-smoke.log; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ci-results/platform-integration.json ci-results/platform-integration.log
+          git add ci-results/platform-integration.json ci-results/platform-integration.log ci-results/platform-browser-smoke.log
           if git diff --cached --quiet; then
             exit 0
           fi
