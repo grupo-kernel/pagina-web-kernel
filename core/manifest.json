@@ -1,15 +1,18 @@
 {
   "schema_version": 1,
-  "core_version": "0.1.0",
+  "core_version": "0.2.0",
   "status": "parallel-not-active",
   "public_site_untouched": true,
   "default_locale": "es",
   "supported_locales": ["es", "en"],
   "sources": {
     "researchers": {
-      "path": "data/researchers.json",
+      "active_path": "data/researchers.json",
+      "candidate_path": "core/data/researchers.v2.json",
       "required": true,
-      "migration_status": "existing-source",
+      "migration_status": "candidate-created-not-active",
+      "validation": "core/validate-researchers-v2.js",
+      "audit": "core/audits/researchers-audit.md",
       "consumers": ["home", "team", "academic-background", "publications", "projects"]
     },
     "publications": {
@@ -52,6 +55,7 @@
   "activation": {
     "enabled": false,
     "strategy": "module-by-module",
+    "next_candidate": "researchers-v2",
     "rollback": "remove module import and retain current renderer"
   }
 }
