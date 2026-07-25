@@ -29,6 +29,7 @@ Se verificaron las nueve rutas principales:
 - Página de Proyectos: conectada con `projects.v2.json`, `researchers.v2.json` y el renderizador público.
 - Equipo y Formación: marcados como `public-ready`, sin activar todavía producción.
 - Página de Contacto: conserva la acción de Formspree y su estructura accesible.
+- Página de Noticias: conserva las siete noticias y utiliza la fotografía específica `antmel_rodriguez.jpg` para mejorar el encuadre de la defensa doctoral de Antmel.
 - Ramas y SHA de reversión: registrados.
 
 ## Fotografía de Miguel
