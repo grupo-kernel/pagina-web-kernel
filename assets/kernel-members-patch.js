@@ -1,249 +1,37 @@
-(() => {
-  "use strict";
-
-  const STYLE_ID = "kernel-members-live-styles";
-  const TEAM_SECTION_ID = "kernel-international-members";
-  const AUTHOR_PANEL_ID = "kernel-international-author-panel";
-
-  const members = [
-    {
-      id: "alicia-cordero",
-      initials: "AC",
-      name: "Dra. Alicia Cordero Barbero",
-      shortName: "Alicia Cordero Barbero, Ph.D",
-      role: "Catedrática de Matemática Aplicada e investigadora en análisis numérico",
-      institution: "Universitat Politècnica de València · España",
-      description: "Investigadora en métodos iterativos para ecuaciones y sistemas no lineales, análisis de convergencia, estabilidad, dinámica discreta, ecuaciones matriciales y aplicaciones científicas.",
-      degree: "Doctora en Ciencias Matemáticas — Universitat Jaume I (2003), Sobresaliente Cum Laude",
-      bachelor: "Licenciada en Ciencias Matemáticas — Universitat de València (1995)",
-      currentPosition: "Catedrática de Universidad, Departamento de Matemática Aplicada, ETSI de Telecomunicación, UPV",
-      experience: [
-        "Catedrática de Universidad desde 2017 y profesora de la UPV desde 1996.",
-        "Miembro del Instituto Universitario de Matemática Multidisciplinar.",
-        "Tres sexenios de investigación y cinco quinquenios docentes.",
-        "Dirección y codirección de tesis doctorales sobre métodos iterativos, sistemas no lineales, EDP y dinámica numérica."
-      ],
-      indicators: { hIndex: 33, sexenios: 3, articles: 249, latestYear: 2026 },
-      areas: "Métodos iterativos, sistemas no lineales, estabilidad, dinámica real y compleja, ecuaciones matriciales y análisis numérico",
-      orcid: "https://orcid.org/0000-0002-7462-9173",
-      profile: "https://www.upv.es/ficha-personal/acordero",
-      email: "mailto:acordero@mat.upv.es",
-      recentPublications: [
-        { year: 2026, journal: "Algorithms", title: "A Newton-Based Tuna Swarm Optimization Algorithm for Solving Nonlinear Problems with Application to Differential Equations", doi: "10.3390/a19010040" },
-        { year: 2025, journal: "Applied Mathematics and Computation", title: "First optimal vectorial eighth-order iterative scheme for solving non-linear systems", doi: "10.1016/j.amc.2025.129401" },
-        { year: 2025, journal: "Mathematics", title: "A New Perspective on the Convergence of Mean-Based Methods for Nonlinear Equations", doi: "10.3390/math13213525" },
-        { year: 2025, journal: "Applied Numerical Mathematics", title: "High-level convergence order accelerators of iterative methods for nonlinear problems", doi: "10.1016/j.apnum.2025.07.003" },
-        { year: 2024, journal: "Mathematics and Computers in Simulation", title: "Increasing in three units the order of convergence of iterative methods for solving nonlinear systems", doi: "10.1016/j.matcom.2024.05.001" }
-      ]
-    },
-    {
-      id: "juan-torregrosa",
-      initials: "JT",
-      name: "Dr. Juan Ramón Torregrosa Sánchez",
-      shortName: "Juan Ramón Torregrosa Sánchez, Ph.D",
-      role: "Catedrático de Matemática Aplicada e investigador en análisis numérico",
-      institution: "Universitat Politècnica de València · España",
-      description: "Investigador en métodos iterativos, sistemas no lineales, análisis matricial, matrices con estructura, convergencia, estabilidad y dirección de investigación doctoral.",
-      degree: "Doctor en Ciencias Matemáticas — Universitat de València (1990), Sobresaliente Cum Laude",
-      bachelor: "Licenciado en Ciencias Matemáticas — Universitat de València (1982)",
-      currentPosition: "Catedrático de Universidad, Departamento de Matemática Aplicada, ETSI de Telecomunicación, UPV",
-      experience: [
-        "Catedrático de Universidad y profesor de la UPV desde 1981.",
-        "Miembro del Instituto Universitario de Matemática Multidisciplinar.",
-        "Seis sexenios de investigación y seis quinquenios docentes.",
-        "Dirección de tesis doctorales en métodos iterativos, análisis matricial, EDP y sistemas no lineales."
-      ],
-      indicators: { hIndex: 33, sexenios: 6, articles: 294, latestYear: 2026 },
-      areas: "Métodos iterativos, sistemas no lineales, análisis matricial, matrices estructuradas, estabilidad y modelización matemática",
-      orcid: "https://orcid.org/0000-0002-9893-0761",
-      profile: "https://www.upv.es/ficha-personal/jrtorre",
-      email: "mailto:jrtorre@mat.upv.es",
-      recentPublications: [
-        { year: 2026, journal: "Journal of Computational and Applied Mathematics", title: "A combined Method Of Lines and Orthogonal Collocation with Second kind Chebyshev nodes for convection-diffusion-reaction equation with Danckwerts Conditions", doi: "10.1016/j.cam.2025.116731" },
-        { year: 2026, journal: "Algorithms", title: "A Newton-Based Tuna Swarm Optimization Algorithm for Solving Nonlinear Problems with Application to Differential Equations", doi: "10.3390/a19010040" },
-        { year: 2025, journal: "Applied Mathematics and Computation", title: "First optimal vectorial eighth-order iterative scheme for solving non-linear systems", doi: "10.1016/j.amc.2025.129401" },
-        { year: 2025, journal: "Applied Numerical Mathematics", title: "High-level convergence order accelerators of iterative methods for nonlinear problems", doi: "10.1016/j.apnum.2025.07.003" },
-        { year: 2024, journal: "Mathematics and Computers in Simulation", title: "Increasing in three units the order of convergence of iterative methods for solving nonlinear systems", doi: "10.1016/j.matcom.2024.05.001" }
-      ]
-    }
-  ];
-
-  function currentRoute() {
-    return window.location.hash.replace(/^#\/?/, "").split(/[/?]/)[0].trim().toLowerCase();
-  }
-
-  function ensureStyles() {
-    if (document.getElementById(STYLE_ID)) return;
-    const style = document.createElement("style");
-    style.id = STYLE_ID;
-    style.textContent = `
-      .kernel-live-update{width:min(100%,1180px);margin:2rem auto;padding:clamp(1.25rem,3vw,2.25rem);border:1px solid #d8e5e8;border-radius:1.5rem;background:linear-gradient(145deg,#fff 0%,#f6fbfb 100%);box-shadow:0 18px 55px rgba(6,20,26,.10);color:#0f172a}
-      .kernel-live-update__eyebrow{display:inline-flex;margin-bottom:.65rem;color:#0f5b5d;font-size:.78rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
-      .kernel-live-update__title{margin:0;color:#071820;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;line-height:1.12}
-      .kernel-live-update__intro{max-width:900px;margin:.8rem 0 0;color:#52636d;line-height:1.7}
-      .kernel-live-members-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.35rem}
-      .kernel-live-member{padding:1.25rem;border:1px solid #dce7e9;border-radius:1.2rem;background:#fff;box-shadow:0 10px 28px rgba(15,91,93,.08)}
-      .kernel-live-member__identity{display:flex;align-items:center;gap:1rem}
-      .kernel-live-member__avatar{display:grid;place-items:center;width:76px;height:76px;flex:0 0 76px;border-radius:1.1rem;background:linear-gradient(135deg,#0f5b5d,#123c52);color:#fff;font-family:Georgia,"Times New Roman",serif;font-size:1.55rem;font-weight:900}
-      .kernel-live-member h3{margin:0;color:#071820;font-size:1.25rem;font-weight:900;line-height:1.2}
-      .kernel-live-member__institution{margin:.3rem 0 0;color:#61727b;font-size:.83rem;font-weight:700}
-      .kernel-live-member__role{margin:1rem 0 .45rem;color:#0f5b5d;font-weight:900}
-      .kernel-live-member__description{margin:0;color:#52636d;line-height:1.6}
-      .kernel-live-member__section{margin-top:1rem;padding-top:1rem;border-top:1px solid #e4ecee}
-      .kernel-live-member__section h4{margin:0 0 .55rem;color:#071820;font-size:.82rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
-      .kernel-live-member__section ul{margin:0;padding-left:1.15rem;color:#52636d;font-size:.9rem;line-height:1.6}
-      .kernel-live-member__metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:1rem}
-      .kernel-live-member__metric{padding:.8rem;border-radius:.9rem;background:#eef7f6;text-align:center}
-      .kernel-live-member__metric strong{display:block;color:#0f5b5d;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem}
-      .kernel-live-member__metric span{display:block;margin-top:.2rem;color:#52636d;font-size:.69rem;font-weight:700}
-      .kernel-live-member__links{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
-      .kernel-live-member__links a{display:inline-flex;align-items:center;padding:.55rem .8rem;border-radius:.75rem;background:#0f5b5d;color:#fff;font-size:.78rem;font-weight:800;text-decoration:none}
-      .kernel-author-card{width:100%;margin-top:.65rem;padding:.85rem;border:1px solid #d9e5e7;border-radius:1rem;background:#fff;text-align:left;box-shadow:0 5px 16px rgba(6,20,26,.05)}
-      .kernel-author-card:hover,.kernel-author-card.is-active{border-color:#0f5b5d;background:#eef8f7}
-      .kernel-author-card__row{display:flex;align-items:center;gap:.75rem}
-      .kernel-author-card__avatar{display:grid;place-items:center;width:52px;height:52px;flex:0 0 52px;border-radius:.8rem;background:linear-gradient(135deg,#0f5b5d,#123c52);color:#fff;font-weight:900}
-      .kernel-author-card strong{display:block;color:#071820;font-size:.95rem}
-      .kernel-author-card span{display:block;margin-top:.2rem;color:#61727b;font-size:.76rem}
-      .kernel-author-detail{margin-top:1rem;padding:1rem;border:1px solid #d9e5e7;border-radius:1.1rem;background:#f8fbfb}
-      .kernel-author-detail h3{margin:0;color:#071820;font-size:1.35rem;font-weight:900}
-      .kernel-author-detail p{margin:.45rem 0 0;color:#52636d;line-height:1.55}
-      .kernel-recent-pubs{display:grid;gap:.75rem;margin-top:1rem}
-      .kernel-recent-pub{padding:.85rem;border:1px solid #e0e9eb;border-radius:.9rem;background:#fff}
-      .kernel-recent-pub__meta{color:#0f5b5d;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-      .kernel-recent-pub h4{margin:.35rem 0 .5rem;color:#071820;font-size:.95rem;line-height:1.4}
-      .kernel-recent-pub a{color:#0f5b5d;font-size:.78rem;font-weight:800}
-      @media(max-width:780px){.kernel-live-members-grid{grid-template-columns:1fr}.kernel-live-member__metrics{grid-template-columns:1fr}}
-    `;
-    document.head.appendChild(style);
-  }
-
-  function ancestorContext(element) {
-    let node = element;
-    let context = "";
-    for (let depth = 0; node && depth < 5; depth += 1, node = node.parentElement) context += ` ${node.textContent || ""}`;
-    return context.toLowerCase();
-  }
-
-  function updateMemberCounts() {
-    const scope = document.getElementById("main") || document.body;
-    if (!scope) return;
-    for (const element of scope.querySelectorAll("*")) {
-      if (element.children.length > 0) continue;
-      const text = (element.textContent || "").trim();
-      if (!text) continue;
-      if (/^7\s*\+?$/.test(text) && ancestorContext(element).includes("miembro")) element.textContent = "9";
-      if (/\b(?:7|siete)\s+(?:miembros|investigadores)\b/i.test(text)) {
-        element.textContent = text.replace(/\b7\s+(miembros|investigadores)\b/gi,"9 $1").replace(/\bsiete\s+(miembros|investigadores)\b/gi,"nueve $1");
-      }
-    }
-  }
-
-  function metricMarkup(member) {
-    return `<div class="kernel-live-member__metrics">
-      <div class="kernel-live-member__metric"><strong>${member.indicators.articles}</strong><span>artículos científicos registrados en el CVN</span></div>
-      <div class="kernel-live-member__metric"><strong>${member.indicators.hIndex}</strong><span>índice h declarado en el CVN</span></div>
-      <div class="kernel-live-member__metric"><strong>${member.indicators.sexenios}</strong><span>sexenios de investigación</span></div>
-    </div>`;
-  }
-
-  function memberCard(member) {
-    return `<article class="kernel-live-member" id="${member.id}">
-      <div class="kernel-live-member__identity"><div class="kernel-live-member__avatar" aria-hidden="true">${member.initials}</div><div><h3>${member.name}</h3><p class="kernel-live-member__institution">${member.institution}</p></div></div>
-      <p class="kernel-live-member__role">${member.role}</p><p class="kernel-live-member__description">${member.description}</p>
-      ${metricMarkup(member)}
-      <div class="kernel-live-member__section"><h4>Formación académica</h4><ul><li>${member.degree}</li><li>${member.bachelor}</li></ul></div>
-      <div class="kernel-live-member__section"><h4>Trayectoria y experiencia</h4><ul>${member.experience.map(item=>`<li>${item}</li>`).join("")}</ul></div>
-      <div class="kernel-live-member__section"><h4>Áreas de investigación</h4><p class="kernel-live-member__description">${member.areas}</p></div>
-      <div class="kernel-live-member__links"><a href="${member.profile}" target="_blank" rel="noopener noreferrer">Perfil UPV</a><a href="${member.orcid}" target="_blank" rel="noopener noreferrer">ORCID</a><a href="${member.email}">Correo</a></div>
-    </article>`;
-  }
-
-  function addTeamSection() {
-    const main = document.getElementById("main");
-    if (!main || currentRoute() !== "equipment" || document.getElementById(TEAM_SECTION_ID)) return;
-    const section = document.createElement("section");
-    section.id = TEAM_SECTION_ID;
-    section.className = "kernel-live-update";
-    section.innerHTML = `<span class="kernel-live-update__eyebrow">Investigadores internacionales · Miembros de El Kernel</span><h2 class="kernel-live-update__title">Colaboración científica internacional</h2><p class="kernel-live-update__intro">El Grupo de Investigación El Kernel está integrado por 9 investigadores. Las siguientes fichas se han organizado a partir de los currículos CVN oficiales generados por la Universitat Politècnica de València el 25 de marzo de 2026.</p><div class="kernel-live-members-grid">${members.map(memberCard).join("")}</div>`;
-    main.appendChild(section);
-  }
-
-  function findAuthorSelectorContainer() {
-    const main = document.getElementById("main");
-    if (!main) return null;
-    const heading = [...main.querySelectorAll("h1,h2,h3,p")].find(el => /seleccione un investigador/i.test(el.textContent || ""));
-    if (!heading) return null;
-    let node = heading.parentElement;
-    for (let i=0; node && i<5; i+=1, node=node.parentElement) {
-      if (node.querySelectorAll("button").length >= 2) return node;
-    }
-    return heading.parentElement;
-  }
-
-  function renderAuthorDetail(member, container) {
-    container.querySelectorAll(".kernel-author-card").forEach(button => button.classList.toggle("is-active", button.dataset.memberId === member.id));
-    let panel = document.getElementById(AUTHOR_PANEL_ID);
-    if (!panel) {
-      panel = document.createElement("section");
-      panel.id = AUTHOR_PANEL_ID;
-      panel.className = "kernel-author-detail";
-      container.appendChild(panel);
-    }
-    panel.innerHTML = `<h3>${member.name}</h3><p><strong>${member.role}</strong></p><p>${member.areas}</p>${metricMarkup(member)}<div class="kernel-recent-pubs">${member.recentPublications.map(pub=>`<article class="kernel-recent-pub"><div class="kernel-recent-pub__meta">${pub.year} · ${pub.journal}</div><h4>${pub.title}</h4><a href="https://doi.org/${pub.doi}" target="_blank" rel="noopener noreferrer">Abrir DOI: ${pub.doi}</a></article>`).join("")}</div><div class="kernel-live-member__links"><a href="${member.profile}" target="_blank" rel="noopener noreferrer">Perfil institucional</a><a href="${member.orcid}" target="_blank" rel="noopener noreferrer">ORCID</a></div>`;
-    panel.scrollIntoView({behavior:"smooth",block:"nearest"});
-  }
-
-  function addPublicationAuthors() {
-    if (currentRoute() !== "publicaciones") return;
-    const container = findAuthorSelectorContainer();
-    if (!container || container.dataset.kernelInternationalReady === "true") return;
-    container.dataset.kernelInternationalReady = "true";
-    members.forEach(member => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "kernel-author-card";
-      button.dataset.memberId = member.id;
-      button.innerHTML = `<span class="kernel-author-card__row"><span class="kernel-author-card__avatar">${member.initials}</span><span><strong>${member.shortName}</strong><span>${member.indicators.articles} publicaciones CVN · Última: ${member.indicators.latestYear}</span><span>${member.areas}</span></span></span>`;
-      button.addEventListener("click", () => renderAuthorDetail(member, container));
-      container.appendChild(button);
-    });
-  }
-
-  function removeLegacyPublicationBlock() {
-    const main = document.getElementById("main");
-    if (!main || currentRoute() !== "publicaciones") return;
-    [...main.querySelectorAll("section")].forEach(section => {
-      const text = (section.textContent || "").toLowerCase();
-      if (text.includes("producción incorporada de alicia cordero") || text.includes("actualización bibliográfica")) section.remove();
-    });
-  }
-
-  function removeInactiveSections() {
-    const team = document.getElementById(TEAM_SECTION_ID);
-    if (team && currentRoute() !== "equipment") team.remove();
-    const panel = document.getElementById(AUTHOR_PANEL_ID);
-    if (panel && currentRoute() !== "publicaciones") panel.remove();
-  }
-
-  function applyPatch() {
-    ensureStyles();
-    updateMemberCounts();
-    removeInactiveSections();
-    removeLegacyPublicationBlock();
-    addTeamSection();
-    addPublicationAuthors();
-  }
-
-  let scheduled = false;
-  function schedulePatch() {
-    if (scheduled) return;
-    scheduled = true;
-    window.requestAnimationFrame(() => { scheduled = false; applyPatch(); });
-  }
-
-  new MutationObserver(schedulePatch).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
-  window.addEventListener("hashchange", schedulePatch);
-  window.addEventListener("pageshow", schedulePatch);
-  document.addEventListener("DOMContentLoaded", schedulePatch,{once:true});
-  schedulePatch();
+(()=>{
+"use strict";
+const STYLE="kernel-members-live-styles",TEAM="kernel-international-members",AUTHORS="kernel-international-author-group",OLD="kernel-international-author-panel";
+const pubs=[
+[2026,"Applied Numerical Mathematics","Efficient solution of convection-dominated and diffusion-reaction problems via a novel eighth-order iterative method","10.1016/j.apnum.2026.06.004","S/C"],
+[2026,"Mathematics","First Optimal Eighth-Order Families with Multivariable Scalar Weight Functions for Nonlinear Systems and Applications to Fredholm Integral and Semilinear Elliptic Problems","10.3390/math14122114","Q1"],
+[2026,"Mathematics","Efficiency and Stability of a New Hybrid Unconstrained Optimization Algorithm with Quasi-Newton Updates and Higher-Order Methods","10.3390/math14101746","Q1"],
+[2026,"Mathematics","Generalized Traub Family for Solving Nonlinear Systems: Fourth-Order Optimal Method and Dynamical Analysis","10.3390/math14071161","Q1"],
+[2026,"Axioms","Consistency and Quantitative Backward Stability Analysis of the Two-Step Jarratt Method for Nonlinear Systems","10.3390/axioms15030186","Q2"],
+[2026,"Algorithms","A Newton-Based Tuna Swarm Optimization Algorithm for Solving Nonlinear Problems with Application to Differential Equations","10.3390/a19010040","Q2"],
+[2025,"Applied Numerical Mathematics","High-level convergence order accelerators of iterative methods for nonlinear problems","10.1016/j.apnum.2025.07.003","S/C"],
+[2025,"Mathematics","A New Perspective on the Convergence of Mean-Based Methods for Nonlinear Equations","10.3390/math13213525","Q1"],
+[2025,"Algorithms","A Hybrid Steffensen–Genetic Algorithm for Finding Multi-Roots of Nonlinear Equations and Applications to Biomedical Engineering","10.3390/a18090582","Q2"],
+[2025,"Journal of Computational Methods in Sciences and Engineering","About the stability of self-accelerating parameters in vectorial iterative methods without memory","10.1177/14727978251361407","S/C"]
+].map(([year,journal,title,doi,q])=>({year,journal,title,doi,q}));
+const members=[
+{id:"alicia-cordero",photo:"./assets/alicia-cordero-photo.svg",name:"Dra. Alicia Cordero Barbero",short:"Alicia Cordero Barbero, Ph.D.",label:"Investigadora internacional · Miembro de El Kernel",role:"Catedrática de Matemática Aplicada e investigadora en análisis numérico",institution:"Universitat Politècnica de València · España",articles:253,areas:"Métodos iterativos, sistemas no lineales, estabilidad, dinámica real y compleja, ecuaciones matriciales y análisis numérico",orcid:"https://orcid.org/0000-0002-7462-9173",profile:"https://www.upv.es/ficha-personal/acordero",email:"mailto:acordero@mat.upv.es"},
+{id:"juan-torregrosa",photo:"./assets/juan-torregrosa-photo.svg",name:"Dr. Juan Ramón Torregrosa Sánchez",short:"Juan Ramón Torregrosa Sánchez, Ph.D.",label:"Investigador internacional · Miembro de El Kernel",role:"Catedrático de Matemática Aplicada e investigador en análisis numérico",institution:"Universitat Politècnica de València · España",articles:298,areas:"Métodos iterativos, sistemas no lineales, análisis matricial, matrices estructuradas, estabilidad y modelización matemática",orcid:"https://orcid.org/0000-0002-9893-0761",profile:"https://www.upv.es/ficha-personal/jrtorre",email:"mailto:jrtorre@mat.upv.es"}
+];
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]);
+const route=()=>location.hash.replace(/^#\/?/,"").split(/[/?]/)[0].trim().toLowerCase();
+function styles(){if(document.getElementById(STYLE))return;let s=document.createElement("style");s.id=STYLE;s.textContent=`
+.kernel-live-update{width:min(100%,1180px);margin:2rem auto;padding:clamp(1.25rem,3vw,2.25rem);border:1px solid #d8e5e8;border-radius:1.5rem;background:linear-gradient(145deg,#fff,#f6fbfb);box-shadow:0 18px 55px rgba(6,20,26,.1);color:#0f172a}.kernel-live-update__eyebrow,.kernel-international-author-group__label{display:inline-flex;color:#0f5b5d;font-size:.72rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase}.kernel-live-update h2{margin:.5rem 0;color:#071820;font:800 clamp(1.7rem,4vw,2.7rem)/1.12 Georgia,serif}.kernel-live-update__intro{max-width:900px;color:#52636d;line-height:1.7}.kernel-live-members-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.35rem}.kernel-live-member{padding:1.25rem;border:1px solid #dce7e9;border-radius:1.2rem;background:#fff;box-shadow:0 10px 28px rgba(15,91,93,.08)}.kernel-live-member__identity{display:flex;align-items:center;gap:1rem}.kernel-live-member__photo{width:104px;height:130px;flex:0 0 104px;border:3px solid #d5a54a;border-radius:1rem;object-fit:cover;object-position:center top;box-shadow:0 10px 24px rgba(6,20,26,.14)}.kernel-live-member__badge{display:inline-flex;margin-bottom:.45rem;padding:.3rem .58rem;border:1px solid #cfe0e3;border-radius:999px;background:#eef8f7;color:#0f5b5d;font-size:.64rem;font-weight:900;text-transform:uppercase}.kernel-live-member h3{margin:0;color:#071820;font-size:1.22rem;font-weight:900}.kernel-live-member__institution{margin:.3rem 0;color:#61727b;font-size:.82rem;font-weight:700}.kernel-live-member__role{margin:1rem 0 .45rem;color:#0f5b5d;font-weight:900}.kernel-live-member__description{margin:0;color:#52636d;line-height:1.6}.kernel-live-member__metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-top:1rem}.kernel-live-member__metric{padding:.8rem;border-radius:.9rem;background:#eef7f6;text-align:center}.kernel-live-member__metric strong{display:block;color:#0f5b5d;font:700 1.5rem Georgia,serif}.kernel-live-member__metric span{font-size:.7rem;font-weight:700;color:#52636d}.kernel-live-member__links,.kernel-detail-links{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}.kernel-live-member__links a,.kernel-detail-links a{display:inline-flex;padding:.58rem .82rem;border-radius:.75rem;background:#0f5b5d;color:#fff;font-size:.78rem;font-weight:800;text-decoration:none}.kernel-international-author-group{margin-top:1.35rem;padding-top:1.25rem;border-top:2px solid #d5a54a}.kernel-international-author-grid{display:flex;flex-direction:column;gap:.75rem;margin-top:.8rem}.kernel-author-card{width:100%;padding:.85rem;border:1px solid #d9e5e7;border-radius:1rem;background:#fff;text-align:left;box-shadow:0 5px 16px rgba(6,20,26,.05)}.kernel-author-card:hover,.kernel-author-card.is-active{border-color:#0f5b5d;background:#eef8f7}.kernel-author-card__row{display:flex;align-items:center;gap:.75rem}.kernel-author-card__avatar{width:58px;height:72px;flex:0 0 58px;border:2px solid #d5a54a;border-radius:.75rem;object-fit:cover;object-position:center top}.kernel-author-card strong{display:block;color:#071820;font-size:.92rem}.kernel-author-card span span{display:block;margin-top:.2rem;color:#61727b;font-size:.72rem}.kernel-detail-note{margin:0 0 1rem;padding:.8rem;border:1px solid rgba(255,255,255,.12);border-radius:1rem;background:rgba(255,255,255,.06);color:#cbd5e1;font-size:.78rem;line-height:1.55}aside[data-kernel-international-active] button[data-id]{border-color:#e2e8f0!important;background:#fff!important;color:#0f172a!important;box-shadow:none!important}aside[data-kernel-international-active] button[data-id] p{color:#64748b!important}@media(max-width:780px){.kernel-live-members-grid{grid-template-columns:1fr}.kernel-live-member__identity{align-items:flex-start}.kernel-live-member__photo{width:88px;height:110px;flex-basis:88px}}
+`;document.head.appendChild(s)}
+function counts(){let scope=document.getElementById("main")||document.body;if(!scope)return;scope.querySelectorAll("*").forEach(el=>{if(el.children.length)return;let t=(el.textContent||"").trim();if(!t)return;let ctx="",n=el;for(let i=0;n&&i<5;i++,n=n.parentElement)ctx+=" "+(n.textContent||"");if(/^[78]\s*\+?$/.test(t)&&/(miembro|integrante|investigador)/i.test(ctx))el.textContent="9";else if(/\b(?:7|8|siete|ocho)\s+(?:miembros|integrantes|investigadores)\b/i.test(t))el.textContent=t.replace(/\b(?:7|8|siete|ocho)\s+(miembros|integrantes|investigadores)\b/gi,"9 $1")})}
+const metrics=m=>`<div class="kernel-live-member__metrics"><div class="kernel-live-member__metric"><strong>${m.articles}</strong><span>artículos de revista · UPV</span></div><div class="kernel-live-member__metric"><strong>10</strong><span>publicaciones recientes enlazadas</span></div></div>`;
+function teamCard(m){return`<article class="kernel-live-member" id="${m.id}"><div class="kernel-live-member__identity"><img class="kernel-live-member__photo" src="${m.photo}" alt="Retrato profesional de ${esc(m.short)}" loading="lazy"><div><span class="kernel-live-member__badge">${esc(m.label)}</span><h3>${esc(m.name)}</h3><p class="kernel-live-member__institution">${esc(m.institution)}</p></div></div><p class="kernel-live-member__role">${esc(m.role)}</p><p class="kernel-live-member__description">${esc(m.areas)}</p>${metrics(m)}<div class="kernel-live-member__links"><a href="${m.orcid}" target="_blank" rel="noopener noreferrer">ORCID</a><a href="${m.profile}" target="_blank" rel="noopener noreferrer">Perfil UPV</a><a href="${m.email}">Correo</a></div></article>`}
+function addTeam(){let main=document.getElementById("main");if(!main||route()!=="equipment"||document.getElementById(TEAM))return;let s=document.createElement("section");s.id=TEAM;s.className="kernel-live-update";s.innerHTML=`<span class="kernel-live-update__eyebrow">Investigadores internacionales · Miembros de El Kernel</span><h2>Colaboración científica internacional</h2><p class="kernel-live-update__intro">El Grupo de Investigación El Kernel está integrado por 9 investigadores. Alicia Cordero Barbero y Juan Ramón Torregrosa Sánchez se incorporan como investigadores internacionales miembros del grupo.</p><div class="kernel-live-members-grid">${members.map(teamCard).join("")}</div>`;main.appendChild(s)}
+function authorContext(){let aside=[...document.querySelectorAll("aside")].find(a=>/seleccione un investigador/i.test(a.textContent||""));if(!aside)return null;let native=[...aside.querySelectorAll("button[data-id]")];if(!native.length)return null;return{aside,native,list:native[0].parentElement}}
+function pubCard(p){return`<article class="mb-5 rounded-3xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm md:p-6"><div class="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-start sm:justify-between"><div><p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#805615]">Revista científica</p><h3 class="mt-1 text-xl font-black leading-tight text-[#071820]">${esc(p.journal)}</h3></div><div class="flex shrink-0 gap-2"><span class="rounded-full bg-[#071820] px-3 py-1.5 text-xs font-black text-white">${p.year}</span><span class="rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-black text-emerald-900">${p.q}</span></div></div><h4 class="mt-6 text-base font-black leading-snug text-slate-950 md:text-lg">${esc(p.title)}</h4><p class="mt-3 break-all font-mono text-xs font-bold text-slate-500"><span class="font-sans font-black text-slate-700">DOI:</span> ${esc(p.doi)}</p><div class="mt-5 border-t border-slate-100 pt-4"><a href="https://doi.org/${p.doi}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl bg-[#0f5b5d] px-4 py-2 text-sm font-black text-white">Abrir DOI ↗</a></div></article>`}
+function detail(m){return`<div class="flex h-full flex-col text-white"><div class="mb-5 flex items-start justify-between gap-4 border-b border-white/10 pb-5"><div class="flex items-start gap-4"><img src="${m.photo}" alt="Retrato profesional de ${esc(m.short)}" class="hidden h-20 w-20 rounded-2xl border-2 border-emerald-300 object-cover object-top shadow-lg sm:block"><div><p class="text-xs font-black uppercase tracking-[0.18em] text-[#efc86f]">${esc(m.label)}</p><h2 id="titulo-detalle-publicaciones" class="mt-1 text-xl font-black md:text-2xl">${esc(m.name)}</h2><p class="mt-2 text-sm leading-relaxed text-slate-300">${esc(m.role)}</p></div></div><button id="kernel-close-detail" type="button" aria-label="Cerrar publicaciones" class="text-3xl text-white md:hidden">×</button></div><div class="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4"><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-xs font-black uppercase text-emerald-200">Artículos de revista</p><p class="mt-1 text-2xl font-black">${m.articles}</p></div><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-xs font-black uppercase text-emerald-200">Mostrados aquí</p><p class="mt-1 text-2xl font-black">10</p></div><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-xs font-black uppercase text-emerald-200">Último año</p><p class="mt-1 text-lg font-black">2026</p></div><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-xs font-black uppercase text-emerald-200">Fuente del total</p><p class="mt-1 text-lg font-black">UPV</p></div></div><section class="mb-5 rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-[10px] font-black uppercase tracking-[0.18em] text-[#efc86f]">Áreas de investigación</p><p class="mt-2 text-sm leading-relaxed text-slate-300">${esc(m.areas)}</p><div class="kernel-detail-links"><a href="${m.orcid}" target="_blank" rel="noopener noreferrer">ORCID · Producción completa</a><a href="${m.profile}" target="_blank" rel="noopener noreferrer">Perfil institucional UPV</a></div></section><p class="kernel-detail-note">El total de ${m.articles} artículos de revista procede del perfil institucional de la UPV, consultado el 24 de julio de 2026. Se muestran las 10 publicaciones recientes verificadas en el catálogo del grupo.</p><div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">${pubs.map(pubCard).join("")}</div></div>`}
+function show(m,c){c.aside.dataset.kernelInternationalActive=m.id;c.list.querySelectorAll(".kernel-author-card").forEach(b=>{let a=b.dataset.memberId===m.id;b.classList.toggle("is-active",a);b.setAttribute("aria-pressed",a)});let box=document.getElementById("detalle-container"),panel=box?.firstElementChild;if(!box||!panel)return;panel.innerHTML=detail(m);if(innerWidth<768){box.classList.remove("hidden");box.classList.add("flex");box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");document.body.style.overflow="hidden"}panel.querySelector("#kernel-close-detail")?.addEventListener("click",()=>{box.classList.add("hidden");box.classList.remove("flex");document.body.style.overflow=""});if(innerWidth>=768)box.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function addAuthors(){if(route()!=="publicaciones")return;let c=authorContext();if(!c||document.getElementById(AUTHORS))return;let s=document.createElement("section");s.id=AUTHORS;s.className="kernel-international-author-group";s.innerHTML=`<p class="kernel-international-author-group__label">Investigadores internacionales · Miembros de El Kernel</p><div class="kernel-international-author-grid"></div>`;let g=s.lastElementChild;members.forEach(m=>{let b=document.createElement("button");b.type="button";b.className="kernel-author-card";b.dataset.memberId=m.id;b.setAttribute("aria-pressed","false");b.innerHTML=`<span class="kernel-author-card__row"><img class="kernel-author-card__avatar" src="${m.photo}" alt="Retrato profesional de ${esc(m.short)}" loading="lazy"><span><strong>${esc(m.short)}</strong><span>${m.articles} artículos de revista · Perfil institucional UPV</span><span>10 publicaciones recientes · Acceso ORCID</span></span></span>`;b.onclick=()=>show(m,c);g.appendChild(b)});c.list.appendChild(s)}
+function clean(){document.getElementById(OLD)?.remove();let main=document.getElementById("main");if(main&&route()==="publicaciones")main.querySelectorAll("section").forEach(s=>{let t=(s.textContent||"").toLowerCase();if(t.includes("producción incorporada de alicia cordero")||t.includes("actualización bibliográfica"))s.remove()});let team=document.getElementById(TEAM);if(team&&route()!=="equipment")team.remove()}
+function apply(){styles();counts();clean();addTeam();addAuthors()}
+let pending=false;const schedule=()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply()})};new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener("hashchange",schedule);addEventListener("pageshow",schedule);document.addEventListener("DOMContentLoaded",schedule,{once:true});schedule();
 })();
