@@ -1,0 +1,31 @@
+name: Normalize Public Navigation
+
+on:
+  push:
+    branches: [fase-2a-public-reactivation]
+    paths:
+      - 'scripts/normalize-public-navigation.py'
+      - '.github/workflows/normalize-public-navigation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.event.head_commit.message == 'Stage public navigation normalization'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout activation branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2a-public-reactivation
+      - name: Normalize shared navigation
+        run: python scripts/normalize-public-navigation.py
+      - name: Commit normalized pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html quienes_somos.html equipo.html formacion.html lineas.html proyectos.html publicaciones.html noticias.html contacto.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Normalize public navigation and document headers"
+          git push origin HEAD:fase-2a-public-reactivation
