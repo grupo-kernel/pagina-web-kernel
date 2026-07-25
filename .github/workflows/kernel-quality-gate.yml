@@ -52,5 +52,14 @@ jobs:
       - name: Validate news candidate
         run: node core/validate-news-v2.mjs
 
-      - name: Verify generated files are reproducible
+      - name: Validate centralized translations
+        run: node core/validate-translations.mjs
+
+      - name: Build cross-module relations index
+        run: node core/build-relations-index.mjs
+
+      - name: Validate cross-module relations index
+        run: node core/validate-relations-index.mjs
+
+      - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
