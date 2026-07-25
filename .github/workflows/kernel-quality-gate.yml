@@ -24,7 +24,7 @@ jobs:
   validate:
     name: Validate Kernel Core
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,6 +45,12 @@ jobs:
 
       - name: Validate projects candidate
         run: node core/validate-projects-v2.mjs
+
+      - name: Validate services candidate
+        run: node core/validate-services-v2.mjs
+
+      - name: Validate news candidate
+        run: node core/validate-news-v2.mjs
 
       - name: Verify generated files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
