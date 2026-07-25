@@ -92,6 +92,7 @@ jobs:
             assets/css/kernel.css
             core/modules/team/team-preview.html
             core/modules/team/team-preview.css
+            core/modules/team/team-integration.css
             core/modules/team/team-renderer.mjs
             core/data/researchers.v2.json
             ElKernel.png
