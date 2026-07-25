@@ -22,12 +22,12 @@ assert(new Set(data.records.map(record=>record.id)).size===data.records.length,'
 assert(data.records.every(record=>record.title&&record.bibliographic?.year&&record.authors?.length),'Cada registro debe tener título, año y autoría.');
 assert(data.records.every(record=>record.researcher_ids?.every(id=>researchers.researchers.some(item=>item.id===id))),'Todo researcher_id debe existir en researchers.v2.json.');
 assert(renderer.includes('createBibtex')&&renderer.includes('filterPublications')&&renderer.includes('renderPublicationCatalog'),'El renderizador debe incluir BibTeX, filtros y catálogo compartido.');
-assert(renderer.includes('project_ids')&&renderer.includes('scientific-profiles.html?investigador='),'El módulo debe preparar relaciones con proyectos y perfiles científicos.');
+assert(renderer.includes('project_ids')&&renderer.includes('equipo.html#'),'El módulo debe preparar relaciones con proyectos y perfiles públicos del equipo.');
 assert(preview.includes('Publicaciones 2.0')&&preview.includes('publications-renderer.mjs'),'Debe existir una vista previa controlada que use el renderizador compartido.');
 assert(['query','researcher','year','type','quartile','sort'].every(id=>preview.includes(`id="${id}"`)),'La vista previa debe incluir buscador, filtros y ordenación.');
 assert(css.includes('@media(max-width:900px)')&&css.includes('@media(max-width:560px)'),'El módulo debe incluir reglas responsive para tableta y móvil.');
 assert(workflow.includes('Validate Publications 2.0 module'),'El Quality Gate debe validar el módulo de Publicaciones 2.0.');
 assert(workflow.includes('kernel-publications-controlled-preview'),'El Quality Gate debe generar el artefacto de vista previa.');
-assert(report.includes('No modifica `main`')&&report.includes('No modifica `gh-pages`')&&report.includes('No activa producción'),'El informe de activación debe documentar el aislamiento de producción.');
+assert(report.includes('No modifica `main`')&&report.includes('No modifica `gh-pages`')&&report.includes('No activa producción'),'El informe de activación debe documentar el aislamiento de la fase de desarrollo.');
 if(errors.length){console.error('Publications 2.0 validation failed:');errors.forEach(item=>console.error(`- ${item}`));process.exit(1)}
 console.log(`Publications 2.0 validation passed: ${data.records.length} unique records, ${data.summary.records_with_doi} with DOI.`);
