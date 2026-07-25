@@ -18,7 +18,7 @@ export function normalizeProjects(payload) {
   return [...approved, ...proposals];
 }
 
-export function renderProjectCard(project, researcherMap = new Map()) {
+export function renderProjectCard(project, researcherMap = new Map(), profileBase = 'equipo.html#') {
   const members = (project.member_ids || []).map(id => researcherMap.get(id)?.name || id);
   const collaborators = project.external_collaborators || [];
   const people = [...members, ...collaborators];
@@ -41,13 +41,13 @@ export function renderProjectCard(project, researcherMap = new Map()) {
       <div><dt>Verificación</dt><dd>${escapeHtml(verification)}</dd></div>
     </dl>
     <div class="project-card__actions">
-      ${members.map((name, index) => `<a href="../../modules/scientific-profiles/preview.html?investigador=${escapeHtml((project.member_ids || [])[index])}">Perfil de ${escapeHtml(name)}</a>`).join('')}
+      ${members.map((name, index) => `<a href="${escapeHtml(profileBase)}${escapeHtml((project.member_ids || [])[index])}">Perfil de ${escapeHtml(name)}</a>`).join('')}
       <a href="#${escapeHtml(project.id)}" aria-label="Enlace directo al proyecto ${escapeHtml(project.title)}">Enlace directo</a>
     </div>
   </article>`;
 }
 
-export function renderProjectsApp({ payload, researchers = [], root }) {
+export function renderProjectsApp({ payload, researchers = [], root, profileBase = 'equipo.html#' }) {
   const researcherMap = new Map(researchers.map(item => [item.id, item]));
   const projects = normalizeProjects(payload);
   const state = { status: 'all', researcher: 'all', search: '' };
@@ -62,7 +62,7 @@ export function renderProjectsApp({ payload, researchers = [], root }) {
     });
     root.querySelector('[data-project-count]').textContent = `${filtered.length} proyectos mostrados de ${projects.length}`;
     root.querySelector('[data-project-list]').innerHTML = filtered.length
-      ? filtered.map(project => renderProjectCard(project, researcherMap)).join('')
+      ? filtered.map(project => renderProjectCard(project, researcherMap, profileBase)).join('')
       : '<div class="project-empty">No hay proyectos que coincidan con los filtros seleccionados.</div>';
   };
   root.querySelector('[data-project-search]').addEventListener('input', event => { state.search = event.target.value; render(); });

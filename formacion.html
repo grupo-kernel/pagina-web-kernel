@@ -1,59 +1,61 @@
 <!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Formación académica y experiencia de los investigadores del Grupo El Kernel.">
-  <title>Formación académica | Grupo de Investigación El Kernel</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="assets/css/kernel.css" rel="stylesheet">
-  <link href="core/modules/academic/academic-integration.css" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Formación académica y experiencia de los investigadores del Grupo El Kernel." name="description"/>
+<title>Formación académica | Grupo de Investigación El Kernel</title>
+<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link href="assets/css/kernel.css" rel="stylesheet"/>
+<link href="core/modules/academic/academic-integration.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
-  <div class="container">
-    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="kernelNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
-        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="formacion.html">Formación</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-      </ul>
-    </div>
-  </div>
+<nav aria-label="Navegación principal" class="navbar navbar-expand-lg kernel-navbar sticky-top">
+<div class="container">
+<a class="navbar-brand kernel-brand" href="index.html"><img alt="" src="ElKernel.png"/><span>El Kernel</span></a>
+<button aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú" class="navbar-toggler" data-bs-target="#kernelNav" data-bs-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+<div class="collapse navbar-collapse" id="kernelNav">
+<ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+<li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
+<li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+<li class="nav-item"><a aria-current="page" class="nav-link active" href="formacion.html">Formación</a></li>
+<li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+<li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+<li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+<li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
+<li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+</ul>
+</div>
+</div>
 </nav>
-<main id="contenido" data-kernel-core-integration="academic-background">
-  <header class="page-header">
-    <div class="container">
-      <span class="eyebrow"><i class="bi bi-mortarboard"></i> Trayectorias académicas</span>
-      <h1>Formación académica y experiencia</h1>
-      <p>Consulta la trayectoria de los nueve investigadores nacionales e internacionales del Grupo El Kernel.</p>
-    </div>
-  </header>
-  <section class="section-block" data-kernel-core-module="academic-background" data-kernel-core-status="branch-preview-active">
-    <div class="container">
-      <div class="kernel-academic-preview-note" role="status">Vista controlada: esta rama genera las nueve fichas desde <code>core/data/researchers.v2.json</code>. No está activa en producción.</div>
-      <div class="section-heading">
-        <span class="section-kicker">Perfiles detallados</span>
-        <h2>Grados, afiliaciones y experiencia relevante</h2>
-        <p>Selecciona un investigador para revisar su formación, experiencia, áreas de especialización y enlaces científicos.</p>
-      </div>
-      <div class="kernel-academic-shell">
-        <nav id="academicList" class="kernel-academic-list" aria-label="Seleccionar investigador" aria-live="polite"></nav>
-        <div id="academicPanel" class="kernel-academic-panel" aria-live="polite" aria-busy="true"></div>
-      </div>
-      <div id="academicError" class="error-state d-none" role="alert"></div>
-    </div>
-  </section>
+<main data-kernel-core-integration="academic-background" id="contenido">
+<header class="page-header">
+<div class="container">
+<span class="eyebrow"><i class="bi bi-mortarboard"></i> Trayectorias académicas</span>
+<h1>Formación académica y experiencia</h1>
+<p>Consulta la trayectoria de los nueve investigadores nacionales e internacionales del Grupo El Kernel.</p>
+</div>
+</header>
+<section class="section-block" data-kernel-core-module="academic-background" data-kernel-core-status="public-ready">
+<div class="container">
+
+<div class="section-heading">
+<span class="section-kicker">Perfiles detallados</span>
+<h2>Grados, afiliaciones y experiencia relevante</h2>
+<p>Selecciona un investigador para revisar su formación, experiencia, áreas de especialización y enlaces científicos.</p>
+</div>
+<div class="kernel-academic-shell">
+<nav aria-label="Seleccionar investigador" aria-live="polite" class="kernel-academic-list" id="academicList"></nav>
+<div aria-busy="true" aria-live="polite" class="kernel-academic-panel" id="academicPanel"></div>
+</div>
+<div class="error-state d-none" id="academicError" role="alert"></div>
+</div>
+</section>
 </main>
 <footer class="kernel-footer"><div class="container"><div class="footer-grid"><div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Formación, investigación y colaboración científica.</p></div><div><strong>Equipo</strong><div><a href="equipo.html">Perfiles</a></div><div><a href="publicaciones.html">Publicaciones</a></div></div><div><strong>Contacto</strong><div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div></div></div><div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div></div></footer>
 <script type="module">
