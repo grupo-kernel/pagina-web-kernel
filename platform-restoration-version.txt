@@ -1,0 +1,4 @@
+Grupo El Kernel full platform restored
+source_sha=0a86f78a26ebbffe4862208ab6f5ee627b973366
+restored_at=2026-07-25
+preserved=Laboratorio Inteligente, ITLA-Xmera, APEC-Banner, herramientas, menús, autenticación
