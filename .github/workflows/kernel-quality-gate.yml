@@ -9,14 +9,16 @@ on:
       - 'data/**'
       - 'translations/**'
       - 'equipo.html'
+      - 'formacion.html'
       - '.github/workflows/kernel-quality-gate.yml'
   push:
-    branches: [hito-1-kernel-core, fase-1l-team-preview-integration]
+    branches: [hito-1-kernel-core, fase-1l-team-preview-integration, fase-1m-academic-profiles-preview]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
       - 'equipo.html'
+      - 'formacion.html'
       - '.github/workflows/kernel-quality-gate.yml'
 
 permissions:
@@ -30,44 +32,32 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-
       - name: Generate publications candidate
         run: node core/migrate-publications-v2.mjs
-
       - name: Run general quality gate
         run: node core/run-quality-gate.mjs
-
       - name: Validate publications candidate
         run: node core/validate-publications-v2.mjs
-
       - name: Validate projects candidate
         run: node core/validate-projects-v2.mjs
-
       - name: Validate services candidate
         run: node core/validate-services-v2.mjs
-
       - name: Validate news candidate
         run: node core/validate-news-v2.mjs
-
       - name: Validate centralized translations
         run: node core/validate-translations.mjs
-
       - name: Build cross-module relations index
         run: node core/build-relations-index.mjs
-
       - name: Validate cross-module relations index
         run: node core/validate-relations-index.mjs
-
       - name: Validate parity before activation
         id: parity
         continue-on-error: true
         run: node core/validate-parity.mjs
-
       - name: Upload parity diagnostic
         if: always()
         uses: actions/upload-artifact@v4
@@ -76,24 +66,21 @@ jobs:
           path: core/audits/parity-runtime-report.json
           if-no-files-found: error
           retention-days: 7
-
       - name: Validate standalone Team module preview
         run: node core/validate-team-module.mjs
-
-      - name: Validate Team integration in controlled branch
+      - name: Validate Team integration
         run: node core/validate-team-integration.mjs
-
-      - name: Upload controlled Team preview
+      - name: Validate academic profile integration
+        run: node core/validate-academic-integration.mjs
+      - name: Upload academic controlled preview
         uses: actions/upload-artifact@v4
         with:
-          name: kernel-team-controlled-preview
+          name: kernel-academic-controlled-preview
           path: |
-            equipo.html
+            formacion.html
             assets/css/kernel.css
-            core/modules/team/team-preview.html
-            core/modules/team/team-preview.css
-            core/modules/team/team-integration.css
-            core/modules/team/team-renderer.mjs
+            core/modules/academic/academic-integration.css
+            core/modules/academic/academic-renderer.mjs
             core/data/researchers.v2.json
             ElKernel.png
             miguel.jpg
@@ -107,10 +94,8 @@ jobs:
             assets/img/juan-torregrosa.svg
           if-no-files-found: error
           retention-days: 7
-
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
-
       - name: Enforce parity result
         if: steps.parity.outcome == 'failure'
         run: |
