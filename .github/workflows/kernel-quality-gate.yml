@@ -83,6 +83,30 @@ jobs:
       - name: Validate Team integration in controlled branch
         run: node core/validate-team-integration.mjs
 
+      - name: Upload controlled Team preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-team-controlled-preview
+          path: |
+            equipo.html
+            assets/css/kernel.css
+            core/modules/team/team-preview.html
+            core/modules/team/team-preview.css
+            core/modules/team/team-renderer.mjs
+            core/data/researchers.v2.json
+            ElKernel.png
+            miguel.jpg
+            natanael.jpg
+            randy.jpg
+            antmel.jpg
+            marino.png
+            marckelly.jpg
+            josealberto.jpg
+            assets/img/alicia-cordero.svg
+            assets/img/juan-torregrosa.svg
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
 
