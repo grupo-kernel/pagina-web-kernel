@@ -43,7 +43,7 @@ if (!members.find(item => item.id === 'miguel-leonardo')?.profiles?.orcid) error
 
 if (!renderer.includes('renderScientificProfilesModule')) errors.push('Falta el renderizador compartido.');
 if (!renderer.includes('Indicadores disponibles')) errors.push('Falta el bloque de indicadores.');
-if (!renderer.includes('Información bibliométrica en consolidación')) errors.push('Falta el estado explícito para métricas pendientes.');
+if (!renderer.includes('Indicadores bibliométricos pendientes de consolidación')) errors.push('Falta el estado explícito para métricas pendientes.');
 if (!preview.includes('../../data/researchers.v2.json')) errors.push('La vista previa no consume researchers.v2.json.');
 if (!preview.includes('data-science-select')) errors.push('Falta navegación interactiva.');
 if (!preview.includes('URLSearchParams')) errors.push('Falta selección mediante parámetro de consulta.');
