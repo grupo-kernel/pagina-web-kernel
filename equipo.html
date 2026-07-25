@@ -1,154 +1,132 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Investigadores del Grupo de Investigación El Kernel.">
-  <title>Equipo | Grupo de Investigación El Kernel</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="assets/css/kernel.css" rel="stylesheet">
-  <style>
-    .team-details { margin-top: .9rem; border-top: 1px solid #e5edf2; padding-top: .8rem; }
-    .team-details summary { cursor: pointer; color: var(--blue-dark); font-size: .82rem; font-weight: 800; }
-    .team-details h3 { margin: .9rem 0 .35rem; color: var(--navy); font-size: .9rem; font-weight: 800; }
-    .team-details ul { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: .82rem; }
-    .team-details li + li { margin-top: .35rem; }
-    .team-card:target { outline: 4px solid rgba(199,149,44,.35); scroll-margin-top: 100px; }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Investigadores del Grupo de Investigación El Kernel." name="description"/>
+<title>Equipo | Grupo de Investigación El Kernel</title>
+<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link href="assets/css/kernel.css" rel="stylesheet"/>
+<link href="core/modules/team/team-integration.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-
-<nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
-  <div class="container">
-    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="kernelNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-        <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-      </ul>
-    </div>
-  </div>
+<nav aria-label="Navegación principal" class="navbar navbar-expand-lg kernel-navbar sticky-top">
+<div class="container">
+<a class="navbar-brand kernel-brand" href="index.html"><img alt="" src="ElKernel.png"/><span>El Kernel</span></a>
+<button aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú" class="navbar-toggler" data-bs-target="#kernelNav" data-bs-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+<div class="collapse navbar-collapse" id="kernelNav">
+<ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+<li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
+<li class="nav-item"><a aria-current="page" class="nav-link active" href="equipo.html">Equipo</a></li>
+<li class="nav-item"><a class="nav-link" href="formacion.html">Formación</a></li>
+<li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
+<li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
+<li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
+<li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
+<li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+</ul>
+</div>
+</div>
 </nav>
+<main data-kernel-core-integration="team" id="contenido">
+<header class="page-header">
+<div class="container">
+<span class="eyebrow"><i class="bi bi-people"></i> Comunidad académica</span>
+<h1>Equipo de investigación</h1>
+<p><strong id="memberCountHeader">9 investigadores</strong> vinculados por el trabajo colaborativo en matemática pura, aplicada y educación matemática.</p>
+</div>
+</header>
+<section class="section-block" data-kernel-core-module="team" data-kernel-core-status="public-ready">
+<div class="container">
 
-<main id="contenido">
-  <header class="page-header">
-    <div class="container">
-      <span class="eyebrow"><i class="bi bi-people"></i> Comunidad académica</span>
-      <h1>Equipo de investigación</h1>
-      <p><strong id="memberCountHeader">9 investigadores</strong> vinculados por el trabajo colaborativo en matemática pura, aplicada y educación matemática.</p>
-    </div>
-  </header>
-
-  <section class="section-block">
-    <div class="container">
-      <div class="section-heading">
-        <span class="section-kicker">Integrantes</span>
-        <h2>Perfiles académicos y líneas de especialización</h2>
-        <p>Las fichas se generan desde un único registro de datos para mantener nombres, afiliaciones, perfiles científicos y producción bibliográfica de forma coherente.</p>
-      </div>
-
-      <div class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar miembros">
-        <button class="btn-kernel filter-member active" type="button" data-filter="all">Todos</button>
-        <button class="btn-kernel-outline filter-member" type="button" data-filter="República Dominicana">República Dominicana</button>
-        <button class="btn-kernel-outline filter-member" type="button" data-filter="España">España</button>
-      </div>
-
-      <div id="teamGrid" class="team-grid" aria-live="polite">
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-      </div>
-      <div id="teamError" class="error-state d-none" role="alert"></div>
-    </div>
-  </section>
+<div class="section-heading">
+<span class="section-kicker">Integrantes</span>
+<h2>Perfiles académicos y líneas de especialización</h2>
+<p>Las fichas se generan mediante el renderizador compartido de Kernel Core para conservar el orden institucional, las afiliaciones, los perfiles científicos y las métricas verificadas.</p>
+</div>
+<div aria-label="Filtrar miembros" class="d-flex flex-wrap gap-2 mb-4" role="group">
+<button aria-pressed="true" class="btn-kernel filter-member active" data-filter="all" type="button">Todos</button>
+<button aria-pressed="false" class="btn-kernel-outline filter-member" data-filter="República Dominicana" type="button">República Dominicana</button>
+<button aria-pressed="false" class="btn-kernel-outline filter-member" data-filter="España" type="button">España</button>
+</div>
+<div aria-busy="true" aria-live="polite" class="kernel-core-team__grid" id="teamGrid">
+<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+</div>
+<div class="error-state d-none" id="teamError" role="alert"></div>
+</div>
+</section>
 </main>
-
 <footer class="kernel-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Una red académica de República Dominicana y España.</p></div>
-      <div><strong>Producción científica</strong><div><a href="publicaciones.html">Catálogo de publicaciones</a></div><div><a href="lineas.html">Líneas de investigación</a></div></div>
-      <div><strong>Contacto</strong><div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div></div>
-    </div>
-    <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
-  </div>
+<div class="container">
+<div class="footer-grid">
+<div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Una red académica de República Dominicana y España.</p></div>
+<div><strong>Producción científica</strong><div><a href="publicaciones.html">Catálogo de publicaciones</a></div><div><a href="lineas.html">Líneas de investigación</a></div></div>
+<div><strong>Contacto</strong><div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div></div>
+</div>
+<div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
+</div>
 </footer>
+<script type="module">
+  import { orderedResearchers, renderResearcherCard } from './core/modules/team/team-renderer.mjs';
 
-<script>
-(function () {
+  const CORE_SOURCE = 'core/data/researchers.v2.json';
+  const teamGrid = document.getElementById('teamGrid');
+  const errorBox = document.getElementById('teamError');
+  const countHeader = document.getElementById('memberCountHeader');
+  const filterButtons = [...document.querySelectorAll('.filter-member')];
   let allMembers = [];
-  const teamGrid = document.getElementById("teamGrid");
-  const errorBox = document.getElementById("teamError");
-  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
 
-  function externalLink(url, icon, label) {
-    if (!url) return "";
-    return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><i class="bi ${icon}"></i>${escapeHtml(label)}</a>`;
-  }
-  function metricMarkup(metrics) {
-    if (!Array.isArray(metrics) || metrics.length === 0) return "";
-    return `<div class="profile-metrics">${metrics.map(metric => `<div class="profile-metric"><strong>${Number(metric.value).toLocaleString("es-ES")}</strong><span>${escapeHtml(metric.label)} · ${escapeHtml(metric.source)} (${escapeHtml(metric.as_of)})</span></div>`).join("")}</div>`;
-  }
-  function detailsMarkup(member) {
-    const formation = Array.isArray(member.formation) ? member.formation : [];
-    const experience = Array.isArray(member.experience) ? member.experience : [];
-    if (!formation.length && !experience.length) return "";
-    return `<details class="team-details"><summary>Formación y experiencia</summary>
-      ${formation.length ? `<h3>Formación académica</h3><ul>${formation.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-      ${experience.length ? `<h3>Experiencia relevante</h3><ul>${experience.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-    </details>`;
-  }
-  function memberCard(member) {
-    const highlighted = ["alicia-cordero","juan-torregrosa"].includes(member.id);
-    const title = `${member.name}${member.display_degree ? `, ${member.display_degree}` : ""}`;
-    const areas = (member.areas || []).slice(0,4);
-    const orcidUrl = member.orcid ? `https://orcid.org/${member.orcid}` : "";
-    return `<article class="team-card ${highlighted ? "member-highlight" : ""}" id="${escapeHtml(member.id)}" data-country="${escapeHtml(member.country)}">
-      <div class="team-card__top"><img class="team-photo" src="${escapeHtml(member.image)}" alt="Perfil de ${escapeHtml(member.name)}" loading="lazy">
-        <div><div class="team-badges"><span class="badge-soft"><i class="bi bi-person-check"></i>${escapeHtml(member.member_type)}</span><span class="badge-soft"><i class="bi bi-geo-alt"></i>${escapeHtml(member.country)}</span></div><h2>${escapeHtml(title)}</h2><p class="team-role">${escapeHtml(member.role)}</p></div>
-      </div>
-      <div class="team-card__body"><div class="team-badges">${areas.map(area => `<span class="badge-soft">${escapeHtml(area)}</span>`).join("")}</div><p>${escapeHtml(member.bio)}</p>
-        ${metricMarkup(member.publication_metrics)}${detailsMarkup(member)}
-        <div class="team-links">
-          ${externalLink(member.institutional_profile,"bi-building","UPV")}
-          ${externalLink(orcidUrl,"bi-person-badge","ORCID")}
-          ${externalLink(member.repository_profile,"bi-archive","Repositorio")}
-          ${externalLink(member.scholar,"bi-mortarboard","Scholar")}
-          ${externalLink(member.researchgate,"bi-journal-bookmark","ResearchGate")}
-          ${externalLink(member.linkedin,"bi-linkedin","LinkedIn")}
-          ${member.email ? `<a href="mailto:${escapeHtml(member.email)}"><i class="bi bi-envelope"></i>Correo</a>` : ""}
-          <a href="publicaciones.html?autor=${encodeURIComponent(member.id)}"><i class="bi bi-journal-richtext"></i>Publicaciones</a>
-        </div>
-      </div>
-    </article>`;
-  }
   function render(members) {
-    teamGrid.innerHTML = members.map(memberCard).join("");
+    teamGrid.innerHTML = members.length
+      ? members.map(member => renderResearcherCard(member, 'es', {
+          assetBase: '',
+          publicationsBase: 'publicaciones.html?autor=',
+          showDetails: true
+        })).join('')
+      : '<p class="kernel-core-team-empty">No hay integrantes para el filtro seleccionado.</p>';
+    teamGrid.setAttribute('aria-busy', 'false');
+
     const hash = window.location.hash;
-    if (hash) requestAnimationFrame(() => { const target = document.querySelector(hash); if (target) target.scrollIntoView({behavior:"smooth",block:"start"}); });
+    if (hash) requestAnimationFrame(() => {
+      const target = document.querySelector(hash);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
-  fetch("data/researchers.json", {cache:"no-store"})
-    .then(response => { if (!response.ok) throw new Error("No se pudo cargar el registro de investigadores."); return response.json(); })
-    .then(data => { allMembers = data.researchers || []; document.getElementById("memberCountHeader").textContent = `${data.group.member_count} investigadores`; render(allMembers); })
-    .catch(error => { console.error(error); teamGrid.innerHTML = ""; errorBox.textContent = "No fue posible cargar las fichas del equipo. Revise data/researchers.json."; errorBox.classList.remove("d-none"); });
-
-  document.querySelectorAll(".filter-member").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".filter-member").forEach(item => { item.classList.toggle("active", item === button); item.classList.toggle("btn-kernel", item === button); item.classList.toggle("btn-kernel-outline", item !== button); });
-      const filter = button.dataset.filter;
-      render(filter === "all" ? allMembers : allMembers.filter(member => member.country === filter));
+  function selectFilter(selected) {
+    filterButtons.forEach(button => {
+      const active = button === selected;
+      button.classList.toggle('active', active);
+      button.classList.toggle('btn-kernel', active);
+      button.classList.toggle('btn-kernel-outline', !active);
+      button.setAttribute('aria-pressed', String(active));
     });
-  });
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
-})();
+
+    const filter = selected.dataset.filter;
+    render(filter === 'all' ? allMembers : allMembers.filter(member => member.country === filter));
+  }
+
+  filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button)));
+
+  try {
+    const response = await fetch(CORE_SOURCE, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`No se pudo cargar ${CORE_SOURCE}.`);
+    const data = await response.json();
+    allMembers = orderedResearchers(data);
+    countHeader.textContent = `${allMembers.length} investigadores`;
+    render(allMembers);
+  } catch (error) {
+    console.error(error);
+    teamGrid.innerHTML = '';
+    teamGrid.setAttribute('aria-busy', 'false');
+    errorBox.textContent = `No fue posible cargar las fichas desde ${CORE_SOURCE}. La fuente pública anterior no fue modificada.`;
+    errorBox.classList.remove('d-none');
+  }
+
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

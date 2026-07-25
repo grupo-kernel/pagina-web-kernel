@@ -1,133 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Proyectos | Kernel</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <style>
-    body {
-      background: linear-gradient(120deg, #f6f8fc 0%, #d4e0fc 100%);
-      min-height: 100vh;
-    }
-    .proyecto-card {
-      background: #fff;
-      border-radius: 1.4rem;
-      box-shadow: 0 4px 18px rgba(44,62,80,0.08), 0 1.5px 8px rgba(52,73,94,0.04);
-      padding: 2.2rem 2rem 2.2rem 2rem;
-      margin-bottom: 2.2rem;
-      border-left: 7px solid #88b1f7;
-    }
-    .proyecto-title {
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: #157abb;
-      margin-bottom: 0.7rem;
-    }
-    .proyecto-status {
-      font-size: 1.08rem;
-      font-weight: 500;
-      color: #687c92;
-      margin-bottom: 0.7rem;
-    }
-    .proyecto-desc {
-      color: #49597b;
-      font-size: 1.12rem;
-    }
-    h2 {
-      font-weight: bold;
-      color: #2366ad;
-      margin-bottom: 2.1rem;
-      font-size: 2.1rem;
-      text-align: center;
-    }
-    @media (max-width: 600px) {
-      .proyecto-card { padding: 1.1rem 0.5rem; }
-      h2 { font-size: 1.3rem; }
-    }
-    /* Menú negrita y cursiva */
-    .navbar-nav .nav-link {
-      font-weight: bold !important;
-      font-style: italic !important;
-    }
-     .navbar-nav .nav-link {
-  font-size: 1.7rem !important;
-  font-weight: bold !important;
-  font-style: italic !important;
-}
-  </style>
-</head>
-<body>
-  
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="assets/css/kernel.css" rel="stylesheet"><link href="core/modules/projects/projects.css" rel="stylesheet"><meta name="description" content="Proyectos aprobados, participaciones y propuestas del Grupo de Investigación El Kernel."><title>Proyectos | Grupo de Investigación El Kernel</title></head><body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a><nav class="navbar navbar-expand-lg kernel-navbar sticky-top" aria-label="Navegación principal">
   <div class="container">
-    <a class="navbar-brand" href="index.html">El Kernel</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes Somos</a></li>
-        <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-        <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold" href="proyectos.html">Proyectos</a></li>
-        <li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li>
-        <li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-      </ul>
-    </div>
+    <a class="navbar-brand kernel-brand" href="index.html"><img src="ElKernel.png" alt=""><span>El Kernel</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kernelNav" aria-controls="kernelNav" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="kernelNav"><ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1"><li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li><li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
+<li class="nav-item"><a class="nav-link" href="formacion.html">Formación</a></li><li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="proyectos.html">Proyectos</a></li><li class="nav-item"><a class="nav-link" href="publicaciones.html">Publicaciones</a></li><li class="nav-item"><a class="nav-link" href="noticias.html">Noticias</a></li><li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li></ul></div>
   </div>
 </nav>
-
-<main class="container mt-5 mb-5">
-  <h2>Proyectos en Desarrollo</h2>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Plataforma de Simulación para Ecuaciones Diferenciales Parciales No Lineales</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Diseño e implementación de un software web para la simulación y visualización de soluciones aproximadas a EDPs no lineales utilizando métodos numéricos avanzados. El objetivo es crear una herramienta didáctica y de investigación abierta a estudiantes y científicos.
-    </div>
-  </div>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Entrenamiento de Redes Neuronales para la Solución de Problemas Matemáticos</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Proyecto orientado al desarrollo y entrenamiento de arquitecturas de redes neuronales profundas para el aprendizaje y la resolución automatizada de ecuaciones diferenciales y problemas complejos en optimización matemática.
-    </div>
-  </div>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Métodos Cuasi-Newton de Memoria Limitada Aplicados a Grandes Sistemas</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Investigación sobre el diseño y análisis de métodos cuasi-Newton híbridos de memoria limitada, dirigidos a la resolución eficiente de sistemas de ecuaciones de gran escala, con énfasis en aplicaciones de ingeniería y finanzas.
-    </div>
-  </div>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Modelización Matemática de Riesgo Actuarial y Financiero</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Elaboración de modelos para la evaluación y gestión del riesgo en problemas actuariales y financieros, combinando técnicas de optimización y simulación para ofrecer soluciones robustas a la toma de decisiones en estos campos.
-    </div>
-  </div>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Innovación en la Enseñanza y Evaluación de la Matemática</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Diseño de estrategias y recursos innovadores para la enseñanza de las matemáticas en distintos niveles educativos, incorporando metodologías activas, plataformas tecnológicas y evaluación por competencias.
-    </div>
-  </div>
-
-  <div class="proyecto-card">
-    <div class="proyecto-title">Desarrollo de Métodos Metaheurísticos Híbridos</div>
-    <div class="proyecto-status"><span class="badge bg-warning text-dark">En carpeta</span></div>
-    <div class="proyecto-desc">
-      Propuesta de integración de algoritmos metaheurísticos con métodos iterativos clásicos y cuasi-Newton para abordar problemas no lineales de alta complejidad en diferentes áreas de la ciencia y la ingeniería.
-    </div>
-  </div>
-</main>
-</body>
-</html>
+<main id="contenido"><header class="page-header"><div class="container"><span class="eyebrow"><i class="bi bi-kanban"></i> Portafolio científico verificable</span><h1>Proyectos del Grupo El Kernel</h1><p>Catálogo de proyectos aprobados, participaciones registradas y propuestas en evaluación, conectado con los perfiles de los investigadores.</p></div></header>
+<section class="container" aria-label="Indicadores de proyectos"><div class="projects-stats projects-stats--overlap">
+<article class="projects-stat"><strong id="recordedParticipations">—</strong><span>Participaciones registradas</span></article>
+<article class="projects-stat"><strong id="featuredProjects">—</strong><span>Proyectos aprobados destacados</span></article>
+<article class="projects-stat"><strong id="additionalParticipations">—</strong><span>Participaciones adicionales</span></article>
+<article class="projects-stat"><strong id="proposalsUnderReview">—</strong><span>Propuestas en evaluación</span></article>
+</div></section>
+<section class="section-block pt-4"><div class="container"><div class="data-note mb-4" id="projectCountingNote">Las participaciones registradas no equivalen necesariamente al mismo número de proyectos únicos.</div>
+<div class="projects-shell projects-shell--integrated" id="projectsApp"><div class="projects-layout"><aside class="projects-filters" aria-label="Filtros de proyectos"><label for="projectSearch">Buscar</label><input id="projectSearch" data-project-search type="search" placeholder="Título, programa o colaborador"><label for="projectStatus">Estado</label><select id="projectStatus" data-project-status><option value="all">Todos</option><option value="approved">Aprobados</option><option value="active">En ejecución</option><option value="completed">Finalizados</option><option value="under-review">En evaluación</option></select><label for="projectResearcher">Investigador</label><select id="projectResearcher" data-project-researcher><option value="all">Todos</option></select><button type="button" data-project-clear>Limpiar filtros</button></aside><div><div class="project-count" data-project-count aria-live="polite">Cargando proyectos…</div><div class="project-list" data-project-list aria-live="polite"></div></div></div></div></div></section></main>
+<footer class="kernel-footer"><div class="container"><div class="footer-grid">
+  <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Proyectos verificables y colaboración científica nacional e internacional.</p></div>
+  <div><strong>Explorar</strong><div><a href="equipo.html">Equipo</a></div><div><a href="proyectos.html">Proyectos</a></div><div><a href="publicaciones.html">Publicaciones</a></div></div>
+  <div><strong>Contacto</strong><div><a href="mailto:mleonardo@itla.edu.do">mleonardo@itla.edu.do</a></div><div>República Dominicana</div></div>
+</div><div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div></div></footer>
+<script type="module">import{renderProjectsApp}from'./core/modules/projects/projects-renderer.mjs';Promise.all([fetch('core/data/projects.v2.json').then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de proyectos.');return r.json();}),fetch('core/data/researchers.v2.json').then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de investigadores.');return r.json();})]).then(([payload,researchers])=>{const s=payload.summary||{};document.getElementById('recordedParticipations').textContent=s.recorded_participations??'—';document.getElementById('featuredProjects').textContent=s.featured_approved_projects??'—';document.getElementById('additionalParticipations').textContent=s.additional_participations_not_itemized??'—';document.getElementById('proposalsUnderReview').textContent=s.proposals_under_review??'—';document.getElementById('projectCountingNote').textContent=s.counting_note||document.getElementById('projectCountingNote').textContent;renderProjectsApp({payload,researchers:researchers.researchers||[],root:document.getElementById('projectsApp'),profileBase:'equipo.html#'});}).catch(error=>{document.querySelector('[data-project-list]').innerHTML='<div class="project-empty" role="alert">No se pudo cargar el catálogo de proyectos.</div>';console.error(error);});</script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script>document.getElementById('currentYear')?.append(new Date().getFullYear());</script></body></html>

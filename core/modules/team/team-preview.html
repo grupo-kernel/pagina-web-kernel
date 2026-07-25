@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kernel Core · Team Preview</title>
+  <link rel="stylesheet" href="./team-preview.css">
+  <link rel="stylesheet" href="./team-integration.css">
+</head>
+<body>
+  <main id="team-preview-root" data-kernel-core-integration="team" aria-live="polite"></main>
+  <script type="module">
+    import { renderTeamModule } from './team-renderer.mjs';
+    const params = new URLSearchParams(location.search);
+    const locale = params.get('lang') === 'en' ? 'en' : 'es';
+    const response = await fetch('../../data/researchers.v2.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('No fue posible cargar researchers.v2.json');
+    const data = await response.json();
+    document.documentElement.lang = locale;
+    document.getElementById('team-preview-root').innerHTML = renderTeamModule(data, {
+      locale,
+      assetBase: '../../../',
+      publicationsBase: '../../../publicaciones.html?autor=',
+      showDetails: true
+    });
+  </script>
+</body>
+</html>

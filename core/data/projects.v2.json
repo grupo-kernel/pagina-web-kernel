@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "status": "candidate-not-active",
+  "updated_at": "2026-07-25",
+  "summary": {
+    "recorded_participations": 58,
+    "featured_approved_projects": 10,
+    "additional_participations_not_itemized": 48,
+    "proposals_under_review": 2,
+    "counting_note": "Las 58 participaciones no equivalen necesariamente a 58 proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
+  },
+  "approved_projects": [
+    {"id":"procesos-iterativos","order":1,"title":"Procesos iterativos para la resolución de ecuaciones y sistemas no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"perospiker","order":2,"title":"PeroSpiker","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"merlin","order":3,"title":"MERLIN","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"procesos-iterativos-multidimensionales","order":4,"title":"Procesos iterativos multidimensionales para la resolución de sistemas no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"prometeo-2016-089","order":5,"title":"PROMETEO/2016/089","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"plc-prog","order":6,"title":"PLC-PROG","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"filtraciones","order":7,"title":"Filtraciones y métodos iterativos asociados","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"flujos-nms","order":8,"title":"Flujos NMS","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"dinamica-asociada","order":9,"title":"Dinámica asociada a métodos iterativos para ecuaciones no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {"id":"completacion-matrices","order":10,"title":"Completación de matrices","status":"approved","featured":true,"member_ids":["juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"}
+  ],
+  "proposals": [
+    {
+      "id":"fondocyt-transporte-nutrientes",
+      "title":"Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
+      "status":"under-review",
+      "program":"FONDOCyT / MESCyT",
+      "duration_months":30,
+      "budget":{"amount":11901975.84,"currency":"DOP"},
+      "member_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
+      "external_collaborators":["Juan R. Torregrosa","Alicia Cordero"],
+      "verification":"documented-internal-record"
+    }
+  ]
+}

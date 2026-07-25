@@ -1,0 +1,87 @@
+name: Kernel Public Reactivation Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'core/activation/**'
+      - 'core/validate-public-reactivation.mjs'
+      - 'index.html'
+      - 'quienes_somos.html'
+      - 'equipo.html'
+      - 'formacion.html'
+      - 'lineas.html'
+      - 'proyectos.html'
+      - 'publicaciones.html'
+      - 'noticias.html'
+      - 'contacto.html'
+      - 'miguel.jpg'
+      - '.github/workflows/kernel-public-reactivation-gate.yml'
+  push:
+    branches: [fase-2a-public-reactivation]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate public reactivation candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate public reactivation
+        run: |
+          set -o pipefail
+          node core/validate-public-reactivation.mjs 2>&1 | tee core/activation/public-reactivation-runtime.log
+      - name: Upload public reactivation diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-public-reactivation-diagnostic
+          path: core/activation/public-reactivation-runtime.log
+          if-no-files-found: error
+          retention-days: 7
+      - name: Run Kernel Quality Gate
+        run: node core/run-quality-gate.mjs
+      - name: Validate global integration
+        run: node core/validate-global-integration.mjs
+      - name: Upload activation controls
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-public-reactivation-controls
+          path: |
+            core/activation/public-reactivation-manifest.json
+            core/activation/PUBLIC_REACTIVATION_CHECKLIST.md
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload controlled public candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-public-reactivation-candidate
+          path: |
+            index.html
+            quienes_somos.html
+            equipo.html
+            formacion.html
+            lineas.html
+            proyectos.html
+            publicaciones.html
+            noticias.html
+            contacto.html
+            CNAME
+            assets/**
+            core/**
+            data/**
+            translations/**
+            *.png
+            *.jpg
+            *.jpeg
+          if-no-files-found: error
+          retention-days: 7

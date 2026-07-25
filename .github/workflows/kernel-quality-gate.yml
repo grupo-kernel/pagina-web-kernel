@@ -1,0 +1,158 @@
+name: Kernel Quality Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, hito-1-kernel-core]
+    paths:
+      - 'core/**'
+      - 'data/**'
+      - 'translations/**'
+      - 'equipo.html'
+      - 'formacion.html'
+      - 'publicaciones.html'
+      - 'proyectos.html'
+      - '.github/workflows/kernel-quality-gate.yml'
+  push:
+    branches: [hito-1-kernel-core, fase-1l-team-preview-integration, fase-1m-academic-profiles-preview, fase-1n-scientific-profiles-preview, fase-1o-publications-preview, fase-1p-projects-preview]
+    paths:
+      - 'core/**'
+      - 'data/**'
+      - 'translations/**'
+      - 'equipo.html'
+      - 'formacion.html'
+      - 'publicaciones.html'
+      - 'proyectos.html'
+      - '.github/workflows/kernel-quality-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Kernel Core
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Generate publications candidate
+        run: node core/migrate-publications-v2.mjs
+      - name: Run general quality gate
+        run: node core/run-quality-gate.mjs
+      - name: Validate publications candidate
+        run: node core/validate-publications-v2.mjs
+      - name: Validate projects candidate
+        run: node core/validate-projects-v2.mjs
+      - name: Validate services candidate
+        run: node core/validate-services-v2.mjs
+      - name: Validate news candidate
+        run: node core/validate-news-v2.mjs
+      - name: Validate centralized translations
+        run: node core/validate-translations.mjs
+      - name: Build cross-module relations index
+        run: node core/build-relations-index.mjs
+      - name: Validate cross-module relations index
+        run: node core/validate-relations-index.mjs
+      - name: Validate parity before activation
+        id: parity
+        continue-on-error: true
+        run: node core/validate-parity.mjs
+      - name: Upload parity diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-parity-runtime-report
+          path: core/audits/parity-runtime-report.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Validate standalone Team module preview
+        run: node core/validate-team-module.mjs
+      - name: Validate Team integration
+        run: node core/validate-team-integration.mjs
+      - name: Validate academic profile integration
+        run: node core/validate-academic-integration.mjs
+      - name: Validate scientific profiles module
+        run: node core/validate-scientific-profiles.mjs
+      - name: Validate Publications 2.0 module
+        run: node core/validate-publications-module.mjs
+      - name: Validate Projects module
+        run: node core/validate-projects-module.mjs
+      - name: Upload academic controlled preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-academic-controlled-preview
+          path: |
+            formacion.html
+            assets/css/kernel.css
+            core/modules/academic/academic-integration.css
+            core/modules/academic/academic-renderer.mjs
+            core/data/researchers.v2.json
+            ElKernel.png
+            miguel.jpg
+            natanael.jpg
+            randy.jpg
+            antmel.jpg
+            marino.png
+            marckelly.jpg
+            josealberto.jpg
+            assets/img/alicia-cordero.svg
+            assets/img/juan-torregrosa.svg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload scientific profiles controlled preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-scientific-profiles-controlled-preview
+          path: |
+            core/modules/scientific-profiles/preview.html
+            core/modules/scientific-profiles/scientific-profiles.css
+            core/modules/scientific-profiles/scientific-profiles-renderer.mjs
+            core/data/researchers.v2.json
+            ElKernel.png
+            miguel.jpg
+            natanael.jpg
+            randy.jpg
+            antmel.jpg
+            marino.png
+            marckelly.jpg
+            josealberto.jpg
+            assets/img/alicia-cordero.svg
+            assets/img/juan-torregrosa.svg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload Publications 2.0 controlled preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-publications-controlled-preview
+          path: |
+            core/modules/publications/preview.html
+            core/modules/publications/publications.css
+            core/modules/publications/publications-renderer.mjs
+            core/data/publications.v2.json
+            core/data/researchers.v2.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload Projects controlled preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-projects-controlled-preview
+          path: |
+            core/modules/projects/preview.html
+            core/modules/projects/projects.css
+            core/modules/projects/projects-renderer.mjs
+            core/data/projects.v2.json
+            core/data/researchers.v2.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Verify generated publication files are reproducible
+        run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
+      - name: Enforce parity result
+        if: steps.parity.outcome == 'failure'
+        run: |
+          cat core/audits/parity-runtime-report.json
+          exit 1
