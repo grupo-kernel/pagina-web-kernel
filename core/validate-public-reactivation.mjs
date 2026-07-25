@@ -58,7 +58,8 @@ const localReferencePattern = /(?:href|src)=["']([^"']+)["']/gi;
 for (const [page, html] of pageContents) {
   for (const match of html.matchAll(localReferencePattern)) {
     const reference = match[1].trim();
-    if (!reference || /^(?:https?:|mailto:|tel:|data:|javascript:|#|\/\/)/i.test(reference)) continue;
+    if (!reference || reference.includes('${') || reference.includes('{{')) continue;
+    if (/^(?:https?:|mailto:|tel:|data:|javascript:|#|\/\/)/i.test(reference)) continue;
     const clean = reference.split('#')[0].split('?')[0];
     if (!clean) continue;
     let decoded;
