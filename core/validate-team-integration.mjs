@@ -22,7 +22,6 @@ const requiredIds = config.expected.researcher_ids || [];
 for (const token of [
   'data-kernel-core-integration="team"',
   'data-kernel-core-module="team"',
-  'data-kernel-core-status="branch-preview-active"',
   'core/data/researchers.v2.json',
   'core/modules/team/team-integration.css',
   "import { orderedResearchers, renderResearcherCard }",
@@ -33,6 +32,12 @@ for (const token of [
   'kernel-core-team__grid'
 ]) {
   if (!html.includes(token)) fail(`Falta integración controlada en equipo.html: ${token}`);
+}
+
+const isBranchPreview = html.includes('data-kernel-core-status="branch-preview-active"');
+const isPublicCandidate = html.includes('data-kernel-core-status="public-ready"');
+if (!isBranchPreview && !isPublicCandidate) {
+  fail('equipo.html debe declarar un estado de integración reconocido: branch-preview-active o public-ready.');
 }
 
 if (/fetch\s*\(\s*["']data\/researchers\.json["']/.test(html)) {
@@ -106,11 +111,12 @@ if (team.renderer !== 'core/modules/team/team-renderer.mjs') fail('El manifiesto
 if (team.integration_page !== 'equipo.html') fail('El manifiesto no registra equipo.html como página integrada.');
 if (team.stylesheet !== 'core/modules/team/team-integration.css') fail('El manifiesto no registra la hoja de estilos integrada.');
 
-if (!html.includes('La plataforma pública continúa usando su fuente anterior')) {
+if (isBranchPreview && !html.includes('La plataforma pública continúa usando su fuente anterior')) {
   warn('La nota visual no explica que la plataforma pública permanece sin cambios.');
 }
 
-console.log(`Integración Team: ${members.length} perfiles, ${international.length} internacionales, renderizador compartido y CSS encapsulado.`);
+const mode = isPublicCandidate ? 'candidata pública' : 'vista previa de rama';
+console.log(`Integración Team (${mode}): ${members.length} perfiles, ${international.length} internacionales, renderizador compartido y CSS encapsulado.`);
 warnings.forEach(item => console.log(`ADVERTENCIA: ${item}`));
 errors.forEach(item => console.error(`ERROR: ${item}`));
 console.log(errors.length ? 'Resultado: FAIL' : 'Resultado: PASS');
