@@ -10,15 +10,17 @@ on:
       - 'translations/**'
       - 'equipo.html'
       - 'formacion.html'
+      - 'publicaciones.html'
       - '.github/workflows/kernel-quality-gate.yml'
   push:
-    branches: [hito-1-kernel-core, fase-1l-team-preview-integration, fase-1m-academic-profiles-preview, fase-1n-scientific-profiles-preview]
+    branches: [hito-1-kernel-core, fase-1l-team-preview-integration, fase-1m-academic-profiles-preview, fase-1n-scientific-profiles-preview, fase-1o-publications-preview]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
       - 'equipo.html'
       - 'formacion.html'
+      - 'publicaciones.html'
       - '.github/workflows/kernel-quality-gate.yml'
 
 permissions:
@@ -74,6 +76,8 @@ jobs:
         run: node core/validate-academic-integration.mjs
       - name: Validate scientific profiles module
         run: node core/validate-scientific-profiles.mjs
+      - name: Validate Publications 2.0 module
+        run: node core/validate-publications-module.mjs
       - name: Upload academic controlled preview
         uses: actions/upload-artifact@v4
         with:
@@ -115,6 +119,18 @@ jobs:
             josealberto.jpg
             assets/img/alicia-cordero.svg
             assets/img/juan-torregrosa.svg
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload Publications 2.0 controlled preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-publications-controlled-preview
+          path: |
+            core/modules/publications/preview.html
+            core/modules/publications/publications.css
+            core/modules/publications/publications-renderer.mjs
+            core/data/publications.v2.json
+            core/data/researchers.v2.json
           if-no-files-found: error
           retention-days: 7
       - name: Verify generated publication files are reproducible
