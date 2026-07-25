@@ -1,0 +1,14 @@
+{
+  "duplicates": [],
+  "warnings": [],
+  "summary": {
+    "source_records": 162,
+    "unique_records": 162,
+    "duplicate_records_removed": 0,
+    "researchers_with_records": 7,
+    "latest_year": 2026,
+    "records_with_doi": 162,
+    "records_without_doi": 0,
+    "records_with_quartile": 68
+  }
+}
