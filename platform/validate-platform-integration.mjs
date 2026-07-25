@@ -115,7 +115,7 @@ for (const token of [
   'core/data/researchers.v2.json',
   'FORMATION_ROUTE = "formacion"',
   'data-kernel-platform-page="academic-background"',
-  '#/formacion'
+  '#/${FORMATION_ROUTE}'
 ]) {
   if (!academicBridge.includes(token)) fail(`El puente académico no contiene la adaptación requerida: ${token}`);
 }
