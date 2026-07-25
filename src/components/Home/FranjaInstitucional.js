@@ -9,9 +9,13 @@ function escapar(texto) {
         .replaceAll("'", "&#039;");
 }
 
-function metrica(valor, etiqueta) {
+function metrica(valor, etiqueta, descripcion = "") {
+    const atributo = descripcion
+        ? ` title="${escapar(descripcion)}" aria-label="${escapar(`${valor} ${etiqueta}. ${descripcion}.`)}"`
+        : "";
+
     return `
-        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center">
+        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center"${atributo}>
             <p class="text-2xl font-black text-white md:text-3xl">${escapar(valor)}</p>
             <p class="mt-1 text-xs font-semibold leading-tight text-slate-300">${escapar(etiqueta)}</p>
         </div>
@@ -41,14 +45,14 @@ export function CrearFranjaInstitucional({ integrantes, servicios, lineas, publi
             <aside class="bg-[#071820] p-5 text-white md:p-7" aria-label="Indicadores y principios de confianza">
                 <p class="text-xs font-black uppercase tracking-[0.2em] text-[#d7a955]">Capacidad institucional</p>
                 <div class="mt-4 grid grid-cols-2 gap-3">
-                    ${metrica(integrantes, "Integrantes")}
+                    ${metrica(integrantes, "Integrantes", "Miembros nacionales e internacionales del Grupo El Kernel")}
                     ${metrica(servicios, "Áreas de servicio")}
                     ${metrica(lineas, "Líneas de investigación")}
-                    ${metrica(publicaciones, "Publicaciones registradas")}
+                    ${metrica(publicaciones, "Artículos científicos acumulados", "Producción de los 9 integrantes a lo largo de sus trayectorias académicas")}
                 </div>
                 <div class="mt-5 flex flex-wrap gap-2" aria-label="Principios de trabajo">
                     ${["Confidencialidad", "Reproducibilidad", "Transferencia"].map((principio) => `
-                        <span class="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-200">${principio}</span>
+                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-200">${principio}</span>
                     `).join("")}
                 </div>
             </aside>
