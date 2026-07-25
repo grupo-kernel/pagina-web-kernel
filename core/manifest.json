@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "core_version": "0.3.2-preview",
+  "core_version": "0.4.0-preview",
   "status": "branch-preview-not-production",
   "public_site_untouched": true,
   "default_locale": "es",
@@ -10,75 +10,52 @@
       "active_path": "data/researchers.json",
       "candidate_path": "core/data/researchers.v2.json",
       "required": true,
-      "migration_status": "integrated-in-controlled-preview-branch",
+      "migration_status": "integrated-in-controlled-preview-branches",
       "validation": "core/validate-researchers-v2.js",
       "audit": "core/audits/researchers-audit.md",
       "consumers": ["home", "team", "academic-background", "publications", "projects"]
     },
-    "publications": {
-      "path": "data/publications.json",
-      "candidate_path": "core/data/publications.v2.json",
-      "required": true,
-      "migration_status": "candidate-generated-not-active",
-      "consumers": ["home", "publications", "researcher-profile"]
-    },
-    "projects": {
-      "candidate_path": "core/data/projects.v2.json",
-      "required": false,
-      "migration_status": "candidate-created-not-active",
-      "consumers": ["home", "projects", "researcher-profile"]
-    },
-    "services": {
-      "candidate_path": "core/data/services.v2.json",
-      "required": false,
-      "migration_status": "candidate-created-not-active",
-      "consumers": ["home", "services", "contact"]
-    },
-    "news": {
-      "candidate_path": "core/data/news.v2.json",
-      "required": false,
-      "migration_status": "candidate-created-not-active",
-      "consumers": ["home", "news"]
-    },
-    "translations_es": {
-      "path": "translations/es.json",
-      "required": false,
-      "migration_status": "candidate-created-not-active",
-      "consumers": ["all"]
-    },
-    "translations_en": {
-      "path": "translations/en.json",
-      "required": false,
-      "migration_status": "candidate-created-not-active",
-      "consumers": ["all"]
-    }
+    "publications": {"path":"data/publications.json","candidate_path":"core/data/publications.v2.json","required":true,"migration_status":"candidate-generated-not-active","consumers":["home","publications","researcher-profile"]},
+    "projects": {"candidate_path":"core/data/projects.v2.json","required":false,"migration_status":"candidate-created-not-active","consumers":["home","projects","researcher-profile"]},
+    "services": {"candidate_path":"core/data/services.v2.json","required":false,"migration_status":"candidate-created-not-active","consumers":["home","services","contact"]},
+    "news": {"candidate_path":"core/data/news.v2.json","required":false,"migration_status":"candidate-created-not-active","consumers":["home","news"]},
+    "translations_es": {"path":"translations/es.json","required":false,"migration_status":"candidate-created-not-active","consumers":["all"]},
+    "translations_en": {"path":"translations/en.json","required":false,"migration_status":"candidate-created-not-active","consumers":["all"]}
   },
   "activation": {
     "enabled": false,
     "strategy": "module-by-module",
-    "next_candidate": "team",
-    "preview_branch": "fase-1l-team-preview-integration",
-    "rollback": "restore Team integration files from hito-1-kernel-core and retain data/researchers.json in production",
+    "next_candidate": "academic-background",
+    "preview_branch": "fase-1m-academic-profiles-preview",
+    "rollback": "restore formacion.html and academic metadata from hito-1-kernel-core",
     "modules": {
       "team": {
         "active": false,
         "preview_active": true,
         "status": "integrated-branch-preview",
-        "scope": "branch-only",
+        "scope": "kernel-core-branch",
         "source": "core/data/researchers.v2.json",
         "renderer": "core/modules/team/team-renderer.mjs",
         "stylesheet": "core/modules/team/team-integration.css",
         "integration_page": "equipo.html",
-        "standalone_preview": "core/modules/team/team-preview.html",
-        "validator": "core/validate-team-integration.mjs",
-        "visual_review": "core/audits/team-visual-audit.md",
-        "rollback": "restore equipo.html and Core Team metadata from hito-1-kernel-core; main and gh-pages require no change"
+        "validator": "core/validate-team-integration.mjs"
       },
-      "academic-background": { "active": false, "status": "pending" },
-      "publications": { "active": false, "status": "pending" },
-      "projects": { "active": false, "status": "pending" },
-      "services": { "active": false, "status": "pending" },
-      "news": { "active": false, "status": "pending" }
+      "academic-background": {
+        "active": false,
+        "preview_active": true,
+        "status": "integrated-branch-preview",
+        "scope": "branch-only",
+        "source": "core/data/researchers.v2.json",
+        "renderer": "core/modules/academic/academic-renderer.mjs",
+        "stylesheet": "core/modules/academic/academic-integration.css",
+        "integration_page": "formacion.html",
+        "validator": "core/validate-academic-integration.mjs",
+        "rollback": "restore formacion.html from hito-1-kernel-core; main and gh-pages require no change"
+      },
+      "publications": {"active":false,"status":"pending"},
+      "projects": {"active":false,"status":"pending"},
+      "services": {"active":false,"status":"pending"},
+      "news": {"active":false,"status":"pending"}
     }
   }
 }
