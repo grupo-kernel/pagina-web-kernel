@@ -1,7 +1,7 @@
 # Plan de activación gradual del Kernel Core
 
 Fecha: 2026-07-25  
-Estado: propuesta operativa  
+Estado: activación controlada en curso  
 Rama: `hito-1-kernel-core`
 
 ## Principio de activación
@@ -18,26 +18,41 @@ Antes de activar cualquier módulo debe cumplirse lo siguiente:
 - Debe existir un cambio pequeño, revisable y reversible.
 - El módulo anterior debe permanecer estable.
 
-## Orden recomendado
+## Fase 1L: Equipo y perfiles
 
-### 1. Equipo y perfiles
+Estado actual: **preview-ready / no activo en producción**.
 
-Riesgo: bajo.  
-Motivo: los nueve investigadores ya están normalizados.  
-Activación esperada: reemplazar la fuente de datos de Equipo por `core/data/researchers.v2.json`.
+Se agregó un renderizador independiente para Equipo:
 
-Criterios:
+- `core/modules/team/team-renderer.mjs`
+- `core/modules/team/team-preview.html`
+- `core/modules/team/team-preview.css`
+- `core/validate-team-module.mjs`
 
-- aparecen los nueve miembros;
-- no desaparecen Marino, Marc-Kelly ni José Alberto;
-- Alicia y Juan Ramón aparecen como miembros internacionales;
-- se mantienen fotografías y enlaces;
-- se conserva el conteo de nueve integrantes.
+La vista previa utiliza `core/data/researchers.v2.json`, pero no reemplaza todavía el componente público de la web.
 
-Reversión:
+### Criterios obligatorios de la Fase 1L
 
-- volver a leer `data/researchers.json`;
-- desactivar el import del módulo Core.
+- aparecen exactamente los nueve miembros;
+- no desaparecen Marino Brito Guillén, Marc-Kelly Jean Philippe Jean ni José Alberto Reyes Reyes;
+- Alicia Cordero y Juan Ramón Torregrosa aparecen como miembros internacionales;
+- se mantienen fotografía actual, correo y enlaces académicos disponibles;
+- el orden institucional es el aprobado;
+- se genera vista en español e inglés;
+- `activation.enabled` permanece en `false`;
+- `activation.modules.team.active` permanece en `false`;
+- `activation.modules.team.status` debe ser `preview-ready`.
+
+### Reversión de la Fase 1L
+
+La reversión consiste en:
+
+1. no importar `core/modules/team/team-renderer.mjs` desde ningún componente público;
+2. mantener el componente actual de Equipo;
+3. dejar `activation.modules.team.active=false`;
+4. eliminar la referencia del validador si fuera necesario.
+
+## Orden recomendado restante
 
 ### 2. Formación académica
 
@@ -104,8 +119,6 @@ Criterios:
 4. Publicar en `gh-pages` solo si no hay regresiones.
 5. Mantener un commit de reversión identificado.
 
-## Módulo candidato para la próxima fase
+## Próximo paso después de la Fase 1L
 
-El primer módulo que debe activarse es **Equipo y perfiles**.
-
-Es el más visible para la nueva cara institucional y, a la vez, el de menor riesgo porque la base de investigadores ya fue auditada, normalizada y validada.
+Preparar la conexión del módulo Equipo con el componente público, pero solo en una rama de prueba visual. No debe publicarse en `gh-pages` hasta que la vista previa se revise y se confirme que no hay pérdida de perfiles, enlaces, fotografías ni traducciones.
