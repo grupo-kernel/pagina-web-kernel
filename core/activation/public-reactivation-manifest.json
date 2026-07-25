@@ -25,12 +25,26 @@
     "noticias.html",
     "contacto.html"
   ],
+  "preactivation_snapshots": {
+    "captured_at": "2026-07-25",
+    "main": {
+      "sha": "ddbbae2abd68d1ecb35165b0721116c779fe7375",
+      "rollback_branch": "rollback/main-pre-reactivation-20260725"
+    },
+    "gh_pages": {
+      "sha": "0a86f78a26ebbffe4862208ab6f5ee627b973366",
+      "rollback_branch": "rollback/gh-pages-pre-reactivation-20260725"
+    }
+  },
   "pending_before_activation": [
     {
       "path": "miguel.jpg",
       "type": "binary-replacement",
       "required": true,
-      "status": "pending"
+      "status": "completed",
+      "verified_blob_sha": "f8142776f6ee51ef10e811ecc20f05d7f584681c",
+      "detected_format": "png",
+      "note": "La fotografía institucional actualizada quedó restaurada en la ruta utilizada por el sitio. Su visualización final forma parte de la revisión manual previa a producción."
     }
   ],
   "rollback": {
