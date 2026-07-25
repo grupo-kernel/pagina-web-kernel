@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "core_version": "0.3.1-preview",
+  "core_version": "0.3.2-preview",
   "status": "branch-preview-not-production",
   "public_site_untouched": true,
   "default_locale": "es",
@@ -58,7 +58,7 @@
     "strategy": "module-by-module",
     "next_candidate": "team",
     "preview_branch": "fase-1l-team-preview-integration",
-    "rollback": "restore equipo.html from hito-1-kernel-core and retain data/researchers.json in production",
+    "rollback": "restore Team integration files from hito-1-kernel-core and retain data/researchers.json in production",
     "modules": {
       "team": {
         "active": false,
@@ -66,10 +66,13 @@
         "status": "integrated-branch-preview",
         "scope": "branch-only",
         "source": "core/data/researchers.v2.json",
-        "renderer": "equipo.html",
+        "renderer": "core/modules/team/team-renderer.mjs",
+        "stylesheet": "core/modules/team/team-integration.css",
+        "integration_page": "equipo.html",
         "standalone_preview": "core/modules/team/team-preview.html",
         "validator": "core/validate-team-integration.mjs",
-        "rollback": "restore equipo.html from hito-1-kernel-core; main and gh-pages require no change"
+        "visual_review": "core/audits/team-visual-audit.md",
+        "rollback": "restore equipo.html and Core Team metadata from hito-1-kernel-core; main and gh-pages require no change"
       },
       "academic-background": { "active": false, "status": "pending" },
       "publications": { "active": false, "status": "pending" },
