@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "mode": "parallel-not-active",
   "blocking": {
     "researcher_count": true,
@@ -18,6 +18,10 @@
     "invalid_service_relations": true,
     "duplicate_news_ids": true,
     "invalid_news_relations": true,
+    "translation_key_mismatch": true,
+    "invalid_translation_values": true,
+    "missing_researcher_relations": true,
+    "duplicate_relation_entries": true,
     "missing_required_files": true,
     "invalid_json": true
   },
@@ -30,7 +34,8 @@
     "unitemized_project_participations": true,
     "missing_service_scope": true,
     "missing_news_media": true,
-    "missing_translations": true,
+    "identical_translation_values": true,
+    "researchers_without_relations": true,
     "missing_optional_catalogs": true
   },
   "expected": {
@@ -39,6 +44,7 @@
     "recorded_project_participations": 58,
     "service_count": 6,
     "news_candidate_count": 3,
+    "translation_locales": ["es-DO", "en"],
     "researcher_ids": [
       "miguel-leonardo",
       "natanael-urena",
