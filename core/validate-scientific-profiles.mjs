@@ -48,7 +48,7 @@ if (!preview.includes('../../data/researchers.v2.json')) errors.push('La vista p
 if (!preview.includes('data-science-select')) errors.push('Falta navegación interactiva.');
 if (!preview.includes('URLSearchParams')) errors.push('Falta selección mediante parámetro de consulta.');
 if (!preview.includes('location.hash')) errors.push('Falta selección mediante hash.');
-if (!report.includes('No activa producción')) errors.push('El informe debe confirmar que el módulo no activa producción.');
+if (!report.includes('No activa rutas de producción')) errors.push('El informe debe confirmar que el módulo no activa producción.');
 
 if (errors.length) {
   console.error(errors.map(item => `✗ ${item}`).join('\n'));
