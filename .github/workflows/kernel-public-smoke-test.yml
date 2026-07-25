@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Run external public smoke test
         env:
           BASE_URL: https://www.grupoelkernel.com
@@ -55,7 +57,9 @@ jobs:
           git add core/activation/public-smoke-result.json
           if git diff --cached --quiet; then
             echo "Smoke result unchanged."
-          else
-            git commit -m "Record final public smoke test result"
-            git push origin HEAD:main
+            exit 0
           fi
+          git commit -m "Record final public smoke test result"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
