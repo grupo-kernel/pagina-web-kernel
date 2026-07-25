@@ -3,30 +3,96 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Catálogo verificable de publicaciones del Grupo de Investigación El Kernel, con DOI, autores y cuartiles contextualizados.">
+  <meta name="description" content="Catálogo científico normalizado del Grupo de Investigación El Kernel, con DOI, BibTeX, filtros por investigador, año, tipo y cuartil.">
   <title>Publicaciones | Grupo de Investigación El Kernel</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="assets/css/kernel.css" rel="stylesheet">
+  <link href="core/modules/publications/publications.css" rel="stylesheet">
   <style>
-    .metrics-callout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; margin-top: 1rem; }
-    .metrics-callout article { padding: .9rem 1rem; border: 1px solid #dfe9ef; border-radius: 12px; background: #f8fbfd; }
-    .metrics-callout strong { display: block; color: var(--navy); font-family: Georgia,"Times New Roman",serif; font-size: 1.8rem; line-height: 1; }
-    .metrics-callout span { display: block; margin-top: .35rem; color: var(--muted); font-size: .78rem; }
-    .sync-status { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .65rem; border-radius: 999px; color: #155a48; background: #dff5ec; font-size: .75rem; font-weight: 800; }
-    .catalog-layout { display: grid; grid-template-columns: minmax(230px,290px) minmax(0,1fr); gap: 1.25rem; align-items: start; }
-    .filter-section + .filter-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e7eef2; }
-    .filter-title { margin: 0 0 .55rem; color: var(--navy); font-size: .82rem; font-weight: 850; letter-spacing: .02em; }
-    .filter-actions { display: grid; gap: .55rem; margin-top: 1rem; }
-    .sort-select { width: min(100%,240px); }
-    .publication-source { color: #708594; font-size: .78rem; }
-    .copy-feedback { min-height: 1.3rem; margin-top: .6rem; color: #155a48; font-size: .76rem; font-weight: 700; }
-    .source-legend { display: grid; gap: .6rem; margin-top: .9rem; }
-    .source-legend div { display: grid; grid-template-columns: 38px 1fr; gap: .55rem; align-items: start; color: var(--muted); font-size: .78rem; }
-    .source-legend strong { color: var(--navy); }
-    @media (max-width: 991.98px) { .catalog-layout { grid-template-columns: 1fr; } }
-    @media (max-width: 575.98px) { .metrics-callout { grid-template-columns: 1fr; } .publication-toolbar { align-items: stretch; flex-direction: column; } .sort-select { width: 100%; } }
+    .publications-summary {
+      position: relative;
+      z-index: 2;
+      margin-top: -2rem;
+    }
+    .publication-stat {
+      box-shadow: 0 12px 34px rgba(11, 39, 64, .08);
+    }
+    .catalog-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .profile-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+    .profile-metrics-grid article {
+      padding: .95rem 1rem;
+      border: 1px solid var(--pub-border);
+      border-radius: 14px;
+      background: var(--pub-bg);
+    }
+    .profile-metrics-grid strong {
+      display: block;
+      color: var(--pub-navy);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.85rem;
+      line-height: 1;
+    }
+    .profile-metrics-grid span {
+      display: block;
+      margin-top: .4rem;
+      color: var(--pub-muted);
+      font-size: .78rem;
+    }
+    .publication-filters {
+      top: 88px;
+    }
+    .publication-filters h2 {
+      margin: 0 0 .45rem;
+      color: var(--pub-navy);
+      font-size: 1.15rem;
+    }
+    .publication-filters button {
+      width: 100%;
+      margin-top: 1rem;
+      padding: .7rem;
+      border: 1px solid #bed0db;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--pub-blue);
+      font-weight: 800;
+    }
+    .publication-toolbar select {
+      min-width: 220px;
+      padding: .65rem;
+      border: 1px solid #bdccd5;
+      border-radius: 10px;
+      background: #fff;
+    }
+    .publication-feedback {
+      min-height: 1.4rem;
+      margin: .75rem 0 0;
+      color: #155a48;
+      font-size: .8rem;
+      font-weight: 800;
+    }
+    .publication-card a {
+      overflow-wrap: anywhere;
+    }
+    @media (max-width: 900px) {
+      .catalog-intro { grid-template-columns: 1fr; }
+      .publications-summary { margin-top: 1rem; }
+    }
+    @media (max-width: 560px) {
+      .profile-metrics-grid { grid-template-columns: 1fr; }
+      .publication-toolbar select { width: 100%; min-width: 0; }
+    }
   </style>
 </head>
 <body>
@@ -40,7 +106,7 @@
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
         <li class="nav-item"><a class="nav-link" href="quienes_somos.html">Quiénes somos</a></li>
         <li class="nav-item"><a class="nav-link" href="equipo.html">Equipo</a></li>
-<li class="nav-item"><a class="nav-link" href="formacion.html">Formación</a></li>
+        <li class="nav-item"><a class="nav-link" href="formacion.html">Formación</a></li>
         <li class="nav-item"><a class="nav-link" href="lineas.html">Líneas</a></li>
         <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>
         <li class="nav-item"><a class="nav-link active" aria-current="page" href="publicaciones.html">Publicaciones</a></li>
@@ -54,107 +120,84 @@
 <main id="contenido">
   <header class="page-header">
     <div class="container">
-      <span class="eyebrow"><i class="bi bi-journal-richtext"></i> Producción científica verificable</span>
-      <h1>Publicaciones del Grupo El Kernel</h1>
-      <p>Catálogo deduplicado por DOI, con autores, revista, fecha, procedencia de los metadatos y cuartil identificado por sistema, categoría y año.</p>
+      <span class="eyebrow"><i class="bi bi-journal-richtext"></i> Biblioteca científica normalizada</span>
+      <h1>Publicaciones 2.0</h1>
+      <p>Catálogo deduplicado, verificable y conectado con los investigadores del Grupo El Kernel, con DOI, BibTeX y filtros bibliográficos avanzados.</p>
     </div>
   </header>
 
-  <section class="container" aria-label="Indicadores del catálogo">
-    <div class="stats-grid">
-      <article class="stat-card"><span class="value" id="catalogTotal">—</span><span class="label">Registros únicos en el catálogo</span><span class="detail">Una coautoría se contabiliza una sola vez</span></article>
-      <article class="stat-card"><span class="value" id="latestYear">—</span><span class="label">Año más reciente</span><span class="detail">Según la fecha bibliográfica disponible</span></article>
-      <article class="stat-card"><span class="value" id="quartileTotal">—</span><span class="label">Registros con cuartil documentado</span><span class="detail">JCR o SJR con año y fuente</span></article>
+  <section class="container" aria-label="Resumen del catálogo">
+    <div class="publications-summary">
+      <article class="publication-stat"><strong id="statTotal">—</strong><span>registros únicos</span></article>
+      <article class="publication-stat"><strong id="statDoi">—</strong><span>publicaciones con DOI</span></article>
+      <article class="publication-stat"><strong id="statResearchers">—</strong><span>investigadores vinculados</span></article>
+      <article class="publication-stat"><strong id="statLatest">—</strong><span>año más reciente</span></article>
     </div>
   </section>
 
-  <section class="section-block pb-4">
+  <section class="section-block pt-4">
     <div class="container">
-      <div class="content-card">
-        <div class="row g-4 align-items-start">
-          <div class="col-lg-7">
-            <span class="section-kicker">Cobertura bibliográfica</span>
-            <h2>Inventario automatizable y métricas separadas</h2>
-            <p>El número de artículos declarado por cada perfil institucional no equivale al total único del grupo: Alicia Cordero y Juan Ramón Torregrosa comparten numerosas coautorías. Por ello, el catálogo cuenta cada DOI una sola vez y presenta las métricas individuales por separado.</p>
-            <div class="data-note">El cuartil corresponde a una revista, una categoría, un sistema bibliométrico y un año determinados. No se presenta como una propiedad permanente del artículo.</div>
-          </div>
-          <div class="col-lg-5">
-            <span class="sync-status"><i class="bi bi-arrow-repeat"></i> Catálogo preparado para sincronización</span>
-            <div class="metrics-callout" id="profileMetrics">
-              <article><strong>253</strong><span>Artículos de revista de Alicia Cordero · perfil institucional UPV</span></article>
-              <article><strong>298</strong><span>Artículos de revista de Juan R. Torregrosa · perfil institucional UPV</span></article>
-            </div>
-            <p class="publication-source mb-0 mt-2" id="generatedAt">Cargando fecha de actualización…</p>
-          </div>
+      <div class="content-card catalog-intro">
+        <div>
+          <span class="section-kicker">Trazabilidad bibliográfica</span>
+          <h2>Un registro por publicación científica</h2>
+          <p>Las coautorías entre integrantes del grupo se contabilizan una sola vez mediante DOI normalizado o un identificador de respaldo. Cada ficha conserva la procedencia de los metadatos y distingue el cuartil por sistema, categoría y año.</p>
+          <div class="data-note" id="coverageNote">Cargando información de cobertura…</div>
+        </div>
+        <div>
+          <span class="section-kicker">Trayectoria individual</span>
+          <div class="profile-metrics-grid" id="profileMetrics" aria-live="polite"></div>
+          <p class="publication-citation mb-0 mt-2" id="generatedAt">Cargando fecha de actualización…</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section-block pt-3">
+  <section class="section-block pt-2">
     <div class="container">
-      <div class="catalog-layout">
-        <aside class="filter-panel" aria-label="Filtros del catálogo">
-          <div class="filter-section">
-            <h2 class="filter-title">Buscar</h2>
-            <label for="searchInput">Título, revista, autor o DOI</label>
-            <input class="form-control" id="searchInput" type="search" autocomplete="off" placeholder="Ej.: sistemas no lineales">
-          </div>
-          <div class="filter-section">
-            <h2 class="filter-title">Año</h2>
-            <label for="yearFilter">Año de publicación</label>
-            <select class="form-select" id="yearFilter"><option value="all">Todos los años</option></select>
-          </div>
-          <div class="filter-section">
-            <h2 class="filter-title">Cuartil</h2>
-            <label for="quartileFilter">Clasificación documentada</label>
-            <select class="form-select" id="quartileFilter">
-              <option value="all">Todos</option>
-              <option value="Q1">Q1</option>
-              <option value="Q2">Q2</option>
-              <option value="Q3">Q3</option>
-              <option value="Q4">Q4</option>
-              <option value="pending">Pendiente de verificación</option>
-            </select>
-          </div>
-          <div class="filter-section">
-            <h2 class="filter-title">Investigador</h2>
-            <div class="researcher-filter-list" id="researcherFilters" role="group" aria-label="Filtrar por investigador">
-              <button class="researcher-filter active" type="button" data-researcher="all">Todos los investigadores</button>
-            </div>
-          </div>
-          <div class="filter-actions">
-            <button class="btn-kernel-outline" id="clearFilters" type="button"><i class="bi bi-x-circle"></i> Limpiar filtros</button>
-          </div>
-          <div class="filter-section">
-            <h2 class="filter-title">Lectura del cuartil</h2>
-            <div class="source-legend">
-              <div><span class="pub-chip pub-chip--q1">Q1</span><span>Primer cuartil en la fuente, categoría y año indicados.</span></div>
-              <div><span class="pub-chip pub-chip--pending">—</span><span>Información bibliométrica todavía no verificada en el catálogo.</span></div>
-            </div>
-          </div>
+      <div class="publications-layout">
+        <aside class="publication-filters" aria-label="Filtros del catálogo">
+          <h2>Buscar y filtrar</h2>
+          <label for="query">Título, revista, autor o DOI</label>
+          <input id="query" type="search" autocomplete="off" placeholder="Ej.: sistemas no lineales">
+
+          <label for="researcher">Investigador</label>
+          <select id="researcher"><option value="all">Todos</option></select>
+
+          <label for="year">Año</label>
+          <select id="year"><option value="all">Todos</option></select>
+
+          <label for="type">Tipo de documento</label>
+          <select id="type"><option value="all">Todos</option></select>
+
+          <label for="quartile">Cuartil documentado</label>
+          <select id="quartile">
+            <option value="all">Todos</option>
+            <option value="Q1">Q1</option>
+            <option value="Q2">Q2</option>
+            <option value="Q3">Q3</option>
+            <option value="Q4">Q4</option>
+            <option value="pending">Pendiente</option>
+          </select>
+
+          <button id="clear" type="button"><i class="bi bi-x-circle me-1"></i>Limpiar filtros</button>
         </aside>
 
         <div>
           <div class="publication-toolbar">
-            <div>
-              <div class="publication-count" id="resultCount" aria-live="polite">Cargando publicaciones…</div>
-              <div class="publication-source" id="coverageNote"></div>
-            </div>
-            <div class="sort-select">
-              <label class="visually-hidden" for="sortSelect">Ordenar publicaciones</label>
-              <select class="form-select" id="sortSelect">
-                <option value="date-desc">Más recientes primero</option>
-                <option value="date-asc">Más antiguas primero</option>
-                <option value="title-asc">Título A–Z</option>
-                <option value="journal-asc">Revista A–Z</option>
-              </select>
-            </div>
+            <strong id="count" aria-live="polite">Cargando catálogo…</strong>
+            <label class="visually-hidden" for="sort">Ordenar publicaciones</label>
+            <select id="sort">
+              <option value="date-desc">Más recientes primero</option>
+              <option value="date-asc">Más antiguas primero</option>
+              <option value="title-asc">Título A–Z</option>
+              <option value="journal-asc">Revista A–Z</option>
+            </select>
           </div>
-          <div class="publication-list" id="publicationList" aria-live="polite">
-            <div class="loading-state"><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Cargando catálogo bibliográfico…</div>
+          <div class="publication-list" id="list" aria-live="polite">
+            <div class="empty-state">Cargando catálogo científico…</div>
           </div>
-          <div class="copy-feedback" id="copyFeedback" aria-live="polite"></div>
+          <p class="publication-feedback" id="feedback" aria-live="polite"></p>
         </div>
       </div>
     </div>
@@ -164,193 +207,177 @@
 <footer class="kernel-footer">
   <div class="container">
     <div class="footer-grid">
-      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Metadatos abiertos, DOI normalizado y procedencia documentada.</p></div>
-      <div><strong>Investigadores</strong><div><a href="equipo.html#alicia-cordero">Alicia Cordero</a></div><div><a href="equipo.html#juan-torregrosa">Juan R. Torregrosa</a></div></div>
+      <div><div class="footer-title">Grupo de Investigación El Kernel</div><p class="mb-0">Metadatos abiertos, DOI normalizado y referencias bibliográficas reutilizables.</p></div>
+      <div><strong>Explorar</strong><div><a href="equipo.html">Investigadores</a></div><div><a href="proyectos.html">Proyectos</a></div><div><a href="lineas.html">Líneas de investigación</a></div></div>
       <div><strong>Metodología</strong><div><a href="docs/publication-sync.md">Sincronización bibliográfica</a></div><div><a href="https://github.com/grupo-kernel/pagina-web-kernel" target="_blank" rel="noopener">Repositorio</a></div></div>
     </div>
     <div class="footer-small">© <span id="currentYear"></span> Grupo de Investigación El Kernel.</div>
   </div>
 </footer>
 
-<script>
-(function () {
-  const state = { researcher: "all", search: "", year: "all", quartile: "all", sort: "date-desc" };
-  let researchers = [];
-  let publications = [];
-  const researcherMap = new Map();
+<script type="module">
+  import { renderPublicationCatalog } from './core/modules/publications/publications-renderer.mjs';
 
-  const elements = {
-    list: document.getElementById("publicationList"),
-    resultCount: document.getElementById("resultCount"),
-    coverageNote: document.getElementById("coverageNote"),
-    search: document.getElementById("searchInput"),
-    year: document.getElementById("yearFilter"),
-    quartile: document.getElementById("quartileFilter"),
-    sort: document.getElementById("sortSelect"),
-    researcherFilters: document.getElementById("researcherFilters"),
-    copyFeedback: document.getElementById("copyFeedback")
+  const state = { query: '', researcher: 'all', year: 'all', type: 'all', quartile: 'all' };
+  const ids = ['query', 'researcher', 'year', 'type', 'quartile', 'sort', 'clear', 'count', 'list', 'feedback'];
+  const els = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+  const params = new URLSearchParams(window.location.search);
+  let records = [];
+  let researcherMap = new Map();
+
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[character]));
+  const typeLabels = {
+    'journal-article': 'Artículo de revista',
+    'book': 'Libro',
+    'book-chapter': 'Capítulo de libro',
+    'conference-paper': 'Ponencia o acta de congreso',
+    'preprint': 'Prepublicación',
+    'other': 'Otro'
   };
 
-  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[character]);
-  const normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const normalizedDoi = (value) => String(value ?? "").trim().replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, "").replace(/^doi:\s*/i, "");
-
-  function formatDate(value) {
-    if (!value) return "Fecha no disponible";
-    const parsed = new Date(`${value}T00:00:00Z`);
-    if (Number.isNaN(parsed.getTime())) return escapeHtml(value);
-    return new Intl.DateTimeFormat("es-ES", {day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(parsed);
+  function option(select, value, label) {
+    const item = document.createElement('option');
+    item.value = String(value);
+    item.textContent = String(label);
+    select.append(item);
   }
 
-  function quartileMarkup(record) {
-    const quartile = record.quartile;
-    if (!quartile) {
-      return {
-        badge: '<span class="pub-chip pub-chip--pending"><i class="bi bi-hourglass-split"></i>Cuartil pendiente</span>',
-        detail: '<div class="quartile-detail">No se muestra una clasificación hasta disponer de sistema, categoría, año y fuente verificable.</div>'
-      };
-    }
-    const cssClass = `pub-chip--${String(quartile.quartile).toLowerCase()}`;
-    const sourceLink = quartile.source_url ? `<a href="${escapeHtml(quartile.source_url)}" target="_blank" rel="noopener">consultar fuente</a>` : "fuente no enlazada";
-    return {
-      badge: `<span class="pub-chip ${cssClass}"><i class="bi bi-award"></i>${escapeHtml(quartile.quartile)} · ${escapeHtml(quartile.system)}</span>`,
-      detail: `<div class="quartile-detail"><strong>${escapeHtml(quartile.system)} ${escapeHtml(quartile.metric_year)}</strong> · ${escapeHtml(quartile.category)} · ${sourceLink}.</div>`
-    };
-  }
-
-  function publicationCard(record) {
-    const quartile = quartileMarkup(record);
-    const doi = normalizedDoi(record.doi);
-    const primaryUrl = record.url || (doi ? `https://doi.org/${doi}` : "");
-    const authorNames = (record.authors || []).join(", ") || "Autoría no disponible";
-    const groupAuthors = (record.researcher_ids || []).map(id => researcherMap.get(id)?.name).filter(Boolean);
-    const groupLine = groupAuthors.length ? `<div class="publication-source mt-1">Miembros del grupo: ${groupAuthors.map(escapeHtml).join(", ")}</div>` : "";
-    return `<article class="publication-card">
-      <div class="publication-meta">
-        <span class="pub-chip pub-chip--year"><i class="bi bi-calendar3"></i>${escapeHtml(record.year)}</span>
-        <span class="pub-chip pub-chip--journal"><i class="bi bi-journal"></i>${escapeHtml(record.journal)}</span>
-        ${quartile.badge}
-      </div>
-      <h2>${escapeHtml(record.title)}</h2>
-      <p class="authors"><strong>Autores:</strong> ${escapeHtml(authorNames)}</p>
-      ${groupLine}
-      <div class="publication-source mt-2"><i class="bi bi-calendar-check me-1"></i>${formatDate(record.publication_date)} · Metadatos: ${escapeHtml(record.source || "fuente no especificada")}</div>
-      ${quartile.detail}
-      <div class="publication-actions">
-        ${primaryUrl ? `<a href="${escapeHtml(primaryUrl)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Abrir publicación</a>` : ""}
-        ${doi ? `<a href="https://doi.org/${escapeHtml(doi)}" target="_blank" rel="noopener"><i class="bi bi-link-45deg me-1"></i>DOI: ${escapeHtml(doi)}</a><button class="btn btn-link p-0 copy-doi" type="button" data-doi="${escapeHtml(doi)}"><i class="bi bi-copy me-1"></i>Copiar DOI</button>` : '<span class="publication-source">DOI no disponible</span>'}
-      </div>
-    </article>`;
-  }
-
-  function filteredPublications() {
-    const search = normalize(state.search.trim());
-    const result = publications.filter(record => {
-      const researcherMatch = state.researcher === "all" || (record.researcher_ids || []).includes(state.researcher);
-      const yearMatch = state.year === "all" || String(record.year) === state.year;
-      const recordQuartile = record.quartile?.quartile || "pending";
-      const quartileMatch = state.quartile === "all" || recordQuartile === state.quartile;
-      const searchable = normalize([record.title,record.journal,(record.authors || []).join(" "),record.doi,record.year].join(" "));
-      const searchMatch = !search || searchable.includes(search);
-      return researcherMatch && yearMatch && quartileMatch && searchMatch;
+  function setUrl() {
+    const url = new URL(window.location.href);
+    const mapping = { researcher: 'autor', year: 'anio', type: 'tipo', quartile: 'cuartil', query: 'buscar' };
+    Object.entries(mapping).forEach(([key, parameter]) => {
+      const value = state[key];
+      if (!value || value === 'all') url.searchParams.delete(parameter);
+      else url.searchParams.set(parameter, value);
     });
-    result.sort((left,right) => {
-      if (state.sort === "date-asc") return String(left.publication_date).localeCompare(String(right.publication_date));
-      if (state.sort === "title-asc") return String(left.title).localeCompare(String(right.title),"es",{sensitivity:"base"});
-      if (state.sort === "journal-asc") return String(left.journal).localeCompare(String(right.journal),"es",{sensitivity:"base"});
-      return String(right.publication_date).localeCompare(String(left.publication_date));
-    });
-    return result;
+    history.replaceState(null, '', url);
   }
 
-  function render() {
-    const records = filteredPublications();
-    elements.resultCount.textContent = `${records.length.toLocaleString("es-ES")} ${records.length === 1 ? "publicación" : "publicaciones"} mostradas de ${publications.length.toLocaleString("es-ES")}`;
-    elements.list.innerHTML = records.length ? records.map(publicationCard).join("") : '<div class="empty-state"><i class="bi bi-search fs-3 d-block mb-2"></i>No hay publicaciones que coincidan con los filtros seleccionados.</div>';
-    elements.list.querySelectorAll(".copy-doi").forEach(button => button.addEventListener("click", () => copyDoi(button.dataset.doi)));
-  }
-
-  function renderResearcherFilters() {
-    const idsWithPublications = new Set(publications.flatMap(record => record.researcher_ids || []));
-    const options = researchers.filter(researcher => idsWithPublications.has(researcher.id));
-    elements.researcherFilters.innerHTML = `<button class="researcher-filter ${state.researcher === "all" ? "active" : ""}" type="button" data-researcher="all">Todos los investigadores</button>${options.map(researcher => `<button class="researcher-filter ${state.researcher === researcher.id ? "active" : ""}" type="button" data-researcher="${escapeHtml(researcher.id)}">${escapeHtml(researcher.name)}</button>`).join("")}`;
-    elements.researcherFilters.querySelectorAll(".researcher-filter").forEach(button => button.addEventListener("click", () => {
-      state.researcher = button.dataset.researcher;
-      elements.researcherFilters.querySelectorAll(".researcher-filter").forEach(item => item.classList.toggle("active", item === button));
-      const url = new URL(window.location.href);
-      if (state.researcher === "all") url.searchParams.delete("autor"); else url.searchParams.set("autor", state.researcher);
-      history.replaceState(null,"",url);
-      render();
+  function bindBibtexButtons() {
+    els.list.querySelectorAll('.copy-bibtex').forEach(button => button.addEventListener('click', async () => {
+      const text = button.dataset.bibtex || '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const area = document.createElement('textarea');
+        area.value = text;
+        document.body.append(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }
+      els.feedback.textContent = 'Referencia BibTeX copiada al portapapeles.';
+      window.setTimeout(() => { els.feedback.textContent = ''; }, 2800);
     }));
   }
 
-  function renderYears() {
-    const years = [...new Set(publications.map(record => Number(record.year)).filter(Number.isFinite))].sort((a,b) => b-a);
-    elements.year.innerHTML = '<option value="all">Todos los años</option>' + years.map(year => `<option value="${year}">${year}</option>`).join("");
+  function render() {
+    const output = renderPublicationCatalog(records, researcherMap, state, els.sort.value);
+    els.count.textContent = `${output.count.toLocaleString('es-DO')} ${output.count === 1 ? 'publicación mostrada' : 'publicaciones mostradas'} de ${records.length.toLocaleString('es-DO')}`;
+    els.list.innerHTML = output.html;
+    bindBibtexButtons();
+    setUrl();
   }
 
-  function renderProfileMetrics() {
-    const selected = researchers.filter(researcher => ["alicia-cordero","juan-torregrosa"].includes(researcher.id));
-    const markup = selected.map(researcher => {
-      const metric = (researcher.publication_metrics || []).find(item => item.label === "Artículos de revista");
-      if (!metric) return "";
-      return `<article><strong>${Number(metric.value).toLocaleString("es-ES")}</strong><span>${escapeHtml(metric.label)} de ${escapeHtml(researcher.name)} · ${escapeHtml(metric.source)} (${escapeHtml(metric.as_of)})</span></article>`;
-    }).join("");
-    if (markup) document.getElementById("profileMetrics").innerHTML = markup;
+  function populateFilters() {
+    const linkedIds = [...new Set(records.flatMap(record => record.researcher_ids || []))];
+    linkedIds
+      .map(id => researcherMap.get(id))
+      .filter(Boolean)
+      .sort((a, b) => Number(a.order) - Number(b.order))
+      .forEach(researcher => option(els.researcher, researcher.id, researcher.name));
+
+    [...new Set(records.map(record => record.bibliographic?.year).filter(Boolean))]
+      .sort((a, b) => b - a)
+      .forEach(year => option(els.year, year, year));
+
+    [...new Set(records.map(record => record.type).filter(Boolean))]
+      .sort()
+      .forEach(type => option(els.type, type, typeLabels[type] || type));
   }
 
-  async function copyDoi(doi) {
-    try {
-      await navigator.clipboard.writeText(doi);
-      elements.copyFeedback.textContent = `DOI copiado: ${doi}`;
-    } catch (error) {
-      const input = document.createElement("textarea");
-      input.value = doi; document.body.appendChild(input); input.select(); document.execCommand("copy"); input.remove();
-      elements.copyFeedback.textContent = `DOI copiado: ${doi}`;
-    }
-    window.setTimeout(() => { elements.copyFeedback.textContent = ""; }, 3000);
+  function applyInitialFilters() {
+    const requested = {
+      researcher: params.get('autor'),
+      year: params.get('anio'),
+      type: params.get('tipo'),
+      quartile: params.get('cuartil'),
+      query: params.get('buscar')
+    };
+    Object.entries(requested).forEach(([key, value]) => {
+      if (!value) return;
+      if (key === 'query') {
+        state.query = value;
+        els.query.value = value;
+        return;
+      }
+      const select = els[key];
+      if ([...select.options].some(item => item.value === value)) {
+        state[key] = value;
+        select.value = value;
+      }
+    });
   }
 
-  function updateIndicators(payload) {
-    document.getElementById("catalogTotal").textContent = publications.length.toLocaleString("es-ES");
-    const latest = Math.max(...publications.map(record => Number(record.year) || 0));
-    document.getElementById("latestYear").textContent = latest || "—";
-    document.getElementById("quartileTotal").textContent = publications.filter(record => record.quartile).length.toLocaleString("es-ES");
-    elements.coverageNote.textContent = payload.coverage_note || "";
-    const date = payload.generated_at ? new Date(payload.generated_at) : null;
-    document.getElementById("generatedAt").textContent = date && !Number.isNaN(date.getTime()) ? `Catálogo actualizado: ${new Intl.DateTimeFormat("es-ES",{dateStyle:"long",timeStyle:"short"}).format(date)}` : "Fecha de actualización no disponible";
-  }
-
-  function clearFilters() {
-    Object.assign(state,{researcher:"all",search:"",year:"all",quartile:"all",sort:"date-desc"});
-    elements.search.value = ""; elements.year.value = "all"; elements.quartile.value = "all"; elements.sort.value = "date-desc";
-    history.replaceState(null,"",window.location.pathname);
-    renderResearcherFilters(); render();
+  function renderProfileMetrics(payload) {
+    const metrics = payload.profile_metrics || {};
+    const entries = Object.entries(metrics);
+    document.getElementById('profileMetrics').innerHTML = entries.length
+      ? entries.map(([id, metric]) => {
+          const researcher = researcherMap.get(id);
+          return `<article><strong>${Number(metric.journal_articles || 0).toLocaleString('es-DO')}</strong><span>Artículos de revista de ${escapeHtml(researcher?.name || id)} · ${escapeHtml(metric.source || 'fuente institucional')} (${escapeHtml(metric.as_of || 'fecha no indicada')})</span></article>`;
+        }).join('')
+      : '<div class="data-note">Las métricas individuales se encuentran en proceso de consolidación.</div>';
   }
 
   Promise.all([
-    fetch("data/researchers.json",{cache:"no-store"}).then(response => { if (!response.ok) throw new Error("No se pudo cargar researchers.json"); return response.json(); }),
-    fetch("data/publications.json",{cache:"no-store"}).then(response => { if (!response.ok) throw new Error("No se pudo cargar publications.json"); return response.json(); })
-  ]).then(([researcherPayload,publicationPayload]) => {
-    researchers = researcherPayload.researchers || [];
-    publications = publicationPayload.records || [];
-    researchers.forEach(researcher => researcherMap.set(researcher.id,researcher));
-    const requestedResearcher = new URLSearchParams(window.location.search).get("autor");
-    if (requestedResearcher && researchers.some(researcher => researcher.id === requestedResearcher)) state.researcher = requestedResearcher;
-    renderYears(); renderResearcherFilters(); renderProfileMetrics(); updateIndicators(publicationPayload); render();
+    fetch('core/data/publications.v2.json', { cache: 'no-store' }).then(response => {
+      if (!response.ok) throw new Error('No se pudo cargar el catálogo normalizado de publicaciones.');
+      return response.json();
+    }),
+    fetch('core/data/researchers.v2.json', { cache: 'no-store' }).then(response => {
+      if (!response.ok) throw new Error('No se pudo cargar el catálogo de investigadores.');
+      return response.json();
+    })
+  ]).then(([publicationPayload, researcherPayload]) => {
+    records = publicationPayload.records || [];
+    (researcherPayload.researchers || []).forEach(researcher => researcherMap.set(researcher.id, researcher));
+
+    document.getElementById('statTotal').textContent = (publicationPayload.summary?.unique_records ?? records.length).toLocaleString('es-DO');
+    document.getElementById('statDoi').textContent = (publicationPayload.summary?.records_with_doi ?? records.filter(record => record.identifiers?.doi).length).toLocaleString('es-DO');
+    document.getElementById('statResearchers').textContent = publicationPayload.summary?.researchers_with_records ?? new Set(records.flatMap(record => record.researcher_ids || [])).size;
+    document.getElementById('statLatest').textContent = publicationPayload.summary?.latest_year ?? '—';
+    document.getElementById('coverageNote').textContent = publicationPayload.coverage_note || publicationPayload.counting_method || 'Catálogo bibliográfico normalizado.';
+
+    const updated = publicationPayload.generated_at ? new Date(publicationPayload.generated_at) : null;
+    document.getElementById('generatedAt').textContent = updated && !Number.isNaN(updated.getTime())
+      ? `Catálogo actualizado el ${new Intl.DateTimeFormat('es-DO', { dateStyle: 'long', timeStyle: 'short' }).format(updated)}.`
+      : 'Fecha de actualización no disponible.';
+
+    renderProfileMetrics(publicationPayload);
+    populateFilters();
+    applyInitialFilters();
+    render();
   }).catch(error => {
     console.error(error);
-    elements.resultCount.textContent = "Error al cargar el catálogo";
-    elements.list.innerHTML = '<div class="error-state"><i class="bi bi-exclamation-triangle fs-3 d-block mb-2"></i>No fue posible cargar los datos bibliográficos. Revise los archivos JSON del repositorio.</div>';
+    els.count.textContent = 'Error al cargar el catálogo';
+    els.list.innerHTML = `<div class="empty-state" role="alert">${escapeHtml(error.message)}</div>`;
   });
 
-  elements.search.addEventListener("input", event => { state.search = event.target.value; render(); });
-  elements.year.addEventListener("change", event => { state.year = event.target.value; render(); });
-  elements.quartile.addEventListener("change", event => { state.quartile = event.target.value; render(); });
-  elements.sort.addEventListener("change", event => { state.sort = event.target.value; render(); });
-  document.getElementById("clearFilters").addEventListener("click", clearFilters);
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
-})();
+  ['query', 'researcher', 'year', 'type', 'quartile'].forEach(id => {
+    els[id].addEventListener(id === 'query' ? 'input' : 'change', () => {
+      state[id] = els[id].value;
+      render();
+    });
+  });
+  els.sort.addEventListener('change', render);
+  els.clear.addEventListener('click', () => {
+    Object.assign(state, { query: '', researcher: 'all', year: 'all', type: 'all', quartile: 'all' });
+    els.query.value = '';
+    ['researcher', 'year', 'type', 'quartile'].forEach(id => { els[id].value = 'all'; });
+    render();
+  });
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
