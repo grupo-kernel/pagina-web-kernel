@@ -63,7 +63,6 @@ if (!moduleMatch) {
 }
 
 for (const asset of [
-  'kernel-members-patch.js',
   'kernel-stats-patch.js',
   'kernel-phase1-patch.js',
   'kernel-phase1-fix.js',
@@ -74,6 +73,7 @@ for (const asset of [
 ]) {
   if (!index.includes(asset)) fail(`index.html no carga ${asset}.`);
 }
+if (index.includes('kernel-members-patch.js')) fail('index.html todavía carga el parche legado de miembros y puede duplicar perfiles.');
 
 for (const bridge of [
   'assets/kernel-platform-bridge.js',
