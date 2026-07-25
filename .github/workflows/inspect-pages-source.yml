@@ -1,0 +1,41 @@
+name: Inspect GitHub Pages source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'core/activation/.inspect-pages-trigger'
+      - '.github/workflows/inspect-pages-source.yml'
+
+permissions:
+  contents: write
+  pages: read
+
+jobs:
+  inspect:
+    if: github.event.head_commit.message == 'Inspect active GitHub Pages source'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Read Pages configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p core/activation
+          gh api "repos/${GITHUB_REPOSITORY}/pages" > core/activation/pages-settings.json
+          gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" > core/activation/pages-latest-build.json || true
+      - name: Persist result and remove one-time workflow
+        run: |
+          rm -f core/activation/.inspect-pages-trigger
+          rm -f .github/workflows/inspect-pages-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A core/activation/pages-settings.json core/activation/pages-latest-build.json core/activation/.inspect-pages-trigger .github/workflows/inspect-pages-source.yml
+          git commit -m "Record active GitHub Pages source"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
