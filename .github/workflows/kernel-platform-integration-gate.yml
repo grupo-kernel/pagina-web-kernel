@@ -52,7 +52,10 @@ jobs:
           node --check assets/kernel-team-core-bridge.js
           node --check assets/kernel-research-core-bridge.js
       - name: Validate platform preservation and data catalogs
-        run: node platform/validate-platform-integration.mjs
+        run: |
+          mkdir -p ci-results
+          set -o pipefail
+          node platform/validate-platform-integration.mjs 2>&1 | tee ci-results/platform-integration.log
       - name: Verify critical local files
         run: |
           test -f assets/kernel-platform-bridge.js
@@ -85,6 +88,7 @@ jobs:
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-platform-bridge.js'
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-team-core-bridge.js'
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-research-core-bridge.js'
+          ! curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-members-patch.js'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMATION_ROUTE = "formacion"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-team-core-bridge.js | grep -q 'data-kernel-platform-page="team-nine"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-research-core-bridge.js | grep -q 'data-kernel-platform-page="publications-2"'
@@ -133,9 +137,10 @@ jobs:
             "integrated": ["Formación académica", "Equipo de 9 investigadores", "Publicaciones 2.0", "Proyectos 2.0"]
           }
           EOF
+          test -f ci-results/platform-integration.log || printf 'Validation did not produce a log.\n' > ci-results/platform-integration.log
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ci-results/platform-integration.json
+          git add ci-results/platform-integration.json ci-results/platform-integration.log
           if git diff --cached --quiet; then
             exit 0
           fi
