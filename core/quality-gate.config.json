@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "mode": "parallel-not-active",
   "blocking": {
     "researcher_count": true,
@@ -11,6 +11,9 @@
     "duplicate_dois": true,
     "unknown_researcher_links": true,
     "invalid_publication_dates": true,
+    "duplicate_project_ids": true,
+    "invalid_project_dates": true,
+    "invalid_project_amounts": true,
     "missing_required_files": true,
     "invalid_json": true
   },
@@ -19,11 +22,15 @@
     "missing_planned_images": true,
     "missing_publication_doi": true,
     "missing_quartile_source": true,
+    "pending_project_sources": true,
+    "unitemized_project_participations": true,
     "missing_translations": true,
     "missing_optional_catalogs": true
   },
   "expected": {
     "researcher_count": 9,
+    "featured_approved_projects": 10,
+    "recorded_project_participations": 58,
     "researcher_ids": [
       "miguel-leonardo",
       "natanael-urena",
@@ -41,6 +48,7 @@
     "manifest": "core/manifest.json",
     "publications": "data/publications.json",
     "publications_candidate": "core/data/publications.v2.json",
+    "projects_candidate": "core/data/projects.v2.json",
     "translations_es": "translations/es.json",
     "translations_en": "translations/en.json",
     "projects": "data/projects.json",
