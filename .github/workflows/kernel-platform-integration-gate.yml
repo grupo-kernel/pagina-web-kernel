@@ -7,16 +7,24 @@ on:
     paths:
       - 'index.html'
       - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
       - 'core/data/**'
       - 'platform/**'
+      - '*.jpg'
+      - '*.png'
+      - 'assets/img/**'
       - '.github/workflows/kernel-platform-integration-gate.yml'
   pull_request:
     branches: [gh-pages]
     paths:
       - 'index.html'
       - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
       - 'core/data/**'
       - 'platform/**'
+      - '*.jpg'
+      - '*.png'
+      - 'assets/img/**'
       - '.github/workflows/kernel-platform-integration-gate.yml'
 
 permissions:
@@ -39,9 +47,19 @@ jobs:
       - name: Verify critical local files
         run: |
           test -f assets/kernel-platform-bridge.js
+          test -f assets/kernel-team-core-bridge.js
           test -f core/data/researchers.v2.json
           test -f core/data/projects.v2.json
           test -f core/data/publications.v2.json
+          test -f miguel.jpg
+          test -f natanael.jpg
+          test -f randy.jpg
+          test -f antmel.jpg
+          test -f marino.png
+          test -f marckelly.jpg
+          test -f josealberto.jpg
+          test -f assets/img/alicia-cordero.svg
+          test -f assets/img/juan-torregrosa.svg
           test -f assets/LaboratorioKernel-DQR0aCHt.js
           test -f assets/authGuard-CEzcrBkK.js
           test -f assets/authService-CgfoSPdf.js
@@ -55,9 +73,15 @@ jobs:
           trap 'kill $server_pid' EXIT
           sleep 2
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-platform-bridge.js'
+          curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-team-core-bridge.js'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMACION_ROUTE = "formacion"'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-team-core-bridge.js | grep -q 'data-kernel-platform-page="team-nine"'
           curl --fail --silent http://127.0.0.1:4173/core/data/researchers.v2.json | grep -q '"member_count": 9'
           curl --fail --silent http://127.0.0.1:4173/core/data/projects.v2.json | grep -q '"featured_approved_projects": 10'
           curl --fail --silent http://127.0.0.1:4173/core/data/publications.v2.json | grep -q '"unique_records": 162'
+          curl --fail --silent --output /dev/null http://127.0.0.1:4173/miguel.jpg
+          curl --fail --silent --output /dev/null http://127.0.0.1:4173/assets/img/alicia-cordero.svg
+          curl --fail --silent --output /dev/null http://127.0.0.1:4173/assets/img/juan-torregrosa.svg
       - name: Upload controlled platform preview
         uses: actions/upload-artifact@v4
         with:
@@ -69,5 +93,12 @@ jobs:
             platform/**
             CNAME
             .nojekyll
+            miguel.jpg
+            natanael.jpg
+            randy.jpg
+            antmel.jpg
+            marino.png
+            marckelly.jpg
+            josealberto.jpg
           if-no-files-found: error
           retention-days: 7
