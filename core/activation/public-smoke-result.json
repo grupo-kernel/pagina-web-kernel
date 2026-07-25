@@ -1,0 +1,71 @@
+{
+  "base_url": "https://www.grupoelkernel.com",
+  "cache_key": "2e1ecea5f5b1bf8e5c132734717e710a50d79cf9",
+  "passed": false,
+  "failures": [
+    "publicaciones.html: faltan marcadores ['core/data/publications.v2.json']",
+    "core/data/publications.v2.json: HTTP Error 404: Not Found"
+  ],
+  "checks": [
+    {
+      "path": "index.html",
+      "http_status": 200,
+      "bytes": 10715
+    },
+    {
+      "path": "quienes_somos.html",
+      "http_status": 200,
+      "bytes": 7370
+    },
+    {
+      "path": "equipo.html",
+      "http_status": 200,
+      "bytes": 6854
+    },
+    {
+      "path": "formacion.html",
+      "http_status": 200,
+      "bytes": 5737
+    },
+    {
+      "path": "lineas.html",
+      "http_status": 200,
+      "bytes": 7854
+    },
+    {
+      "path": "proyectos.html",
+      "http_status": 200,
+      "bytes": 6597
+    },
+    {
+      "path": "publicaciones.html",
+      "http_status": 200,
+      "bytes": 23446
+    },
+    {
+      "path": "noticias.html",
+      "http_status": 200,
+      "bytes": 28246
+    },
+    {
+      "path": "contacto.html",
+      "http_status": 200,
+      "bytes": 5864
+    },
+    {
+      "path": "core/data/researchers.v2.json",
+      "http_status": 200,
+      "bytes": 13528
+    },
+    {
+      "path": "core/data/projects.v2.json",
+      "http_status": 200,
+      "bytes": 4022
+    },
+    {
+      "path": "deployment-version.txt",
+      "http_status": 200,
+      "bytes": 162
+    }
+  ]
+}
