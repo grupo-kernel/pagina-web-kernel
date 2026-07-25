@@ -13,9 +13,13 @@
     const params = new URLSearchParams(location.search);
     const locale = params.get('lang') === 'en' ? 'en' : 'es';
     const response = await fetch('../../data/researchers.v2.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('No fue posible cargar researchers.v2.json');
     const data = await response.json();
     document.documentElement.lang = locale;
-    document.getElementById('team-preview-root').innerHTML = renderTeamModule(data, { locale });
+    document.getElementById('team-preview-root').innerHTML = renderTeamModule(data, {
+      locale,
+      assetBase: '../../../'
+    });
   </script>
 </body>
 </html>
