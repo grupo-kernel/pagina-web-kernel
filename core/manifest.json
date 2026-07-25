@@ -6,15 +6,7 @@
   "default_locale": "es",
   "supported_locales": ["es", "en"],
   "sources": {
-    "researchers": {
-      "active_path": "data/researchers.json",
-      "candidate_path": "core/data/researchers.v2.json",
-      "required": true,
-      "migration_status": "integrated-in-controlled-preview-branches",
-      "validation": "core/validate-researchers-v2.js",
-      "audit": "core/audits/researchers-audit.md",
-      "consumers": ["home", "team", "academic-background", "publications", "projects"]
-    },
+    "researchers": {"active_path":"data/researchers.json","candidate_path":"core/data/researchers.v2.json","required":true,"migration_status":"integrated-in-controlled-preview-branches","validation":"core/validate-researchers-v2.js","audit":"core/audits/researchers-audit.md","consumers":["home","team","academic-background","publications","projects"]},
     "publications": {"path":"data/publications.json","candidate_path":"core/data/publications.v2.json","required":true,"migration_status":"candidate-generated-not-active","consumers":["home","publications","researcher-profile"]},
     "projects": {"candidate_path":"core/data/projects.v2.json","required":false,"migration_status":"candidate-created-not-active","consumers":["home","projects","researcher-profile"]},
     "services": {"candidate_path":"core/data/services.v2.json","required":false,"migration_status":"candidate-created-not-active","consumers":["home","services","contact"]},
@@ -29,29 +21,8 @@
     "preview_branch": "fase-1m-academic-profiles-preview",
     "rollback": "restore formacion.html and academic metadata from hito-1-kernel-core",
     "modules": {
-      "team": {
-        "active": false,
-        "preview_active": true,
-        "status": "integrated-branch-preview",
-        "scope": "kernel-core-branch",
-        "source": "core/data/researchers.v2.json",
-        "renderer": "core/modules/team/team-renderer.mjs",
-        "stylesheet": "core/modules/team/team-integration.css",
-        "integration_page": "equipo.html",
-        "validator": "core/validate-team-integration.mjs"
-      },
-      "academic-background": {
-        "active": false,
-        "preview_active": true,
-        "status": "integrated-branch-preview",
-        "scope": "branch-only",
-        "source": "core/data/researchers.v2.json",
-        "renderer": "core/modules/academic/academic-renderer.mjs",
-        "stylesheet": "core/modules/academic/academic-integration.css",
-        "integration_page": "formacion.html",
-        "validator": "core/validate-academic-integration.mjs",
-        "rollback": "restore formacion.html from hito-1-kernel-core; main and gh-pages require no change"
-      },
+      "team": {"active":false,"preview_active":true,"status":"integrated-branch-preview","scope":"branch-only","source":"core/data/researchers.v2.json","renderer":"core/modules/team/team-renderer.mjs","stylesheet":"core/modules/team/team-integration.css","integration_page":"equipo.html","validator":"core/validate-team-integration.mjs"},
+      "academic-background": {"active":false,"preview_active":true,"status":"integrated-branch-preview","scope":"branch-only","source":"core/data/researchers.v2.json","renderer":"core/modules/academic/academic-renderer.mjs","stylesheet":"core/modules/academic/academic-integration.css","integration_page":"formacion.html","validator":"core/validate-academic-integration.mjs","rollback":"restore formacion.html from hito-1-kernel-core; main and gh-pages require no change"},
       "publications": {"active":false,"status":"pending"},
       "projects": {"active":false,"status":"pending"},
       "services": {"active":false,"status":"pending"},
