@@ -4,8 +4,10 @@ import process from 'node:process';
 const readText = path => fs.readFile(path, 'utf8');
 const readJson = async path => JSON.parse(await readText(path));
 
-const [html, manifest, researchers, config] = await Promise.all([
+const [html, renderer, stylesheet, manifest, researchers, config] = await Promise.all([
   readText('equipo.html'),
+  readText('core/modules/team/team-renderer.mjs'),
+  readText('core/modules/team/team-integration.css'),
   readJson('core/manifest.json'),
   readJson('core/data/researchers.v2.json'),
   readJson('core/quality-gate.config.json')
@@ -17,22 +19,56 @@ const fail = message => errors.push(message);
 const warn = message => warnings.push(message);
 const requiredIds = config.expected.researcher_ids || [];
 
-if (!html.includes('data-kernel-core-integration="team"')) fail('equipo.html no declara la integración controlada de Team.');
-if (!html.includes('data-kernel-core-module="team"')) fail('equipo.html no identifica el módulo Team.');
-if (!html.includes('data-kernel-core-status="branch-preview-active"')) fail('equipo.html no está marcado como vista previa activa de rama.');
-if (!html.includes('core/data/researchers.v2.json')) fail('equipo.html no carga la fuente v2 de investigadores.');
-if (/fetch\s*\(\s*["']data\/researchers\.json["']/.test(html)) fail('equipo.html todavía carga la fuente pública anterior.');
+for (const token of [
+  'data-kernel-core-integration="team"',
+  'data-kernel-core-module="team"',
+  'data-kernel-core-status="branch-preview-active"',
+  'core/data/researchers.v2.json',
+  'core/modules/team/team-integration.css',
+  "import { orderedResearchers, renderResearcherCard }",
+  "from './core/modules/team/team-renderer.mjs'",
+  "renderResearcherCard(member, 'es'",
+  "orderedResearchers(data)",
+  'publicaciones.html?autor=',
+  'kernel-core-team__grid'
+]) {
+  if (!html.includes(token)) fail(`Falta integración controlada en equipo.html: ${token}`);
+}
+
+if (/fetch\s*\(\s*["']data\/researchers\.json["']/.test(html)) {
+  fail('equipo.html todavía carga la fuente pública anterior.');
+}
+if (html.includes('function memberCard(') || html.includes('function publicationMetrics(')) {
+  fail('equipo.html vuelve a duplicar lógica que debe permanecer en el renderizador compartido.');
+}
 
 for (const token of [
   'member.image?.current',
   'member.contact?.email',
-  'member.profiles || {}',
-  'member.member_scope === "international"',
-  'member.status === "active"',
-  'member.visibility === "public"',
-  'Number(a.order) - Number(b.order)'
+  'member.profiles?.orcid',
+  "member.member_scope === 'international'",
+  "member.status === 'active'",
+  "member.visibility === 'public'",
+  'Number(a.order) - Number(b.order)',
+  'member.metrics?.publications',
+  'member.formation',
+  'member.experience',
+  'data-country=',
+  'kernel-core-team-card--international'
 ]) {
-  if (!html.includes(token)) fail(`Falta adaptación v2 en equipo.html: ${token}`);
+  if (!renderer.includes(token)) fail(`Falta adaptación v2 en team-renderer.mjs: ${token}`);
+}
+
+for (const token of [
+  '[data-kernel-core-integration="team"]',
+  '.kernel-core-team__grid',
+  '.kernel-core-team-card',
+  '.kernel-core-team-card__metrics',
+  '.kernel-core-team-card__details',
+  '@media (max-width: 680px)',
+  '@media (prefers-reduced-motion: reduce)'
+]) {
+  if (!stylesheet.includes(token)) fail(`Falta regla visual encapsulada: ${token}`);
 }
 
 const members = (researchers.researchers || [])
@@ -66,13 +102,15 @@ if (team.preview_active !== true) fail('Team debe marcarse activo únicamente co
 if (team.scope !== 'branch-only') fail('El alcance de Team debe ser branch-only.');
 if (team.status !== 'integrated-branch-preview') fail('Estado de Team inesperado en el manifiesto.');
 if (team.source !== 'core/data/researchers.v2.json') fail('El manifiesto no registra la fuente v2 de Team.');
-if (team.renderer !== 'equipo.html') fail('El manifiesto no registra equipo.html como integración controlada.');
+if (team.renderer !== 'core/modules/team/team-renderer.mjs') fail('El manifiesto no registra el renderizador compartido.');
+if (team.integration_page !== 'equipo.html') fail('El manifiesto no registra equipo.html como página integrada.');
+if (team.stylesheet !== 'core/modules/team/team-integration.css') fail('El manifiesto no registra la hoja de estilos integrada.');
 
 if (!html.includes('La plataforma pública continúa usando su fuente anterior')) {
   warn('La nota visual no explica que la plataforma pública permanece sin cambios.');
 }
 
-console.log(`Integración Team: ${members.length} perfiles, ${international.length} internacionales.`);
+console.log(`Integración Team: ${members.length} perfiles, ${international.length} internacionales, renderizador compartido y CSS encapsulado.`);
 warnings.forEach(item => console.log(`ADVERTENCIA: ${item}`));
 errors.forEach(item => console.error(`ERROR: ${item}`));
 console.log(errors.length ? 'Resultado: FAIL' : 'Resultado: PASS');
