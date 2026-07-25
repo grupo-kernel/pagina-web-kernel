@@ -42,6 +42,21 @@
         rel="stylesheet"
     >
 
+    <script>
+        (function cargarActualizacionesKernel() {
+            const archivos = [
+                "kernel-members-patch.js?v=20260725-4",
+                "kernel-stats-patch.js?v=20260725-3"
+            ];
+
+            archivos.forEach((archivo) => {
+                const script = document.createElement("script");
+                script.src = `./assets/${archivo}`;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+        })();
+    </script>
   <script type="module" crossorigin src="./assets/index-NDXUnN2S.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DWi0kUcL.css">
 </head>
@@ -132,8 +147,6 @@
         class="mt-16 h-auto w-full bg-footer-primary md:mt-10"
     ></footer>
 
-    <script defer src="./assets/kernel-members-patch.js?v=20260725-4"></script>
-    <script defer src="./assets/kernel-stats-patch.js?v=20260725-3"></script>
 
 </body>
 
