@@ -25,6 +25,8 @@ const [manifest, index, researchers, projects, publications] = await Promise.all
 
 if (manifest.phase !== '2B') fail('El manifiesto no corresponde a la Fase 2B.');
 if (manifest.activation?.enabled !== false) fail('La activación debe permanecer deshabilitada en la rama de integración.');
+if (!/Xmera/i.test(manifest.institutional_tools?.itla_xmera?.label || '')) fail('La herramienta institucional del ITLA debe identificarse como Xmera.');
+if (/\bSARA\b/i.test(JSON.stringify(manifest))) fail('El manifiesto todavía contiene el nombre incorrecto SARA.');
 
 const preservedRoutes = [
   'home', 'servicios', 'laboratorioKernel', 'lineas', 'proyectos',
@@ -67,14 +69,16 @@ for (const asset of [
   'kernel-phase1-fix.js',
   'kernel-i18n-full.js',
   'kernel-platform-bridge.js',
-  'kernel-team-core-bridge.js'
+  'kernel-team-core-bridge.js',
+  'kernel-research-core-bridge.js'
 ]) {
   if (!index.includes(asset)) fail(`index.html no carga ${asset}.`);
 }
 
 for (const bridge of [
   'assets/kernel-platform-bridge.js',
-  'assets/kernel-team-core-bridge.js'
+  'assets/kernel-team-core-bridge.js',
+  'assets/kernel-research-core-bridge.js'
 ]) {
   if (!(await exists(bridge))) fail(`Falta el puente de integración ${bridge}.`);
 }
@@ -109,19 +113,33 @@ for (const token of [
 const academicBridge = await readText('assets/kernel-platform-bridge.js');
 for (const token of [
   'core/data/researchers.v2.json',
-  'FORMACION_ROUTE = "formacion"',
+  'FORMATION_ROUTE = "formacion"',
   'data-kernel-platform-page="academic-background"',
   '#/formacion'
 ]) {
   if (!academicBridge.includes(token)) fail(`El puente académico no contiene la adaptación requerida: ${token}`);
 }
 
+const researchBridge = await readText('assets/kernel-research-core-bridge.js');
+for (const token of [
+  'core/data/publications.v2.json',
+  'core/data/projects.v2.json',
+  'data-kernel-platform-page="publications-2"',
+  'data-kernel-platform-page="projects-2"',
+  'data-kernel-bibtex',
+  '#/equipment/'
+]) {
+  if (!researchBridge.includes(token)) fail(`El puente de investigación no contiene la adaptación requerida: ${token}`);
+}
+
 const projectSummary = projects.summary || {};
 if (projectSummary.featured_approved_projects !== 10) fail('El catálogo no conserva los 10 proyectos aprobados destacados.');
 if (projectSummary.additional_participations_not_itemized !== 48) fail('El catálogo no conserva las 48 participaciones adicionales.');
+if ((projects.approved_projects || []).length !== 10) fail('La lista de proyectos aprobados destacados debe contener 10 registros.');
 
 const publicationRecords = publications.records || publications.publications || [];
 if (publicationRecords.length < 160) fail(`El catálogo de publicaciones contiene solo ${publicationRecords.length} registros.`);
+if ((publications.summary?.unique_records || publicationRecords.length) !== 162) fail('El catálogo debe conservar 162 publicaciones únicas.');
 
 if (errors.length) {
   console.error('\nPLATFORM INTEGRATION GATE: FAIL');
@@ -134,5 +152,5 @@ pass('Laboratorio Inteligente y autenticación detectados');
 pass('ITLA · Xmera y UNAPEC · Banner detectados');
 pass('Nueve investigadores y sus fotografías verificados');
 pass('Equipo y formación académica integrados mediante puentes no destructivos');
-pass('Catálogos de publicaciones y proyectos disponibles');
+pass('Publicaciones 2.0 y Proyectos 2.0 integrados mediante el puente de investigación');
 console.log('\nPLATFORM INTEGRATION GATE: PASS');
