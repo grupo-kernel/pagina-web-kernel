@@ -31,10 +31,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Generate publications candidate
         run: node core/migrate-publications-v2.mjs
@@ -64,7 +64,18 @@ jobs:
         run: node core/validate-relations-index.mjs
 
       - name: Validate parity before activation
+        id: parity
+        continue-on-error: true
         run: node core/validate-parity.mjs
+
+      - name: Upload parity diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-parity-runtime-report
+          path: core/audits/parity-runtime-report.json
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Validate standalone Team module preview
         run: node core/validate-team-module.mjs
@@ -74,3 +85,9 @@ jobs:
 
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
+
+      - name: Enforce parity result
+        if: steps.parity.outcome == 'failure'
+        run: |
+          cat core/audits/parity-runtime-report.json
+          exit 1
