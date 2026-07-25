@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "candidate-not-active",
+  "phase": "1Q",
+  "name": "Integración global de Kernel Core",
+  "base_branch": "hito-1-kernel-core",
+  "production_branches_untouched": ["main", "gh-pages"],
+  "required_pages": [
+    "index.html",
+    "quienes_somos.html",
+    "equipo.html",
+    "formacion.html",
+    "lineas.html",
+    "proyectos.html",
+    "publicaciones.html",
+    "noticias.html",
+    "contacto.html"
+  ],
+  "integrated_modules": [
+    "team",
+    "academic",
+    "scientific-profiles",
+    "publications",
+    "projects"
+  ],
+  "global_requirements": {
+    "navigation_consistency": true,
+    "shared_visual_language": true,
+    "responsive_review": true,
+    "accessibility_review": true,
+    "internal_link_validation": true,
+    "translation_readiness": true,
+    "activation_requires_explicit_approval": true
+  },
+  "pending_binary_replacements": [
+    {
+      "path": "miguel.jpg",
+      "reason": "La imagen institucional seleccionada debe sustituirse manualmente como archivo binario antes de la activación pública."
+    }
+  ]
+}
