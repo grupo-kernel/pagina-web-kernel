@@ -37,7 +37,17 @@ jobs:
         with:
           node-version: '24'
       - name: Validate public reactivation
-        run: node core/validate-public-reactivation.mjs
+        run: |
+          set -o pipefail
+          node core/validate-public-reactivation.mjs 2>&1 | tee core/activation/public-reactivation-runtime.log
+      - name: Upload public reactivation diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-public-reactivation-diagnostic
+          path: core/activation/public-reactivation-runtime.log
+          if-no-files-found: error
+          retention-days: 7
       - name: Run Kernel Quality Gate
         run: node core/run-quality-gate.mjs
       - name: Validate global integration
