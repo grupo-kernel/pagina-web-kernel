@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vista previa · Publicaciones 2.0 · El Kernel</title>
+  <link rel="stylesheet" href="publications.css">
+</head>
+<body>
+<main class="publications-shell">
+  <header class="publications-hero">
+    <span>Biblioteca científica del Grupo El Kernel</span>
+    <h1>Publicaciones 2.0</h1>
+    <p>Catálogo deduplicado, verificable y conectado con investigadores, proyectos y perfiles científicos.</p>
+  </header>
+  <section class="publications-summary" aria-label="Resumen del catálogo">
+    <article class="publication-stat"><strong id="statTotal">—</strong><span>registros únicos</span></article>
+    <article class="publication-stat"><strong id="statDoi">—</strong><span>con DOI</span></article>
+    <article class="publication-stat"><strong id="statResearchers">—</strong><span>investigadores vinculados</span></article>
+    <article class="publication-stat"><strong id="statLatest">—</strong><span>año más reciente</span></article>
+  </section>
+  <section class="publications-layout">
+    <aside class="publication-filters" aria-label="Filtros del catálogo">
+      <h2>Buscar y filtrar</h2>
+      <label for="query">Título, revista, autor o DOI</label>
+      <input id="query" type="search" placeholder="Ej.: sistemas no lineales">
+      <label for="researcher">Investigador</label>
+      <select id="researcher"><option value="all">Todos</option></select>
+      <label for="year">Año</label>
+      <select id="year"><option value="all">Todos</option></select>
+      <label for="type">Tipo</label>
+      <select id="type"><option value="all">Todos</option></select>
+      <label for="quartile">Cuartil</label>
+      <select id="quartile"><option value="all">Todos</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option><option value="pending">Pendiente</option></select>
+      <button id="clear" type="button">Limpiar filtros</button>
+    </aside>
+    <div>
+      <div class="publication-toolbar"><strong id="count" aria-live="polite">Cargando catálogo…</strong><select id="sort" aria-label="Ordenar"><option value="date-desc">Más recientes</option><option value="date-asc">Más antiguas</option><option value="title-asc">Título A–Z</option><option value="journal-asc">Revista A–Z</option></select></div>
+      <div class="publication-list" id="list"></div>
+      <p id="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+<script type="module">
+import { renderPublicationCatalog } from './publications-renderer.mjs';
+const state={query:'',researcher:'all',year:'all',type:'all',quartile:'all'};
+const els=Object.fromEntries(['query','researcher','year','type','quartile','sort','clear','count','list','feedback'].map(id=>[id,document.getElementById(id)]));
+let records=[]; let researcherMap=new Map();
+const addOptions=(el,values)=>{el.innerHTML+=[...values].map(v=>`<option value="${v}">${v}</option>`).join('')};
+function render(){const out=renderPublicationCatalog(records,researcherMap,state,els.sort.value);els.count.textContent=`${out.count} publicaciones mostradas de ${records.length}`;els.list.innerHTML=out.html;els.list.querySelectorAll('.copy-bibtex').forEach(btn=>btn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(btn.dataset.bibtex)}catch{const t=document.createElement('textarea');t.value=btn.dataset.bibtex;document.body.append(t);t.select();document.execCommand('copy');t.remove()}els.feedback.textContent='Referencia BibTeX copiada.';setTimeout(()=>els.feedback.textContent='',2500)}));}
+Promise.all([
+ fetch('../../data/publications.v2.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar publications.v2.json');return r.json()}),
+ fetch('../../data/researchers.v2.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar researchers.v2.json');return r.json()})
+]).then(([pub,res])=>{records=pub.records||[];(res.researchers||[]).forEach(r=>researcherMap.set(r.id,r));document.getElementById('statTotal').textContent=pub.summary?.unique_records??records.length;document.getElementById('statDoi').textContent=pub.summary?.records_with_doi??records.filter(r=>r.identifiers?.doi).length;document.getElementById('statResearchers').textContent=pub.summary?.researchers_with_records??new Set(records.flatMap(r=>r.researcher_ids||[])).size;document.getElementById('statLatest').textContent=pub.summary?.latest_year??'—';addOptions(els.researcher,[...new Set(records.flatMap(r=>r.researcher_ids||[]))].map(id=>[id,researcherMap.get(id)?.name||id]));els.researcher.innerHTML='<option value="all">Todos</option>'+[...new Set(records.flatMap(r=>r.researcher_ids||[]))].map(id=>`<option value="${id}">${researcherMap.get(id)?.name||id}</option>`).join('');addOptions(els.year,[...new Set(records.map(r=>r.bibliographic?.year).filter(Boolean))].sort((a,b)=>b-a));addOptions(els.type,[...new Set(records.map(r=>r.type).filter(Boolean))].sort());render()}).catch(err=>{els.list.innerHTML=`<div class="empty-state">${err.message}</div>`});
+['query','researcher','year','type','quartile'].forEach(id=>els[id].addEventListener(id==='query'?'input':'change',()=>{state[id]=els[id].value;render()}));els.sort.addEventListener('change',render);els.clear.addEventListener('click',()=>{Object.assign(state,{query:'',researcher:'all',year:'all',type:'all',quartile:'all'});['query','researcher','year','type','quartile'].forEach(id=>els[id].value=id==='query'?'':'all');render()});
+</script>
+</body>
+</html>
