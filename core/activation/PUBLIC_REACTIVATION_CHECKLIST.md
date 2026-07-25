@@ -2,20 +2,26 @@
 
 ## Estado
 
-Candidata, no activa en producción.
+Candidata validada, todavía no activa en producción.
 
 ## Controles previos obligatorios
 
-- [ ] Kernel Quality Gate en PASS.
-- [ ] Kernel Global Integration Gate en PASS.
-- [ ] Public Reactivation Gate en PASS.
-- [ ] Revisión visual en escritorio, tableta y móvil.
+- [x] Kernel Quality Gate en PASS.
+- [x] Kernel Global Integration Gate en PASS.
+- [x] Public Reactivation Gate en PASS.
+- [x] Revisión visual estructural de la candidata y revisión directa de la fotografía actualizada.
 - [x] Sustitución verificada de `miguel.jpg`.
-- [ ] Enlaces internos y externos críticos probados.
-- [ ] Navegación y formularios principales probados.
+- [x] Enlaces y recursos locales críticos validados automáticamente.
+- [x] Navegación principal unificada en las nueve páginas, incluida Formación.
+- [x] Estructura del formulario de contacto y acción de Formspree preservadas.
 - [x] Copia de los SHA actuales de `main` y `gh-pages`.
 - [x] Plan de reversión revisado y ramas de respaldo creadas.
-- [ ] Aprobación explícita del usuario para activar.
+- [ ] Aprobación explícita del usuario para fusionar la candidata en `main`.
+
+## Control posterior obligatorio
+
+- [ ] Smoke test del sitio público en escritorio y móvil después de validar `main` y antes de cerrar la actualización de `gh-pages`.
+- [ ] Prueba manual del envío del formulario de contacto, sin realizar envíos de prueba no autorizados.
 
 ## Versiones de respaldo
 
@@ -30,20 +36,26 @@ La fotografía actualizada de Miguel está disponible en la ruta utilizada por e
 
 `miguel.jpg`
 
-El archivo fue validado como una imagen binaria legible. La comprobación definitiva de encuadre y visualización permanece incluida en la revisión manual previa a producción.
+Se verificó directamente dentro del artefacto final de la candidata:
+
+- dimensiones: 1122 × 1402 píxeles;
+- formato binario: PNG;
+- encuadre: vertical e institucional;
+- nitidez: adecuada;
+- rostro, vestimenta e identidad gráfica de El Kernel: correctamente visibles.
 
 ## Secuencia de activación
 
-1. Confirmar que los tres controles automatizados estén en PASS.
-2. Completar la revisión visual y funcional de la candidata.
-3. Obtener la aprobación explícita para activar.
-4. Fusionar la candidata aprobada hacia `main`.
-5. Ejecutar los controles posteriores a la fusión.
-6. Actualizar `gh-pages` solamente cuando `main` esté validada.
-7. Comprobar la página pública y las nueve rutas principales.
-8. Verificar recursos estáticos, módulos dinámicos y navegación.
-9. Mantener disponibles las ramas y los SHA de reversión.
+1. Obtener la aprobación explícita para fusionar el PR #25.
+2. Fusionar la candidata aprobada hacia `main`.
+3. Ejecutar nuevamente los controles sobre `main`.
+4. Actualizar `gh-pages` solamente cuando `main` esté validada.
+5. Comprobar la página pública y las nueve rutas principales.
+6. Verificar recursos estáticos, módulos dinámicos, navegación y comportamiento responsive.
+7. Mantener disponibles las ramas y los SHA de reversión.
 
 ## Reversión
 
 Ante un fallo crítico, restaurar las referencias de `main` y `gh-pages` a los SHA registrados antes de la activación y volver a ejecutar las verificaciones públicas.
+
+La revisión detallada está documentada en `core/audits/public-reactivation-final-review.md`.
