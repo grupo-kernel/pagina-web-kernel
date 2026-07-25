@@ -224,7 +224,7 @@
       const selected = members.find(member => member.id === requested) || members[0];
       if (!selected) throw new Error("No researchers");
       const signature = `${currentLanguage()}:${selected.id}`;
-      if (main.dataset.kernelAcademicSignature === signature) return;
+      if (main.dataset.kernelAcademicSignature === signature && main.querySelector('[data-kernel-platform-page="academic-background"]')) return;
       main.dataset.kernelAcademicSignature = signature;
       main.innerHTML = `
         <section class="kernel-academic-page" data-kernel-platform-page="academic-background">

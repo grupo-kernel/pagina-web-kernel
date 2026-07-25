@@ -194,7 +194,7 @@
       const selected = members.find(member => member.id === selectedId());
       const visible = activeCountry === "all" ? members : members.filter(member => member.country === activeCountry);
       const signature = `${language()}:${activeCountry}:${selected?.id || "grid"}`;
-      if (main.dataset.kernelTeamSignature === signature) return;
+      if (main.dataset.kernelTeamSignature === signature && main.querySelector('[data-kernel-platform-page="team-nine"]')) return;
       main.dataset.kernelTeamSignature = signature;
       main.innerHTML = `
         <section class="kernel-team-core" data-kernel-platform-page="team-nine">
