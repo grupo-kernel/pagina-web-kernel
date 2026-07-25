@@ -1,6 +1,6 @@
 {
-  "version": 7,
-  "mode": "parallel-not-active",
+  "version": 9,
+  "mode": "controlled-branch-preview-not-production",
   "blocking": {
     "researcher_count": true,
     "duplicate_ids": true,
@@ -25,6 +25,9 @@
     "parity_loss": true,
     "unexpected_core_activation": true,
     "team_preview_loss": true,
+    "team_integration_loss": true,
+    "team_visual_style_loss": true,
+    "production_source_reintroduced": true,
     "missing_required_files": true,
     "invalid_json": true
   },
@@ -40,6 +43,7 @@
     "identical_translation_values": true,
     "researchers_without_relations": true,
     "candidate_modules_not_visible": true,
+    "branch_preview_not_deployed": true,
     "missing_optional_catalogs": true
   },
   "expected": {
@@ -50,7 +54,10 @@
     "news_candidate_count": 3,
     "translation_locales": ["es-DO", "en"],
     "activation_order": ["team", "academic-background", "publications", "projects", "services", "news"],
-    "team_module_status": "preview-ready",
+    "team_module_status": "integrated-branch-preview",
+    "team_preview_branch": "fase-1l-team-preview-integration",
+    "team_desktop_columns": 3,
+    "team_mobile_columns": 1,
     "researcher_ids": [
       "miguel-leonardo",
       "natanael-urena",
@@ -68,6 +75,8 @@
     "manifest": "core/manifest.json",
     "team_renderer": "core/modules/team/team-renderer.mjs",
     "team_preview": "core/modules/team/team-preview.html",
+    "team_integration_css": "core/modules/team/team-integration.css",
+    "team_page": "equipo.html",
     "publications": "data/publications.json",
     "publications_candidate": "core/data/publications.v2.json",
     "projects_candidate": "core/data/projects.v2.json",

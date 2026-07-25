@@ -3,18 +3,20 @@ name: Kernel Quality Gate
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [main, hito-1-kernel-core]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
+      - 'equipo.html'
       - '.github/workflows/kernel-quality-gate.yml'
   push:
-    branches: [hito-1-kernel-core]
+    branches: [hito-1-kernel-core, fase-1l-team-preview-integration]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
+      - 'equipo.html'
       - '.github/workflows/kernel-quality-gate.yml'
 
 permissions:
@@ -29,10 +31,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Generate publications candidate
         run: node core/migrate-publications-v2.mjs
@@ -62,10 +64,55 @@ jobs:
         run: node core/validate-relations-index.mjs
 
       - name: Validate parity before activation
+        id: parity
+        continue-on-error: true
         run: node core/validate-parity.mjs
 
-      - name: Validate Team module preview
+      - name: Upload parity diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-parity-runtime-report
+          path: core/audits/parity-runtime-report.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Validate standalone Team module preview
         run: node core/validate-team-module.mjs
+
+      - name: Validate Team integration in controlled branch
+        run: node core/validate-team-integration.mjs
+
+      - name: Upload controlled Team preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-team-controlled-preview
+          path: |
+            equipo.html
+            assets/css/kernel.css
+            core/modules/team/team-preview.html
+            core/modules/team/team-preview.css
+            core/modules/team/team-integration.css
+            core/modules/team/team-renderer.mjs
+            core/data/researchers.v2.json
+            ElKernel.png
+            miguel.jpg
+            natanael.jpg
+            randy.jpg
+            antmel.jpg
+            marino.png
+            marckelly.jpg
+            josealberto.jpg
+            assets/img/alicia-cordero.svg
+            assets/img/juan-torregrosa.svg
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
+
+      - name: Enforce parity result
+        if: steps.parity.outcome == 'failure'
+        run: |
+          cat core/audits/parity-runtime-report.json
+          exit 1
