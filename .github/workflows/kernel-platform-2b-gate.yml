@@ -1,0 +1,60 @@
+name: Kernel Platform 2B Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'core/integration/**'
+      - 'core/audits/**'
+      - 'scripts/audit_platform_2b.py'
+      - '.github/workflows/kernel-platform-2b-gate.yml'
+  push:
+    branches: [fase-2b-integracion-plataforma-xmera-laboratorio]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Preserve Xmera, Laboratory and institutional tools
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+      - name: Use Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit legacy platform baseline
+        run: python scripts/audit_platform_2b.py
+      - name: Validate Phase 2B manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('core/integration/platform-2b-manifest.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          assert data['phase'] == '2B'
+          assert data['status'] == 'controlled-integration-not-production'
+          required = {'laboratorio-inteligente','xmera','itla','apec','calculadoras','autenticacion','idiomas','analitica'}
+          present = {item['id'] for item in data['protected_capabilities']}
+          missing = required - present
+          assert not missing, f'Faltan capacidades protegidas: {sorted(missing)}'
+          assert data['public_activation_requires_explicit_approval'] is True
+          print('Phase 2B manifest PASS')
+          PY
+      - name: Upload Phase 2B baseline
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-2b-baseline
+          path: |
+            core/integration/platform-2b-manifest.json
+            core/audits/platform-2b-integration-audit.md
+            core/audits/platform-2b-baseline.json
+          if-no-files-found: warn
+          retention-days: 14
