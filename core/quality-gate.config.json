@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "mode": "parallel-not-active",
   "blocking": {
     "researcher_count": true,
@@ -22,6 +22,8 @@
     "invalid_translation_values": true,
     "missing_researcher_relations": true,
     "duplicate_relation_entries": true,
+    "parity_loss": true,
+    "unexpected_core_activation": true,
     "missing_required_files": true,
     "invalid_json": true
   },
@@ -36,6 +38,7 @@
     "missing_news_media": true,
     "identical_translation_values": true,
     "researchers_without_relations": true,
+    "candidate_modules_not_visible": true,
     "missing_optional_catalogs": true
   },
   "expected": {
@@ -45,6 +48,7 @@
     "service_count": 6,
     "news_candidate_count": 3,
     "translation_locales": ["es-DO", "en"],
+    "activation_order": ["team", "academic-background", "publications", "projects", "services", "news"],
     "researcher_ids": [
       "miguel-leonardo",
       "natanael-urena",
@@ -65,6 +69,7 @@
     "projects_candidate": "core/data/projects.v2.json",
     "services_candidate": "core/data/services.v2.json",
     "news_candidate": "core/data/news.v2.json",
+    "relations": "core/data/relations.v1.json",
     "translations_es": "translations/es.json",
     "translations_en": "translations/en.json",
     "projects": "data/projects.json",
