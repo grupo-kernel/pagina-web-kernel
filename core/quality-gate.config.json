@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "mode": "parallel-not-active",
   "blocking": {
     "researcher_count": true,
@@ -7,12 +7,18 @@
     "duplicate_orcids": true,
     "invalid_emails": true,
     "invalid_orcids": true,
+    "duplicate_publication_ids": true,
+    "duplicate_dois": true,
+    "unknown_researcher_links": true,
+    "invalid_publication_dates": true,
     "missing_required_files": true,
     "invalid_json": true
   },
   "warnings": {
     "missing_optional_profiles": true,
     "missing_planned_images": true,
+    "missing_publication_doi": true,
+    "missing_quartile_source": true,
     "missing_translations": true,
     "missing_optional_catalogs": true
   },
@@ -33,9 +39,10 @@
   "sources": {
     "researchers": "core/data/researchers.v2.json",
     "manifest": "core/manifest.json",
+    "publications": "data/publications.json",
+    "publications_candidate": "core/data/publications.v2.json",
     "translations_es": "translations/es.json",
     "translations_en": "translations/en.json",
-    "publications": "data/publications.json",
     "projects": "data/projects.json",
     "services": "data/services.json",
     "news": "data/news.json"
