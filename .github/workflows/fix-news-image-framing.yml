@@ -1,0 +1,42 @@
+name: Fix news image framing
+
+on:
+  push:
+    branches: [fase-2a-public-reactivation]
+    paths:
+      - 'core/activation/.news-image-fix-trigger'
+      - '.github/workflows/fix-news-image-framing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Apply final news image framing fix'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout activation branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2a-public-reactivation
+      - name: Improve Antmel news image framing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('noticias.html')
+          text = path.read_text(encoding='utf-8')
+          old = '<img alt="Defensa doctoral de Antmel Rodríguez Cabral" class="card-img-top" loading="lazy" src="antmel.jpg"/>'
+          new = '<img alt="Defensa doctoral de Antmel Rodríguez Cabral" class="card-img-top" loading="lazy" src="antmel_rodriguez.jpg"/>'
+          if old not in text:
+              raise SystemExit('No se encontró la referencia esperada para la imagen de Antmel.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          rm -f core/activation/.news-image-fix-trigger
+          rm -f .github/workflows/fix-news-image-framing.yml
+      - name: Commit final visual correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A noticias.html core/activation/.news-image-fix-trigger .github/workflows/fix-news-image-framing.yml
+          git commit -m "Apply final news image framing fix"
+          git push origin HEAD:fase-2a-public-reactivation
