@@ -86,7 +86,7 @@ const output = {
   schema_version: 2,
   status: 'candidate-not-active',
   generated_from: 'data/publications.json',
-  generated_at: new Date().toISOString(),
+  generated_at: source.generated_at || null,
   counting_method: source.counting_method || 'DOI normalizado; respaldo por identificador o título y año',
   coverage_note: source.coverage_note || null,
   profile_metrics: source.profile_metrics || {},
