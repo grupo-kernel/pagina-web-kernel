@@ -33,8 +33,14 @@ function profileLinks(member, locale = DEFAULT_LOCALE) {
   return links.join('');
 }
 
-export function renderResearcherCard(member, locale = DEFAULT_LOCALE) {
-  const image = member.image?.current || member.image?.canonical || '';
+function resolveAssetPath(value, assetBase = '') {
+  const path = String(value || '');
+  if (!path || /^(?:[a-z]+:)?\/\//i.test(path) || path.startsWith('/') || path.startsWith('data:')) return path;
+  return `${assetBase}${path}`.replace(/\/{2,}/g, '/');
+}
+
+export function renderResearcherCard(member, locale = DEFAULT_LOCALE, options = {}) {
+  const image = resolveAssetPath(member.image?.current || member.image?.canonical || '', options.assetBase || '');
   const areas = (member.areas || []).map(area => `<span>${escapeHtml(area)}</span>`).join('');
   const affiliations = (member.affiliations || []).map(escapeHtml).join(' · ');
   return `
@@ -58,6 +64,7 @@ export function renderResearcherCard(member, locale = DEFAULT_LOCALE) {
 
 export function renderTeamModule(data, options = {}) {
   const locale = options.locale || DEFAULT_LOCALE;
+  const assetBase = options.assetBase || '';
   const members = orderedResearchers(data);
   const headline = locale === 'en' ? 'Research team' : 'Equipo de investigación';
   const intro = locale === 'en'
@@ -71,12 +78,13 @@ export function renderTeamModule(data, options = {}) {
         <span>${members.length} ${locale === 'en' ? 'members' : 'integrantes'}</span>
         <p>${intro}</p>
       </header>
-      <div class="kernel-core-team__grid">${members.map(member => renderResearcherCard(member, locale)).join('')}</div>
+      <div class="kernel-core-team__grid">${members.map(member => renderResearcherCard(member, locale, { assetBase })).join('')}</div>
     </section>`;
 }
 
 export function renderTeamPreviewDocument(data, options = {}) {
   const locale = options.locale || DEFAULT_LOCALE;
+  const assetBase = options.assetBase || '';
   return `<!doctype html>
 <html lang="${escapeHtml(locale)}">
 <head>
@@ -86,7 +94,7 @@ export function renderTeamPreviewDocument(data, options = {}) {
 <link rel="stylesheet" href="./team-preview.css">
 </head>
 <body>
-${renderTeamModule(data, { locale })}
+${renderTeamModule(data, { locale, assetBase })}
 </body>
 </html>`;
 }
