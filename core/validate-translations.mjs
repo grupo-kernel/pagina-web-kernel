@@ -2,10 +2,11 @@ import fs from 'node:fs/promises';
 import process from 'node:process';
 
 const read = async path => JSON.parse(await fs.readFile(path, 'utf8'));
+const metadataKeys = new Set(['schema_version', 'locale', 'status', 'updated_at']);
 const flatten = (value, prefix = '', out = new Map()) => {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
     for (const [key, child] of Object.entries(value)) {
-      if (['locale', 'updated_at'].includes(key)) continue;
+      if (!prefix && metadataKeys.has(key)) continue;
       flatten(child, prefix ? `${prefix}.${key}` : key, out);
     }
   } else out.set(prefix, value);
