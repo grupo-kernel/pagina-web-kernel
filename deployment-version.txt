@@ -1,0 +1,5 @@
+Kernel Core public activation
+source_merge_sha=6376165ad672554e16c53bab1610edb8793526bd
+publications_v2_page_sha=86522b1b74381d5870b6f9b121f855a42e9c6a47
+publications_v2_data_sha=0f20735f53aa3237214ac765c04bfa98eb01f272
+activated_at=2026-07-25
