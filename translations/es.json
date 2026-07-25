@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "locale": "es-DO",
+  "status": "candidate-not-active",
+  "updated_at": "2026-07-25",
+  "common": {
+    "home": "Portada",
+    "services": "Servicios",
+    "laboratory": "Laboratorio",
+    "research": "Investigación",
+    "about": "Nosotros",
+    "news": "Noticias",
+    "contact": "Contacto",
+    "team": "Equipo",
+    "publications": "Publicaciones",
+    "projects": "Proyectos",
+    "tools": "Herramientas",
+    "read_more": "Leer más",
+    "view_profile": "Ver perfil",
+    "open_doi": "Abrir DOI",
+    "source": "Fuente",
+    "status": "Estado"
+  },
+  "sections": {
+    "team_title": "Equipo de investigación",
+    "international_collaboration": "Colaboración científica internacional",
+    "research_lines": "Líneas de investigación",
+    "scientific_output": "Producción científica",
+    "approved_projects": "Proyectos aprobados",
+    "proposals_under_review": "Propuestas en evaluación",
+    "scientific_services": "Servicios científicos",
+    "intelligent_laboratory": "Laboratorio Inteligente de Investigación",
+    "latest_news": "Últimas noticias"
+  },
+  "entities": {
+    "researcher": "Investigador",
+    "publication": "Publicación",
+    "project": "Proyecto",
+    "service": "Servicio",
+    "news_item": "Noticia",
+    "institution": "Institución",
+    "research_area": "Área de investigación"
+  },
+  "status_labels": {
+    "active": "Activo",
+    "draft": "Borrador",
+    "published": "Publicado",
+    "under_review": "En evaluación",
+    "approved": "Aprobado",
+    "pending_verification": "Pendiente de verificación",
+    "candidate_not_active": "Candidato no activo"
+  },
+  "quality": {
+    "pass": "Validación superada",
+    "fail": "Validación fallida",
+    "warning": "Advertencia",
+    "critical_error": "Error crítico"
+  }
+}

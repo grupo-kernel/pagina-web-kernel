@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "locale": "en",
+  "status": "candidate-not-active",
+  "updated_at": "2026-07-25",
+  "common": {
+    "home": "Home",
+    "services": "Services",
+    "laboratory": "Laboratory",
+    "research": "Research",
+    "about": "About us",
+    "news": "News",
+    "contact": "Contact",
+    "team": "Team",
+    "publications": "Publications",
+    "projects": "Projects",
+    "tools": "Tools",
+    "read_more": "Read more",
+    "view_profile": "View profile",
+    "open_doi": "Open DOI",
+    "source": "Source",
+    "status": "Status"
+  },
+  "sections": {
+    "team_title": "Research team",
+    "international_collaboration": "International scientific collaboration",
+    "research_lines": "Research lines",
+    "scientific_output": "Scientific output",
+    "approved_projects": "Approved projects",
+    "proposals_under_review": "Proposals under review",
+    "scientific_services": "Scientific services",
+    "intelligent_laboratory": "Intelligent Research Laboratory",
+    "latest_news": "Latest news"
+  },
+  "entities": {
+    "researcher": "Researcher",
+    "publication": "Publication",
+    "project": "Project",
+    "service": "Service",
+    "news_item": "News item",
+    "institution": "Institution",
+    "research_area": "Research area"
+  },
+  "status_labels": {
+    "active": "Active",
+    "draft": "Draft",
+    "published": "Published",
+    "under_review": "Under review",
+    "approved": "Approved",
+    "pending_verification": "Pending verification",
+    "candidate_not_active": "Candidate not active"
+  },
+  "quality": {
+    "pass": "Validation passed",
+    "fail": "Validation failed",
+    "warning": "Warning",
+    "critical_error": "Critical error"
+  }
+}
