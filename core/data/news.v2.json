@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "status": "candidate-not-active",
+  "updated_at": "2026-07-25",
+  "categories": [
+    {"id":"publication","name":{"es":"Publicaciones","en":"Publications"}},
+    {"id":"conference-event","name":{"es":"Congresos y eventos","en":"Conferences and events"}},
+    {"id":"institutional","name":{"es":"Actividad institucional","en":"Institutional activity"}},
+    {"id":"project","name":{"es":"Proyectos","en":"Projects"}},
+    {"id":"laboratory","name":{"es":"Laboratorio y herramientas","en":"Laboratory and tools"}}
+  ],
+  "items": [
+    {
+      "id":"publication-first-optimal-eighth-order-families-2026",
+      "status":"published-candidate",
+      "category_id":"publication",
+      "published_at":"2026-06-13",
+      "title":{"es":"Nueva publicación sobre familias óptimas de orden ocho para sistemas no lineales","en":"New publication on optimal eighth-order families for nonlinear systems"},
+      "summary":{"es":"El grupo participa en un trabajo sobre familias con funciones peso escalares multivariables y aplicaciones a problemas integrales de Fredholm y EDPs semilineales.","en":"The group contributes to a study on families with multivariable scalar weight functions and applications to Fredholm integral and semilinear PDE problems."},
+      "researcher_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez","alicia-cordero","juan-torregrosa"],
+      "publication_dois":["10.3390/math14122114"],
+      "project_ids":[],
+      "media":[],
+      "tags":["nonlinear-systems","eighth-order","fredholm","semilinear-pde"],
+      "provenance":"verified-publication-record",
+      "visibility":"public-candidate"
+    },
+    {
+      "id":"mescyt-cic-kernel-panel-2026",
+      "status":"published-candidate",
+      "category_id":"conference-event",
+      "published_at":"2026-07-01",
+      "title":{"es":"El Grupo El Kernel participa con un panel en el XXI Congreso Internacional de Investigación Científica","en":"El Kernel Research Group participates in a panel at the 21st International Congress of Scientific Research"},
+      "summary":{"es":"Integrantes del grupo presentaron trabajos y desarrollaron un panel científico en el congreso organizado por el MESCyT.","en":"Group members presented research and held a scientific panel at the congress organized by MESCyT."},
+      "researcher_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
+      "publication_dois":[],
+      "project_ids":["fondocyt-edp-transporte-nutrientes"],
+      "media":[],
+      "tags":["mescyt","cic-2026","panel","scientific-congress"],
+      "provenance":"confirmed-group-activity",
+      "visibility":"public-candidate"
+    },
+    {
+      "id":"kernel-intelligent-research-laboratory-2026",
+      "status":"draft-candidate",
+      "category_id":"laboratory",
+      "published_at":null,
+      "title":{"es":"El Kernel desarrolla un Laboratorio Inteligente de Investigación","en":"El Kernel develops an Intelligent Research Laboratory"},
+      "summary":{"es":"La plataforma incorpora asistentes para seleccionar pruebas estadísticas, calculadoras y herramientas de apoyo a investigadores.","en":"The platform incorporates statistical test selection assistants, calculators and research support tools."},
+      "researcher_ids":["miguel-leonardo","natanael-urena"],
+      "publication_dois":[],
+      "project_ids":[],
+      "media":[],
+      "tags":["laboratory","statistics","research-tools","artificial-intelligence"],
+      "provenance":"current-platform-development",
+      "visibility":"internal-candidate"
+    }
+  ]
+}
