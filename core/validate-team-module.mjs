@@ -44,11 +44,16 @@ if (!htmlEs.includes('Investigador(a) internacional') || !htmlEn.includes('Inter
   fail('La etiqueta de investigadores internacionales no aparece en ambos idiomas.');
 }
 
+const team = manifest.activation?.modules?.team || {};
+const acceptedStatuses = ['preview-ready', 'integrated-branch-preview'];
 if (manifest.activation?.enabled !== false) fail('Kernel Core no debe estar activado globalmente durante la Fase 1L.');
-if (manifest.activation?.modules?.team?.status !== 'preview-ready') fail('El módulo Team debe estar en status preview-ready.');
-if (manifest.activation?.modules?.team?.active !== false) fail('El módulo Team no debe estar activo en producción todavía.');
+if (!acceptedStatuses.includes(team.status)) fail(`Estado Team no permitido: ${team.status}.`);
+if (team.active !== false) fail('El módulo Team no debe estar activo en producción todavía.');
+if (team.status === 'integrated-branch-preview' && team.preview_active !== true) {
+  fail('La integración de rama debe declarar preview_active=true.');
+}
 
-console.log(`Equipo Kernel Core: ${members.length} tarjetas validadas.`);
+console.log(`Equipo Kernel Core: ${members.length} tarjetas validadas; estado=${team.status}.`);
 warnings.forEach(item => console.log(`ADVERTENCIA: ${item}`));
 errors.forEach(item => console.error(`ERROR: ${item}`));
 console.log(errors.length ? 'Resultado: FAIL' : 'Resultado: PASS');
