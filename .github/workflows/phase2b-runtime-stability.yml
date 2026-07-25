@@ -1,0 +1,55 @@
+name: Phase 2B runtime stability correction
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - '.github/workflows/phase2b-runtime-stability.yml'
+      - 'platform/.runtime-stability-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  stabilize:
+    if: github.event.head_commit.message == 'Apply Phase 2B runtime stability fix'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Make bridge rendering resilient to native SPA redraws
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('assets/kernel-platform-bridge.js'): (
+                  'if (main.dataset.kernelAcademicSignature === signature) return;',
+                  'if (main.dataset.kernelAcademicSignature === signature && main.querySelector(\'[data-kernel-platform-page="academic-background"]\')) return;'
+              ),
+              Path('assets/kernel-team-core-bridge.js'): (
+                  'if (main.dataset.kernelTeamSignature === signature) return;',
+                  'if (main.dataset.kernelTeamSignature === signature && main.querySelector(\'[data-kernel-platform-page="team-nine"]\')) return;'
+              )
+          }
+
+          for path, (old, new) in replacements.items():
+              text = path.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'Expected runtime guard not found in {path}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          node --check assets/kernel-platform-bridge.js
+          node --check assets/kernel-team-core-bridge.js
+          rm -f platform/.runtime-stability-trigger
+          rm -f .github/workflows/phase2b-runtime-stability.yml
+      - name: Commit runtime stability correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/kernel-platform-bridge.js assets/kernel-team-core-bridge.js platform/.runtime-stability-trigger .github/workflows/phase2b-runtime-stability.yml
+          git commit -m "Apply Phase 2B runtime stability fix"
+          git push origin HEAD:fase-2b-platform-integration
