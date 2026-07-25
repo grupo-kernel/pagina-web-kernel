@@ -1,4 +1,5 @@
 import heroQuienes from "../../assets/QuienesSomos.webp";
+import { METRICAS_INSTITUCIONALES } from "../../data/metricasInstitucionales.js";
 
 export function createHero() {
 
@@ -65,16 +66,19 @@ export function createHero() {
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">
                         <div class="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-4">
-                            <p class="text-3xl font-black text-white">7+</p>
+                            <p class="text-3xl font-black text-white">${METRICAS_INSTITUCIONALES.integrantes}</p>
                             <p class="text-white/75 text-xs md:text-sm font-semibold">
                                 Investigadores
                             </p>
                         </div>
 
-                        <div class="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-4">
-                            <p class="text-3xl font-black text-white">16+</p>
+                        <div
+                            class="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-4"
+                            title="${METRICAS_INSTITUCIONALES.descripcionArticulos}"
+                        >
+                            <p class="text-3xl font-black text-white">${METRICAS_INSTITUCIONALES.articulosAcumuladosTexto}</p>
                             <p class="text-white/75 text-xs md:text-sm font-semibold">
-                                Publicaciones
+                                ${METRICAS_INSTITUCIONALES.etiquetaArticulos}
                             </p>
                         </div>
 
