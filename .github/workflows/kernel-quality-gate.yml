@@ -64,5 +64,8 @@ jobs:
       - name: Validate parity before activation
         run: node core/validate-parity.mjs
 
+      - name: Validate Team module preview
+        run: node core/validate-team-module.mjs
+
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
