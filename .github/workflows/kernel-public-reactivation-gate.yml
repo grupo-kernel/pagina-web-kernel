@@ -16,6 +16,7 @@ on:
       - 'publicaciones.html'
       - 'noticias.html'
       - 'contacto.html'
+      - 'miguel.jpg'
       - '.github/workflows/kernel-public-reactivation-gate.yml'
   push:
     branches: [fase-2a-public-reactivation]
@@ -50,3 +51,27 @@ jobs:
             core/activation/PUBLIC_REACTIVATION_CHECKLIST.md
           if-no-files-found: error
           retention-days: 14
+      - name: Upload controlled public candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-public-reactivation-candidate
+          path: |
+            index.html
+            quienes_somos.html
+            equipo.html
+            formacion.html
+            lineas.html
+            proyectos.html
+            publicaciones.html
+            noticias.html
+            contacto.html
+            CNAME
+            assets/**
+            core/**
+            data/**
+            translations/**
+            *.png
+            *.jpg
+            *.jpeg
+          if-no-files-found: error
+          retention-days: 7
