@@ -3,14 +3,18 @@ import process from 'node:process';
 
 const readText = path => fs.readFile(path, 'utf8');
 const readJson = async path => JSON.parse(await readText(path));
+const readOptionalJson = async path => {
+  try { return await readJson(path); } catch { return null; }
+};
 
-const [html, renderer, stylesheet, manifest, researchers, config] = await Promise.all([
+const [html, renderer, stylesheet, manifest, researchers, config, reactivation] = await Promise.all([
   readText('equipo.html'),
   readText('core/modules/team/team-renderer.mjs'),
   readText('core/modules/team/team-integration.css'),
   readJson('core/manifest.json'),
   readJson('core/data/researchers.v2.json'),
-  readJson('core/quality-gate.config.json')
+  readJson('core/quality-gate.config.json'),
+  readOptionalJson('core/activation/public-reactivation-manifest.json')
 ]);
 
 const errors = [];
@@ -27,7 +31,7 @@ for (const token of [
   "import { orderedResearchers, renderResearcherCard }",
   "from './core/modules/team/team-renderer.mjs'",
   "renderResearcherCard(member, 'es'",
-  "orderedResearchers(data)",
+  'orderedResearchers(data)',
   'publicaciones.html?autor=',
   'kernel-core-team__grid'
 ]) {
@@ -45,6 +49,9 @@ if (/fetch\s*\(\s*["']data\/researchers\.json["']/.test(html)) {
 }
 if (html.includes('function memberCard(') || html.includes('function publicationMetrics(')) {
   fail('equipo.html vuelve a duplicar lógica que debe permanecer en el renderizador compartido.');
+}
+if (isPublicCandidate && /Vista controlada|La plataforma pública continúa usando su fuente anterior/i.test(html)) {
+  fail('equipo.html conserva mensajes de vista previa en la candidata pública.');
 }
 
 for (const token of [
@@ -100,19 +107,31 @@ if (!international.includes('alicia-cordero') || !international.includes('juan-t
 
 const activation = manifest.activation || {};
 const team = activation.modules?.team || {};
-if (activation.enabled !== false) fail('Kernel Core global no debe activarse en esta rama.');
+if (activation.enabled !== false) fail('Kernel Core global no debe activarse antes de la fusión autorizada.');
 if (manifest.public_site_untouched !== true) fail('El manifiesto debe confirmar que el sitio público está intacto.');
-if (team.active !== false) fail('Team no debe marcarse activo en producción.');
-if (team.preview_active !== true) fail('Team debe marcarse activo únicamente como vista previa.');
-if (team.scope !== 'branch-only') fail('El alcance de Team debe ser branch-only.');
-if (team.status !== 'integrated-branch-preview') fail('Estado de Team inesperado en el manifiesto.');
+if (team.active !== false) fail('Team no debe marcarse activo en producción antes de la autorización.');
 if (team.source !== 'core/data/researchers.v2.json') fail('El manifiesto no registra la fuente v2 de Team.');
 if (team.renderer !== 'core/modules/team/team-renderer.mjs') fail('El manifiesto no registra el renderizador compartido.');
 if (team.integration_page !== 'equipo.html') fail('El manifiesto no registra equipo.html como página integrada.');
 if (team.stylesheet !== 'core/modules/team/team-integration.css') fail('El manifiesto no registra la hoja de estilos integrada.');
 
-if (isBranchPreview && !html.includes('La plataforma pública continúa usando su fuente anterior')) {
-  warn('La nota visual no explica que la plataforma pública permanece sin cambios.');
+if (isBranchPreview) {
+  if (team.preview_active !== true) fail('Team debe marcarse activo únicamente como vista previa.');
+  if (team.scope !== 'branch-only') fail('El alcance de Team debe ser branch-only.');
+  if (team.status !== 'integrated-branch-preview') fail('Estado de Team inesperado en el manifiesto.');
+  if (!html.includes('La plataforma pública continúa usando su fuente anterior')) {
+    warn('La nota visual no explica que la plataforma pública permanece sin cambios.');
+  }
+}
+
+if (isPublicCandidate) {
+  if (!reactivation) fail('Falta el manifiesto de reactivación pública para equipo.html.');
+  if (reactivation?.phase !== '2A' || reactivation?.status !== 'candidate-not-active') {
+    fail('La candidata pública de Equipo no está respaldada por una Fase 2A válida.');
+  }
+  if (reactivation?.activation_branch !== 'fase-2a-public-reactivation') {
+    fail('La rama de activación pública declarada es incorrecta.');
+  }
 }
 
 const mode = isPublicCandidate ? 'candidata pública' : 'vista previa de rama';
