@@ -3,18 +3,20 @@ name: Kernel Quality Gate
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [main, hito-1-kernel-core]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
+      - 'equipo.html'
       - '.github/workflows/kernel-quality-gate.yml'
   push:
-    branches: [hito-1-kernel-core]
+    branches: [hito-1-kernel-core, fase-1l-team-preview-integration]
     paths:
       - 'core/**'
       - 'data/**'
       - 'translations/**'
+      - 'equipo.html'
       - '.github/workflows/kernel-quality-gate.yml'
 
 permissions:
@@ -64,8 +66,11 @@ jobs:
       - name: Validate parity before activation
         run: node core/validate-parity.mjs
 
-      - name: Validate Team module preview
+      - name: Validate standalone Team module preview
         run: node core/validate-team-module.mjs
+
+      - name: Validate Team integration in controlled branch
+        run: node core/validate-team-integration.mjs
 
       - name: Verify generated publication files are reproducible
         run: git diff --exit-code -- core/data/publications.v2.json core/audits/publications-migration-report.json
