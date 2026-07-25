@@ -1,0 +1,73 @@
+name: Kernel Platform Integration Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-platform-bridge.js'
+      - 'core/data/**'
+      - 'platform/**'
+      - '.github/workflows/kernel-platform-integration-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-platform-bridge.js'
+      - 'core/data/**'
+      - 'platform/**'
+      - '.github/workflows/kernel-platform-integration-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Preserve platform and integrate Kernel Core
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate platform preservation and data catalogs
+        run: node platform/validate-platform-integration.mjs
+      - name: Verify critical local files
+        run: |
+          test -f assets/kernel-platform-bridge.js
+          test -f core/data/researchers.v2.json
+          test -f core/data/projects.v2.json
+          test -f core/data/publications.v2.json
+          test -f assets/LaboratorioKernel-DQR0aCHt.js
+          test -f assets/authGuard-CEzcrBkK.js
+          test -f assets/authService-CgfoSPdf.js
+          test -f assets/firebase-BzP43VG7.js
+          test -f assets/CalculadoraTamanoMuestraPotencia-DLJx5UHY.js
+          test -f assets/BibliotecaMetodologica-BzzsJJUi.js
+      - name: Test static delivery locally
+        run: |
+          python3 -m http.server 4173 >/tmp/kernel-platform-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid' EXIT
+          sleep 2
+          curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-platform-bridge.js'
+          curl --fail --silent http://127.0.0.1:4173/core/data/researchers.v2.json | grep -q '"member_count": 9'
+          curl --fail --silent http://127.0.0.1:4173/core/data/projects.v2.json | grep -q '"featured_approved_projects": 10'
+          curl --fail --silent http://127.0.0.1:4173/core/data/publications.v2.json | grep -q '"unique_records": 162'
+      - name: Upload controlled platform preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-phase-2b-preview
+          path: |
+            index.html
+            assets/**
+            core/data/**
+            platform/**
+            CNAME
+            .nojekyll
+          if-no-files-found: error
+          retention-days: 7
