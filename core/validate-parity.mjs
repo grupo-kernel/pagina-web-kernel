@@ -58,7 +58,9 @@ check('Service candidate count preserved', services.services?.length === expecte
 check('News candidate count preserved', news.items?.length === expected.news_candidate_count, `${news.items?.length || 0}/${expected.news_candidate_count}`);
 
 console.log('\n=== PARITY CHECK: RELATIONS AND ACTIVATION ===');
-check('Relations index covers all researchers', relations.summary?.researchers === expected.researcher_count, `${relations.summary?.researchers}/${expected.researcher_count}`);
+const relationResearcherCount = relations.counts?.researchers;
+check('Relations index covers all researchers', relationResearcherCount === expected.researcher_count, `${relationResearcherCount}/${expected.researcher_count}`);
+check('Relations index includes projects and proposals', relations.counts?.projects === (projects.approved_projects || []).length + (projects.proposals || []).length, `${relations.counts?.projects}/${(projects.approved_projects || []).length + (projects.proposals || []).length}`);
 check('Kernel Core remains inactive', manifest.activation?.enabled === false, `enabled=${manifest.activation?.enabled}`);
 check('Candidate modules remain non-active', [candidateResearchers.status, candidatePublications.status, projects.status, services.status, news.status].every(status => String(status).includes('not-active') || String(status).includes('candidate')));
 
@@ -79,7 +81,9 @@ const report = {
     candidate_publication_unique_records: candidateUniqueRecords,
     candidate_duplicate_records_removed: candidatePublications.summary?.duplicate_records_removed ?? null,
     current_latest_year: currentPublications.summary?.latest_year ?? null,
-    candidate_latest_year: candidatePublications.summary?.latest_year ?? null
+    candidate_latest_year: candidatePublications.summary?.latest_year ?? null,
+    relation_researchers: relationResearcherCount ?? null,
+    relation_projects_and_proposals: relations.counts?.projects ?? null
   },
   checks,
   warnings,
