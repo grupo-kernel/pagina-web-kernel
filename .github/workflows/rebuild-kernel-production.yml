@@ -1,0 +1,312 @@
+name: Rebuild integrated Kernel production
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rebuild-kernel-production.yml'
+      - 'core/activation/.integrated-production-trigger'
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: kernel-integrated-production
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Rebuild integrated Kernel production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Assemble production from the stable SPA and Kernel Core
+        run: |
+          set -euo pipefail
+          SOURCE_MAIN_SHA=$(git rev-parse HEAD)
+          echo "SOURCE_MAIN_SHA=${SOURCE_MAIN_SHA}" >> "$GITHUB_ENV"
+
+          git fetch origin rollback/gh-pages-pre-reactivation-20260725:refs/remotes/origin/rollback/gh-pages-pre-reactivation-20260725
+          rm -rf /tmp/kernel-production
+          git worktree add --detach /tmp/kernel-production origin/rollback/gh-pages-pre-reactivation-20260725
+          PROD=/tmp/kernel-production
+
+          for page in quienes_somos.html equipo.html formacion.html lineas.html proyectos.html publicaciones.html noticias.html contacto.html; do
+            cp -f "$page" "$PROD/$page"
+          done
+
+          rm -rf "$PROD/core" "$PROD/data" "$PROD/translations" "$PROD/docs"
+          cp -a core "$PROD/core"
+          cp -a data "$PROD/data"
+          cp -a translations "$PROD/translations"
+          cp -a docs "$PROD/docs"
+
+          mkdir -p "$PROD/assets/css" "$PROD/assets/img"
+          cp -a assets/css/. "$PROD/assets/css/"
+          if [ -d assets/img ]; then cp -a assets/img/. "$PROD/assets/img/"; fi
+
+          for file in *.png *.jpg *.jpeg *.webp *.svg *.ico; do
+            if [ -e "$file" ]; then cp -f "$file" "$PROD/$file"; fi
+          done
+          cp -f CNAME "$PROD/CNAME"
+          cp -f .nojekyll "$PROD/.nojekyll"
+
+          cat > "$PROD/deployment-version.txt" <<EOF
+          Kernel integrated public activation
+          source_merge_sha=6376165ad672554e16c53bab1610edb8793526bd
+          source_main_sha=${SOURCE_MAIN_SHA}
+          architecture=stable-spa-plus-kernel-core
+          activated_at=2026-07-25
+          EOF
+
+          test -s "$PROD/index.html"
+          test -s "$PROD/assets/index-BEtvhqLu.js"
+          test -s "$PROD/assets/index-DDHYSPOT.css"
+          for asset in kernel-members-patch.js kernel-stats-patch.js kernel-phase1-patch.js kernel-phase1-fix.js kernel-i18n-full.js; do
+            test -s "$PROD/assets/$asset"
+            grep -q "$asset" "$PROD/index.html"
+          done
+          for page in quienes_somos.html equipo.html formacion.html lineas.html proyectos.html publicaciones.html noticias.html contacto.html; do
+            test -s "$PROD/$page"
+          done
+          test -s "$PROD/core/data/researchers.v2.json"
+          test -s "$PROD/core/data/projects.v2.json"
+          test -s "$PROD/core/data/publications.v2.json"
+          test -s "$PROD/miguel.jpg"
+          grep -q 'Publicaciones 2.0' "$PROD/publicaciones.html"
+          grep -q 'core/data/publications.v2.json' "$PROD/publicaciones.html"
+
+      - name: Commit and publish the integrated production tree
+        run: |
+          set -euo pipefail
+          cd /tmp/kernel-production
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Deploy integrated Kernel SPA and Kernel Core"
+          fi
+          git push origin HEAD:gh-pages --force
+          echo "PRODUCTION_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Request GitHub Pages build and wait for the exact production commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/pages" | tee pages-settings.json
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" | tee pages-build-request.json
+
+          matched=0
+          for attempt in $(seq 1 90); do
+            payload=$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest")
+            printf '%s\n' "$payload" > pages-build-latest.json
+            status=$(printf '%s' "$payload" | jq -r '.status // ""')
+            commit=$(printf '%s' "$payload" | jq -r '.commit // ""')
+            echo "Attempt ${attempt}: status=${status} commit=${commit} expected=${PRODUCTION_SHA}"
+            if [ "$commit" = "$PRODUCTION_SHA" ] && [ "$status" = "built" ]; then
+              matched=1
+              break
+            fi
+            if [ "$commit" = "$PRODUCTION_SHA" ] && [ "$status" = "errored" ]; then
+              exit 1
+            fi
+            sleep 10
+          done
+          test "$matched" -eq 1
+
+      - name: Install Playwright
+        run: |
+          mkdir -p /tmp/kernel-browser-smoke
+          cd /tmp/kernel-browser-smoke
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.54.1 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run integrated browser smoke test
+        id: smoke
+        continue-on-error: true
+        env:
+          BASE_URL: https://www.grupoelkernel.com
+          CACHE_KEY: ${{ env.PRODUCTION_SHA }}
+        run: |
+          mkdir -p smoke-artifacts
+          cat > /tmp/kernel-browser-smoke/smoke.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs/promises';
+          import path from 'node:path';
+
+          const base = process.env.BASE_URL.replace(/\/$/, '');
+          const cacheKey = process.env.CACHE_KEY;
+          const output = path.resolve(process.cwd(), 'smoke-artifacts');
+          const report = { base, cacheKey, passed: false, checks: [], failures: [] };
+
+          async function record(name, fn) {
+            try {
+              await fn();
+              report.checks.push({ name, passed: true });
+              console.log(`PASS ${name}`);
+            } catch (error) {
+              const message = error instanceof Error ? error.stack || error.message : String(error);
+              report.checks.push({ name, passed: false, error: message });
+              report.failures.push(`${name}: ${message}`);
+              console.error(`FAIL ${name}\n${message}`);
+            }
+          }
+
+          const required = [
+            'index.html', 'quienes_somos.html', 'equipo.html', 'formacion.html', 'lineas.html',
+            'proyectos.html', 'publicaciones.html', 'noticias.html', 'contacto.html',
+            'assets/index-BEtvhqLu.js', 'assets/index-DDHYSPOT.css',
+            'assets/kernel-members-patch.js', 'assets/kernel-stats-patch.js',
+            'assets/kernel-phase1-patch.js', 'assets/kernel-phase1-fix.js', 'assets/kernel-i18n-full.js',
+            'miguel.jpg', 'core/data/researchers.v2.json', 'core/data/projects.v2.json',
+            'core/data/publications.v2.json', 'deployment-version.txt'
+          ];
+
+          for (const asset of required) {
+            await record(`HTTP 200 ${asset}`, async () => {
+              const response = await fetch(`${base}/${asset}?smoke=${encodeURIComponent(cacheKey)}`, {
+                headers: { 'cache-control': 'no-cache, no-store', pragma: 'no-cache' }
+              });
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              const body = await response.arrayBuffer();
+              if (body.byteLength < 8) throw new Error(`Archivo vacío: ${body.byteLength} bytes`);
+            });
+          }
+
+          const browser = await chromium.launch({ headless: true });
+          const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, locale: 'es-DO' });
+          const page = await context.newPage();
+
+          async function gotoHash(route) {
+            await page.goto(`${base}/?smoke=${encodeURIComponent(cacheKey)}#/${route}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForTimeout(2400);
+          }
+
+          await record('SPA shell, services, laboratory and language switch', async () => {
+            await page.goto(`${base}/?smoke=${encodeURIComponent(cacheKey)}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForSelector('#header', { timeout: 30000 });
+            await page.waitForSelector('#navBar', { timeout: 30000 });
+            await page.waitForSelector('#main', { timeout: 30000 });
+            await page.waitForFunction(() => /Servicios/i.test(document.body.innerText) && /Laboratorio/i.test(document.body.innerText), null, { timeout: 30000 });
+            await page.waitForSelector('#kernel-language-switch', { timeout: 30000 });
+            await page.screenshot({ path: path.join(output, 'spa-home-desktop.png'), fullPage: true });
+          });
+
+          await record('SPA equipment route: 9 researchers including Alicia and Juan Ramón', async () => {
+            await gotoHash('equipment');
+            await page.waitForFunction(() => document.body.innerText.includes('Alicia Cordero') && document.body.innerText.includes('Juan Ramón Torregrosa'), null, { timeout: 30000 });
+            await page.waitForSelector('#kernel-international-members', { timeout: 30000 });
+            if (!/9\s+investigadores/i.test(await page.locator('body').innerText())) throw new Error('No se encontró el indicador de 9 investigadores.');
+            await page.screenshot({ path: path.join(output, 'spa-equipment-desktop.png'), fullPage: true });
+          });
+
+          await record('SPA academic route includes the international researchers', async () => {
+            await gotoHash('formacionacademica');
+            await page.waitForSelector('[data-kernel-academic="alicia-cordero"]', { timeout: 30000 });
+            await page.waitForSelector('[data-kernel-academic="juan-torregrosa"]', { timeout: 30000 });
+          });
+
+          await record('SPA publications route includes international production and 572+ metric', async () => {
+            await gotoHash('publicaciones');
+            await page.waitForSelector('#kernel-international-author-group', { timeout: 30000 });
+            const text = await page.locator('body').innerText();
+            if (!text.includes('Alicia Cordero') || !text.includes('Juan Ramón Torregrosa')) throw new Error('Autores internacionales ausentes.');
+            if (!text.includes('572+')) throw new Error('No se encontró el indicador 572+.');
+          });
+
+          await record('Publications 2.0 renders the 162-record catalog', async () => {
+            await page.goto(`${base}/publicaciones.html?smoke=${encodeURIComponent(cacheKey)}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForFunction(() => document.querySelector('#statTotal')?.textContent?.trim() === '162', null, { timeout: 30000 });
+            await page.waitForFunction(() => document.querySelectorAll('.publication-card').length >= 100, null, { timeout: 30000 });
+            await page.screenshot({ path: path.join(output, 'publications-2-desktop.png'), fullPage: true });
+          });
+
+          await record('Projects page renders 10 approved featured projects', async () => {
+            await page.goto(`${base}/proyectos.html?smoke=${encodeURIComponent(cacheKey)}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForFunction(() => document.querySelector('#featuredProjects')?.textContent?.trim() === '10', null, { timeout: 30000 });
+            await page.waitForFunction(() => document.querySelectorAll('.project-card,[data-project-id]').length > 0, null, { timeout: 30000 });
+          });
+
+          await record('Mobile SPA equipment has no horizontal overflow', async () => {
+            const mobile = await context.newPage();
+            await mobile.setViewportSize({ width: 390, height: 844 });
+            await mobile.goto(`${base}/?smoke=${encodeURIComponent(cacheKey)}#/equipment`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await mobile.waitForFunction(() => document.body.innerText.includes('Alicia Cordero') && document.body.innerText.includes('Juan Ramón Torregrosa'), null, { timeout: 30000 });
+            const dimensions = await mobile.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+            if (dimensions.scroll > dimensions.client + 4) throw new Error(`Desbordamiento horizontal: ${dimensions.scroll}px > ${dimensions.client}px.`);
+            await mobile.screenshot({ path: path.join(output, 'spa-equipment-mobile.png'), fullPage: true });
+            await mobile.close();
+          });
+
+          await browser.close();
+          report.passed = report.failures.length === 0;
+          await fs.writeFile(path.join(output, 'integrated-smoke-report.json'), JSON.stringify(report, null, 2));
+          if (!report.passed) process.exit(1);
+          JS
+          node /tmp/kernel-browser-smoke/smoke.mjs
+
+      - name: Upload integrated deployment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-integrated-production-evidence
+          path: |
+            pages-settings.json
+            pages-build-request.json
+            pages-build-latest.json
+            smoke-artifacts/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Roll back to the stable preactivation site if verification fails
+        if: steps.smoke.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git push origin 0a86f78a26ebbffe4862208ab6f5ee627b973366:gh-pages --force
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" >/dev/null
+          echo "The integrated deployment failed verification and gh-pages was restored to the preactivation snapshot."
+          exit 1
+
+      - name: Record successful integrated deployment
+        if: steps.smoke.outcome == 'success'
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+          mkdir -p core/activation
+          cat > core/activation/final-public-deployment.json <<EOF
+          {
+            "status": "active",
+            "architecture": "stable-spa-plus-kernel-core",
+            "source_main_sha": "${SOURCE_MAIN_SHA}",
+            "production_sha": "${PRODUCTION_SHA}",
+            "pages_build": "built",
+            "browser_smoke": "pass",
+            "activated_at": "2026-07-25"
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add core/activation/final-public-deployment.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record successful integrated public deployment"
+            git push origin HEAD:main
+          fi
