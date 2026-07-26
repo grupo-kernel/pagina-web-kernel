@@ -1,0 +1,73 @@
+name: Phase 2B query-backed Formación route correction
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - '.github/workflows/phase2b-formation-query-route.yml'
+      - 'platform/.formation-query-route-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Apply query-backed Formación route correction'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Keep the native Nosotros route while opening Formación
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('assets/kernel-platform-bridge.js')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = [
+              (
+                  '  const currentRoute = () => (routeParts()[0] || "home").toLowerCase();\n  const isFormationRoute = () => currentRoute() === FORMATION_ROUTE.toLowerCase() && (routeParts()[1] || "").toLowerCase() === FORMATION_SECTION;\n  const selectedResearcherId = () => routeParts()[2] || "miguel-leonardo";\n',
+                  '  const currentRoute = () => (routeParts()[0] || "home").toLowerCase();\n  const queryParams = () => new URLSearchParams(location.search);\n  const isFormationRoute = () => currentRoute() === FORMATION_ROUTE.toLowerCase() && queryParams().get("kernelSection") === FORMATION_SECTION;\n  const selectedResearcherId = () => queryParams().get("investigador") || "miguel-leonardo";\n\n  function formationUrl(researcherId = "") {\n    const url = new URL(location.href);\n    url.searchParams.set("kernelSection", FORMATION_SECTION);\n    if (researcherId) url.searchParams.set("investigador", researcherId);\n    else url.searchParams.delete("investigador");\n    url.hash = `#/${FORMATION_ROUTE}`;\n    return url;\n  }\n\n  function clearFormationQuery() {\n    const url = new URL(location.href);\n    if (!url.searchParams.has("kernelSection") && !url.searchParams.has("investigador")) return;\n    url.searchParams.delete("kernelSection");\n    url.searchParams.delete("investigador");\n    history.replaceState(null, "", url);\n  }\n'
+              ),
+              (
+                  '      location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}`;\n',
+                  '      location.href = formationUrl().toString();\n'
+              ),
+              (
+                  '          location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}/${encodeURIComponent(button.dataset.kernelAcademicSelect)}`;\n',
+                  '          history.pushState(null, "", formationUrl(button.dataset.kernelAcademicSelect));\n          delete main.dataset.kernelAcademicSignature;\n          renderFormation();\n'
+              ),
+              (
+                  '    } else {\n      const main = document.getElementById("main");\n      if (main) delete main.dataset.kernelAcademicSignature;\n    }\n',
+                  '    } else {\n      const main = document.getElementById("main");\n      if (main) delete main.dataset.kernelAcademicSignature;\n      if (queryParams().get("kernelSection") === FORMATION_SECTION && currentRoute() !== FORMATION_ROUTE.toLowerCase()) clearFormationQuery();\n    }\n'
+              ),
+              (
+                  '  window.addEventListener("hashchange", schedule);\n  window.addEventListener("kernel-language-change", schedule);\n  document.addEventListener("DOMContentLoaded", schedule);\n',
+                  '  window.addEventListener("hashchange", schedule);\n  window.addEventListener("kernel-language-change", schedule);\n  document.addEventListener("click", event => {\n    const nativeRouteButton = event.target.closest?.("button[data-route]");\n    if (nativeRouteButton && String(nativeRouteButton.dataset.route || "").toLowerCase() === FORMATION_ROUTE.toLowerCase()) clearFormationQuery();\n  }, true);\n  document.addEventListener("DOMContentLoaded", schedule);\n'
+              ),
+              (
+                  '    formationRoute: `${FORMATION_ROUTE}/${FORMATION_SECTION}`,\n',
+                  '    formationRoute: `${FORMATION_ROUTE}?kernelSection=${FORMATION_SECTION}`,\n'
+              )
+          ]
+
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Expected query-route block not found:\n{old}')
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+          node --check assets/kernel-platform-bridge.js
+          rm -f platform/.formation-query-route-trigger
+          rm -f .github/workflows/phase2b-formation-query-route.yml
+      - name: Commit query-backed route correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/kernel-platform-bridge.js platform/.formation-query-route-trigger .github/workflows/phase2b-formation-query-route.yml
+          git commit -m "Apply query-backed Formación route correction"
+          git push origin HEAD:fase-2b-platform-integration
