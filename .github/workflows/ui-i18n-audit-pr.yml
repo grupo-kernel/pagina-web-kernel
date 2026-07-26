@@ -29,14 +29,21 @@ jobs:
           python - <<'PYRUN'
           from pathlib import Path
           import textwrap
+          import traceback
 
-          source = Path('.github/workflows/ui-i18n-audit.yml').read_text(encoding='utf-8')
-          marker = "          python - <<'PY'\n"
-          start = source.index(marker) + len(marker)
-          end = source.index("\n          PY\n", start)
-          script = textwrap.dedent(source[start:end])
-          namespace = {"__name__": "__main__"}
-          exec(compile(script, 'ui_i18n_audit.py', 'exec'), namespace)
+          output = Path('ui-i18n-audit')
+          output.mkdir(exist_ok=True)
+          try:
+              source = Path('.github/workflows/ui-i18n-audit.yml').read_text(encoding='utf-8')
+              marker = "          python - <<'PY'\n"
+              start = source.index(marker) + len(marker)
+              end = source.index("\n          PY\n", start)
+              script = textwrap.dedent(source[start:end])
+              namespace = {"__name__": "__main__"}
+              exec(compile(script, 'ui_i18n_audit.py', 'exec'), namespace)
+          except Exception:
+              (output / 'error.txt').write_text(traceback.format_exc(), encoding='utf-8')
+              raise
           PYRUN
       - name: Upload audit
         if: always()
