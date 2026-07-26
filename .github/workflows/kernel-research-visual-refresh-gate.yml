@@ -1,0 +1,76 @@
+name: Kernel Research Visual Refresh Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hotfix-research-typography-new-photos]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-research-visual-refresh.js'
+      - 'assets/img/researchers-20260726/**'
+      - 'platform/research_visual_refresh_regression.py'
+      - '.github/workflows/kernel-research-visual-refresh-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-research-visual-refresh.js'
+      - 'assets/img/researchers-20260726/**'
+      - 'platform/research_visual_refresh_regression.py'
+      - '.github/workflows/kernel-research-visual-refresh-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate research typography and nine refreshed portraits
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout hotfix
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Validate files and syntax
+        run: |
+          node --check assets/kernel-research-visual-refresh.js
+          python -m py_compile platform/research_visual_refresh_regression.py
+          grep -q 'kernel-research-visual-refresh.js' index.html
+          test -f assets/img/researchers-20260726/miguel.jpg
+          test -f assets/img/researchers-20260726/natanael.jpg
+          test -f assets/img/researchers-20260726/randy.jpg
+          test -f assets/img/researchers-20260726/antmel.jpg
+          test -f assets/img/researchers-20260726/marino.png
+          test -f assets/img/researchers-20260726/marckelly.jpg
+          test -f assets/img/researchers-20260726/josealberto.jpg
+          test -f assets/img/researchers-20260726/alicia.jpg
+          test -f assets/img/researchers-20260726/juanr.jpg
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4179 >/tmp/kernel-research-visual-http.log 2>&1 &
+          echo $! >/tmp/kernel-research-visual-http.pid
+          sleep 2
+      - name: Run research visual regression
+        env:
+          BASE_URL: http://127.0.0.1:4179
+          VISUAL_REFRESH_RESULT: ci-research-visual/result.json
+        run: python platform/research_visual_refresh_regression.py
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-research-visual-http.pid ]; then kill "$(cat /tmp/kernel-research-visual-http.pid)" || true; fi
+      - name: Upload visual result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-research-visual-refresh-result
+          path: |
+            ci-research-visual/result.json
+            /tmp/kernel-research-visual-http.log
+          if-no-files-found: warn
+          retention-days: 7
