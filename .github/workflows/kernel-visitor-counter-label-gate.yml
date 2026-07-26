@@ -1,0 +1,88 @@
+name: Kernel Visitor Counter and International Label Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hotfix-home-visitor-counter-labels]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-home-visitor-counter.js'
+      - 'assets/kernel-international-label-fix.js'
+      - 'platform/visitor_counter_label_regression.py'
+      - '.github/workflows/kernel-visitor-counter-label-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-home-visitor-counter.js'
+      - 'assets/kernel-international-label-fix.js'
+      - 'platform/visitor_counter_label_regression.py'
+      - '.github/workflows/kernel-visitor-counter-label-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate visitor metrics and international labels
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout hotfix
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate syntax and linked assets
+        run: |
+          node --check assets/kernel-home-visitor-counter.js
+          node --check assets/kernel-international-label-fix.js
+          python -m py_compile platform/visitor_counter_label_regression.py
+          grep -q 'kernel-home-visitor-counter.js' index.html
+          grep -q 'kernel-international-label-fix.js' index.html
+          grep -q 'AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q' assets/kernel-home-visitor-counter.js
+      - name: Verify live analytics API
+        run: |
+          curl --fail --location --silent --show-error \
+            --retry 3 --retry-all-errors --connect-timeout 15 --max-time 45 \
+            'https://script.google.com/macros/s/AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q/exec' \
+            --output /tmp/kernel-analytics-live.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/kernel-analytics-live.json').read_text(encoding='utf-8'))
+          assert payload.get('ok') is True, payload
+          visitors = payload.get('visitantes') or {}
+          for key in ('total', 'hoy', 'ultimos7Dias', 'ultimos30Dias'):
+              assert key in visitors, (key, payload)
+              assert float(visitors[key]) >= 0, (key, visitors[key])
+          print(json.dumps({'actualizadoEn': payload.get('actualizadoEn'), 'visitantes': visitors}, ensure_ascii=False))
+          PY
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4182 >/tmp/kernel-visitor-counter-http.log 2>&1 &
+          echo $! >/tmp/kernel-visitor-counter-http.pid
+          sleep 2
+      - name: Run browser regression
+        env:
+          BASE_URL: http://127.0.0.1:4182
+          VISITOR_COUNTER_RESULT: ci-visitor-counter/result.json
+        run: python platform/visitor_counter_label_regression.py
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-visitor-counter-http.pid ]; then kill "$(cat /tmp/kernel-visitor-counter-http.pid)" || true; fi
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-visitor-counter-label-result
+          path: |
+            ci-visitor-counter/result.json
+            /tmp/kernel-visitor-counter-http.log
+            /tmp/kernel-analytics-live.json
+          if-no-files-found: warn
+          retention-days: 7
