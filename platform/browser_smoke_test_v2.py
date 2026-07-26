@@ -193,7 +193,10 @@ finally:
         browser_logs = driver.get_log("browser")
     except Exception:  # noqa: BLE001
         browser_logs = []
-    driver.quit()
+    try:
+        driver.quit()
+    except Exception as quit_error:  # noqa: BLE001
+        print(f"Chrome shutdown warning: {quit_error}", flush=True)
 
 result = {
     "base_url": BASE_URL,
