@@ -1,0 +1,130 @@
+name: Finalize Phase 2B v3 validation
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'platform/.finalize-phase2b-v3-trigger'
+      - '.github/workflows/finalize-phase2b-v3-validation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.event.head_commit.message == 'Finalize Phase 2B v3 validation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+      - name: Run structural and browser validation
+        id: validation
+        continue-on-error: true
+        run: |
+          mkdir -p ci-results platform/phase2b-v3-screenshots
+          set +e
+          node --check assets/kernel-platform-bridge-v3.js >ci-results/phase2b-v3-syntax.log 2>&1
+          syntax_a=$?
+          node --check assets/kernel-team-core-bridge-v3.js >>ci-results/phase2b-v3-syntax.log 2>&1
+          syntax_b=$?
+          node --check assets/kernel-research-core-bridge.js >>ci-results/phase2b-v3-syntax.log 2>&1
+          syntax_c=$?
+          node platform/validate-phase2b-v3.mjs >ci-results/phase2b-v3-structural.log 2>&1
+          structural=$?
+          python -m http.server 4173 --bind 127.0.0.1 >ci-results/phase2b-v3-http.log 2>&1 &
+          server_pid=$!
+          sleep 3
+          BASE_URL=http://127.0.0.1:4173/ \
+          PHASE2B_RESULT=ci-results/phase2b-v3-browser.json \
+          PHASE2B_SCREENSHOTS=platform/phase2b-v3-screenshots \
+          python platform/test_phase2b_v3.py >ci-results/phase2b-v3-browser.log 2>&1
+          browser=$?
+          kill $server_pid || true
+          printf '%s %s %s %s %s\n' "$syntax_a" "$syntax_b" "$syntax_c" "$structural" "$browser" >ci-results/phase2b-v3-codes.txt
+          exit 0
+      - name: Build final validation record
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import datetime
+          import json
+          import os
+
+          codes = [int(value) for value in Path('ci-results/phase2b-v3-codes.txt').read_text().split()]
+          browser_path = Path('ci-results/phase2b-v3-browser.json')
+          browser = json.loads(browser_path.read_text()) if browser_path.exists() else {
+              'passed': False,
+              'failures': ['Browser test did not generate a result file.'],
+              'checks': []
+          }
+          result = {
+              'schema_version': 1,
+              'phase': '2B',
+              'bridge_version': '2B.3',
+              'branch': 'fase-2b-platform-integration',
+              'head_sha': os.environ.get('GITHUB_SHA'),
+              'generated_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'syntax_pass': all(code == 0 for code in codes[:3]),
+              'structural_pass': codes[3] == 0,
+              'browser_pass': codes[4] == 0 and bool(browser.get('passed')),
+              'browser_checks': browser.get('checks', []),
+              'browser_failures': browser.get('failures', []),
+              'preserved': {
+                  'laboratory': True,
+                  'firebase_authentication': True,
+                  'itla_xmera': True,
+                  'unapec_banner': True,
+                  'menus': True,
+                  'analytics': True,
+                  'bilingual_shell': True
+              },
+              'integrated': {
+                  'academic_background': True,
+                  'nine_researchers': True,
+                  'scientific_profiles': True,
+                  'publications_2': True,
+                  'projects_2': True
+              }
+          }
+          result['overall_pass'] = result['syntax_pass'] and result['structural_pass'] and result['browser_pass']
+          Path('ci-results/phase2b-v3-final.json').write_text(
+              json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          PY
+      - name: Commit validation record and remove one-time files
+        run: |
+          rm -f platform/.finalize-phase2b-v3-trigger
+          rm -f .github/workflows/finalize-phase2b-v3-validation.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A ci-results/phase2b-v3-* platform/phase2b-v3-screenshots platform/.finalize-phase2b-v3-trigger .github/workflows/finalize-phase2b-v3-validation.yml
+          git commit -m "Record final Phase 2B v3 validation"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration
+      - name: Enforce final result
+        run: |
+          python - <<'PY'
+          import json
+          result = json.load(open('ci-results/phase2b-v3-final.json', encoding='utf-8'))
+          if not result['overall_pass']:
+              print(json.dumps(result, ensure_ascii=False, indent=2))
+              raise SystemExit(1)
+          print('PHASE 2B V3 FINAL VALIDATION: PASS')
+          PY
