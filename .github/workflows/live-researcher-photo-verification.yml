@@ -1,5 +1,6 @@
 name: Live Researcher Photo Verification
 
+# Temporary workflow used only to verify the deployed public page.
 on:
   push:
     branches:
