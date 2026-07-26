@@ -72,10 +72,41 @@ try:
         "return [...document.querySelectorAll('.kernel-team-core__photo img')].length===9 && "
         "[...document.querySelectorAll('.kernel-team-core__photo img')].every(img => img.complete && img.naturalWidth > 0);"
     ))
+    wait.until(lambda current: current.execute_script(
+        "return Boolean(window.KernelNameDegreeFix && document.querySelectorAll('.kernel-degree-inline').length >= 9)"
+    ))
     elapsed = time.monotonic() - start
     record("Equipo muestra nueve tarjetas", len(driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9)
     record("Las nueve fotografías cargan correctamente", True, f"tiempo={elapsed:.2f}s")
     record("Carga de fotografías sin demora prolongada", elapsed < 4.0, f"tiempo={elapsed:.2f}s")
+
+    jose_card_text = driver.execute_script(
+        "const button=document.querySelector('[data-kernel-team-open=\"jose-alberto-reyes\"]');"
+        "return button?.closest('article')?.querySelector('h2')?.textContent?.trim() || '';"
+    )
+    record("Jose aparece sin acento", "Jose Alberto Reyes Reyes" in jose_card_text and "José" not in jose_card_text, jose_card_text)
+    record("Jose aparece como Ph.D.", jose_card_text.endswith("Ph.D."), jose_card_text)
+
+    degree_metrics = driver.execute_script(
+        "return [...document.querySelectorAll('.kernel-team-core__card h2 .kernel-degree-inline')].map(degree => ({"
+        " degree: degree.textContent.trim(),"
+        " degreeSize: parseFloat(getComputedStyle(degree).fontSize),"
+        " headingSize: parseFloat(getComputedStyle(degree.parentElement).fontSize),"
+        " degreeWeight: getComputedStyle(degree).fontWeight,"
+        " headingWeight: getComputedStyle(degree.parentElement).fontWeight"
+        "}));"
+    )
+    record("Las nueve tarjetas integran el grado en el nombre", len(degree_metrics) == 9, str(degree_metrics))
+    record(
+        "Ph.D. y M.Sc. usan el mismo tamaño que el nombre",
+        bool(degree_metrics) and all(abs(item["degreeSize"] - item["headingSize"]) < 0.2 for item in degree_metrics),
+        str(degree_metrics),
+    )
+    record(
+        "Ph.D. y M.Sc. usan el mismo peso que el nombre",
+        bool(degree_metrics) and all(item["degreeWeight"] == item["headingWeight"] for item in degree_metrics),
+        str(degree_metrics),
+    )
 
     role_size = style_number(".kernel-team-core__role", "fontSize")
     role_weight = style_number(".kernel-team-core__role", "fontWeight")
@@ -101,6 +132,11 @@ try:
         )
         panel_selector = f'[data-kernel-profile-panel="{profile_id}"]'
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, panel_selector)))
+        wait.until(lambda current: current.execute_script(
+            "const small=document.querySelector(arguments[0] + ' h2 small');"
+            "return !small || Math.abs(parseFloat(getComputedStyle(small).fontSize)-parseFloat(getComputedStyle(small.parentElement).fontSize)) < 0.2;",
+            panel_selector,
+        ))
         detail_name = driver.execute_script(
             "return document.querySelector(arguments[0])?.querySelector('h2')?.textContent?.trim() || '';",
             panel_selector,
@@ -116,11 +152,33 @@ try:
             driver.execute_script("return location.hash") == "#/equipment",
         )
 
+        if profile_id == "jose-alberto-reyes":
+            record("Perfil de Jose conserva nombre sin acento", "Jose Alberto Reyes Reyes" in detail_name and "José" not in detail_name, detail_name)
+            record("Perfil de Jose conserva Ph.D.", detail_name.endswith("Ph.D."), detail_name)
+            jose_formation = driver.execute_script(
+                "return [...document.querySelectorAll(arguments[0] + ' li')].map(li => li.textContent.trim()).join(' | ');",
+                panel_selector,
+            )
+            record("Perfil de Jose no indica doctorado en curso", "en curso" not in jose_formation.lower(), jose_formation)
+
         if index == 0:
             detail_size = style_number("[data-kernel-profile-panel] .kernel-team-core__detail-role", "fontSize")
             list_size = style_number("[data-kernel-profile-panel] .kernel-team-core__section li", "fontSize")
             record("Descripción del perfil con tamaño legible", detail_size >= 15.0, f"font-size={detail_size:.1f}px")
             record("Contenido del perfil con tamaño legible", list_size >= 14.0, f"font-size={list_size:.1f}px")
+
+        profile_degree_sizes = driver.execute_script(
+            "const small=document.querySelector(arguments[0] + ' h2 small');"
+            "if(!small) return null;"
+            "return {degree:parseFloat(getComputedStyle(small).fontSize),heading:parseFloat(getComputedStyle(small.parentElement).fontSize)};",
+            panel_selector,
+        )
+        if profile_degree_sizes:
+            record(
+                f"Grado al mismo tamaño en perfil: {profile_id}",
+                abs(profile_degree_sizes["degree"] - profile_degree_sizes["heading"]) < 0.2,
+                str(profile_degree_sizes),
+            )
 
         driver.execute_script(
             "const back=document.querySelector('[data-kernel-team-profile-back]'); if(back) back.click();"
