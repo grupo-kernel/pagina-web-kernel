@@ -113,9 +113,11 @@ for (const token of [
 const academicBridge = await readText('assets/kernel-platform-bridge.js');
 for (const token of [
   'core/data/researchers.v2.json',
-  'FORMATION_ROUTE = "formacion"',
+  'FORMATION_ROUTE = "quienesSomos"',
+  'FORMATION_SECTION = "formacion"',
+  'isFormationRoute',
   'data-kernel-platform-page="academic-background"',
-  '#/${FORMATION_ROUTE}'
+  '#/${FORMATION_ROUTE}/${FORMATION_SECTION}'
 ]) {
   if (!academicBridge.includes(token)) fail(`El puente académico no contiene la adaptación requerida: ${token}`);
 }
