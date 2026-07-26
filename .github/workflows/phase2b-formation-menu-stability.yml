@@ -1,0 +1,54 @@
+name: Phase 2B Formación menu stability correction
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - '.github/workflows/phase2b-formation-menu-stability.yml'
+      - 'platform/.formation-menu-stability-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Apply Formación menu stability correction'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Prevent duplicate menu entries and mutation loops
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('assets/kernel-platform-bridge.js')
+          text = path.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  '      if (existingLabel) existingLabel.textContent = labels().menu;\n',
+                  '      if (existingLabel && existingLabel.textContent !== labels().menu) existingLabel.textContent = labels().menu;\n'
+              ),
+              (
+                  '    button.dataset.kernelRoute = FORMATION_ROUTE;\n',
+                  '    button.dataset.kernelRoute = FORMATION_SECTION;\n'
+              )
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Expected Formación stability block not found: {old}')
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          node --check assets/kernel-platform-bridge.js
+          rm -f platform/.formation-menu-stability-trigger
+          rm -f .github/workflows/phase2b-formation-menu-stability.yml
+      - name: Commit menu stability correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/kernel-platform-bridge.js platform/.formation-menu-stability-trigger .github/workflows/phase2b-formation-menu-stability.yml
+          git commit -m "Apply Formación menu stability correction"
+          git push origin HEAD:fase-2b-platform-integration
