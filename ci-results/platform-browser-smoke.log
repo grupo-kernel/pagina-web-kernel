@@ -1,1 +1,1 @@
-Browser smoke test did not complete.
+formacion: expected route content was not rendered at http://127.0.0.1:4174/#/home
