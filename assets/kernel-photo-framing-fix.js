@@ -4,6 +4,12 @@
   if (window.KernelPhotoFramingFix) return;
 
   const STYLE_ID = "kernel-photo-framing-styles";
+  const PHOTO_SELECTOR = [
+    ".kernel-team-core__photo img",
+    ".kernel-team-core__detail-photo img",
+    ".kernel-academic-avatar img",
+    ".kernel-academic-profile-photo img"
+  ].join(",");
 
   function installStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -87,19 +93,20 @@
     document.head.appendChild(style);
   }
 
+  function prepareImage(image) {
+    if (!(image instanceof HTMLImageElement)) return;
+    image.loading = "eager";
+    image.decoding = "async";
+    image.style.objectFit = "contain";
+    image.style.objectPosition = "center center";
+    image.dataset.kernelFullPortrait = "true";
+  }
+
   function normalizeImages(root = document) {
-    root.querySelectorAll?.(
-      ".kernel-team-core__photo img," +
-      ".kernel-team-core__detail-photo img," +
-      ".kernel-academic-avatar img," +
-      ".kernel-academic-profile-photo img"
-    ).forEach(image => {
-      image.loading = "eager";
-      image.decoding = "async";
-      image.style.objectFit = "contain";
-      image.style.objectPosition = "center center";
-      image.dataset.kernelFullPortrait = "true";
-    });
+    if (root instanceof Element && root.matches(PHOTO_SELECTOR)) {
+      prepareImage(root);
+    }
+    root.querySelectorAll?.(PHOTO_SELECTOR).forEach(prepareImage);
   }
 
   let scheduled = false;
@@ -113,7 +120,14 @@
     });
   }
 
-  new MutationObserver(schedule).observe(document.documentElement, {
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) normalizeImages(node);
+      }
+    }
+    schedule();
+  }).observe(document.documentElement, {
     childList: true,
     subtree: true
   });
@@ -124,7 +138,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPhotoFramingFix = {
-    version: "1.1.0",
+    version: "1.1.1",
     apply: schedule,
     diagnostics: () => ({
       fullPortraits: document.querySelectorAll('[data-kernel-full-portrait="true"]').length,
