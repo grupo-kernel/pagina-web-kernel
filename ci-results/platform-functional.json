@@ -4,7 +4,11 @@
   "checks": [
     "Navegación principal",
     "Menú Nosotros",
+    "Menú Investigación",
     "Selector de idioma",
+    "Nueva portada integrada",
+    "Accesos destacados a herramientas",
+    "Acceso destacado al Laboratorio",
     "Xmera genera el código",
     "Xmera habilita copiar",
     "Xmera limpia los datos",
@@ -18,15 +22,22 @@
     "Laboratorio Inteligente accesible",
     "Equipo de nueve investigadores",
     "Fotografías del equipo",
-    "Fotografía actualizada de Miguel referenciada"
+    "Fotografía actualizada de Miguel referenciada",
+    "Formación académica de nueve investigadores",
+    "Alicia disponible en Formación",
+    "Perfil académico de Alicia abre",
+    "Publicaciones 2.0 muestra 162 registros",
+    "Publicaciones 2.0 tiene filtros",
+    "Publicaciones 2.0 muestra DOI",
+    "Proyectos 2.0 muestra diez destacados",
+    "Proyectos 2.0 muestra 48 participaciones adicionales",
+    "Proyectos 2.0 tiene filtros"
   ],
   "failures": [
-    "Menú Investigación",
-    "Control de acceso del Laboratorio",
-    "Tiempo de espera agotado: Message: \nStacktrace:\n#0 0x56463c2b244a <unknown>\n#1 0x56463bc8a8c9 <unknown>\n#2 0x56463bcdff32 <unknown>\n#3 0x56463bce0181 <unknown>\n#4 0x56463bd2b374 <unknown>\n#5 0x56463bd2855d <unknown>\n#6 0x56463bcd33ff <unknown>\n#7 0x56463bcd4261 <unknown>\n#8 0x56463c277cc7 <unknown>\n#9 0x56463c2764a8 <unknown>\n#10 0x56463c261196 <unknown>\n#11 0x56463c27706a <unknown>\n#12 0x56463c249020 <unknown>\n#13 0x56463c29db98 <unknown>\n#14 0x56463c29dd35 <unknown>\n#15 0x56463c2b0ffe <unknown>\n#16 0x7f2d2269caa4 <unknown>\n#17 0x7f2d22729c6c <unknown>\n"
+    "Control de acceso del Laboratorio"
   ],
   "browser_logs": [],
   "workflow_status": "failure",
-  "run_id": "30182393946",
-  "validated_sha": "f632ff002e8a84441519698b5b6b02573f233c5a"
+  "run_id": "30182464814",
+  "validated_sha": "4fad40cac52f17ee767a8d21dffb4ef1af52f4de"
 }
