@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import sys
-import time
 from pathlib import Path
 
 from selenium import webdriver
@@ -64,6 +63,11 @@ def open_route(route: str) -> None:
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
 
 
+def open_formation() -> None:
+    driver.get(f"{BASE_URL}/?kernelSection=formacion#/quienesSomos")
+    wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
+
+
 def wait_id(element_id: str):
     return wait.until(EC.presence_of_element_located((By.ID, element_id)))
 
@@ -78,8 +82,16 @@ try:
     wait.until(EC.presence_of_element_located((By.ID, "navBar")))
     record("Navegación principal", driver.find_element(By.ID, "navBar").is_displayed())
     record("Menú Nosotros", bool(driver.find_elements(By.ID, "submenu-nosotros")))
-    record("Menú Investigación", bool(driver.find_elements(By.ID, "submenu-investigacion")))
+    record(
+        "Menú Investigación",
+        bool(driver.find_elements(By.ID, "submenu-investigacion"))
+        or bool(driver.find_elements(By.ID, "submenu-nuestro-trabajo")),
+    )
     record("Selector de idioma", bool(driver.find_elements(By.ID, "kernel-language-switch")))
+    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="home-2b"]')))
+    record("Nueva portada integrada", True)
+    record("Accesos destacados a herramientas", len(driver.find_elements(By.CSS_SELECTOR, '[data-kernel-home-route="herramientas"]')) >= 2)
+    record("Acceso destacado al Laboratorio", bool(driver.find_elements(By.CSS_SELECTOR, '[data-kernel-home-route="laboratorioKernel"]')))
 
     # ITLA · Xmera: prueba real con datos ficticios, sin enviar información externa.
     open_route("herramientas")
@@ -142,7 +154,7 @@ try:
     record("Fotografía actualizada de Miguel referenciada", any("miguel.jpg" in (photo.get_attribute("src") or "") for photo in photos))
 
     # Formación académica integrada dentro de Nosotros.
-    open_route("quienesSomos/formacion")
+    open_formation()
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="academic-background"]')))
     academic_buttons = driver.find_elements(By.CSS_SELECTOR, "[data-kernel-academic-select]")
     record("Formación académica de nueve investigadores", len(academic_buttons) == 9, f"perfiles={len(academic_buttons)}")
