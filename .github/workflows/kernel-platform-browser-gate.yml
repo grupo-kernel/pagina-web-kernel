@@ -1,0 +1,229 @@
+name: Kernel Platform Browser Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'core/data/**'
+      - '.github/workflows/kernel-platform-browser-gate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  browser:
+    name: Test Laboratory, Xmera, Banner and Kernel Core routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run browser gate through Chrome DevTools Protocol
+        id: smoke
+        continue-on-error: true
+        run: |
+          mkdir -p ci-browser ci-results
+          set +e
+          python3 -m http.server 4174 >ci-browser/http-server.log 2>&1 &
+          server_pid=$!
+          browser="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          printf '%s\n' "$browser" > ci-browser/browser-path.txt
+          if [ -z "$browser" ]; then
+            printf 'No Chrome or Chromium executable was found.\n' > ci-browser/bootstrap-error.txt
+            exit 1
+          fi
+          rm -rf /tmp/kernel-cdp-profile
+          "$browser" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --no-first-run \
+            --no-default-browser-check \
+            --remote-debugging-address=127.0.0.1 \
+            --remote-debugging-port=9225 \
+            --remote-allow-origins='*' \
+            --user-data-dir=/tmp/kernel-cdp-profile \
+            about:blank >ci-browser/chrome.stdout.log 2>ci-browser/chrome.stderr.log &
+          browser_pid=$!
+          cleanup() {
+            kill "$browser_pid" "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          ready=0
+          for attempt in $(seq 1 200); do
+            if curl --fail --silent http://127.0.0.1:9225/json/version > ci-browser/cdp-version.json; then
+              ready=1
+              break
+            fi
+            sleep .1
+          done
+          if [ "$ready" -ne 1 ]; then
+            printf 'Chrome DevTools endpoint did not become available.\n' > ci-browser/bootstrap-error.txt
+            exit 1
+          fi
+
+          cat > /tmp/kernel-cdp-smoke.mjs <<'NODE'
+          import fs from 'node:fs/promises';
+
+          const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+          const endpoint = 'http://127.0.0.1:9225';
+          const baseUrl = 'http://127.0.0.1:4174';
+          const checks = [
+            { route: 'herramientas', name: 'herramientas', expression: 'html.includes("Xmera") && html.includes("Banner")' },
+            { route: 'laboratorioKernel', name: 'laboratorio', expression: '/Laboratorio|Iniciar sesión|Área protegida|Sign in|Authentication/i.test(html)' },
+            { route: 'equipment', name: 'equipo', expression: 'html.includes("data-kernel-platform-page=\\"team-nine\\"") && html.includes("Miguel A. Leonardo")' },
+            { url: `${baseUrl}/?kernelSection=formacion#/quienesSomos`, name: 'formacion', expression: 'html.includes("data-kernel-platform-page=\\"academic-background\\"") && /Formación académica y experiencia|Academic background and experience/i.test(html)' },
+            { route: 'publicaciones', name: 'publicaciones', expression: 'html.includes("data-kernel-platform-page=\\"publications-2\\"") && html.includes("162")' },
+            { route: 'proyectos', name: 'proyectos', expression: 'html.includes("data-kernel-platform-page=\\"projects-2\\"") && /10/.test(html)' }
+          ];
+
+          async function main() {
+            const targetResponse = await fetch(`${endpoint}/json/new?about:blank`, { method: 'PUT' });
+            if (!targetResponse.ok) throw new Error(`Could not create CDP target: HTTP ${targetResponse.status} ${await targetResponse.text()}`);
+            const target = await targetResponse.json();
+            const socket = new WebSocket(target.webSocketDebuggerUrl);
+            await new Promise((resolve, reject) => {
+              socket.addEventListener('open', resolve, { once: true });
+              socket.addEventListener('error', reject, { once: true });
+            });
+
+            let commandId = 0;
+            const pending = new Map();
+            socket.addEventListener('message', event => {
+              const message = JSON.parse(String(event.data));
+              if (!message.id || !pending.has(message.id)) return;
+              const request = pending.get(message.id);
+              pending.delete(message.id);
+              if (message.error) request.reject(new Error(JSON.stringify(message.error)));
+              else request.resolve(message.result);
+            });
+
+            const command = (method, params = {}) => new Promise((resolve, reject) => {
+              const id = ++commandId;
+              pending.set(id, { resolve, reject });
+              socket.send(JSON.stringify({ id, method, params }));
+              setTimeout(() => {
+                if (!pending.has(id)) return;
+                pending.delete(id);
+                reject(new Error(`CDP command timed out: ${method}`));
+              }, 20000);
+            });
+
+            await command('Page.enable');
+            await command('Runtime.enable');
+            const failures = [];
+            const summary = [];
+
+            for (const check of checks) {
+              const url = check.url || `${baseUrl}/#/${check.route}`;
+              await command('Page.navigate', { url });
+              let passed = false;
+              for (let attempt = 0; attempt < 70; attempt += 1) {
+                await sleep(500);
+                const evaluation = await command('Runtime.evaluate', {
+                  expression: `(() => { const html = document.documentElement.outerHTML; return Boolean(${check.expression}); })()`,
+                  returnByValue: true
+                });
+                if (evaluation.result?.value === true) {
+                  passed = true;
+                  break;
+                }
+              }
+              const dom = await command('Runtime.evaluate', {
+                expression: 'document.documentElement.outerHTML',
+                returnByValue: true
+              });
+              const location = await command('Runtime.evaluate', {
+                expression: 'location.href',
+                returnByValue: true
+              });
+              await fs.writeFile(`ci-browser/${check.name}.html`, dom.result?.value || '', 'utf8');
+              await fs.writeFile(`ci-browser/${check.name}.url.txt`, String(location.result?.value || ''), 'utf8');
+              summary.push({ name: check.name, route: check.route || check.url, url: location.result?.value || url, passed });
+              if (!passed) failures.push(`${check.name}: expected route content was not rendered at ${location.result?.value || url}`);
+            }
+
+            await fs.writeFile('ci-browser/summary.json', `${JSON.stringify({ passed: failures.length === 0, routes: summary, failures }, null, 2)}\n`, 'utf8');
+            if (failures.length) {
+              await fs.writeFile('ci-browser/failures.txt', `${failures.join('\n')}\n`, 'utf8');
+              throw new Error(failures.join('; '));
+            }
+
+            const message = 'Browser smoke test PASS: Laboratorio, Xmera, Banner, Equipo, Formación, Publicaciones 2.0 y Proyectos 2.0.';
+            await fs.writeFile('ci-browser/result.txt', `${message}\n`, 'utf8');
+            console.log(message);
+            await command('Page.close').catch(() => {});
+            socket.close();
+          }
+
+          main().catch(async error => {
+            const message = error?.stack || String(error);
+            await fs.writeFile('ci-browser/node-error.txt', `${message}\n`, 'utf8').catch(() => {});
+            console.error(message);
+            process.exit(1);
+          });
+          NODE
+
+          node /tmp/kernel-cdp-smoke.mjs >ci-browser/node.stdout.log 2>ci-browser/node.stderr.log
+          smoke_status=$?
+          cat ci-browser/node.stdout.log
+          cat ci-browser/node.stderr.log >&2
+          exit "$smoke_status"
+      - name: Upload browser diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-browser-gate-diagnostic
+          path: ci-browser/**
+          if-no-files-found: error
+          retention-days: 7
+      - name: Persist browser gate result
+        if: always() && github.event_name == 'push'
+        env:
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+        run: |
+          mkdir -p ci-results
+          if [ -f ci-browser/result.txt ]; then
+            status=success
+            cp ci-browser/result.txt ci-results/platform-browser-smoke.log
+          else
+            status=failure
+            if [ -f ci-browser/failures.txt ]; then cp ci-browser/failures.txt ci-results/platform-browser-smoke.log; elif [ -f ci-browser/node-error.txt ]; then cp ci-browser/node-error.txt ci-results/platform-browser-smoke.log; elif [ -f ci-browser/bootstrap-error.txt ]; then cp ci-browser/bootstrap-error.txt ci-results/platform-browser-smoke.log; else printf 'Browser gate did not produce a diagnostic.\n' > ci-results/platform-browser-smoke.log; fi
+          fi
+          cat > ci-results/platform-browser-gate.json <<EOF
+          {
+            "phase": "2B",
+            "status": "${status}",
+            "step_outcome": "${SMOKE_OUTCOME}",
+            "run_id": "${RUN_ID}",
+            "validated_sha": "${HEAD_SHA}"
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci-results/platform-browser-gate.json ci-results/platform-browser-smoke.log
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Record Phase 2B browser gate result"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration
+      - name: Enforce browser gate result
+        if: steps.smoke.outcome != 'success'
+        run: exit 1

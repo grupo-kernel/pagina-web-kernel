@@ -1,0 +1,105 @@
+name: Kernel Platform Functional Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/index-*.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'core/data/**'
+      - 'platform/browser_smoke_test.py'
+      - '.github/workflows/kernel-platform-functional-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/index-*.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'core/data/**'
+      - 'platform/browser_smoke_test.py'
+      - '.github/workflows/kernel-platform-functional-gate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  functional:
+    name: Test Xmera, Banner, Laboratory and Kernel Core routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Check test syntax
+        run: python -m py_compile platform/browser_smoke_test.py
+      - name: Run local platform server
+        run: |
+          python -m http.server 4174 >/tmp/kernel-functional-http.log 2>&1 &
+          echo $! > /tmp/kernel-functional-http.pid
+          sleep 2
+      - name: Execute functional browser tests
+        env:
+          BASE_URL: http://127.0.0.1:4174
+          BROWSER_RESULT: ci-browser/browser-smoke-result.json
+        run: python platform/browser_smoke_test.py
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-functional-http.pid ]; then kill "$(cat /tmp/kernel-functional-http.pid)" || true; fi
+      - name: Upload functional result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-functional-result
+          path: |
+            ci-browser/browser-smoke-result.json
+            /tmp/kernel-functional-http.log
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Persist functional result
+        if: always() && github.event_name == 'push'
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p ci-results
+          if [ -f ci-browser/browser-smoke-result.json ]; then
+            cp ci-browser/browser-smoke-result.json ci-results/platform-functional.json
+          else
+            printf '{"passed":false,"failures":["No se generó el resultado funcional."],"run_id":"%s","validated_sha":"%s"}\n' "$RUN_ID" "$VALIDATED_SHA" > ci-results/platform-functional.json
+          fi
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('ci-results/platform-functional.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['workflow_status'] = os.environ['JOB_STATUS']
+          data['run_id'] = os.environ['RUN_ID']
+          data['validated_sha'] = os.environ['VALIDATED_SHA']
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci-results/platform-functional.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Record Phase 2B functional gate result"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration

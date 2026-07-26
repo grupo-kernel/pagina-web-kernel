@@ -1,0 +1,202 @@
+name: Kernel Responsive Visual Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/index-DDHYSPOT.css'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - '.github/workflows/kernel-responsive-visual-gate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  responsive:
+    name: Verify mobile and desktop rendering
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Capture and validate responsive views
+        id: responsive
+        continue-on-error: true
+        run: |
+          mkdir -p ci-responsive ci-results
+          set +e
+          python3 -m http.server 4178 >ci-responsive/http-server.log 2>&1 &
+          server_pid=$!
+          browser="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$browser" ]; then printf 'No browser executable found.\n' > ci-responsive/error.txt; exit 1; fi
+          rm -rf /tmp/kernel-responsive-cdp-profile
+          "$browser" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run --no-default-browser-check --remote-debugging-address=127.0.0.1 --remote-debugging-port=9228 --remote-allow-origins='*' --user-data-dir=/tmp/kernel-responsive-cdp-profile about:blank >ci-responsive/chrome.stdout.log 2>ci-responsive/chrome.stderr.log &
+          browser_pid=$!
+          cleanup() { kill "$browser_pid" "$server_pid" 2>/dev/null || true; }
+          trap cleanup EXIT
+          ready=0
+          for attempt in $(seq 1 200); do if curl --fail --silent http://127.0.0.1:9228/json/version > ci-responsive/cdp-version.json; then ready=1; break; fi; sleep .1; done
+          if [ "$ready" -ne 1 ]; then printf 'CDP endpoint unavailable.\n' > ci-responsive/error.txt; exit 1; fi
+
+          cat > /tmp/kernel-responsive-visual.mjs <<'NODE'
+          import fs from 'node:fs/promises';
+          const endpoint = 'http://127.0.0.1:9228';
+          const baseUrl = 'http://127.0.0.1:4178';
+          const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+          async function run() {
+            const targetResponse = await fetch(`${endpoint}/json/new?about:blank`, { method: 'PUT' });
+            if (!targetResponse.ok) throw new Error(`Could not create target: HTTP ${targetResponse.status}`);
+            const target = await targetResponse.json();
+            const socket = new WebSocket(target.webSocketDebuggerUrl);
+            await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, { once: true }); socket.addEventListener('error', reject, { once: true }); });
+            let commandId = 0;
+            const pending = new Map();
+            socket.addEventListener('message', event => {
+              const message = JSON.parse(String(event.data));
+              if (!message.id || !pending.has(message.id)) return;
+              const request = pending.get(message.id);
+              pending.delete(message.id);
+              message.error ? request.reject(new Error(JSON.stringify(message.error))) : request.resolve(message.result);
+            });
+            const command = (method, params = {}) => new Promise((resolve, reject) => {
+              const id = ++commandId;
+              pending.set(id, { resolve, reject });
+              socket.send(JSON.stringify({ id, method, params }));
+              setTimeout(() => { if (pending.has(id)) { pending.delete(id); reject(new Error(`CDP timeout: ${method}`)); } }, 20000);
+            });
+            const evaluate = async expression => {
+              const result = await command('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+              if (result.exceptionDetails) throw new Error(result.exceptionDetails.text || 'Runtime evaluation failed.');
+              return result.result?.value;
+            };
+            const waitFor = async (expression, label, attempts = 70) => {
+              for (let attempt = 0; attempt < attempts; attempt += 1) {
+                await sleep(400);
+                if (await evaluate(`Boolean(${expression})`)) return;
+              }
+              throw new Error(`Timed out waiting for ${label}`);
+            };
+            const screenshot = async name => {
+              const image = await command('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false });
+              await fs.writeFile(`ci-responsive/${name}.png`, Buffer.from(image.data, 'base64'));
+            };
+            const navigate = async (url, expression, label) => {
+              await command('Page.navigate', { url });
+              await waitFor(expression, label);
+              const overflow = await evaluate('document.documentElement.scrollWidth - window.innerWidth');
+              if (Number(overflow) > 8) throw new Error(`${label} has horizontal overflow of ${overflow}px`);
+            };
+
+            await command('Page.enable');
+            await command('Runtime.enable');
+            const results = [];
+
+            await command('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true, screenWidth: 390, screenHeight: 844 });
+            await navigate(`${baseUrl}/#/home`, `document.querySelector('[data-action="open-menu"]')`, 'mobile home');
+            await evaluate(`document.querySelector('[data-action="open-menu"]').click()`);
+            await waitFor(`document.querySelector('#navBar') && getComputedStyle(document.querySelector('#navBar')).display !== 'none'`, 'mobile navigation drawer');
+            await evaluate(`(() => { const button = [...document.querySelectorAll('button[data-action="toggle-submenu"]')].find(item => /Investigación|Research/i.test(item.textContent)); if (button) button.click(); return Boolean(button); })()`);
+            await waitFor(`document.querySelector('#submenu-nuestro-trabajo') && /Líneas|Research lines/.test(document.querySelector('#submenu-nuestro-trabajo').textContent)`, 'mobile Research submenu');
+            await evaluate(`(() => { const button = [...document.querySelectorAll('button[data-action="toggle-submenu"]')].find(item => /Nosotros|About us/i.test(item.textContent)); if (button) button.click(); return Boolean(button); })()`);
+            await waitFor(`document.querySelector('[data-kernel-route="formacion"]') && /Formación|Academic background/.test(document.querySelector('[data-kernel-route="formacion"]').textContent)`, 'mobile About us submenu and Formación');
+            await screenshot('mobile-navigation');
+            results.push({ view: 'mobile-navigation', status: 'pass' });
+
+            const mobileViews = [
+              { url: `${baseUrl}/#/herramientas`, marker: 'document.querySelector("#xmera-input") && document.querySelector("#tab-banner")', name: 'mobile-tools' },
+              { url: `${baseUrl}/#/laboratorioKernel`, marker: '/Laboratorio|Iniciar sesión|Área protegida|Sign in|Authentication/i.test(document.documentElement.outerHTML)', name: 'mobile-laboratory' },
+              { url: `${baseUrl}/#/equipment`, marker: 'document.querySelector("[data-kernel-platform-page=\\"team-nine\\"]")', name: 'mobile-team' },
+              { url: `${baseUrl}/?kernelSection=formacion#/quienesSomos`, marker: 'document.querySelector("[data-kernel-platform-page=\\"academic-background\\"]")', name: 'mobile-formation' },
+              { url: `${baseUrl}/#/publicaciones`, marker: 'document.querySelector("[data-kernel-platform-page=\\"publications-2\\"]")', name: 'mobile-publications' },
+              { url: `${baseUrl}/#/proyectos`, marker: 'document.querySelector("[data-kernel-platform-page=\\"projects-2\\"]")', name: 'mobile-projects' }
+            ];
+            for (const view of mobileViews) {
+              await navigate(view.url, view.marker, view.name);
+              await screenshot(view.name);
+              results.push({ view: view.name, status: 'pass' });
+            }
+
+            await command('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false, screenWidth: 1440, screenHeight: 1000 });
+            const desktopViews = [
+              { url: `${baseUrl}/#/equipment`, marker: 'document.querySelector("[data-kernel-platform-page=\\"team-nine\\"]")', name: 'desktop-team' },
+              { url: `${baseUrl}/?kernelSection=formacion#/quienesSomos`, marker: 'document.querySelector("[data-kernel-platform-page=\\"academic-background\\"]")', name: 'desktop-formation' },
+              { url: `${baseUrl}/#/herramientas`, marker: 'document.querySelector("#xmera-input") && document.querySelector("#tab-banner")', name: 'desktop-tools' },
+              { url: `${baseUrl}/#/laboratorioKernel`, marker: '/Laboratorio|Iniciar sesión|Área protegida|Sign in|Authentication/i.test(document.documentElement.outerHTML)', name: 'desktop-laboratory' }
+            ];
+            for (const view of desktopViews) {
+              await navigate(view.url, view.marker, view.name);
+              await screenshot(view.name);
+              results.push({ view: view.name, status: 'pass' });
+            }
+
+            await fs.writeFile('ci-responsive/summary.json', `${JSON.stringify({ passed: true, results }, null, 2)}\n`, 'utf8');
+            const message = 'Responsive visual gate PASS: mobile navigation, Laboratory, Xmera, Banner, Team, Formación, Publications 2.0 and Projects 2.0 rendered without horizontal overflow; desktop key views also rendered.';
+            await fs.writeFile('ci-responsive/result.txt', `${message}\n`, 'utf8');
+            console.log(message);
+            await command('Page.close').catch(() => {});
+            socket.close();
+          }
+
+          run().catch(async error => {
+            const message = error?.stack || String(error);
+            await fs.writeFile('ci-responsive/error.txt', `${message}\n`, 'utf8').catch(() => {});
+            console.error(message);
+            process.exit(1);
+          });
+          NODE
+
+          node /tmp/kernel-responsive-visual.mjs >ci-responsive/node.stdout.log 2>ci-responsive/node.stderr.log
+          status=$?
+          cat ci-responsive/node.stdout.log
+          cat ci-responsive/node.stderr.log >&2
+          exit "$status"
+      - name: Upload responsive visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-responsive-visual-evidence
+          path: ci-responsive/**
+          if-no-files-found: error
+          retention-days: 7
+      - name: Persist responsive result
+        if: always() && github.event_name == 'push'
+        env:
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+          OUTCOME: ${{ steps.responsive.outcome }}
+        run: |
+          mkdir -p ci-results
+          if [ -f ci-responsive/result.txt ]; then status=success; cp ci-responsive/result.txt ci-results/platform-responsive-visual.log; else status=failure; if [ -f ci-responsive/error.txt ]; then cp ci-responsive/error.txt ci-results/platform-responsive-visual.log; else printf 'Responsive gate did not produce a diagnostic.\n' > ci-results/platform-responsive-visual.log; fi; fi
+          cat > ci-results/platform-responsive-visual.json <<EOF
+          {
+            "phase": "2B",
+            "status": "${status}",
+            "step_outcome": "${OUTCOME}",
+            "run_id": "${RUN_ID}",
+            "validated_sha": "${HEAD_SHA}",
+            "mobile_width": 390,
+            "desktop_width": 1440
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci-results/platform-responsive-visual.json ci-results/platform-responsive-visual.log
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Record Phase 2B responsive visual result"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration
+      - name: Enforce responsive result
+        if: steps.responsive.outcome != 'success'
+        run: exit 1
