@@ -70,7 +70,12 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4182
           VISITOR_COUNTER_RESULT: ci-visitor-counter/result.json
-        run: python platform/visitor_counter_label_regression.py
+        run: |
+          set +e
+          python platform/visitor_counter_label_regression.py > /tmp/kernel-visitor-counter-test.log 2>&1
+          status=$?
+          cat /tmp/kernel-visitor-counter-test.log
+          exit $status
       - name: Stop controlled preview
         if: always()
         run: |
@@ -82,6 +87,7 @@ jobs:
           name: kernel-visitor-counter-label-result
           path: |
             ci-visitor-counter/result.json
+            /tmp/kernel-visitor-counter-test.log
             /tmp/kernel-visitor-counter-http.log
             /tmp/kernel-analytics-live.json
           if-no-files-found: warn
