@@ -1,0 +1,48 @@
+name: Kernel UI and English Audit PR
+
+on:
+  pull_request:
+    branches:
+      - gh-pages
+    paths:
+      - .github/workflows/ui-i18n-audit.yml
+      - .github/workflows/ui-i18n-audit-pr.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout audit branch
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Execute shared audit script
+        run: |
+          python - <<'PYRUN'
+          from pathlib import Path
+          import textwrap
+
+          source = Path('.github/workflows/ui-i18n-audit.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = source.index(marker) + len(marker)
+          end = source.index("\n          PY\n", start)
+          script = textwrap.dedent(source[start:end])
+          namespace = {"__name__": "__main__"}
+          exec(compile(script, 'ui_i18n_audit.py', 'exec'), namespace)
+          PYRUN
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-ui-i18n-audit
+          path: ui-i18n-audit/
+          if-no-files-found: error
+          retention-days: 7
