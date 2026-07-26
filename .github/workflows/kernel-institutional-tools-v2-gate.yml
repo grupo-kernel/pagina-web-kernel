@@ -1,0 +1,69 @@
+name: Kernel Institutional Tools and Laboratory v2 Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-platform-bridge-v3.js'
+      - 'assets/kernel-team-core-bridge-v3.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'assets/index-*.js'
+      - 'assets/LaboratorioKernel-*.js'
+      - 'assets/authGuard-*.js'
+      - 'assets/authService-*.js'
+      - 'assets/firebase-*.js'
+      - 'platform/test_institutional_tools_v2.py'
+      - '.github/workflows/kernel-institutional-tools-v2-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-platform-bridge-v3.js'
+      - 'assets/kernel-team-core-bridge-v3.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'platform/test_institutional_tools_v2.py'
+      - '.github/workflows/kernel-institutional-tools-v2-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Verify Xmera, Banner, Laboratory, mobile and English
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4173 --bind 127.0.0.1 >/tmp/kernel-tools-http.log 2>&1 &
+          echo $! >/tmp/kernel-tools-http.pid
+          sleep 3
+      - name: Run institutional tools and laboratory test
+        env:
+          BASE_URL: http://127.0.0.1:4173/
+          TOOLS_RESULT: ci-results/institutional-tools-v2.json
+          TOOLS_SCREENSHOTS: ci-results/institutional-tools-v2-screenshots
+        run: python platform/test_institutional_tools_v2.py
+      - name: Upload result and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-institutional-tools-v2-validation
+          path: |
+            ci-results/institutional-tools-v2.json
+            ci-results/institutional-tools-v2-screenshots/**
+            /tmp/kernel-tools-http.log
+          if-no-files-found: warn
+          retention-days: 14
