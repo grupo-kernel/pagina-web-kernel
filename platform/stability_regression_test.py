@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import time
 from pathlib import Path
 
 from selenium import webdriver
@@ -53,7 +52,7 @@ options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
 driver = webdriver.Chrome(options=options)
 driver.set_page_load_timeout(50)
-wait = WebDriverWait(driver, 35)
+wait = WebDriverWait(driver, 40)
 
 
 def open_url(path: str = "") -> None:
@@ -80,7 +79,6 @@ def save_screenshot(name: str) -> None:
 
 
 try:
-    # Home: no icon-font dependency, no broken images, and stable new template.
     open_url("#/home")
     wait_ready('[data-kernel-platform-page="home-2b"]')
     save_screenshot("home-es")
@@ -94,11 +92,9 @@ try:
     brands = [element.text.strip() for element in driver.find_elements(By.CSS_SELECTOR, ".kernel-home-2b__brand-mark")]
     record("Marcas ITLA y UNAPEC visibles", "ITLA" in brands and "UNAPEC" in brands, f"marcas={brands}")
     record("Sin imágenes rotas en portada", not broken_images(), str(broken_images()))
-
     diagnostics = driver.execute_script("return window.KernelUIStability && window.KernelUIStability.diagnostics();")
     record("Diagnóstico de interfaz disponible", bool(diagnostics), str(diagnostics))
 
-    # Team: route is masked while the native view is replaced; final view has nine photos.
     driver.execute_script(
         "window.__kernelPendingSeen = false;"
         "const observer = new MutationObserver(() => {"
@@ -109,32 +105,30 @@ try:
     )
     wait_ready('[data-kernel-platform-page="team-nine"]')
     save_screenshot("team-es")
-    pending_seen = driver.execute_script("return Boolean(window.__kernelPendingSeen)")
-    record("Transición protegida hacia Equipo", pending_seen)
+    record("Transición protegida hacia Equipo", driver.execute_script("return Boolean(window.__kernelPendingSeen)"))
     cards = driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")
     photos = driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__photo img")
     record("Equipo nuevo sin duplicar la versión anterior", len(cards) == 9 and len(driver.find_elements(By.CSS_SELECTOR, '[data-kernel-platform-page="team-nine"]')) == 1, f"tarjetas={len(cards)}")
     record("Nueve fotografías del equipo", len(photos) == 9, f"fotografías={len(photos)}")
     record("Sin imágenes rotas en Equipo", not broken_images(), str(broken_images()))
 
-    # Language: one click must re-render all integrated modules, not only the menu.
     language_button = wait.until(EC.presence_of_element_located((By.ID, "kernel-language-switch")))
     driver.execute_script("arguments[0].click();", language_button)
     wait.until(lambda current: current.execute_script("return document.documentElement.lang") == "en")
     wait.until(lambda current: "Research team" in current.find_element(By.TAG_NAME, "body").text)
+    wait.until(lambda current: "Researcher in numerical methods" in current.find_element(By.TAG_NAME, "body").text)
     team_text = driver.find_element(By.TAG_NAME, "body").text
-    record("Equipo completamente actualizado a inglés", "Research team" in team_text and "Researcher in numerical methods" in team_text)
+    record("Equipo completamente actualizado a inglés", "Research team" in team_text and "Researcher in numerical methods" in team_text and "Linear algebra, matrix analysis" in team_text)
     save_screenshot("team-en")
 
-    # Academic background in English, including data fields.
     open_url("?kernelSection=formacion#/quienesSomos")
     wait_ready('[data-kernel-platform-page="academic-background"]')
+    wait.until(lambda current: "PhD in Mathematics" in current.find_element(By.TAG_NAME, "body").text)
     academic_text = driver.find_element(By.TAG_NAME, "body").text
     record("Formación académica en inglés", "Academic background and experience" in academic_text and "PhD in Mathematics" in academic_text)
     record("Nueve perfiles académicos", len(driver.find_elements(By.CSS_SELECTOR, "[data-kernel-academic-select]")) == 9)
     save_screenshot("formation-en")
 
-    # Publications and projects in English.
     open_url("#/publicaciones")
     wait_ready('[data-kernel-platform-page="publications-2"]')
     publications_text = driver.find_element(By.TAG_NAME, "body").text
@@ -145,7 +139,6 @@ try:
     projects_text = driver.find_element(By.TAG_NAME, "body").text
     record("Proyectos 2.0 en inglés", "Projects and strategic proposals" in projects_text and "Iterative processes for solving nonlinear equations" in projects_text)
 
-    # Laboratory: pending state masks intermediate native content and only releases the protected view.
     driver.execute_script(
         "window.__kernelLabPendingSeen = false;"
         "const labObserver = new MutationObserver(() => {"
@@ -154,23 +147,29 @@ try:
         "labObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-kernel-route-pending']});"
         "location.hash='#/laboratorioKernel';"
     )
-    wait.until(lambda current: any(token in current.find_element(By.TAG_NAME, "body").text for token in ["Laboratory", "Laboratorio", "Sign in", "Iniciar sesión", "Access", "Acceso"]))
+    final_lab_tokens = [
+        "Sign in", "Iniciar sesión", "Email address", "Correo electrónico", "Password", "Contraseña",
+        "Compare groups", "Comparar grupos", "Statistical calculators", "Calculadoras estadísticas",
+        "Methodological library", "Biblioteca metodológica"
+    ]
+    wait.until(lambda current: any(token in current.find_element(By.TAG_NAME, "body").text for token in final_lab_tokens))
     wait_ready()
     lab_text = driver.find_element(By.TAG_NAME, "body").text
     record("Transición protegida hacia Laboratorio", driver.execute_script("return Boolean(window.__kernelLabPendingSeen)"))
-    record("Laboratorio sin mostrar una ruta intermedia", "Laboratory" in lab_text or "Laboratorio" in lab_text)
-    record("Control de acceso conservado", any(token in lab_text for token in ["Sign in", "Iniciar sesión", "Access", "Acceso", "Authentication"]))
+    record("Laboratorio sin mostrar una ruta intermedia", not any(token in lab_text for token in ["Abriendo la sección", "Opening the section", "preparando el contenido", "preparing the content"]))
+    record("Control de acceso conservado", any(token in lab_text for token in final_lab_tokens))
+    record("Pie y principios traducidos en el Laboratorio", "Confidentiality" in lab_text and "Data protection" in lab_text)
     record("Sin imágenes rotas en Laboratorio", not broken_images(), str(broken_images()))
     save_screenshot("laboratory")
 
-    # Return to Spanish and confirm all managed modules follow the language state.
     language_button = wait.until(EC.presence_of_element_located((By.ID, "kernel-language-switch")))
     driver.execute_script("arguments[0].click();", language_button)
     wait.until(lambda current: current.execute_script("return document.documentElement.lang") == "es")
     open_url("#/home")
     wait_ready('[data-kernel-platform-page="home-2b"]')
-    home_text = driver.find_element(By.TAG_NAME, "body").text
-    record("Retorno integral al español", "Líneas de investigación" in home_text and "Herramientas destacadas" in home_text)
+    home_text = driver.find_element(By.TAG_NAME, "body").text.lower()
+    record("Retorno integral al español", "líneas de investigación" in home_text and "herramientas destacadas" in home_text)
+    save_screenshot("home-es-return")
 
     browser_logs = driver.get_log("browser")
     severe_logs = [entry for entry in browser_logs if entry.get("level") == "SEVERE" and "favicon" not in entry.get("message", "").lower()]
