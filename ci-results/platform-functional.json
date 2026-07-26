@@ -1,0 +1,12 @@
+{
+  "base_url": "http://127.0.0.1:4174",
+  "passed": false,
+  "checks": [],
+  "failures": [
+    "Tiempo de espera agotado: Message: timeout: Timed out receiving message from renderer: 44.988\n  (Session info: chrome=150.0.7871.128)\nStacktrace:\n#0 0x55ff661b044a <unknown>\n#1 0x55ff65b888c9 <unknown>\n#2 0x55ff65b7035a <unknown>\n#3 0x55ff65b6ffd6 <unknown>\n#4 0x55ff65b6dbbe <unknown>\n#5 0x55ff65b6e53f <unknown>\n#6 0x55ff65b7d710 <unknown>\n#7 0x55ff65b97617 <unknown>\n#8 0x55ff65b9ee8b <unknown>\n#9 0x55ff65b6ec99 <unknown>\n#10 0x55ff65b97372 <unknown>\n#11 0x55ff65c268b0 <unknown>\n#12 0x55ff65bd13ff <unknown>\n#13 0x55ff65bd2261 <unknown>\n#14 0x55ff66175cc7 <unknown>\n#15 0x55ff661744a8 <unknown>\n#16 0x55ff6615f196 <unknown>\n#17 0x55ff6617506a <unknown>\n#18 0x55ff66147020 <unknown>\n#19 0x55ff6619bb98 <unknown>\n#20 0x55ff6619bd35 <unknown>\n#21 0x55ff661aeffe <unknown>\n#22 0x7f867ac9caa4 <unknown>\n#23 0x7f867ad29c6c <unknown>\n"
+  ],
+  "browser_logs": [],
+  "workflow_status": "failure",
+  "run_id": "30180720744",
+  "validated_sha": "7d707ae0ef9475fab21b8345e9d3da22f873cf2c"
+}
