@@ -109,33 +109,130 @@ jobs:
           mkdir -p ci-browser
           python3 -m http.server 4174 >/tmp/kernel-browser-http.log 2>&1 &
           server_pid=$!
-          trap 'kill $server_pid' EXIT
-          sleep 2
           browser="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
           test -n "$browser"
-          dump_route() {
-            route="$1"
-            output="$2"
-            timeout 45s "$browser" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=15000 --dump-dom "http://127.0.0.1:4174/#/${route}" > "ci-browser/${output}.html" 2> "ci-browser/${output}.stderr"
+          rm -rf /tmp/kernel-cdp-profile
+          "$browser" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --disable-background-networking \
+            --disable-component-update \
+            --disable-default-apps \
+            --disable-domain-reliability \
+            --disable-extensions \
+            --disable-sync \
+            --metrics-recording-only \
+            --no-first-run \
+            --safebrowsing-disable-auto-update \
+            --remote-debugging-port=9225 \
+            --remote-allow-origins='*' \
+            --user-data-dir=/tmp/kernel-cdp-profile \
+            about:blank >/tmp/kernel-chrome.out 2>/tmp/kernel-chrome.err &
+          browser_pid=$!
+          cleanup() {
+            kill "$browser_pid" "$server_pid" 2>/dev/null || true
           }
-          dump_route herramientas herramientas
-          grep -qi 'Xmera' ci-browser/herramientas.html
-          grep -qi 'Banner' ci-browser/herramientas.html
-          dump_route laboratorioKernel laboratorio
-          grep -Eqi 'Laboratorio|Iniciar sesión|Acceso|Authentication|Sign in' ci-browser/laboratorio.html
-          dump_route equipment equipo
-          grep -q 'data-kernel-platform-page="team-nine"' ci-browser/equipo.html
-          grep -q 'Miguel A. Leonardo' ci-browser/equipo.html
-          dump_route quienesSomos/formacion formacion
-          grep -q 'data-kernel-platform-page="academic-background"' ci-browser/formacion.html
-          grep -q 'Formación académica y experiencia' ci-browser/formacion.html
-          dump_route publicaciones publicaciones
-          grep -q 'data-kernel-platform-page="publications-2"' ci-browser/publicaciones.html
-          grep -q '162' ci-browser/publicaciones.html
-          dump_route proyectos proyectos
-          grep -q 'data-kernel-platform-page="projects-2"' ci-browser/proyectos.html
-          grep -q '10' ci-browser/proyectos.html
-          printf 'Browser smoke test PASS: Laboratorio, Xmera, Banner, Equipo, Formación, Publicaciones 2.0 y Proyectos 2.0.\n' | tee ci-browser/result.txt
+          trap cleanup EXIT
+          sleep 2
+          for attempt in $(seq 1 100); do
+            if curl --fail --silent http://127.0.0.1:9225/json/version >/dev/null; then break; fi
+            sleep .1
+          done
+          cat > /tmp/kernel-cdp-smoke.mjs <<'NODE'
+          import fs from 'node:fs/promises';
+
+          const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+          const endpoint = 'http://127.0.0.1:9225';
+          const baseUrl = 'http://127.0.0.1:4174';
+          const checks = [
+            { route: 'herramientas', name: 'herramientas', expression: 'html.includes("Xmera") && html.includes("Banner")' },
+            { route: 'laboratorioKernel', name: 'laboratorio', expression: '/Laboratorio|Iniciar sesión|Área protegida|Sign in|Authentication/i.test(html)' },
+            { route: 'equipment', name: 'equipo', expression: 'html.includes("data-kernel-platform-page=\\"team-nine\\"") && html.includes("Miguel A. Leonardo")' },
+            { route: 'quienesSomos/formacion', name: 'formacion', expression: 'html.includes("data-kernel-platform-page=\\"academic-background\\"") && /Formación académica y experiencia|Academic background and experience/i.test(html)' },
+            { route: 'publicaciones', name: 'publicaciones', expression: 'html.includes("data-kernel-platform-page=\\"publications-2\\"") && html.includes("162")' },
+            { route: 'proyectos', name: 'proyectos', expression: 'html.includes("data-kernel-platform-page=\\"projects-2\\"") && /10/.test(html)' }
+          ];
+
+          const targetResponse = await fetch(`${endpoint}/json/new?about:blank`, { method: 'PUT' });
+          if (!targetResponse.ok) throw new Error(`Could not create CDP target: HTTP ${targetResponse.status}`);
+          const target = await targetResponse.json();
+          const socket = new WebSocket(target.webSocketDebuggerUrl);
+          await new Promise((resolve, reject) => {
+            socket.addEventListener('open', resolve, { once: true });
+            socket.addEventListener('error', reject, { once: true });
+          });
+
+          let commandId = 0;
+          const pending = new Map();
+          socket.addEventListener('message', event => {
+            const message = JSON.parse(String(event.data));
+            if (!message.id || !pending.has(message.id)) return;
+            const request = pending.get(message.id);
+            pending.delete(message.id);
+            if (message.error) request.reject(new Error(JSON.stringify(message.error)));
+            else request.resolve(message.result);
+          });
+
+          const command = (method, params = {}) => new Promise((resolve, reject) => {
+            const id = ++commandId;
+            pending.set(id, { resolve, reject });
+            socket.send(JSON.stringify({ id, method, params }));
+            setTimeout(() => {
+              if (!pending.has(id)) return;
+              pending.delete(id);
+              reject(new Error(`CDP command timed out: ${method}`));
+            }, 15000);
+          });
+
+          await command('Page.enable');
+          await command('Runtime.enable');
+          const failures = [];
+
+          for (const check of checks) {
+            const url = `${baseUrl}/#/${check.route}`;
+            await command('Page.navigate', { url });
+            let passed = false;
+            for (let attempt = 0; attempt < 60; attempt += 1) {
+              await sleep(500);
+              const evaluation = await command('Runtime.evaluate', {
+                expression: `(() => { const html = document.documentElement.outerHTML; return Boolean(${check.expression}); })()`,
+                returnByValue: true
+              });
+              if (evaluation.result?.value === true) {
+                passed = true;
+                break;
+              }
+            }
+            const dom = await command('Runtime.evaluate', {
+              expression: 'document.documentElement.outerHTML',
+              returnByValue: true
+            });
+            await fs.writeFile(`ci-browser/${check.name}.html`, dom.result?.value || '', 'utf8');
+            const location = await command('Runtime.evaluate', {
+              expression: 'location.href',
+              returnByValue: true
+            });
+            await fs.writeFile(`ci-browser/${check.name}.url.txt`, String(location.result?.value || ''), 'utf8');
+            if (!passed) failures.push(`${check.name}: expected route content was not rendered at ${location.result?.value || url}`);
+          }
+
+          if (failures.length) {
+            await fs.writeFile('ci-browser/failures.txt', `${failures.join('\n')}\n`, 'utf8');
+            console.error('Browser smoke test failed:');
+            failures.forEach(failure => console.error(`- ${failure}`));
+            process.exitCode = 1;
+          } else {
+            const message = 'Browser smoke test PASS: Laboratorio, Xmera, Banner, Equipo, Formación, Publicaciones 2.0 y Proyectos 2.0.';
+            await fs.writeFile('ci-browser/result.txt', `${message}\n`, 'utf8');
+            console.log(message);
+          }
+
+          await command('Page.close').catch(() => {});
+          socket.close();
+          NODE
+          node /tmp/kernel-cdp-smoke.mjs
       - name: Upload browser diagnostic
         if: always()
         uses: actions/upload-artifact@v4
@@ -183,7 +280,7 @@ jobs:
           }
           EOF
           test -f ci-results/platform-integration.log || printf 'Validation did not produce a log.\n' > ci-results/platform-integration.log
-          if [ -f ci-browser/result.txt ]; then cp ci-browser/result.txt ci-results/platform-browser-smoke.log; else printf 'Browser smoke test did not complete.\n' > ci-results/platform-browser-smoke.log; fi
+          if [ -f ci-browser/result.txt ]; then cp ci-browser/result.txt ci-results/platform-browser-smoke.log; elif [ -f ci-browser/failures.txt ]; then cp ci-browser/failures.txt ci-results/platform-browser-smoke.log; else printf 'Browser smoke test did not complete.\n' > ci-results/platform-browser-smoke.log; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ci-results/platform-integration.json ci-results/platform-integration.log ci-results/platform-browser-smoke.log
