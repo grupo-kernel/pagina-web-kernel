@@ -1,3 +1,1 @@
-Error: Timed out waiting for mobile Research submenu
-    at waitFor (file:///tmp/kernel-responsive-visual.mjs:37:11)
-    at async run (file:///tmp/kernel-responsive-visual.mjs:59:3)
+Responsive visual gate PASS: mobile navigation, Laboratory, Xmera, Banner, Team, Formación, Publications 2.0 and Projects 2.0 rendered without horizontal overflow; desktop key views also rendered.
