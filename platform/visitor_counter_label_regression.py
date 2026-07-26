@@ -72,17 +72,41 @@ mock_script = f"""
 """
 driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": mock_script})
 
+
+def js_value(selector: str, expression: str = "textContent") -> str:
+    return str(driver.execute_script(
+        "const element=document.querySelector(arguments[0]);"
+        f"return element ? String(element.{expression} || '').trim() : '';",
+        selector,
+    ))
+
+
+def badge_texts() -> list[str]:
+    return list(driver.execute_script(
+        "return [...document.querySelectorAll('.kernel-team-core__badge')]"
+        ".map(element => String(element.textContent || '').trim());"
+    ))
+
+
 try:
     driver.get(f"{BASE_URL}/#/home")
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="home-2b"]')))
-    section = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[data-kernel-home-visitors]")))
+    wait.until(lambda current: current.execute_script(
+        "return Boolean(document.querySelector('[data-kernel-home-visitors]'));"
+    ))
 
-    record("El contador aparece en la portada", section.is_displayed())
+    record(
+        "El contador aparece en la portada",
+        bool(driver.execute_script(
+            "const element=document.querySelector('[data-kernel-home-visitors]');"
+            "return Boolean(element && element.getBoundingClientRect().height > 0);"
+        )),
+    )
     record(
         "El contador se ubica dentro del contenido nuevo",
-        driver.execute_script(
+        bool(driver.execute_script(
             "return Boolean(document.querySelector('[data-kernel-platform-page=\"home-2b\"] .kernel-home-2b__content [data-kernel-home-visitors]'));"
-        ),
+        )),
     )
 
     expected_values = {
@@ -97,66 +121,74 @@ try:
             k,
             v,
         ))
-        actual = driver.execute_script(
+        actual = str(driver.execute_script(
             "return document.querySelector(`[data-counter-value=\"${arguments[0]}\"]`)?.dataset.value || '';",
             key,
-        )
+        ))
         record(f"Valor del contador: {key}", actual == expected, f"valor={actual}")
 
-    record(
-        "El contador informa la actualización",
-        "Actualizado" in driver.find_element(By.CSS_SELECTOR, "[data-counter-status]").text,
-    )
+    status_text = js_value("[data-counter-status]")
+    record("El contador informa la actualización", "Actualizado" in status_text, status_text)
 
     driver.execute_script("location.hash='#/equipment'")
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="team-nine"]')))
-    wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9)
+    wait.until(lambda current: current.execute_script(
+        "return document.querySelectorAll('.kernel-team-core__card').length === 9;"
+    ))
 
-    badge_texts = [element.text.strip() for element in driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__badge")]
+    spanish_badges = badge_texts()
     record(
         "Las tarjetas internacionales usan la etiqueta breve",
-        badge_texts.count("INVESTIGADOR INTERNACIONAL") >= 2,
-        str(badge_texts),
+        spanish_badges.count("INVESTIGADOR INTERNACIONAL") >= 2,
+        str(spanish_badges),
     )
     record(
         "Las tarjetas no muestran Miembro de El Kernel",
-        all("MIEMBRO DE EL KERNEL" not in value.upper() for value in badge_texts),
-        str(badge_texts),
+        all("MIEMBRO DE EL KERNEL" not in value.upper() for value in spanish_badges),
+        str(spanish_badges),
     )
 
     driver.execute_script(
         "document.querySelector('[data-kernel-team-open=\"alicia-cordero\"]')?.click();"
     )
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-profile-panel="alicia-cordero"]')))
-    profile_badge = driver.find_element(
-        By.CSS_SELECTOR,
-        '[data-kernel-profile-panel="alicia-cordero"] .kernel-team-core__eyebrow',
-    ).text.strip()
-    record("El perfil internacional usa la etiqueta breve", profile_badge == "INVESTIGADOR INTERNACIONAL", profile_badge)
+    wait.until(lambda current: current.execute_script(
+        "return document.querySelector('[data-kernel-profile-panel=\"alicia-cordero\"] .kernel-team-core__eyebrow')?.textContent?.trim() === 'Investigador internacional';"
+    ))
+    profile_badge = str(driver.execute_script(
+        "return document.querySelector('[data-kernel-profile-panel=\"alicia-cordero\"] .kernel-team-core__eyebrow')?.textContent?.trim() || '';"
+    ))
+    record("El perfil internacional usa la etiqueta breve", profile_badge == "Investigador internacional", profile_badge)
+
+    driver.execute_script(
+        "document.querySelector('[data-kernel-team-profile-back], [data-kernel-team-back]')?.click();"
+    )
+    wait.until(lambda current: not current.execute_script(
+        "return Boolean(document.querySelector('[data-kernel-profile-panel]'));"
+    ))
 
     driver.execute_script(
         "localStorage.setItem('kernel-language','en');"
         "document.documentElement.lang='en';"
         "window.dispatchEvent(new Event('kernel-language-change'));"
     )
-    wait.until(lambda current: any(
-        "INTERNATIONAL RESEARCHER" in element.text.upper()
-        for element in current.find_elements(By.CSS_SELECTOR, ".kernel-team-core__badge")
+    wait.until(lambda current: current.execute_script(
+        "const badges=[...document.querySelectorAll('.kernel-team-core__badge')].map(element => String(element.textContent || '').trim());"
+        "return badges.filter(value => value === 'INTERNATIONAL RESEARCHER').length >= 2;"
     ))
-    english_badges = [element.text.strip() for element in driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__badge")]
+    english_badges = badge_texts()
     record(
         "La etiqueta internacional en inglés es breve",
-        all("MEMBER OF EL KERNEL" not in value.upper() for value in english_badges),
+        english_badges.count("INTERNATIONAL RESEARCHER") >= 2
+        and all("MEMBER OF EL KERNEL" not in value.upper() for value in english_badges),
         str(english_badges),
     )
 
     driver.execute_script("location.hash='#/home'")
-    wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[data-kernel-home-visitors]")))
-    wait.until(lambda current: current.find_element(By.CSS_SELECTOR, f"#{'kernel-home-visitor-counter'}-title").text.strip() == "Site activity")
-    record(
-        "El contador cambia correctamente al inglés",
-        driver.find_element(By.CSS_SELECTOR, "#kernel-home-visitor-counter-title").text.strip() == "Site activity",
-    )
+    wait.until(lambda current: current.execute_script(
+        "return document.querySelector('#kernel-home-visitor-counter-title')?.textContent?.trim() === 'Site activity';"
+    ))
+    english_title = js_value("#kernel-home-visitor-counter-title")
+    record("El contador cambia correctamente al inglés", english_title == "Site activity", english_title)
 
     severe = [
         entry for entry in driver.get_log("browser")
