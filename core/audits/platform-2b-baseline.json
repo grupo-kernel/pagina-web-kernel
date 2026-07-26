@@ -40,6 +40,19 @@
       ],
       "findings": [
         {
+          "path": "translations/es.json",
+          "patterns": [
+            "laboratorio\\s+inteligente",
+            "laboratory"
+          ]
+        },
+        {
+          "path": "translations/en.json",
+          "patterns": [
+            "laboratory"
+          ]
+        },
+        {
           "path": "assets/index-dTZWtukx.js",
           "patterns": [
             "laboratorio\\s+inteligente"
@@ -157,6 +170,12 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "laboratory"
+          ]
+        },
+        {
           "path": "assets/LaboratorioKernel-CWzzarC3.js",
           "patterns": [
             "laboratorio\\s+inteligente",
@@ -244,6 +263,18 @@
           "patterns": [
             "laboratorio\\s+inteligente"
           ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "laboratory"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "laboratory"
+          ]
         }
       ]
     },
@@ -302,6 +333,12 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
           "path": "assets/index-CFnp3kW1.js",
           "patterns": [
             "xmera"
@@ -339,6 +376,18 @@
         },
         {
           "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "xmera"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
           "patterns": [
             "xmera"
           ]
@@ -400,6 +449,12 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
           "path": "assets/index-CFnp3kW1.js",
           "patterns": [
             "\\bitla\\b"
@@ -437,6 +492,24 @@
         },
         {
           "path": "core/audits/platform-2b-integration-audit.md",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "\\bitla\\b"
+          ]
+        },
+        {
+          "path": "core/data/researchers.v2.json",
           "patterns": [
             "\\bitla\\b"
           ]
@@ -498,6 +571,12 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
           "path": "assets/index-CFnp3kW1.js",
           "patterns": [
             "\\b(?:un)?apec\\b"
@@ -538,6 +617,18 @@
           "patterns": [
             "\\b(?:un)?apec\\b"
           ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "\\b(?:un)?apec\\b"
+          ]
         }
       ]
     },
@@ -548,6 +639,19 @@
         "tools"
       ],
       "findings": [
+        {
+          "path": "translations/es.json",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
+          "path": "translations/en.json",
+          "patterns": [
+            "tools"
+          ]
+        },
         {
           "path": "assets/index-dTZWtukx.js",
           "patterns": [
@@ -683,6 +787,13 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
           "path": "assets/LaboratorioKernel-CWzzarC3.js",
           "patterns": [
             "herramientas"
@@ -753,6 +864,20 @@
           "path": "core/audits/platform-2b-integration-audit.md",
           "patterns": [
             "herramientas"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "herramientas",
+            "tools"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "herramientas",
+            "tools"
           ]
         }
       ]
@@ -1155,6 +1280,12 @@
           ]
         },
         {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "patterns": [
+            "auth"
+          ]
+        },
+        {
           "path": "assets/LaboratorioKernel-CWzzarC3.js",
           "patterns": [
             "firebase",
@@ -1242,6 +1373,40 @@
           "path": "core/audits/platform-2b-integration-audit.md",
           "patterns": [
             "firebase"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "firebase",
+            "auth",
+            "password"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "firebase",
+            "auth",
+            "password"
+          ]
+        },
+        {
+          "path": "core/data/publications.v2.json",
+          "patterns": [
+            "auth"
+          ]
+        },
+        {
+          "path": "core/modules/publications/publications-renderer.mjs",
+          "patterns": [
+            "auth"
+          ]
+        },
+        {
+          "path": "core/modules/publications/publications.css",
+          "patterns": [
+            "auth"
           ]
         }
       ]
@@ -1409,6 +1574,22 @@
           "patterns": [
             "español"
           ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "kernel-i18n",
+            "español",
+            "english",
+            "language"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "kernel-i18n",
+            "language"
+          ]
         }
       ]
     },
@@ -1522,12 +1703,26 @@
           "patterns": [
             "analytics"
           ]
+        },
+        {
+          "path": "core/audits/platform-2b-baseline.json",
+          "patterns": [
+            "googletagmanager",
+            "analytics"
+          ]
+        },
+        {
+          "path": "core/audits/platform-2b-route-inventory.json",
+          "patterns": [
+            "analytics"
+          ]
         }
       ]
     }
   },
-  "image_count": 45,
+  "image_count": 54,
   "image_candidates": [
+    "antmel.jpg",
     "assets/ElKernel-BvHOWfRq.webp",
     "assets/ElKernel-Cuaiz0QC.png",
     "assets/QuienesSomos-CIhVjMhZ.webp",
@@ -1555,6 +1750,8 @@
     "assets/congreso8-D4x6W49k.jpeg",
     "assets/congreso9-B4G6zAcD.jpeg",
     "assets/congreso9-DzusWTvM.webp",
+    "assets/img/alicia-cordero.svg",
+    "assets/img/juan-torregrosa.svg",
     "assets/isfodosu-campus-Dxbx_r-n.webp",
     "assets/jos-B-AHSXzJ.webp",
     "assets/jos-BToFZdIf.png",
@@ -1572,7 +1769,13 @@
     "assets/sep-BCMURSaM.png",
     "assets/sep-Cwhy6xJt.webp",
     "assets/uasd-campus-B6v1rNpv.webp",
-    "assets/unapec-campus-DqZO-eEo.webp"
+    "assets/unapec-campus-DqZO-eEo.webp",
+    "josealberto.jpg",
+    "marckelly.jpg",
+    "marino.png",
+    "miguel.jpg",
+    "natanael.jpg",
+    "randy.jpg"
   ],
   "errors": [],
   "warnings": [],
