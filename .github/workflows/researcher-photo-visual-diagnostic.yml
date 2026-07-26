@@ -6,11 +6,13 @@ on:
       - diagnostic/researcher-photo-names
     paths:
       - .github/workflows/researcher-photo-visual-diagnostic.yml
+      - assets/kernel-photo-framing-fix.js
   pull_request:
     branches:
       - gh-pages
     paths:
       - .github/workflows/researcher-photo-visual-diagnostic.yml
+      - assets/kernel-photo-framing-fix.js
   workflow_dispatch:
 
 permissions:
@@ -108,7 +110,14 @@ jobs:
           try:
               driver.get('http://127.0.0.1:4177/#/equipment')
               wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
-              wait.until(lambda d: d.execute_script("return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => i.complete && i.naturalWidth > 0)"))
+              wait.until(lambda d: d.execute_script("""
+                return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => {
+                  const ib=i.getBoundingClientRect(), fb=i.parentElement.getBoundingClientRect(), s=getComputedStyle(i);
+                  return i.complete && i.naturalWidth > 0 && Number.parseFloat(s.opacity) > .99 &&
+                    s.objectFit === 'contain' && ib.left >= fb.left - .5 && ib.top >= fb.top - .5 &&
+                    ib.right <= fb.right + .5 && ib.bottom <= fb.bottom + .5;
+                });
+              """))
               driver.execute_script("document.querySelector('[data-site-header]')?.remove();")
               driver.save_screenshot(str(out / 'equipment-desktop.png'))
 
@@ -116,20 +125,32 @@ jobs:
               card_metrics = []
               for index, card in enumerate(cards, 1):
                   card.screenshot(str(out / f'card-{index:02d}.png'))
-                  image = card.find_element(By.CSS_SELECTOR, '.kernel-team-core__photo img')
-                  card_metrics.append(driver.execute_script("const i=arguments[0], f=i.parentElement, ib=i.getBoundingClientRect(), fb=f.getBoundingClientRect(), s=getComputedStyle(i); return {src:i.getAttribute('src'), naturalWidth:i.naturalWidth, naturalHeight:i.naturalHeight, imageBox:{x:ib.x,y:ib.y,width:ib.width,height:ib.height}, frameBox:{x:fb.x,y:fb.y,width:fb.width,height:fb.height}, objectFit:s.objectFit, objectPosition:s.objectPosition, padding:s.padding};", image))
+                  frame = card.find_element(By.CSS_SELECTOR, '.kernel-team-core__photo')
+                  frame.screenshot(str(out / f'photo-{index:02d}.png'))
+                  image = frame.find_element(By.CSS_SELECTOR, 'img')
+                  card_metrics.append(driver.execute_script("const i=arguments[0], f=i.parentElement, ib=i.getBoundingClientRect(), fb=f.getBoundingClientRect(), s=getComputedStyle(i); return {src:i.getAttribute('src'), naturalWidth:i.naturalWidth, naturalHeight:i.naturalHeight, imageBox:{x:ib.x,y:ib.y,width:ib.width,height:ib.height,right:ib.right,bottom:ib.bottom}, frameBox:{x:fb.x,y:fb.y,width:fb.width,height:fb.height,right:fb.right,bottom:fb.bottom}, contained:ib.left>=fb.left-.5&&ib.top>=fb.top-.5&&ib.right<=fb.right+.5&&ib.bottom<=fb.bottom+.5, objectFit:s.objectFit, objectPosition:s.objectPosition, position:s.position, inset:s.inset, padding:s.padding};", image))
               report['desktop_cards'] = card_metrics
+              report['all_contained'] = all(item['contained'] for item in card_metrics)
 
               driver.set_window_size(390, 1200)
               driver.get('http://127.0.0.1:4177/#/equipment')
               wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
-              wait.until(lambda d: d.execute_script("return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => i.complete && i.naturalWidth > 0)"))
+              wait.until(lambda d: d.execute_script("""
+                return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => {
+                  const ib=i.getBoundingClientRect(), fb=i.parentElement.getBoundingClientRect(), s=getComputedStyle(i);
+                  return i.complete && i.naturalWidth > 0 && Number.parseFloat(s.opacity) > .99 &&
+                    ib.left >= fb.left - .5 && ib.top >= fb.top - .5 &&
+                    ib.right <= fb.right + .5 && ib.bottom <= fb.bottom + .5;
+                });
+              """))
               driver.execute_script("document.querySelector('[data-site-header]')?.remove();")
               driver.save_screenshot(str(out / 'equipment-mobile.png'))
               driver.find_element(By.CSS_SELECTOR, '.kernel-team-core__card').screenshot(str(out / 'card-mobile-first.png'))
           finally:
               driver.quit()
           (out / 'render-metadata.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          if not report.get('all_contained'):
+              raise SystemExit('At least one portrait still exceeds its frame')
           PY
 
       - name: Stop local preview
