@@ -115,9 +115,13 @@ for (const token of [
   'core/data/researchers.v2.json',
   'FORMATION_ROUTE = "quienesSomos"',
   'FORMATION_SECTION = "formacion"',
-  'isFormationRoute',
+  'queryParams',
+  'kernelSection',
+  'formationUrl',
+  'button.dataset.kernelRoute = FORMATION_SECTION',
+  'existingLabel.textContent !== labels().menu',
   'data-kernel-platform-page="academic-background"',
-  '#/${FORMATION_ROUTE}/${FORMATION_SECTION}'
+  'url.hash = `#/${FORMATION_ROUTE}`'
 ]) {
   if (!academicBridge.includes(token)) fail(`El puente académico no contiene la adaptación requerida: ${token}`);
 }
