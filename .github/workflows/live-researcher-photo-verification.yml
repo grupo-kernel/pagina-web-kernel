@@ -6,6 +6,11 @@ on:
       - diagnostic/researcher-photo-names
     paths:
       - .github/workflows/live-researcher-photo-verification.yml
+  pull_request:
+    branches:
+      - gh-pages
+    paths:
+      - .github/workflows/live-researcher-photo-verification.yml
   workflow_dispatch:
 
 permissions:
