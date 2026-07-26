@@ -67,8 +67,26 @@
 
   const routeParts = () => location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean);
   const currentRoute = () => (routeParts()[0] || "home").toLowerCase();
-  const isFormationRoute = () => currentRoute() === FORMATION_ROUTE.toLowerCase() && (routeParts()[1] || "").toLowerCase() === FORMATION_SECTION;
-  const selectedResearcherId = () => routeParts()[2] || "miguel-leonardo";
+  const queryParams = () => new URLSearchParams(location.search);
+  const isFormationRoute = () => currentRoute() === FORMATION_ROUTE.toLowerCase() && queryParams().get("kernelSection") === FORMATION_SECTION;
+  const selectedResearcherId = () => queryParams().get("investigador") || "miguel-leonardo";
+
+  function formationUrl(researcherId = "") {
+    const url = new URL(location.href);
+    url.searchParams.set("kernelSection", FORMATION_SECTION);
+    if (researcherId) url.searchParams.set("investigador", researcherId);
+    else url.searchParams.delete("investigador");
+    url.hash = `#/${FORMATION_ROUTE}`;
+    return url;
+  }
+
+  function clearFormationQuery() {
+    const url = new URL(location.href);
+    if (!url.searchParams.has("kernelSection") && !url.searchParams.has("investigador")) return;
+    url.searchParams.delete("kernelSection");
+    url.searchParams.delete("investigador");
+    history.replaceState(null, "", url);
+  }
 
   function addStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -212,7 +230,7 @@
     button.className = reference?.className || "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold";
     button.innerHTML = `<i aria-hidden="true" class="bx bx-book-reader shrink-0 text-xl"></i><span>${escapeHtml(labels().menu)}</span>`;
     button.addEventListener("click", () => {
-      location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}`;
+      location.href = formationUrl().toString();
       document.querySelector('[data-action="close-navBar"]')?.click();
     });
     item.appendChild(button);
@@ -249,7 +267,9 @@
       `;
       main.querySelectorAll("[data-kernel-academic-select]").forEach(button => {
         button.addEventListener("click", () => {
-          location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}/${encodeURIComponent(button.dataset.kernelAcademicSelect)}`;
+          history.pushState(null, "", formationUrl(button.dataset.kernelAcademicSelect));
+          delete main.dataset.kernelAcademicSignature;
+          renderFormation();
         });
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -268,6 +288,7 @@
     } else {
       const main = document.getElementById("main");
       if (main) delete main.dataset.kernelAcademicSignature;
+      if (queryParams().get("kernelSection") === FORMATION_SECTION && currentRoute() !== FORMATION_ROUTE.toLowerCase()) clearFormationQuery();
     }
   }
 
@@ -275,12 +296,16 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
   window.addEventListener("hashchange", schedule);
   window.addEventListener("kernel-language-change", schedule);
+  document.addEventListener("click", event => {
+    const nativeRouteButton = event.target.closest?.("button[data-route]");
+    if (nativeRouteButton && String(nativeRouteButton.dataset.route || "").toLowerCase() === FORMATION_ROUTE.toLowerCase()) clearFormationQuery();
+  }, true);
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPlatformBridge = {
     version: "2B.1",
     dataSource: DATA_URL,
-    formationRoute: `${FORMATION_ROUTE}/${FORMATION_SECTION}`,
+    formationRoute: `${FORMATION_ROUTE}?kernelSection=${FORMATION_SECTION}`,
     preservedRoutes: ["laboratorioKernel", "herramientas", "servicios", "diagnosticoServicios"],
     diagnostics: () => ({
       route: currentRoute(),
