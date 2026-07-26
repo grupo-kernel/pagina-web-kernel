@@ -197,6 +197,7 @@
     "assets/kernel-members-patch.js",
     "assets/kernel-phase1-fix.js",
     "assets/kernel-phase1-patch.js",
+    "assets/kernel-platform-2b-runtime.js",
     "assets/kernel-stats-patch.js",
     "assets/login-BtABpxCq.js",
     "assets/metadatosFichasMetodologicas-BbzfSE5K.js",
@@ -214,6 +215,7 @@
     "b21722",
     "b37a2a",
     "b50000",
+    "b9ddd8",
     "banner-back",
     "banner-final-clear",
     "banner-final-count",
@@ -241,6 +243,7 @@
     "banner-tool-content",
     "banner-tool-view",
     "bdd8d2",
+    "bfcfd3",
     "c38d36",
     "campo-categoria-positiva",
     "campos-tamano",
@@ -260,12 +263,17 @@
     "contenedor-tabla-contingencia",
     "correlacionasociacion",
     "correo",
+    "d4e1e4",
     "d5a54a",
     "d7a955",
+    "d7e4e6",
     "d8a64f",
     "d8e5e8",
     "d9e5e7",
     "dbe4e6",
+    "dbe6e8",
+    "dbe7e8",
+    "dbe7e9",
     "dc2626",
     "dce7e9",
     "detalle-container",
@@ -275,8 +283,12 @@
     "e5e7eb",
     "e68143",
     "e8f3f1",
+    "e8f6f4",
     "e9d69b",
     "ea580c",
+    "ecfaf7",
+    "eef3f4",
+    "eef4f5",
     "eef7f6",
     "eef8f7",
     "efc86f",
@@ -285,8 +297,10 @@
     "equipment",
     "error-tamano",
     "f0c76f",
+    "f4fbfa",
     "f59e0b",
     "f6fbfb",
+    "f7fafb",
     "f8fafc",
     "fbf4df",
     "fff",
@@ -312,11 +326,20 @@
     "header",
     "herramientas",
     "home",
+    "kernel-2b-academic-panel",
+    "kernel-2b-project-count",
+    "kernel-2b-project-list",
+    "kernel-2b-project-search",
+    "kernel-2b-publication-count",
+    "kernel-2b-publication-list",
+    "kernel-2b-publication-search",
+    "kernel-2b-publication-year",
     "kernel-close-detail",
     "kernel-international-author-panel",
     "kernel-international-integrated",
     "kernel-language-switch",
     "kernel-login",
+    "kernel-platform-2b-menu",
     "laboratoriokernel",
     "lineas",
     "login-mensaje",
@@ -1038,6 +1061,17 @@
             "ects\",\"Publicaciones\":\"Publications\",\"Herramientas\":\"Tools\",\"Quiénes somos\":\"Who we are\",\"Equipo\":\"Team\",\"Formación Académica\":\"Academic background\" }; function translateUI(lang){document.documentElement.lang=lang;do",
             "(m))});const title=[...document.querySelectorAll(\"h1,h2\")].find(e=>norm(e.textContent)===\"equipo de investigacion\");const section=title?.closest(\"section\");if(section&&!section.querySelector(\"[data-kernel-team-count]"
           ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "equipment",
+            "equipo"
+          ],
+          "snippets": [
+            "kernel-platform-2b-links\" aria-label=\"Módulos científicos integrados\"> <a href=\"#/equipment\"><span aria-hidden=\"true\">👥</span><span><strong>Equipo</strong><span class=\"kernel-2b-menu-copy\">Nueve investigadores n",
+            "integrados\"> <a href=\"#/equipment\"><span aria-hidden=\"true\">👥</span><span><strong>Equipo</strong><span class=\"kernel-2b-menu-copy\">Nueve investigadores nacionales e internacionales</span></span></a> <"
+          ]
         }
       ]
     },
@@ -1671,6 +1705,19 @@
             "diagnóstico\":\"Request assessment\",\"Líneas de investigación\":\"Research lines\",\"Proyectos\":\"Projects\",\"Publicaciones\":\"Publications\",\"Herramientas\":\"Tools\",\"Quiénes somos\":\"Who we are\",\"Equipo\":\"Team\",\"Formación Académic",
             "icos, estabilidad, métodos con y sin memoria y ecuaciones no lineales.\",\"Participación en proyectos competitivos nacionales, autonómicos y europeos.\"], area:\"Métodos iterativos, sistemas no lineales, estabilidad, diná",
             "ario de Matemática Multidisciplinar de la UPV.\",\"Investigador principal y participante en proyectos competitivos de I+D+i.\",\"Investigación en análisis matricial, ecuaciones matriciales y métodos iterativos multidimensio"
+          ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "projects",
+            "proyectos"
+          ],
+          "snippets": [
+            "scientific: \"kernel-scientific-profiles\", publications: \"kernel-publications\", projects: \"kernel-projects\" }); const PROTECTED_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"it",
+            "rnel-scientific-profiles\", publications: \"kernel-publications\", projects: \"kernel-projects\" }); const PROTECTED_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unap",
+            "/a> <a href=\"#/${ROUTES.projects}\"><span aria-hidden=\"true\">🧩</span><span><strong>Proyectos 2.0</strong><span class=\"kernel-2b-menu-copy\">Proyectos aprobados y participaciones</span></span></a> </nav>`;",
+            "dden=\"true\">🧩</span><span><strong>Proyectos 2.0</strong><span class=\"kernel-2b-menu-copy\">Proyectos aprobados y participaciones</span></span></a> </nav>`; header.appendChild(wrapper); const button = wrappe"
           ]
         }
       ]
@@ -2605,6 +2652,15 @@
           "snippets": [
             "urn; const protectedCapabilities = Object.freeze([ \"laboratorio-inteligente\", \"xmera\", \"itla\", \"apec\", \"calculadoras\", \"autenticacion\", \"idiomas\", \"analitica\" ]); const state"
           ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "xmera"
+          ],
+          "snippets": [
+            "}); const PROTECTED_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unapec\", \"tools\", \"herramientas\", \"calculator\", \"calculadora\", \"auth\", \"login\" ]); const DA"
+          ]
         }
       ]
     },
@@ -2739,6 +2795,15 @@
           ],
           "snippets": [
             "protectedCapabilities = Object.freeze([ \"laboratorio-inteligente\", \"xmera\", \"itla\", \"apec\", \"calculadoras\", \"autenticacion\", \"idiomas\", \"analitica\" ]); const state = { phas"
+          ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "itla"
+          ],
+          "snippets": [
+            "const PROTECTED_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unapec\", \"tools\", \"herramientas\", \"calculator\", \"calculadora\", \"auth\", \"login\" ]); const DATA = Obj"
           ]
         }
       ]
@@ -2919,6 +2984,18 @@
           ],
           "snippets": [
             "pabilities = Object.freeze([ \"laboratorio-inteligente\", \"xmera\", \"itla\", \"apec\", \"calculadoras\", \"autenticacion\", \"idiomas\", \"analitica\" ]); const state = { phase: \"2B\","
+          ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "apec",
+            "unapec"
+          ],
+          "snippets": [
+            "ROTECTED_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unapec\", \"tools\", \"herramientas\", \"calculator\", \"calculadora\", \"auth\", \"login\" ]); const DATA = Object.free",
+            "OUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unapec\", \"tools\", \"herramientas\", \"calculator\", \"calculadora\", \"auth\", \"login\" ]); const DATA = Object.freeze({ r",
+            "_ROUTE_TERMS = Object.freeze([ \"laboratory\", \"laboratorio\", \"xmera\", \"itla\", \"apec\", \"unapec\", \"tools\", \"herramientas\", \"calculator\", \"calculadora\", \"auth\", \"login\" ]); const DATA = Object.freeze({ r"
           ]
         }
       ]
@@ -3120,6 +3197,16 @@
             "ratorio\":\"Laboratory\",\"Investigación\":\"Research\",\"Nosotros\":\"About us\",\"Noticias\":\"News\",\"Contacto\":\"Contact\",\"Solicitar diagnóstico\":\"Request assessment\",\"Líneas de investigación\":\"Research lines\",\"Proyectos\":\"Projec",
             "aboratory\",\"Investigación\":\"Research\",\"Nosotros\":\"About us\",\"Noticias\":\"News\",\"Contacto\":\"Contact\",\"Solicitar diagnóstico\":\"Request assessment\",\"Líneas de investigación\":\"Research lines\",\"Proyectos\":\"Projects\",\"Public",
             "ratorio\":\"Laboratory\",\"Investigación\":\"Research\",\"Nosotros\":\"About us\",\"Noticias\":\"News\",\"Contacto\":\"Contact\",\"Solicitar diagnóstico\":\"Request assessment\",\"Líneas de investigación\":\"Research lines\",\"Proyectos\":\"Project"
+          ]
+        },
+        {
+          "path": "assets/kernel-platform-2b-runtime.js",
+          "hints": [
+            "contact"
+          ],
+          "snippets": [
+            "function externalLinks(member) { const profiles = member?.profiles || {}; const contact = member?.contact || {}; const links = [ [\"ORCID\", profiles.orcid ? `https://orcid.org/${String(profiles.orci",
+            "lLinks(member) { const profiles = member?.profiles || {}; const contact = member?.contact || {}; const links = [ [\"ORCID\", profiles.orcid ? `https://orcid.org/${String(profiles.orcid).replace(/^https"
           ]
         }
       ]
