@@ -1,0 +1,96 @@
+name: Live Researcher Photo Verification
+
+on:
+  push:
+    branches:
+      - diagnostic/live-photo-verification-clean
+  pull_request:
+    branches:
+      - gh-pages
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Verify public deployment and capture portraits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('live-photo-verification')
+          out.mkdir(exist_ok=True)
+          options = Options()
+          for argument in ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--window-size=1440,1800']:
+              options.add_argument(argument)
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver, 90)
+          report = {'url': 'https://www.grupoelkernel.com/?verify=20260726-2#/equipment'}
+          try:
+              driver.get(report['url'])
+              wait.until(lambda d: d.execute_script("return window.KernelPhotoFramingFix?.version === '1.1.1'"))
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
+              wait.until(lambda d: d.execute_script("""
+                return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => {
+                  const ib=i.getBoundingClientRect(), fb=i.parentElement.getBoundingClientRect(), s=getComputedStyle(i);
+                  return i.complete && i.naturalWidth > 0 && Number.parseFloat(s.opacity) > .99 &&
+                    s.objectFit === 'contain' && ib.left >= fb.left - .5 && ib.top >= fb.top - .5 &&
+                    ib.right <= fb.right + .5 && ib.bottom <= fb.bottom + .5;
+                });
+              """))
+              report['script_version'] = driver.execute_script("return window.KernelPhotoFramingFix?.version")
+              report['cards'] = driver.execute_script("""
+                return [...document.querySelectorAll('.kernel-team-core__photo img')].map(i => {
+                  const ib=i.getBoundingClientRect(), fb=i.parentElement.getBoundingClientRect(), s=getComputedStyle(i);
+                  return {
+                    alt:i.alt,
+                    src:i.getAttribute('src'),
+                    naturalWidth:i.naturalWidth,
+                    naturalHeight:i.naturalHeight,
+                    objectFit:s.objectFit,
+                    frame:{width:fb.width,height:fb.height},
+                    image:{width:ib.width,height:ib.height},
+                    contained:ib.left>=fb.left-.5&&ib.top>=fb.top-.5&&ib.right<=fb.right+.5&&ib.bottom<=fb.bottom+.5
+                  };
+                });
+              """)
+              report['all_contained'] = all(item['contained'] for item in report['cards'])
+              driver.execute_script("document.querySelector('[data-site-header]')?.remove();")
+              driver.save_screenshot(str(out / 'equipment-live-desktop.png'))
+              for index, frame in enumerate(driver.find_elements(By.CSS_SELECTOR, '.kernel-team-core__photo'), 1):
+                  frame.screenshot(str(out / f'live-photo-{index:02d}.png'))
+              if not report['all_contained']:
+                  raise SystemExit('One or more live portraits exceed their frame')
+          finally:
+              (out / 'report.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
+              driver.quit()
+          PY
+
+      - name: Upload public verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-researcher-photo-verification
+          path: live-photo-verification/
+          if-no-files-found: error
+          retention-days: 7
