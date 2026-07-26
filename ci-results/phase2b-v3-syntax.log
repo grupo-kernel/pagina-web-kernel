@@ -1,0 +1,12 @@
+node:internal/modules/cjs/loader:1520
+  throw err;
+  ^
+
+Error: Cannot find module '/home/runner/work/pagina-web-kernel/pagina-web-kernel/assets/kernel-team-core-bridge-v3.js'
+    at node:internal/modules/cjs/loader:1517:15
+    at node:internal/main/check_syntax:33:20 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.18.0

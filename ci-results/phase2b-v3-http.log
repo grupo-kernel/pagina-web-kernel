@@ -1,0 +1,12 @@
+127.0.0.1 - - [26/Jul/2026 00:56:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:19] "GET /assets/index-DDHYSPOT.css HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:19] "GET /assets/index-BEtvhqLu.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-stats-patch.js?v=20260725-3 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-phase1-patch.js?v=20260725-1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-phase1-fix.js?v=20260725-2 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-i18n-full.js?v=20260725-1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-platform-bridge.js?v=20260725-3 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-team-core-bridge.js?v=20260725-3 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/kernel-research-core-bridge.js?v=20260725-3 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/ElKernel-BvHOWfRq.webp HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 00:56:20] "GET /assets/isfodosu-campus-Dxbx_r-n.webp HTTP/1.1" 200 -

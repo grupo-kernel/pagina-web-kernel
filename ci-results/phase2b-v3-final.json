@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "phase": "2B",
+  "bridge_version": "2B.3",
+  "branch": "fase-2b-platform-integration",
+  "head_sha": "b10320961b3165f901701790352f8688ca615562",
+  "generated_at": "2026-07-26T00:56:41.680608+00:00",
+  "syntax_pass": false,
+  "structural_pass": false,
+  "browser_pass": false,
+  "browser_checks": [],
+  "browser_failures": [
+    "Browser test did not generate a result file."
+  ],
+  "preserved": {
+    "laboratory": true,
+    "firebase_authentication": true,
+    "itla_xmera": true,
+    "unapec_banner": true,
+    "menus": true,
+    "analytics": true,
+    "bilingual_shell": true
+  },
+  "integrated": {
+    "academic_background": true,
+    "nine_researchers": true,
+    "scientific_profiles": true,
+    "publications_2": true,
+    "projects_2": true
+  },
+  "overall_pass": false
+}

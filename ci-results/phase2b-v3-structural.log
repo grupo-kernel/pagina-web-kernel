@@ -1,0 +1,16 @@
+node:internal/fs/promises:640
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open 'assets/kernel-team-core-bridge-v3.js'
+    at async open (node:internal/fs/promises:640:25)
+    at async Object.readFile (node:internal/fs/promises:1290:14)
+    at async Promise.all (index 6)
+    at async file:///home/runner/work/pagina-web-kernel/pagina-web-kernel/platform/validate-phase2b-v3.mjs:14:108 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'assets/kernel-team-core-bridge-v3.js'
+}
+
+Node.js v24.18.0
