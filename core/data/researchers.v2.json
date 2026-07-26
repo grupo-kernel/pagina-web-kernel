@@ -1,12 +1,15 @@
 {
   "schema_version": 2,
   "status": "candidate-not-active",
-  "updated_at": "2026-07-25",
+  "updated_at": "2026-07-26",
   "group": {
     "id": "el-kernel",
     "name": "Grupo de Investigación El Kernel",
     "member_count": 9,
-    "countries": ["República Dominicana", "España"]
+    "countries": [
+      "República Dominicana",
+      "España"
+    ]
   },
   "researchers": [
     {
@@ -19,15 +22,44 @@
       "display_degree": "Ph.D.",
       "role": "Investigador en métodos numéricos, EDPs y educación matemática",
       "country": "República Dominicana",
-      "image": {"current": "miguel.jpg", "canonical": "assets/img/researchers/miguel-leonardo.jpg"},
-      "areas": ["Métodos iterativos de alto orden", "Métodos libres de Jacobiano", "EDPs no lineales", "Optimización", "Diseño curricular", "Educación matemática"],
-      "affiliations": ["ITLA", "ISFODOSU"],
-      "contact": {"email": "miguel.leonardo@isfodosu.edu.do"},
-      "profiles": {"orcid": "0000-0003-4199-6484", "researchgate": "https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda", "scholar": "https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es"},
+      "image": {
+        "current": "miguel.jpg",
+        "canonical": "assets/img/researchers/miguel-leonardo.jpg"
+      },
+      "areas": [
+        "Métodos iterativos de alto orden",
+        "Métodos libres de Jacobiano",
+        "EDPs no lineales",
+        "Optimización",
+        "Diseño curricular",
+        "Educación matemática"
+      ],
+      "affiliations": [
+        "ITLA",
+        "ISFODOSU"
+      ],
+      "contact": {
+        "email": "miguel.leonardo@isfodosu.edu.do"
+      },
+      "profiles": {
+        "orcid": "0000-0003-4199-6484",
+        "researchgate": "https://www.researchgate.net/profile/Miguel-Leonardo-Sepulveda",
+        "scholar": "https://scholar.google.com/citations?user=abVngPAAAAAJ&hl=es"
+      },
       "bio": "Doctor en Matemática con trabajo en métodos numéricos avanzados, sistemas no lineales, ecuaciones en derivadas parciales y formación docente.",
-      "formation": ["Doctorado en Matemática — INTEC (2019–2024), con estancias doctorales en la Universitat Politècnica de València.", "Maestría en Matemática — INTEC (2017).", "Especialidad en Planificación y Desarrollo Curricular — Universitat de Barcelona (2019).", "Licenciatura en Educación, mención Matemática y Física — Universidad Dominicana O&M (2011)."],
-      "experience": ["Diseño y coordinación curricular de programas universitarios de Matemática.", "Docencia e investigación en análisis numérico, ecuaciones diferenciales y educación matemática."],
-      "sync": {"publications": false}
+      "formation": [
+        "Doctorado en Matemática — INTEC (2019–2024), con estancias doctorales en la Universitat Politècnica de València.",
+        "Maestría en Matemática — INTEC (2017).",
+        "Especialidad en Planificación y Desarrollo Curricular — Universitat de Barcelona (2019).",
+        "Licenciatura en Educación, mención Matemática y Física — Universidad Dominicana O&M (2011)."
+      ],
+      "experience": [
+        "Diseño y coordinación curricular de programas universitarios de Matemática.",
+        "Docencia e investigación en análisis numérico, ecuaciones diferenciales y educación matemática."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "natanael-urena",
@@ -39,15 +71,44 @@
       "display_degree": "M.Sc.",
       "role": "Optimización, redes neuronales y formación docente",
       "country": "República Dominicana",
-      "image": {"current": "natanael.jpg", "canonical": "assets/img/researchers/natanael-urena.jpg"},
-      "areas": ["Métodos iterativos", "Optimización", "Redes neuronales", "Ciencias actuariales", "Matemática computacional", "Formación docente"],
-      "affiliations": ["ISFODOSU", "ITLA", "INTEC"],
-      "contact": {"email": "natanael.urena@isfodosu.edu.do"},
-      "profiles": {"orcid": "0000-0001-9186-1778", "researchgate": "https://www.researchgate.net/profile/Natanael-Urena-Castillo"},
+      "image": {
+        "current": "natanael.jpg",
+        "canonical": "assets/img/researchers/natanael-urena.jpg"
+      },
+      "areas": [
+        "Métodos iterativos",
+        "Optimización",
+        "Redes neuronales",
+        "Ciencias actuariales",
+        "Matemática computacional",
+        "Formación docente"
+      ],
+      "affiliations": [
+        "ISFODOSU",
+        "ITLA",
+        "INTEC"
+      ],
+      "contact": {
+        "email": "natanael.urena@isfodosu.edu.do"
+      },
+      "profiles": {
+        "orcid": "0000-0001-9186-1778",
+        "researchgate": "https://www.researchgate.net/profile/Natanael-Urena-Castillo"
+      },
       "bio": "Especialista en métodos iterativos, optimización y redes neuronales aplicadas a problemas complejos.",
-      "formation": ["Doctorado en Matemática — INTEC (en curso).", "Maestría en Matemática Pura — UASD.", "Especialidad en Cálculo Actuarial — INTEC.", "Licenciatura en Educación, mención Matemáticas — UASD."],
-      "experience": ["Docencia universitaria en matemática, cálculo y ecuaciones diferenciales.", "Investigación en optimización, métodos iterativos y aprendizaje automático."],
-      "sync": {"publications": false}
+      "formation": [
+        "Doctorado en Matemática — INTEC (en curso).",
+        "Maestría en Matemática Pura — UASD.",
+        "Especialidad en Cálculo Actuarial — INTEC.",
+        "Licenciatura en Educación, mención Matemáticas — UASD."
+      ],
+      "experience": [
+        "Docencia universitaria en matemática, cálculo y ecuaciones diferenciales.",
+        "Investigación en optimización, métodos iterativos y aprendizaje automático."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "randy-leonardo",
@@ -59,15 +120,39 @@
       "display_degree": "M.Sc.",
       "role": "Álgebra lineal, análisis matricial y educación matemática",
       "country": "República Dominicana",
-      "image": {"current": "randy.jpg", "canonical": "assets/img/researchers/randy-leonardo.jpg"},
-      "areas": ["Álgebra lineal", "Matrices combinadas", "Formación docente", "Innovación educativa"],
-      "affiliations": ["UASD", "ISFODOSU"],
-      "contact": {"email": "rleonardo36@uasd.edu.do"},
-      "profiles": {"orcid": "0000-0002-9493-7165", "researchgate": "https://www.researchgate.net/profile/Randy-Leonardo"},
+      "image": {
+        "current": "randy.jpg",
+        "canonical": "assets/img/researchers/randy-leonardo.jpg"
+      },
+      "areas": [
+        "Álgebra lineal",
+        "Matrices combinadas",
+        "Formación docente",
+        "Innovación educativa"
+      ],
+      "affiliations": [
+        "UASD",
+        "ISFODOSU"
+      ],
+      "contact": {
+        "email": "rleonardo36@uasd.edu.do"
+      },
+      "profiles": {
+        "orcid": "0000-0002-9493-7165",
+        "researchgate": "https://www.researchgate.net/profile/Randy-Leonardo"
+      },
       "bio": "Investigador en álgebra, análisis matricial y docencia de la matemática.",
-      "formation": ["Maestría en Matemática — INTEC (2011).", "Licenciatura en Matemática — UASD (2008)."],
-      "experience": ["Docencia universitaria en INTEC, UASD e ISFODOSU.", "Co-investigación en álgebra lineal y matrices combinadas."],
-      "sync": {"publications": false}
+      "formation": [
+        "Maestría en Matemática — INTEC (2011).",
+        "Licenciatura en Matemática — UASD (2008)."
+      ],
+      "experience": [
+        "Docencia universitaria en INTEC, UASD e ISFODOSU.",
+        "Co-investigación en álgebra lineal y matrices combinadas."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "antmel-rodriguez",
@@ -79,15 +164,41 @@
       "display_degree": "Ph.D.",
       "role": "Dinámica compleja y real de métodos iterativos",
       "country": "República Dominicana",
-      "image": {"current": "antmel.jpg", "canonical": "assets/img/researchers/antmel-rodriguez.jpg"},
-      "areas": ["Sistemas no lineales", "Dinámica compleja", "Dinámica real", "Métodos iterativos", "Educación matemática"],
-      "affiliations": ["UASD", "ISFODOSU"],
-      "contact": {"email": "arodriguez05@uasd.edu.do"},
-      "profiles": {"orcid": "0000-0003-4502-0307", "researchgate": "https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral"},
+      "image": {
+        "current": "antmel.jpg",
+        "canonical": "assets/img/researchers/antmel-rodriguez.jpg"
+      },
+      "areas": [
+        "Sistemas no lineales",
+        "Dinámica compleja",
+        "Dinámica real",
+        "Métodos iterativos",
+        "Educación matemática"
+      ],
+      "affiliations": [
+        "UASD",
+        "ISFODOSU"
+      ],
+      "contact": {
+        "email": "arodriguez05@uasd.edu.do"
+      },
+      "profiles": {
+        "orcid": "0000-0003-4502-0307",
+        "researchgate": "https://www.researchgate.net/profile/Antmel-Rodriguez-Cabral"
+      },
       "bio": "Investigador en métodos numéricos y análisis dinámico de procesos iterativos para sistemas no lineales.",
-      "formation": ["Doctorado en Matemática Pura — INTEC (2025).", "Maestría en Matemática Pura — UASD.", "Ingeniería Civil — INTEC."],
-      "experience": ["Profesor universitario e investigador en sistemas no lineales.", "Ponente en congresos nacionales e internacionales."],
-      "sync": {"publications": false}
+      "formation": [
+        "Doctorado en Matemática Pura — INTEC (2025).",
+        "Maestría en Matemática Pura — UASD.",
+        "Ingeniería Civil — INTEC."
+      ],
+      "experience": [
+        "Profesor universitario e investigador en sistemas no lineales.",
+        "Ponente en congresos nacionales e internacionales."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "marino-brito",
@@ -99,15 +210,37 @@
       "display_degree": "M.Sc.",
       "role": "Gestión universitaria y educación matemática",
       "country": "República Dominicana",
-      "image": {"current": "marino.png", "canonical": "assets/img/researchers/marino-brito.png"},
-      "areas": ["Educación matemática", "Gestión universitaria", "Álgebra", "Cálculo", "Formación docente"],
-      "affiliations": ["ISFODOSU"],
-      "contact": {"email": "marinobg@gmail.com"},
+      "image": {
+        "current": "marino.png",
+        "canonical": "assets/img/researchers/marino-brito.png"
+      },
+      "areas": [
+        "Educación matemática",
+        "Gestión universitaria",
+        "Álgebra",
+        "Cálculo",
+        "Formación docente"
+      ],
+      "affiliations": [
+        "ISFODOSU"
+      ],
+      "contact": {
+        "email": "marinobg@gmail.com"
+      },
       "profiles": {},
       "bio": "Profesor universitario y consultor educativo con experiencia en desarrollo curricular y gestión universitaria.",
-      "formation": ["Máster Internacional en Gestión Universitaria.", "Maestría en Matemática — PUCMM.", "Licenciatura en Educación, mención Ciencias Físicas y Matemáticas."],
-      "experience": ["Gestión académica universitaria.", "Consultoría educativa y formación docente."],
-      "sync": {"publications": false}
+      "formation": [
+        "Máster Internacional en Gestión Universitaria.",
+        "Maestría en Matemática — PUCMM.",
+        "Licenciatura en Educación, mención Ciencias Físicas y Matemáticas."
+      ],
+      "experience": [
+        "Gestión académica universitaria.",
+        "Consultoría educativa y formación docente."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "marc-kelly-jean-philippe",
@@ -119,15 +252,41 @@
       "display_degree": "Ph.D.",
       "role": "Álgebra abstracta, grupos finitos y caracteres",
       "country": "República Dominicana",
-      "image": {"current": "marckelly.jpg", "canonical": "assets/img/researchers/marc-kelly-jean-philippe.jpg"},
-      "areas": ["Álgebra abstracta", "Grupos finitos", "Teoría de caracteres", "Educación matemática"],
-      "affiliations": ["UASD"],
-      "contact": {"email": "marckelly21@gmail.com"},
-      "profiles": {"orcid": "0000-0003-2278-5315", "researchgate": "https://www.researchgate.net/profile/Marc-Kelly-Jean-Philippe", "scholar": "https://scholar.google.com/citations?hl=es&user=KDxk4vYAAAAJ", "linkedin": "https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/"},
+      "image": {
+        "current": "marckelly.jpg",
+        "canonical": "assets/img/researchers/marc-kelly-jean-philippe.jpg"
+      },
+      "areas": [
+        "Álgebra abstracta",
+        "Grupos finitos",
+        "Teoría de caracteres",
+        "Educación matemática"
+      ],
+      "affiliations": [
+        "UASD"
+      ],
+      "contact": {
+        "email": "marckelly21@gmail.com"
+      },
+      "profiles": {
+        "orcid": "0000-0003-2278-5315",
+        "researchgate": "https://www.researchgate.net/profile/Marc-Kelly-Jean-Philippe",
+        "scholar": "https://scholar.google.com/citations?hl=es&user=KDxk4vYAAAAJ",
+        "linkedin": "https://www.linkedin.com/in/marc-kelly-jean-philippe-b6845073/"
+      },
       "bio": "Investigador en álgebra abstracta, teoría de grupos finitos y caracteres.",
-      "formation": ["Doctorado en Matemática — programa interuniversitario UASD–INTEC–PUCMM (2025).", "Maestrías en Matemática — UASD y UTESA.", "Licenciatura en Matemática Pura — UASD."],
-      "experience": ["Profesor, asesor y conferencista en álgebra.", "Investigación y divulgación científica internacional."],
-      "sync": {"publications": false}
+      "formation": [
+        "Doctorado en Matemática — programa interuniversitario UASD–INTEC–PUCMM (2025).",
+        "Maestrías en Matemática — UASD y UTESA.",
+        "Licenciatura en Matemática Pura — UASD."
+      ],
+      "experience": [
+        "Profesor, asesor y conferencista en álgebra.",
+        "Investigación y divulgación científica internacional."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "jose-alberto-reyes",
@@ -135,19 +294,43 @@
       "status": "active",
       "visibility": "public",
       "member_scope": "principal",
-      "name": "José Alberto Reyes Reyes",
-      "display_degree": "M.Sc.",
+      "name": "Jose Alberto Reyes Reyes",
+      "display_degree": "Ph.D.",
       "role": "Métodos iterativos y educación matemática",
       "country": "República Dominicana",
-      "image": {"current": "josealberto.jpg", "canonical": "assets/img/researchers/jose-alberto-reyes.jpg"},
-      "areas": ["Métodos iterativos", "Análisis de estabilidad", "Convergencia", "Innovación educativa"],
-      "affiliations": ["UASD"],
-      "contact": {"email": "josereyes0187@gmail.com"},
-      "profiles": {"orcid": "0000-0001-9397-7571"},
+      "image": {
+        "current": "josealberto.jpg",
+        "canonical": "assets/img/researchers/jose-alberto-reyes.jpg"
+      },
+      "areas": [
+        "Métodos iterativos",
+        "Análisis de estabilidad",
+        "Convergencia",
+        "Innovación educativa"
+      ],
+      "affiliations": [
+        "UASD"
+      ],
+      "contact": {
+        "email": "josereyes0187@gmail.com"
+      },
+      "profiles": {
+        "orcid": "0000-0001-9397-7571"
+      },
       "bio": "Docente e investigador en métodos iterativos, estabilidad y convergencia.",
-      "formation": ["Doctorado en Matemáticas — INTEC (en curso).", "Maestría en Matemática Pura — UASD.", "Magíster en Matemáticas — UTESA.", "Máster en Educación y Nuevas Tecnologías — UDIMA."],
-      "experience": ["Docencia universitaria y de posgrado en Matemática.", "Investigación en métodos numéricos e innovación educativa."],
-      "sync": {"publications": false}
+      "formation": [
+        "Doctorado en Matemáticas — INTEC.",
+        "Maestría en Matemática Pura — UASD.",
+        "Magíster en Matemáticas — UTESA.",
+        "Máster en Educación y Nuevas Tecnologías — UDIMA."
+      ],
+      "experience": [
+        "Docencia universitaria y de posgrado en Matemática.",
+        "Investigación en métodos numéricos e innovación educativa."
+      ],
+      "sync": {
+        "publications": false
+      }
     },
     {
       "id": "alicia-cordero",
@@ -159,16 +342,59 @@
       "display_degree": "Ph.D.",
       "role": "Catedrática de Matemática Aplicada e investigadora en análisis numérico",
       "country": "España",
-      "image": {"current": "assets/img/alicia-cordero.svg", "canonical": "assets/img/researchers/alicia-cordero.svg"},
-      "areas": ["Análisis numérico", "Métodos iterativos", "Ecuaciones y sistemas no lineales", "Dinámica de métodos iterativos", "Ecuaciones matriciales"],
-      "affiliations": ["Universitat Politècnica de València", "Instituto Universitario de Matemática Multidisciplinar"],
-      "contact": {"email": "acordero@mat.upv.es"},
-      "profiles": {"orcid": "0000-0002-7462-9173", "institutional": "https://www.upv.es/ficha-personal/acordero", "repository": "https://riunet.upv.es/entities/person/84a54fed-6e22-47b8-bdc9-3c6969123e72", "panorama": "https://panorama.upv.es/es/ipublic/researcher/337733"},
+      "image": {
+        "current": "assets/img/alicia-cordero.svg",
+        "canonical": "assets/img/researchers/alicia-cordero.svg"
+      },
+      "areas": [
+        "Análisis numérico",
+        "Métodos iterativos",
+        "Ecuaciones y sistemas no lineales",
+        "Dinámica de métodos iterativos",
+        "Ecuaciones matriciales"
+      ],
+      "affiliations": [
+        "Universitat Politècnica de València",
+        "Instituto Universitario de Matemática Multidisciplinar"
+      ],
+      "contact": {
+        "email": "acordero@mat.upv.es"
+      },
+      "profiles": {
+        "orcid": "0000-0002-7462-9173",
+        "institutional": "https://www.upv.es/ficha-personal/acordero",
+        "repository": "https://riunet.upv.es/entities/person/84a54fed-6e22-47b8-bdc9-3c6969123e72",
+        "panorama": "https://panorama.upv.es/es/ipublic/researcher/337733"
+      },
       "bio": "Catedrática de Universidad en el Departamento de Matemática Aplicada de la UPV. Su investigación se centra en análisis numérico, métodos iterativos para ecuaciones y sistemas no lineales, estabilidad y dinámica asociada.",
-      "formation": ["Doctorado en Matemáticas — Universitat Jaume I (2003)."],
-      "experience": ["Catedrática de Matemática Aplicada en la Universitat Politècnica de València.", "Miembro del Instituto Universitario de Matemática Multidisciplinar."],
-      "metrics": {"publications": [{"type": "journal_articles", "value": 253, "source": "Perfil institucional UPV", "as_of": "2026-07-24", "url": "https://www.upv.es/ficha-personal/acordero"}, {"type": "scopus_documents", "value": 263, "source": "Panorama UPV", "as_of": "2025-10", "url": "https://panorama.upv.es/es/ipublic/researcher/337733"}]},
-      "sync": {"publications": true}
+      "formation": [
+        "Doctorado en Matemáticas — Universitat Jaume I (2003)."
+      ],
+      "experience": [
+        "Catedrática de Matemática Aplicada en la Universitat Politècnica de València.",
+        "Miembro del Instituto Universitario de Matemática Multidisciplinar."
+      ],
+      "metrics": {
+        "publications": [
+          {
+            "type": "journal_articles",
+            "value": 253,
+            "source": "Perfil institucional UPV",
+            "as_of": "2026-07-24",
+            "url": "https://www.upv.es/ficha-personal/acordero"
+          },
+          {
+            "type": "scopus_documents",
+            "value": 263,
+            "source": "Panorama UPV",
+            "as_of": "2025-10",
+            "url": "https://panorama.upv.es/es/ipublic/researcher/337733"
+          }
+        ]
+      },
+      "sync": {
+        "publications": true
+      }
     },
     {
       "id": "juan-torregrosa",
@@ -180,16 +406,59 @@
       "display_degree": "Ph.D.",
       "role": "Catedrático de Matemática Aplicada e investigador en análisis numérico",
       "country": "España",
-      "image": {"current": "assets/img/juan-torregrosa.svg", "canonical": "assets/img/researchers/juan-torregrosa.svg"},
-      "areas": ["Análisis numérico", "Métodos iterativos", "Ecuaciones y sistemas no lineales", "Dinámica de métodos iterativos", "Ecuaciones matriciales"],
-      "affiliations": ["Universitat Politècnica de València", "Instituto Universitario de Matemática Multidisciplinar"],
-      "contact": {"email": "jrtorre@mat.upv.es"},
-      "profiles": {"orcid": "0000-0002-9893-0761", "institutional": "https://www.upv.es/ficha-personal/jrtorre", "repository": "https://riunet.upv.es/entities/person/4c622e3f-468c-4150-a1ce-7bd87144603b", "panorama": "https://panorama.upv.es/es/ipublic/researcher/337272"},
+      "image": {
+        "current": "assets/img/juan-torregrosa.svg",
+        "canonical": "assets/img/researchers/juan-torregrosa.svg"
+      },
+      "areas": [
+        "Análisis numérico",
+        "Métodos iterativos",
+        "Ecuaciones y sistemas no lineales",
+        "Dinámica de métodos iterativos",
+        "Ecuaciones matriciales"
+      ],
+      "affiliations": [
+        "Universitat Politècnica de València",
+        "Instituto Universitario de Matemática Multidisciplinar"
+      ],
+      "contact": {
+        "email": "jrtorre@mat.upv.es"
+      },
+      "profiles": {
+        "orcid": "0000-0002-9893-0761",
+        "institutional": "https://www.upv.es/ficha-personal/jrtorre",
+        "repository": "https://riunet.upv.es/entities/person/4c622e3f-468c-4150-a1ce-7bd87144603b",
+        "panorama": "https://panorama.upv.es/es/ipublic/researcher/337272"
+      },
       "bio": "Catedrático de Universidad en el Departamento de Matemática Aplicada de la UPV y coordinador de programa de doctorado. Investiga métodos iterativos, ecuaciones y sistemas no lineales, ecuaciones matriciales y análisis de estabilidad.",
-      "formation": ["Doctorado en Matemáticas — Universitat de València (1990)."],
-      "experience": ["Catedrático de Matemática Aplicada en la Universitat Politècnica de València.", "Coordinador de programa de doctorado y miembro del Instituto Universitario de Matemática Multidisciplinar."],
-      "metrics": {"publications": [{"type": "journal_articles", "value": 298, "source": "Perfil institucional UPV", "as_of": "2026-07-24", "url": "https://www.upv.es/ficha-personal/jrtorre"}, {"type": "scopus_documents", "value": 320, "source": "Panorama UPV", "as_of": "2026-02", "url": "https://panorama.upv.es/es/ipublic/researcher/337272"}]},
-      "sync": {"publications": true}
+      "formation": [
+        "Doctorado en Matemáticas — Universitat de València (1990)."
+      ],
+      "experience": [
+        "Catedrático de Matemática Aplicada en la Universitat Politècnica de València.",
+        "Coordinador de programa de doctorado y miembro del Instituto Universitario de Matemática Multidisciplinar."
+      ],
+      "metrics": {
+        "publications": [
+          {
+            "type": "journal_articles",
+            "value": 298,
+            "source": "Perfil institucional UPV",
+            "as_of": "2026-07-24",
+            "url": "https://www.upv.es/ficha-personal/jrtorre"
+          },
+          {
+            "type": "scopus_documents",
+            "value": 320,
+            "source": "Panorama UPV",
+            "as_of": "2026-02",
+            "url": "https://panorama.upv.es/es/ipublic/researcher/337272"
+          }
+        ]
+      },
+      "sync": {
+        "publications": true
+      }
     }
   ]
 }
