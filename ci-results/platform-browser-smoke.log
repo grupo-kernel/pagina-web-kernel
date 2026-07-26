@@ -1,4 +1,1 @@
-Error: CDP command timed out: Runtime.evaluate
-    at Timeout._onTimeout (file:///tmp/kernel-cdp-smoke.mjs:43:14)
-    at listOnTimeout (node:internal/timers:605:17)
-    at process.processTimers (node:internal/timers:541:7)
+Browser smoke test did not complete.
