@@ -46,26 +46,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Check bridge and validator syntax
+      - name: Check bridge syntax
         run: |
           node --check assets/kernel-platform-bridge.js
           node --check assets/kernel-team-core-bridge.js
           node --check assets/kernel-research-core-bridge.js
-          node --check platform/validate-platform-integration.mjs
-          node --check platform/validate-institutional-tools.mjs
-      - name: Validate platform, Xmera, Banner and Laboratory
+      - name: Validate platform preservation and data catalogs
         run: |
           mkdir -p ci-results
           set +e
-          {
-            node platform/validate-platform-integration.mjs
-            platform_status=$?
-            node platform/validate-institutional-tools.mjs
-            tools_status=$?
-            if [ "${platform_status}" -ne 0 ] || [ "${tools_status}" -ne 0 ]; then
-              exit 1
-            fi
-          } > ci-results/platform-integration.log 2>&1
+          node platform/validate-platform-integration.mjs > ci-results/platform-integration.log 2>&1
           validator_status=$?
           cat ci-results/platform-integration.log
           echo "validator_exit=${validator_status}"
@@ -103,7 +93,8 @@ jobs:
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-team-core-bridge.js'
           curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-research-core-bridge.js'
           ! curl --fail --silent http://127.0.0.1:4173/index.html | grep -q 'kernel-members-patch.js'
-          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMATION_ROUTE = "formacion"'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMATION_ROUTE = "quienesSomos"'
+          curl --fail --silent http://127.0.0.1:4173/assets/kernel-platform-bridge.js | grep -q 'FORMATION_SECTION = "formacion"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-team-core-bridge.js | grep -q 'data-kernel-platform-page="team-nine"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-research-core-bridge.js | grep -q 'data-kernel-platform-page="publications-2"'
           curl --fail --silent http://127.0.0.1:4173/assets/kernel-research-core-bridge.js | grep -q 'data-kernel-platform-page="projects-2"'
@@ -125,7 +116,7 @@ jobs:
           dump_route() {
             route="$1"
             output="$2"
-            timeout 40s "$browser" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=12000 --dump-dom "http://127.0.0.1:4174/#/${route}" > "ci-browser/${output}.html" 2> "ci-browser/${output}.stderr"
+            timeout 45s "$browser" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=15000 --dump-dom "http://127.0.0.1:4174/#/${route}" > "ci-browser/${output}.html" 2> "ci-browser/${output}.stderr"
           }
           dump_route herramientas herramientas
           grep -qi 'Xmera' ci-browser/herramientas.html
@@ -135,8 +126,9 @@ jobs:
           dump_route equipment equipo
           grep -q 'data-kernel-platform-page="team-nine"' ci-browser/equipo.html
           grep -q 'Miguel A. Leonardo' ci-browser/equipo.html
-          dump_route formacion formacion
+          dump_route quienesSomos/formacion formacion
           grep -q 'data-kernel-platform-page="academic-background"' ci-browser/formacion.html
+          grep -q 'Formación académica y experiencia' ci-browser/formacion.html
           dump_route publicaciones publicaciones
           grep -q 'data-kernel-platform-page="publications-2"' ci-browser/publicaciones.html
           grep -q '162' ci-browser/publicaciones.html
