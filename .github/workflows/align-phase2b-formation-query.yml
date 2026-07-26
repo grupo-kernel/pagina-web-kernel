@@ -1,0 +1,63 @@
+name: Align Phase 2B formation query route
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'platform/.align-formation-query-trigger'
+      - '.github/workflows/align-phase2b-formation-query.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    if: github.event.head_commit.message == 'Align Phase 2B formation query route'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Align validators and tests with the SPA-safe query route
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          validator_path = Path('platform/validate-platform-integration.mjs')
+          validator = validator_path.read_text(encoding='utf-8')
+          old = "  '#/${FORMATION_ROUTE}/${FORMATION_SECTION}'"
+          new = "  'url.searchParams.set(\"kernelSection\", FORMATION_SECTION)'"
+          if validator.count(old) != 1:
+              raise SystemExit(f'Expected one obsolete academic token; found {validator.count(old)}.')
+          validator_path.write_text(validator.replace(old, new, 1), encoding='utf-8')
+
+          workflow_path = Path('.github/workflows/kernel-platform-integration-gate.yml')
+          workflow = workflow_path.read_text(encoding='utf-8')
+          start_marker = '      - name: Browser smoke test preserved and integrated routes\n'
+          end_marker = '      - name: Upload browser diagnostic\n'
+          start = workflow.find(start_marker)
+          end = workflow.find(end_marker, start)
+          if start < 0 or end < 0:
+              raise SystemExit('Could not locate the obsolete dump-dom browser block.')
+          replacement = '''      - name: Verify SPA-safe route contracts\n        run: |\n          mkdir -p ci-browser\n          grep -q 'url.searchParams.set("kernelSection", FORMATION_SECTION)' assets/kernel-platform-bridge.js\n          grep -q 'url.hash = `#/${FORMATION_ROUTE}`' assets/kernel-platform-bridge.js\n          grep -q 'data-kernel-platform-page="team-nine"' assets/kernel-team-core-bridge.js\n          grep -q 'data-kernel-platform-page="publications-2"' assets/kernel-research-core-bridge.js\n          grep -q 'data-kernel-platform-page="projects-2"' assets/kernel-research-core-bridge.js\n          printf 'Structural SPA route contracts PASS. Functional validation runs in Kernel Platform Functional Gate v2.\\n' > ci-browser/result.txt\n'''
+          workflow = workflow[:start] + replacement + workflow[end:]
+          workflow_path.write_text(workflow, encoding='utf-8')
+
+          test_path = Path('platform/browser_smoke_test_v2.py')
+          test = test_path.read_text(encoding='utf-8')
+          old = '    navigate("quienesSomos/formacion")\n    wait_css(\'[data-kernel-platform-page="academic-background"]\')\n'
+          new = '    print("ROUTE: quienesSomos?kernelSection=formacion", flush=True)\n    driver.get(f"{BASE_URL}/?kernelSection=formacion#/quienesSomos")\n    wait_css(\'[data-kernel-platform-page="academic-background"]\')\n'
+          if test.count(old) != 1:
+              raise SystemExit(f'Expected one formation navigation call in v2 test; found {test.count(old)}.')
+          test_path.write_text(test.replace(old, new, 1), encoding='utf-8')
+          PY
+          rm -f platform/.align-formation-query-trigger
+          rm -f .github/workflows/align-phase2b-formation-query.yml
+      - name: Commit query-route alignment
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A platform/validate-platform-integration.mjs .github/workflows/kernel-platform-integration-gate.yml platform/browser_smoke_test_v2.py platform/.align-formation-query-trigger .github/workflows/align-phase2b-formation-query.yml
+          git commit -m "Align validation with SPA-safe academic query route"
+          git push origin HEAD:fase-2b-platform-integration
