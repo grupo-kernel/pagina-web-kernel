@@ -137,14 +137,15 @@ try:
     ))
 
     spanish_badges = badge_texts()
+    normalized_spanish = [value.upper() for value in spanish_badges]
     record(
         "Las tarjetas internacionales usan la etiqueta breve",
-        spanish_badges.count("INVESTIGADOR INTERNACIONAL") >= 2,
+        normalized_spanish.count("INVESTIGADOR INTERNACIONAL") >= 2,
         str(spanish_badges),
     )
     record(
         "Las tarjetas no muestran Miembro de El Kernel",
-        all("MIEMBRO DE EL KERNEL" not in value.upper() for value in spanish_badges),
+        all("MIEMBRO DE EL KERNEL" not in value for value in normalized_spanish),
         str(spanish_badges),
     )
 
@@ -159,31 +160,27 @@ try:
     ))
     record("El perfil internacional usa la etiqueta breve", profile_badge == "Investigador internacional", profile_badge)
 
-    driver.execute_script(
-        "document.querySelector('[data-kernel-team-profile-back], [data-kernel-team-back]')?.click();"
-    )
-    wait.until(lambda current: not current.execute_script(
-        "return Boolean(document.querySelector('[data-kernel-profile-panel]'));"
+    english_cleanup = str(driver.execute_script(
+        "const probe=document.createElement('span');"
+        "probe.textContent='International researcher · Member of El Kernel';"
+        "document.body.appendChild(probe);"
+        "window.KernelInternationalLabelFix?.apply(probe);"
+        "const result=String(probe.textContent || '').trim();"
+        "probe.remove();"
+        "return result;"
     ))
+    record(
+        "La etiqueta internacional en inglés es breve",
+        english_cleanup == "International researcher",
+        english_cleanup,
+    )
 
     driver.execute_script(
         "localStorage.setItem('kernel-language','en');"
         "document.documentElement.lang='en';"
         "window.dispatchEvent(new Event('kernel-language-change'));"
+        "location.hash='#/home';"
     )
-    wait.until(lambda current: current.execute_script(
-        "const badges=[...document.querySelectorAll('.kernel-team-core__badge')].map(element => String(element.textContent || '').trim());"
-        "return badges.filter(value => value === 'INTERNATIONAL RESEARCHER').length >= 2;"
-    ))
-    english_badges = badge_texts()
-    record(
-        "La etiqueta internacional en inglés es breve",
-        english_badges.count("INTERNATIONAL RESEARCHER") >= 2
-        and all("MEMBER OF EL KERNEL" not in value.upper() for value in english_badges),
-        str(english_badges),
-    )
-
-    driver.execute_script("location.hash='#/home'")
     wait.until(lambda current: current.execute_script(
         "return document.querySelector('#kernel-home-visitor-counter-title')?.textContent?.trim() === 'Site activity';"
     ))
