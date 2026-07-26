@@ -1,0 +1,111 @@
+name: Kernel Platform Functional Gate v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'index.html'
+      - 'assets/index-*.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'core/data/**'
+      - 'platform/browser_smoke_test_v2.py'
+      - '.github/workflows/kernel-platform-functional-gate-v2.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/index-*.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'core/data/**'
+      - 'platform/browser_smoke_test_v2.py'
+      - '.github/workflows/kernel-platform-functional-gate-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  functional:
+    name: Functional verification of Xmera, Banner and Laboratory
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Show browser environment
+        run: |
+          command -v google-chrome || command -v google-chrome-stable || command -v chromium || true
+          command -v chromedriver || true
+          google-chrome --version || google-chrome-stable --version || chromium --version || true
+          chromedriver --version || true
+      - name: Validate test syntax
+        run: python -m py_compile platform/browser_smoke_test_v2.py
+      - name: Start local server
+        run: |
+          python -m http.server 4174 >/tmp/kernel-functional-v2-http.log 2>&1 &
+          echo $! > /tmp/kernel-functional-v2-http.pid
+          sleep 2
+      - name: Run functional test v2
+        env:
+          BASE_URL: http://127.0.0.1:4174
+          BROWSER_RESULT: ci-browser/browser-smoke-result-v2.json
+        run: timeout 420s python platform/browser_smoke_test_v2.py
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-functional-v2-http.pid ]; then kill "$(cat /tmp/kernel-functional-v2-http.pid)" || true; fi
+      - name: Upload functional diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-functional-v2-result
+          path: |
+            ci-browser/browser-smoke-result-v2.json
+            /tmp/kernel-functional-v2-http.log
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Persist functional diagnostic
+        if: always() && github.event_name == 'push'
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p ci-results
+          if [ -f ci-browser/browser-smoke-result-v2.json ]; then
+            cp ci-browser/browser-smoke-result-v2.json ci-results/platform-functional-v2.json
+          else
+            printf '{"passed":false,"failures":["No se generó el resultado funcional v2."]}\n' > ci-results/platform-functional-v2.json
+          fi
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('ci-results/platform-functional-v2.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['workflow_status'] = os.environ['JOB_STATUS']
+          data['run_id'] = os.environ['RUN_ID']
+          data['validated_sha'] = os.environ['VALIDATED_SHA']
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci-results/platform-functional-v2.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Record Phase 2B functional v2 result"
+          git fetch origin fase-2b-platform-integration
+          git rebase origin/fase-2b-platform-integration
+          git push origin HEAD:fase-2b-platform-integration
