@@ -1,0 +1,101 @@
+name: Kernel Phase 2B Stability Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hotfix-phase2b-stability]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-stability-bootstrap.js'
+      - 'assets/kernel-ui-stability.js'
+      - 'assets/kernel-home-2b-bridge.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'platform/stability_regression_test.py'
+      - '.github/workflows/kernel-phase2b-stability-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-stability-bootstrap.js'
+      - 'assets/kernel-ui-stability.js'
+      - 'assets/kernel-home-2b-bridge.js'
+      - 'assets/kernel-platform-bridge.js'
+      - 'assets/kernel-team-core-bridge.js'
+      - 'assets/kernel-research-core-bridge.js'
+      - 'platform/stability_regression_test.py'
+      - '.github/workflows/kernel-phase2b-stability-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  stability:
+    name: Validate icons, route transitions, bilingual state and Laboratory
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout stability branch
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/kernel-stability-bootstrap.js
+          node --check assets/kernel-ui-stability.js
+          node --check assets/kernel-home-2b-bridge.js
+          node --check assets/kernel-platform-bridge.js
+          node --check assets/kernel-team-core-bridge.js
+          node --check assets/kernel-research-core-bridge.js
+      - name: Validate test syntax
+        run: python -m py_compile platform/stability_regression_test.py
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Verify all ordered interface scripts exist
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          names = re.findall(r'"(kernel-[^"]+\.js\?v=[^"]+)"', html)
+          missing = []
+          for name in names:
+              path = Path('assets') / name.split('?', 1)[0]
+              if not path.exists():
+                  missing.append(str(path))
+          if missing:
+              raise SystemExit('Missing ordered scripts: ' + ', '.join(missing))
+          print(f'Ordered scripts verified: {len(names)}')
+          PY
+      - name: Run local platform server
+        run: |
+          python -m http.server 4175 >/tmp/kernel-stability-http.log 2>&1 &
+          echo $! > /tmp/kernel-stability-http.pid
+          sleep 2
+      - name: Execute stability regression test
+        env:
+          BASE_URL: http://127.0.0.1:4175
+          STABILITY_RESULT: ci-stability/stability-result.json
+        run: python platform/stability_regression_test.py
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-stability-http.pid ]; then kill "$(cat /tmp/kernel-stability-http.pid)" || true; fi
+      - name: Upload stability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-phase2b-stability-evidence
+          path: |
+            ci-stability/stability-result.json
+            ci-stability/screenshots/**
+            /tmp/kernel-stability-http.log
+          if-no-files-found: warn
+          retention-days: 14
