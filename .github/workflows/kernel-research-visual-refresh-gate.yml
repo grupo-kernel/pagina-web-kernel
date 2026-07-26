@@ -1,0 +1,99 @@
+name: Kernel Research Visual Refresh Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hotfix-research-typography-new-photos]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-research-visual-refresh.js'
+      - 'assets/img/researchers-20260726/**'
+      - '.github/workflows/kernel-research-visual-refresh-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-research-visual-refresh.js'
+      - 'assets/img/researchers-20260726/**'
+      - '.github/workflows/kernel-research-visual-refresh-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate research typography and nine refreshed portraits
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout hotfix
+        uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate JavaScript and loading order
+        run: |
+          node --check assets/kernel-research-visual-refresh.js
+          node <<'NODE'
+          const fs = require('node:fs');
+          const index = fs.readFileSync('index.html', 'utf8');
+          const source = fs.readFileSync('assets/kernel-research-visual-refresh.js', 'utf8');
+          const refreshPosition = index.indexOf('kernel-research-visual-refresh.js');
+          const platformPosition = index.indexOf('kernel-platform-bridge.js');
+          if (refreshPosition < 0 || platformPosition < 0 || refreshPosition > platformPosition) {
+            throw new Error('The portrait mapping must load before Kernel platform modules.');
+          }
+          const ids = [
+            'miguel-leonardo', 'natanael-urena', 'randy-leonardo',
+            'antmel-rodriguez', 'marino-brito', 'marc-kelly-jean-philippe',
+            'jose-alberto-reyes', 'alicia-cordero', 'juan-torregrosa'
+          ];
+          for (const id of ids) {
+            if (!source.includes(`"${id}"`)) throw new Error(`Missing portrait mapping: ${id}`);
+          }
+          const typographyTokens = [
+            '.kernel-research-stat span',
+            '.kernel-research-filters label',
+            '.kernel-research-filters input',
+            '.kernel-project-card h2',
+            '.kernel-project-detail',
+            '.kernel-project-note',
+            '.kernel-project-people a',
+            '.kernel-publication-card h2',
+            '.kernel-publication-authors',
+            '.kernel-publication-journal'
+          ];
+          for (const token of typographyTokens) {
+            if (!source.includes(token)) throw new Error(`Missing typography rule: ${token}`);
+          }
+          if (!source.includes('PHOTO_VERSION = "20260726"')) {
+            throw new Error('The portrait version is not fixed to 20260726.');
+          }
+          console.log('Research visual source validation: PASS');
+          NODE
+      - name: Validate the nine portrait files
+        run: |
+          files=(
+            assets/img/researchers-20260726/miguel.jpg
+            assets/img/researchers-20260726/natanael.jpg
+            assets/img/researchers-20260726/randy.jpg
+            assets/img/researchers-20260726/antmel.jpg
+            assets/img/researchers-20260726/marino.png
+            assets/img/researchers-20260726/marckelly.jpg
+            assets/img/researchers-20260726/josealberto.jpg
+            assets/img/researchers-20260726/alicia.jpg
+            assets/img/researchers-20260726/juanr.jpg
+          )
+          for image in "${files[@]}"; do
+            test -s "$image"
+            mime=$(file --mime-type -b "$image")
+            echo "$image — $mime — $(stat -c%s "$image") bytes"
+            case "$mime" in
+              image/jpeg|image/png|image/webp) ;;
+              *) echo "Invalid image type: $image ($mime)"; exit 1 ;;
+            esac
+          done
+          unique=$(sha256sum "${files[@]}" | awk '{print $1}' | sort -u | wc -l)
+          test "$unique" -eq 9
+          echo "Nine valid and distinct portraits: PASS"
