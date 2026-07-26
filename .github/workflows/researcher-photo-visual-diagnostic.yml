@@ -1,0 +1,144 @@
+name: Researcher Photo Visual Diagnostic
+
+on:
+  push:
+    branches:
+      - diagnostic/researcher-photo-names
+    paths:
+      - .github/workflows/researcher-photo-visual-diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install diagnostic dependencies
+        run: python -m pip install --disable-pip-version-check pillow selenium
+
+      - name: Build source contact sheet and metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from PIL import Image, ImageDraw, ImageFont
+
+          folder = Path('assets/img/researchers-20260726')
+          files = [
+              'miguel.jpg', 'antmel.jpg', 'natanael.jpg', 'marino.png',
+              'randy.jpg', 'marckelly.jpg', 'josealberto.jpg', 'alicia.jpg',
+              'juan-ramon.jpg'
+          ]
+          out = Path('diagnostic-output')
+          out.mkdir(exist_ok=True)
+          cell_w, cell_h = 440, 700
+          sheet = Image.new('RGB', (cell_w * 3, cell_h * 3), 'white')
+          draw = ImageDraw.Draw(sheet)
+          font = ImageFont.load_default()
+          metadata = []
+
+          for index, filename in enumerate(files):
+              path = folder / filename
+              with Image.open(path) as image:
+                  image = image.convert('RGB')
+                  width, height = image.size
+                  metadata.append({
+                      'file': filename,
+                      'width': width,
+                      'height': height,
+                      'ratio_width_height': width / height,
+                      'format': image.format
+                  })
+                  available_w = cell_w - 28
+                  available_h = cell_h - 58
+                  scale = min(available_w / width, available_h / height)
+                  resized = image.resize((max(1, round(width * scale)), max(1, round(height * scale))))
+                  x0 = (index % 3) * cell_w
+                  y0 = (index // 3) * cell_h
+                  x = x0 + (cell_w - resized.width) // 2
+                  y = y0 + 34 + (available_h - resized.height) // 2
+                  sheet.paste(resized, (x, y))
+                  draw.rectangle((x0, y0, x0 + cell_w - 1, y0 + cell_h - 1), outline='black', width=2)
+                  draw.text((x0 + 12, y0 + 10), f'{filename} — {width}×{height}', fill='black', font=font)
+
+          sheet.save(out / 'source-contact-sheet.png')
+          (out / 'source-metadata.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
+          PY
+
+      - name: Start local preview
+        run: |
+          python -m http.server 4177 >/tmp/kernel-photo-visual-http.log 2>&1 &
+          echo $! >/tmp/kernel-photo-visual-http.pid
+          sleep 2
+
+      - name: Capture rendered profiles
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('diagnostic-output')
+          options = Options()
+          for argument in ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--window-size=1440,1800']:
+              options.add_argument(argument)
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver, 35)
+          report = {}
+          try:
+              driver.get('http://127.0.0.1:4177/#/equipment')
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
+              wait.until(lambda d: d.execute_script("return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => i.complete && i.naturalWidth > 0)"))
+              driver.execute_script("document.querySelector('[data-site-header]')?.remove();")
+              driver.save_screenshot(out / 'equipment-desktop.png')
+
+              cards = driver.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')
+              card_metrics = []
+              for index, card in enumerate(cards, 1):
+                  card.screenshot(str(out / f'card-{index:02d}.png'))
+                  image = card.find_element(By.CSS_SELECTOR, '.kernel-team-core__photo img')
+                  card_metrics.append(driver.execute_script("const i=arguments[0], f=i.parentElement, ib=i.getBoundingClientRect(), fb=f.getBoundingClientRect(), s=getComputedStyle(i); return {src:i.getAttribute('src'), naturalWidth:i.naturalWidth, naturalHeight:i.naturalHeight, imageBox:{x:ib.x,y:ib.y,width:ib.width,height:ib.height}, frameBox:{x:fb.x,y:fb.y,width:fb.width,height:fb.height}, objectFit:s.objectFit, objectPosition:s.objectPosition, padding:s.padding};", image))
+              report['desktop_cards'] = card_metrics
+
+              driver.set_window_size(390, 1200)
+              driver.get('http://127.0.0.1:4177/#/equipment')
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
+              wait.until(lambda d: d.execute_script("return [...document.querySelectorAll('.kernel-team-core__photo img')].every(i => i.complete && i.naturalWidth > 0)"))
+              driver.execute_script("document.querySelector('[data-site-header]')?.remove();")
+              driver.save_screenshot(out / 'equipment-mobile.png')
+              driver.find_element(By.CSS_SELECTOR, '.kernel-team-core__card').screenshot(str(out / 'card-mobile-first.png'))
+          finally:
+              driver.quit()
+          (out / 'render-metadata.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          PY
+
+      - name: Stop local preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-photo-visual-http.pid ]; then kill "$(cat /tmp/kernel-photo-visual-http.pid)" || true; fi
+
+      - name: Upload visual diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: researcher-photo-visual-diagnostic
+          path: |
+            diagnostic-output/
+            assets/img/researchers-20260726/
+            /tmp/kernel-photo-visual-http.log
+          if-no-files-found: error
+          retention-days: 7
