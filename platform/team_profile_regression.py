@@ -64,6 +64,15 @@ try:
     diagnostics = driver.execute_script("return window.KernelTeamProfileFix.diagnostics()")
     record("Las nueve fotografías se precargan", diagnostics.get("preloaded", 0) >= 9, str(diagnostics))
 
+    visual_refresh = driver.execute_script(
+        "return window.KernelResearchVisualRefresh ? window.KernelResearchVisualRefresh.diagnostics() : null;"
+    )
+    record(
+        "La actualización visual de Investigación está activa",
+        bool(visual_refresh) and visual_refresh.get("photos") == 9 and visual_refresh.get("styleInstalled") is True,
+        str(visual_refresh),
+    )
+
     start = time.monotonic()
     driver.execute_script("location.hash='#/equipment'")
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="team-nine"]')))
@@ -79,6 +88,16 @@ try:
     record("Equipo muestra nueve tarjetas", len(driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9)
     record("Las nueve fotografías cargan correctamente", True, f"tiempo={elapsed:.2f}s")
     record("Carga de fotografías sin demora prolongada", elapsed < 4.0, f"tiempo={elapsed:.2f}s")
+
+    image_sources = driver.execute_script(
+        "return [...document.querySelectorAll('.kernel-team-core__photo img')].map(img => img.src);"
+    )
+    record(
+        "Las nueve tarjetas usan las fotografías nuevas",
+        len(image_sources) == 9 and all("/assets/img/researchers-20260726/" in source for source in image_sources),
+        json.dumps(image_sources, ensure_ascii=False),
+    )
+    record("Las nueve fotografías nuevas son diferentes", len(set(image_sources)) == 9)
 
     jose_card_text = driver.execute_script(
         "const button=document.querySelector('[data-kernel-team-open=\"jose-alberto-reyes\"]');"
@@ -190,17 +209,41 @@ try:
             driver.execute_script("return location.hash") == "#/equipment" and len(driver.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9,
         )
 
+    driver.get(f"{BASE_URL}/#/proyectos")
+    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="projects-2"]')))
+    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".kernel-project-card")))
+
+    project_measurements = {
+        "metric_label": style_number(".kernel-research-stat span", "fontSize"),
+        "filter_label": style_number(".kernel-research-filters label", "fontSize"),
+        "filter_input": style_number(".kernel-research-filters input", "fontSize"),
+        "project_title": style_number(".kernel-project-card h2", "fontSize"),
+        "project_detail": style_number(".kernel-project-detail", "fontSize"),
+        "counting_note": style_number(".kernel-project-note", "fontSize"),
+        "profile_link": style_number(".kernel-project-people a", "fontSize"),
+    }
+    record("Etiquetas métricas de Proyectos son legibles", project_measurements["metric_label"] >= 13.5, str(project_measurements))
+    record("Filtros de Proyectos son legibles", project_measurements["filter_label"] >= 13.5 and project_measurements["filter_input"] >= 14.0, str(project_measurements))
+    record("Títulos de proyectos tienen tamaño reforzado", project_measurements["project_title"] >= 17.0, str(project_measurements))
+    record("Detalles de proyectos tienen tamaño reforzado", project_measurements["project_detail"] >= 13.8, str(project_measurements))
+    record("Nota de conteo tiene tamaño reforzado", project_measurements["counting_note"] >= 14.0, str(project_measurements))
+    record("Enlaces de investigadores son legibles", project_measurements["profile_link"] >= 12.5, str(project_measurements))
+
     driver.get(f"{BASE_URL}/#/publicaciones")
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-kernel-platform-page="publications-2"]')))
     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".kernel-publication-card")))
 
     publication_title_size = style_number(".kernel-publication-card h2", "fontSize")
     publication_title_weight = style_number(".kernel-publication-card h2", "fontWeight")
+    publication_authors_size = style_number(".kernel-publication-authors", "fontSize")
     publication_authors_weight = style_number(".kernel-publication-authors", "fontWeight")
+    publication_journal_size = style_number(".kernel-publication-journal", "fontSize")
     publication_journal_weight = style_number(".kernel-publication-journal", "fontWeight")
-    record("Títulos de publicaciones con tamaño legible", publication_title_size >= 16.0, f"font-size={publication_title_size:.1f}px")
+    record("Títulos de publicaciones con tamaño legible", publication_title_size >= 17.0, f"font-size={publication_title_size:.1f}px")
     record("Títulos de publicaciones en negrita", publication_title_weight >= 800, f"font-weight={publication_title_weight:.0f}")
+    record("Autores de publicaciones con tamaño legible", publication_authors_size >= 14.0, f"font-size={publication_authors_size:.1f}px")
     record("Autores de publicaciones reforzados", publication_authors_weight >= 700, f"font-weight={publication_authors_weight:.0f}")
+    record("Revistas de publicaciones con tamaño legible", publication_journal_size >= 14.0, f"font-size={publication_journal_size:.1f}px")
     record("Revistas de publicaciones reforzadas", publication_journal_weight >= 800, f"font-weight={publication_journal_weight:.0f}")
 
     severe = [
@@ -221,7 +264,7 @@ finally:
     )
     driver.quit()
 
-print(f"\nTEAM PROFILE AND READABILITY RESULT: {'PASS' if not failures else 'FAIL'}")
+print(f"\nTEAM PROFILE, PORTRAITS AND RESEARCH READABILITY RESULT: {'PASS' if not failures else 'FAIL'}")
 for failure in failures:
     print(f"- {failure}")
 raise SystemExit(1 if failures else 0)
