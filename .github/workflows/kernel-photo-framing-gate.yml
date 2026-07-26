@@ -1,0 +1,65 @@
+name: Kernel Researcher Photo Framing Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hotfix-researcher-photo-framing]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-photo-framing-fix.js'
+      - 'platform/photo_framing_regression.py'
+      - '.github/workflows/kernel-photo-framing-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-photo-framing-fix.js'
+      - 'platform/photo_framing_regression.py'
+      - '.github/workflows/kernel-photo-framing-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate complete 4:5 researcher portraits
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout hotfix
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Validate syntax and linked asset
+        run: |
+          node --check assets/kernel-photo-framing-fix.js
+          python -m py_compile platform/photo_framing_regression.py
+          grep -q 'kernel-photo-framing-fix.js' index.html
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4177 >/tmp/kernel-photo-framing-http.log 2>&1 &
+          echo $! >/tmp/kernel-photo-framing-http.pid
+          sleep 2
+      - name: Run photo framing regression
+        env:
+          BASE_URL: http://127.0.0.1:4177
+          PHOTO_FRAMING_RESULT: ci-photo-framing/result.json
+        run: python platform/photo_framing_regression.py
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-photo-framing-http.pid ]; then kill "$(cat /tmp/kernel-photo-framing-http.pid)" || true; fi
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-photo-framing-result
+          path: |
+            ci-photo-framing/result.json
+            /tmp/kernel-photo-framing-http.log
+          if-no-files-found: warn
+          retention-days: 7
