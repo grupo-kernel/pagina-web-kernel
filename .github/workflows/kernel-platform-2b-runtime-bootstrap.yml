@@ -1,0 +1,55 @@
+name: Kernel Platform 2B Runtime Bootstrap
+
+on:
+  push:
+    branches: [fase-2b-integracion-plataforma-xmera-laboratorio]
+    paths:
+      - 'core/integration/.platform-2b-runtime-trigger'
+      - 'scripts/inject_platform_runtime.py'
+      - '.github/workflows/kernel-platform-2b-runtime-bootstrap.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.event.head_commit.message == 'Bootstrap Phase 2B platform runtime'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Phase 2B branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-integracion-plataforma-xmera-laboratorio
+          fetch-depth: 0
+      - name: Use Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inject runtime into existing patch loader
+        run: python scripts/inject_platform_runtime.py
+      - name: Verify non-destructive integration
+        run: |
+          grep -q 'assets/index-' index.html
+          grep -q 'kernel-phase1-patch.js' index.html
+          grep -q 'kernel-members-patch.js' index.html
+          grep -q 'kernel-i18n-full.js' index.html
+          grep -q 'kernel-platform-2b-runtime.js' index.html
+          test -f assets/kernel-platform-2b-runtime.js
+          test -f core/data/researchers.v2.json
+          test -f core/data/publications.v2.json
+          test -f core/data/projects.v2.json
+      - name: Refresh Phase 2B audits
+        run: |
+          python scripts/audit_platform_2b.py
+          python scripts/discover_spa_routes.py
+      - name: Commit runtime bootstrap
+        run: |
+          rm -f core/integration/.platform-2b-runtime-trigger
+          rm -f .github/workflows/kernel-platform-2b-runtime-bootstrap.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A index.html core/audits/platform-2b-baseline.json core/audits/platform-2b-route-inventory.json core/integration/.platform-2b-runtime-trigger .github/workflows/kernel-platform-2b-runtime-bootstrap.yml
+          git commit -m "Bootstrap Phase 2B platform runtime"
+          git pull --rebase origin fase-2b-integracion-plataforma-xmera-laboratorio
+          git push origin HEAD:fase-2b-integracion-plataforma-xmera-laboratorio
