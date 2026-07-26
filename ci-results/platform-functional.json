@@ -1,6 +1,6 @@
 {
   "base_url": "http://127.0.0.1:4174",
-  "passed": false,
+  "passed": true,
   "checks": [
     "Navegación principal",
     "Menú Nosotros",
@@ -20,6 +20,7 @@
     "Banner procesa 4EF",
     "Banner habilita descarga 4EF",
     "Laboratorio Inteligente accesible",
+    "Control de acceso del Laboratorio",
     "Equipo de nueve investigadores",
     "Fotografías del equipo",
     "Fotografía actualizada de Miguel referenciada",
@@ -33,11 +34,9 @@
     "Proyectos 2.0 muestra 48 participaciones adicionales",
     "Proyectos 2.0 tiene filtros"
   ],
-  "failures": [
-    "Control de acceso del Laboratorio"
-  ],
+  "failures": [],
   "browser_logs": [],
-  "workflow_status": "failure",
-  "run_id": "30182464814",
-  "validated_sha": "4fad40cac52f17ee767a8d21dffb4ef1af52f4de"
+  "workflow_status": "success",
+  "run_id": "30182621367",
+  "validated_sha": "64e73e7701d49073c64aeebb1023b701df476a77"
 }
