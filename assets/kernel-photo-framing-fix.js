@@ -4,6 +4,12 @@
   if (window.KernelPhotoFramingFix) return;
 
   const STYLE_ID = "kernel-photo-framing-styles";
+  const PHOTO_SELECTOR = [
+    ".kernel-team-core__photo img",
+    ".kernel-team-core__detail-photo img",
+    ".kernel-academic-avatar img",
+    ".kernel-academic-profile-photo img"
+  ].join(",");
 
   function installStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -20,23 +26,36 @@
       .kernel-team-core__detail-photo,
       .kernel-academic-avatar,
       .kernel-academic-profile-photo{
+        position:relative!important;
         aspect-ratio:4 / 5!important;
         height:auto!important;
+        min-height:0!important;
         overflow:hidden!important;
         box-sizing:border-box!important;
         background:#ffffff!important;
       }
 
+      /*
+       * El posicionamiento absoluto evita que la relación intrínseca de los
+       * retratos más verticales aumente la altura real del elemento <img> y
+       * deje la franja inferior fuera del marco.
+       */
       .kernel-team-core__photo img,
       .kernel-team-core__detail-photo img,
       .kernel-academic-avatar img,
       .kernel-academic-profile-photo img{
+        position:absolute!important;
+        inset:2px!important;
+        z-index:1!important;
         display:block!important;
-        width:100%!important;
-        height:100%!important;
-        max-width:100%!important;
-        max-height:100%!important;
-        padding:2px!important;
+        width:calc(100% - 4px)!important;
+        height:calc(100% - 4px)!important;
+        min-width:0!important;
+        min-height:0!important;
+        max-width:none!important;
+        max-height:none!important;
+        margin:0!important;
+        padding:0!important;
         box-sizing:border-box!important;
         object-fit:contain!important;
         object-position:center center!important;
@@ -74,19 +93,20 @@
     document.head.appendChild(style);
   }
 
+  function prepareImage(image) {
+    if (!(image instanceof HTMLImageElement)) return;
+    image.loading = "eager";
+    image.decoding = "async";
+    image.style.objectFit = "contain";
+    image.style.objectPosition = "center center";
+    image.dataset.kernelFullPortrait = "true";
+  }
+
   function normalizeImages(root = document) {
-    root.querySelectorAll?.(
-      ".kernel-team-core__photo img," +
-      ".kernel-team-core__detail-photo img," +
-      ".kernel-academic-avatar img," +
-      ".kernel-academic-profile-photo img"
-    ).forEach(image => {
-      image.loading = "eager";
-      image.decoding = "async";
-      image.style.objectFit = "contain";
-      image.style.objectPosition = "center center";
-      image.dataset.kernelFullPortrait = "true";
-    });
+    if (root instanceof Element && root.matches(PHOTO_SELECTOR)) {
+      prepareImage(root);
+    }
+    root.querySelectorAll?.(PHOTO_SELECTOR).forEach(prepareImage);
   }
 
   let scheduled = false;
@@ -100,7 +120,14 @@
     });
   }
 
-  new MutationObserver(schedule).observe(document.documentElement, {
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) normalizeImages(node);
+      }
+    }
+    schedule();
+  }).observe(document.documentElement, {
     childList: true,
     subtree: true
   });
@@ -111,12 +138,22 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPhotoFramingFix = {
-    version: "1.0.0",
+    version: "1.1.1",
     apply: schedule,
     diagnostics: () => ({
       fullPortraits: document.querySelectorAll('[data-kernel-full-portrait="true"]').length,
       objectFits: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
-        .map(image => getComputedStyle(image).objectFit)
+        .map(image => getComputedStyle(image).objectFit),
+      contained: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
+        .every(image => {
+          const imageBox = image.getBoundingClientRect();
+          const frameBox = image.parentElement?.getBoundingClientRect();
+          return frameBox &&
+            imageBox.left >= frameBox.left &&
+            imageBox.top >= frameBox.top &&
+            imageBox.right <= frameBox.right &&
+            imageBox.bottom <= frameBox.bottom;
+        })
     })
   };
 
