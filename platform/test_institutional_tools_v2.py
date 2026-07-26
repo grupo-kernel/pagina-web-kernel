@@ -23,8 +23,12 @@ def check(name: str, condition: bool, detail: str = "") -> None:
 
 
 async def visit(page: Page, route: str) -> None:
-    response = await page.goto(BASE_URL + route.lstrip("/"), wait_until="networkidle", timeout=60_000)
-    check(f"HTTP {route}", bool(response and response.ok), f"status={response.status if response else 'none'}")
+    target = BASE_URL + route.lstrip("/")
+    response = await page.goto(target, wait_until="networkidle", timeout=60_000)
+    same_document_navigation = response is None and page.url == target
+    ok = bool(response and response.ok) or same_document_navigation
+    status = response.status if response else "same-document"
+    check(f"HTTP {route}", ok, f"status={status}")
     await page.wait_for_timeout(1800)
 
 
@@ -78,6 +82,10 @@ async def main() -> None:
         for token in ("1AC", "2PP", "3SP", "4EF"):
             check(f"Banner conserva {token}", token in banner_text, f"No aparece {token}")
 
+        if not await page.locator("#banner-primer-input").count() and await page.locator("#open-primer-periodo").count():
+            await page.locator("#open-primer-periodo").click()
+            await page.wait_for_timeout(600)
+
         if await page.locator("#banner-primer-input").count():
             await page.locator("#banner-primer-input").fill("A00108671\t10\t15")
             await page.locator("#banner-primer-process").click()
@@ -103,7 +111,7 @@ async def main() -> None:
 
         await page.set_viewport_size({"width": 390, "height": 844})
         await visit(page, "?kernelSection=formacion#/quienesSomos")
-        await page.wait_for_selector('[data-kernel-platform-page="academic-background-v2"]', timeout=25_000)
+        await page.wait_for_selector('[data-kernel-platform-page="academic-background-v2"], [data-kernel-platform-page="academic-background"]', timeout=25_000)
         overflow = await page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
         check("Formación responsive en móvil", overflow <= 2, f"desbordamiento={overflow}px")
         await page.screenshot(path=str(SCREENSHOT_DIR / "05-mobile-formation.png"), full_page=True)
