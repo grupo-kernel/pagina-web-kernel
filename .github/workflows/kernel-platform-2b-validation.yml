@@ -1,0 +1,67 @@
+name: Kernel Platform 2B Validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-core-platform-bridge.js'
+      - 'assets/kernel-platform-2b-runtime.js'
+      - 'core/data/**'
+      - 'core/integration/**'
+      - 'core/audits/**'
+      - 'scripts/validate_platform_2b.py'
+      - '.github/workflows/kernel-platform-2b-validation.yml'
+  push:
+    branches: [fase-2b-integracion-plataforma-xmera-laboratorio]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate complete platform preservation and Kernel Core embedding
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+      - name: Use Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/kernel-core-platform-bridge.js
+          node --check assets/kernel-platform-2b-runtime.js
+      - name: Refresh inventories
+        run: |
+          python scripts/audit_platform_2b.py
+          python scripts/discover_spa_routes.py
+      - name: Validate Phase 2B candidate
+        run: python scripts/validate_platform_2b.py
+      - name: Confirm original SPA bundle remains untouched
+        run: |
+          git fetch origin gh-pages
+          if ! git diff --quiet origin/gh-pages -- 'assets/index-*.js' 'assets/index-*.css'; then
+            echo 'The original SPA bundle or stylesheet was modified.'
+            git diff --stat origin/gh-pages -- 'assets/index-*.js' 'assets/index-*.css'
+            exit 1
+          fi
+      - name: Upload integrated validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-platform-2b-validation
+          path: |
+            core/integration/platform-2b-manifest.json
+            core/audits/platform-2b-integration-audit.md
+            core/audits/platform-2b-baseline.json
+            core/audits/platform-2b-route-inventory.json
+          if-no-files-found: warn
+          retention-days: 14
