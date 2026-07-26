@@ -2,7 +2,8 @@
   "use strict";
 
   const STYLE_ID = "kernel-platform-bridge-styles";
-  const FORMATION_ROUTE = "formacion";
+  const FORMATION_ROUTE = "quienesSomos";
+  const FORMATION_SECTION = "formacion";
   const DATA_URL = "./core/data/researchers.v2.json";
   let researchersPromise;
   let renderTicket = 0;
@@ -66,7 +67,8 @@
 
   const routeParts = () => location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean);
   const currentRoute = () => (routeParts()[0] || "home").toLowerCase();
-  const selectedResearcherId = () => routeParts()[1] || "miguel-leonardo";
+  const isFormationRoute = () => currentRoute() === FORMATION_ROUTE.toLowerCase() && (routeParts()[1] || "").toLowerCase() === FORMATION_SECTION;
+  const selectedResearcherId = () => routeParts()[2] || "miguel-leonardo";
 
   function addStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -195,7 +197,13 @@
 
   function ensureFormationMenu() {
     const panel = document.getElementById("submenu-nosotros");
-    if (!panel || panel.querySelector('[data-kernel-route="formacion"]')) return;
+    if (!panel) return;
+    const existing = panel.querySelector('[data-kernel-route="formacion"]');
+    if (existing) {
+      const existingLabel = existing.querySelector("span");
+      if (existingLabel) existingLabel.textContent = labels().menu;
+      return;
+    }
     const reference = panel.querySelector("button[data-route]");
     const item = document.createElement("li");
     const button = document.createElement("button");
@@ -204,7 +212,7 @@
     button.className = reference?.className || "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold";
     button.innerHTML = `<i aria-hidden="true" class="bx bx-book-reader shrink-0 text-xl"></i><span>${escapeHtml(labels().menu)}</span>`;
     button.addEventListener("click", () => {
-      location.hash = `#/${FORMATION_ROUTE}`;
+      location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}`;
       document.querySelector('[data-action="close-navBar"]')?.click();
     });
     item.appendChild(button);
@@ -212,14 +220,14 @@
   }
 
   async function renderFormation() {
-    if (currentRoute() !== FORMATION_ROUTE) return;
+    if (!isFormationRoute()) return;
     const ticket = ++renderTicket;
     const main = document.getElementById("main");
     if (!main) return;
     const text = labels();
     try {
       const members = await getResearchers();
-      if (ticket !== renderTicket || currentRoute() !== FORMATION_ROUTE) return;
+      if (ticket !== renderTicket || !isFormationRoute()) return;
       const requested = selectedResearcherId();
       const selected = members.find(member => member.id === requested) || members[0];
       if (!selected) throw new Error("No researchers");
@@ -241,7 +249,7 @@
       `;
       main.querySelectorAll("[data-kernel-academic-select]").forEach(button => {
         button.addEventListener("click", () => {
-          location.hash = `#/${FORMATION_ROUTE}/${encodeURIComponent(button.dataset.kernelAcademicSelect)}`;
+          location.hash = `#/${FORMATION_ROUTE}/${FORMATION_SECTION}/${encodeURIComponent(button.dataset.kernelAcademicSelect)}`;
         });
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -255,7 +263,7 @@
   function schedule() {
     addStyles();
     ensureFormationMenu();
-    if (currentRoute() === FORMATION_ROUTE) {
+    if (isFormationRoute()) {
       [0, 60, 220].forEach(delay => window.setTimeout(renderFormation, delay));
     } else {
       const main = document.getElementById("main");
@@ -272,7 +280,7 @@
   window.KernelPlatformBridge = {
     version: "2B.1",
     dataSource: DATA_URL,
-    formationRoute: FORMATION_ROUTE,
+    formationRoute: `${FORMATION_ROUTE}/${FORMATION_SECTION}`,
     preservedRoutes: ["laboratorioKernel", "herramientas", "servicios", "diagnosticoServicios"],
     diagnostics: () => ({
       route: currentRoute(),
