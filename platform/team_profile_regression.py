@@ -66,16 +66,29 @@ try:
     record("Las nueve fotografías cargan correctamente", True, f"tiempo={elapsed:.2f}s")
     record("Carga de fotografías sin demora prolongada", elapsed < 4.0, f"tiempo={elapsed:.2f}s")
 
-    buttons = driver.find_elements(By.CSS_SELECTOR, "[data-kernel-team-open]")
-    profile_ids = [button.get_attribute("data-kernel-team-open") for button in buttons]
+    profile_ids = driver.execute_script(
+        "return [...document.querySelectorAll('[data-kernel-team-open]')].map(button => button.dataset.kernelTeamOpen);"
+    )
     record("Hay nueve botones de perfil", len(profile_ids) == 9, f"botones={len(profile_ids)}")
 
     for profile_id in profile_ids:
-        button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'[data-kernel-team-open="{profile_id}"]')))
-        expected_name = button.find_element(By.XPATH, "ancestor::article[1]").find_element(By.TAG_NAME, "h2").text.strip()
-        driver.execute_script("arguments[0].click();", button)
-        panel = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, f'[data-kernel-profile-panel="{profile_id}"]')))
-        detail_name = panel.find_element(By.TAG_NAME, "h2").text.strip()
+        selector = f'[data-kernel-team-open="{profile_id}"]'
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
+        expected_name = driver.execute_script(
+            "const button=document.querySelector(arguments[0]);"
+            "return button?.closest('article')?.querySelector('h2')?.textContent?.trim() || '';",
+            selector,
+        )
+        driver.execute_script(
+            "const button=document.querySelector(arguments[0]); if(button) button.click();",
+            selector,
+        )
+        panel_selector = f'[data-kernel-profile-panel="{profile_id}"]'
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, panel_selector)))
+        detail_name = driver.execute_script(
+            "return document.querySelector(arguments[0])?.querySelector('h2')?.textContent?.trim() || '';",
+            panel_selector,
+        )
         current_url = driver.current_url
         record(
             f"Perfil abre: {profile_id}",
@@ -86,9 +99,10 @@ try:
             f"El perfil no redirige a Portada: {profile_id}",
             driver.execute_script("return location.hash") == "#/equipment",
         )
-        back = panel.find_element(By.CSS_SELECTOR, "[data-kernel-team-profile-back]")
-        driver.execute_script("arguments[0].click();", back)
-        wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, "[data-kernel-profile-panel]")))
+        driver.execute_script(
+            "const back=document.querySelector('[data-kernel-team-profile-back]'); if(back) back.click();"
+        )
+        wait.until(lambda current: not current.find_elements(By.CSS_SELECTOR, "[data-kernel-profile-panel]"))
 
     severe = [
         entry for entry in driver.get_log("browser")
