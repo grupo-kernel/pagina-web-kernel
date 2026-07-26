@@ -42,6 +42,18 @@
         rel="stylesheet"
     >
 
+    <!-- Recursos críticos de las rutas integradas -->
+    <link rel="preload" href="./core/data/researchers.v2.json" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="./core/data/publications.v2.json" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="./core/data/projects.v2.json" as="fetch" crossorigin="anonymous">
+    <link rel="modulepreload" href="./assets/authGuard-CEzcrBkK.js">
+    <link rel="modulepreload" href="./assets/authService-CgfoSPdf.js">
+    <link rel="modulepreload" href="./assets/firebase-BzP43VG7.js">
+    <link rel="modulepreload" href="./assets/LaboratorioKernel-DQR0aCHt.js">
+
+    <!-- Este archivo se ejecuta antes del enrutador y evita que aparezca contenido antiguo durante la transición. -->
+    <script src="./assets/kernel-stability-bootstrap.js?v=20260726-1"></script>
+
     <script>
         (function cargarActualizacionesKernel() {
             const archivos = [
@@ -54,13 +66,20 @@
                 "kernel-platform-bridge.js?v=20260725-3",
                 "kernel-team-core-bridge.js?v=20260725-3",
                 "kernel-research-core-bridge.js?v=20260725-3",
-                "kernel-phase2b-compatibility.js?v=20260725-1"
+                "kernel-phase2b-compatibility.js?v=20260725-1",
+                "kernel-ui-stability.js?v=20260726-1"
             ];
 
             archivos.forEach((archivo) => {
                 const script = document.createElement("script");
                 script.src = `./assets/${archivo}`;
-                script.defer = true;
+                script.async = false;
+                script.dataset.kernelOrderedScript = "true";
+                script.addEventListener("error", () => {
+                    console.error(`No se pudo cargar el recurso de interfaz: ${archivo}`);
+                    document.documentElement.dataset.kernelAssetError = archivo;
+                    window.KernelStability?.ready?.();
+                });
                 document.head.appendChild(script);
             });
         })();
