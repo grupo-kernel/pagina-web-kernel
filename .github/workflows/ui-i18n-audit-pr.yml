@@ -39,6 +39,9 @@ jobs:
               start = source.index(marker) + len(marker)
               end = source.index("\n          PY\n", start)
               script = textwrap.dedent(source[start:end])
+              bad = 'driver.execute_script("return [...document.querySelectorAll(\'a[href*="#/"]\')].map(a=>a.getAttribute(\'href\')).filter(Boolean)")'
+              good = 'driver.execute_script("""return [...document.querySelectorAll(\'a[href*="#/"]\')].map(a=>a.getAttribute(\'href\')).filter(Boolean)""")'
+              script = script.replace(bad, good)
               namespace = {"__name__": "__main__"}
               exec(compile(script, 'ui_i18n_audit.py', 'exec'), namespace)
           except Exception:
