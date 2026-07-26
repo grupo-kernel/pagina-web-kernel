@@ -35,13 +35,15 @@ try:
                 lines: Object.keys(window.__KernelUIData?.lines || {}).length
               },
               lastLanguage: window.KernelUILanguageUnification?.diagnostics?.().lastLanguage || null,
+              currentLanguage: window.KernelUILanguageUnification?.diagnostics?.().language || null,
+              styleInstalled: Boolean(document.getElementById('kernel-ui-language-unification-styles')),
               scripts: [...document.scripts].filter(s => /kernel-ui-language/.test(s.src)).map(s => s.src)
             };
             """
         )
         snapshots.append(state)
         print(json.dumps(state, ensure_ascii=False))
-        if state.get("version") == "1.0.0":
+        if state.get("version") == "1.0.0" and state.get("lastLanguage") in {"es", "en"}:
             break
         time.sleep(1)
     logs = driver.get_log("browser")
@@ -52,5 +54,5 @@ finally:
     OUTPUT.write_text(json.dumps({"error": error, "snapshots": snapshots, "browser": logs}, ensure_ascii=False, indent=2), encoding="utf-8")
     driver.quit()
 
-if error or not snapshots or snapshots[-1].get("version") != "1.0.0":
+if error or not snapshots or snapshots[-1].get("version") != "1.0.0" or snapshots[-1].get("lastLanguage") not in {"es", "en"}:
     raise SystemExit(1)
