@@ -20,5 +20,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Find analytics endpoint and visitor code
         run: |
-          echo '=== analytics matches ==='
-          grep -RInE 'script\.google\.com|macros/s|ultimos30Dias|ultimos7Dias|visitantes|Visitantes totales|Actividad del sitio' . --exclude-dir=.git || true
+          {
+            echo '=== analytics matches ==='
+            grep -RInE 'script\.google\.com|macros/s|ultimos30Dias|ultimos7Dias|visitantes|Visitantes totales|Actividad del sitio' . --exclude-dir=.git || true
+          } > analytics-discovery.txt
+          cat analytics-discovery.txt
+      - name: Upload discovery result
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-analytics-discovery
+          path: analytics-discovery.txt
+          if-no-files-found: error
+          retention-days: 2
