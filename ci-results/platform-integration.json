@@ -1,8 +1,8 @@
 {
   "phase": "2B",
   "status": "success",
-  "run_id": "30181896110",
-  "validated_sha": "be8bfc5d938063f673568f2b91dd3611c88daa5e",
+  "run_id": "30182000475",
+  "validated_sha": "b10320961b3165f901701790352f8688ca615562",
   "preserved": ["Laboratorio Inteligente", "ITLA · Xmera", "UNAPEC · Banner", "menús", "autenticación"],
   "integrated": ["Formación académica", "Equipo de 9 investigadores", "Publicaciones 2.0", "Proyectos 2.0"]
 }
