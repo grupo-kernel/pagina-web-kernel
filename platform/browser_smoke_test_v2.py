@@ -84,6 +84,12 @@ def navigate(route: str) -> None:
     time.sleep(0.25)
 
 
+def navigate_formation() -> None:
+    print("ROUTE: quienesSomos?kernelSection=formacion", flush=True)
+    driver.get(f"{BASE_URL}/?kernelSection=formacion#/quienesSomos")
+    wait.until(lambda current: current.execute_script("return document.readyState") in {"interactive", "complete"})
+
+
 try:
     print(f"OPEN: {BASE_URL}", flush=True)
     try:
@@ -94,8 +100,18 @@ try:
     wait_id("navBar")
     report("Navegación principal", True)
     report("Menú Nosotros", bool(driver.find_elements(By.ID, "submenu-nosotros")))
-    report("Menú Investigación", bool(driver.find_elements(By.ID, "submenu-investigacion")))
+    report(
+        "Menú Investigación",
+        bool(driver.find_elements(By.ID, "submenu-investigacion"))
+        or bool(driver.find_elements(By.ID, "submenu-nuestro-trabajo")),
+    )
     report("Selector español/inglés", bool(driver.find_elements(By.ID, "kernel-language-switch")))
+
+    # La nueva portada debe estar montada dentro de la SPA conservada.
+    wait_css('[data-kernel-platform-page="home-2b"]')
+    report("Nueva portada integrada", True)
+    report("Acceso destacado al Laboratorio", bool(driver.find_elements(By.CSS_SELECTOR, '[data-kernel-home-route="laboratorioKernel"]')))
+    report("Acceso destacado a Xmera y Banner", len(driver.find_elements(By.CSS_SELECTOR, '[data-kernel-home-route="herramientas"]')) >= 2)
 
     # ITLA · Xmera: interacción con datos ficticios.
     navigate("herramientas")
@@ -157,7 +173,7 @@ try:
     report("Fotografía de Miguel", any("miguel.jpg" in (photo.get_attribute("src") or "") for photo in photos))
 
     # Formación académica integrada en Nosotros.
-    navigate("quienesSomos/formacion")
+    navigate_formation()
     wait_css('[data-kernel-platform-page="academic-background"]')
     academic_buttons = driver.find_elements(By.CSS_SELECTOR, "[data-kernel-academic-select]")
     report("Formación de nueve investigadores", len(academic_buttons) == 9, f"perfiles={len(academic_buttons)}")
