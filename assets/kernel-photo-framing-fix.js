@@ -20,23 +20,36 @@
       .kernel-team-core__detail-photo,
       .kernel-academic-avatar,
       .kernel-academic-profile-photo{
+        position:relative!important;
         aspect-ratio:4 / 5!important;
         height:auto!important;
+        min-height:0!important;
         overflow:hidden!important;
         box-sizing:border-box!important;
         background:#ffffff!important;
       }
 
+      /*
+       * El posicionamiento absoluto evita que la relación intrínseca de los
+       * retratos más verticales aumente la altura real del elemento <img> y
+       * deje la franja inferior fuera del marco.
+       */
       .kernel-team-core__photo img,
       .kernel-team-core__detail-photo img,
       .kernel-academic-avatar img,
       .kernel-academic-profile-photo img{
+        position:absolute!important;
+        inset:2px!important;
+        z-index:1!important;
         display:block!important;
-        width:100%!important;
-        height:100%!important;
-        max-width:100%!important;
-        max-height:100%!important;
-        padding:2px!important;
+        width:calc(100% - 4px)!important;
+        height:calc(100% - 4px)!important;
+        min-width:0!important;
+        min-height:0!important;
+        max-width:none!important;
+        max-height:none!important;
+        margin:0!important;
+        padding:0!important;
         box-sizing:border-box!important;
         object-fit:contain!important;
         object-position:center center!important;
@@ -111,12 +124,22 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPhotoFramingFix = {
-    version: "1.0.0",
+    version: "1.1.0",
     apply: schedule,
     diagnostics: () => ({
       fullPortraits: document.querySelectorAll('[data-kernel-full-portrait="true"]').length,
       objectFits: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
-        .map(image => getComputedStyle(image).objectFit)
+        .map(image => getComputedStyle(image).objectFit),
+      contained: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
+        .every(image => {
+          const imageBox = image.getBoundingClientRect();
+          const frameBox = image.parentElement?.getBoundingClientRect();
+          return frameBox &&
+            imageBox.left >= frameBox.left &&
+            imageBox.top >= frameBox.top &&
+            imageBox.right <= frameBox.right &&
+            imageBox.bottom <= frameBox.bottom;
+        })
     })
   };
 
