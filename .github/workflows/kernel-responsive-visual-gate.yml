@@ -107,7 +107,7 @@ jobs:
             await evaluate(`document.querySelector('[data-action="open-menu"]').click()`);
             await waitFor(`document.querySelector('#navBar') && getComputedStyle(document.querySelector('#navBar')).display !== 'none'`, 'mobile navigation drawer');
             await evaluate(`(() => { const button = [...document.querySelectorAll('button[data-action="toggle-submenu"]')].find(item => /Investigación|Research/i.test(item.textContent)); if (button) button.click(); return Boolean(button); })()`);
-            await waitFor(`document.querySelector('#submenu-investigacion') && /Líneas|Research lines/.test(document.querySelector('#submenu-investigacion').textContent)`, 'mobile Research submenu');
+            await waitFor(`document.querySelector('#submenu-nuestro-trabajo') && /Líneas|Research lines/.test(document.querySelector('#submenu-nuestro-trabajo').textContent)`, 'mobile Research submenu');
             await evaluate(`(() => { const button = [...document.querySelectorAll('button[data-action="toggle-submenu"]')].find(item => /Nosotros|About us/i.test(item.textContent)); if (button) button.click(); return Boolean(button); })()`);
             await waitFor(`document.querySelector('[data-kernel-route="formacion"]') && /Formación|Academic background/.test(document.querySelector('[data-kernel-route="formacion"]').textContent)`, 'mobile About us submenu and Formación');
             await screenshot('mobile-navigation');
