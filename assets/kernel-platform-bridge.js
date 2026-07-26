@@ -201,14 +201,14 @@
     const existing = panel.querySelector('[data-kernel-route="formacion"]');
     if (existing) {
       const existingLabel = existing.querySelector("span");
-      if (existingLabel) existingLabel.textContent = labels().menu;
+      if (existingLabel && existingLabel.textContent !== labels().menu) existingLabel.textContent = labels().menu;
       return;
     }
     const reference = panel.querySelector("button[data-route]");
     const item = document.createElement("li");
     const button = document.createElement("button");
     button.type = "button";
-    button.dataset.kernelRoute = FORMATION_ROUTE;
+    button.dataset.kernelRoute = FORMATION_SECTION;
     button.className = reference?.className || "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold";
     button.innerHTML = `<i aria-hidden="true" class="bx bx-book-reader shrink-0 text-xl"></i><span>${escapeHtml(labels().menu)}</span>`;
     button.addEventListener("click", () => {
