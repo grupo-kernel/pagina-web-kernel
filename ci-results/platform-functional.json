@@ -23,10 +23,10 @@
   "failures": [
     "Menú Investigación",
     "Control de acceso del Laboratorio",
-    "Tiempo de espera agotado: Message: \nStacktrace:\n#0 0x55758f10c44a <unknown>\n#1 0x55758eae48c9 <unknown>\n#2 0x55758eb39f32 <unknown>\n#3 0x55758eb3a181 <unknown>\n#4 0x55758eb85374 <unknown>\n#5 0x55758eb8255d <unknown>\n#6 0x55758eb2d3ff <unknown>\n#7 0x55758eb2e261 <unknown>\n#8 0x55758f0d1cc7 <unknown>\n#9 0x55758f0d04a8 <unknown>\n#10 0x55758f0bb196 <unknown>\n#11 0x55758f0d106a <unknown>\n#12 0x55758f0a3020 <unknown>\n#13 0x55758f0f7b98 <unknown>\n#14 0x55758f0f7d35 <unknown>\n#15 0x55758f10affe <unknown>\n#16 0x7ff33769caa4 <unknown>\n#17 0x7ff337729c6c <unknown>\n"
+    "Tiempo de espera agotado: Message: \nStacktrace:\n#0 0x56463c2b244a <unknown>\n#1 0x56463bc8a8c9 <unknown>\n#2 0x56463bcdff32 <unknown>\n#3 0x56463bce0181 <unknown>\n#4 0x56463bd2b374 <unknown>\n#5 0x56463bd2855d <unknown>\n#6 0x56463bcd33ff <unknown>\n#7 0x56463bcd4261 <unknown>\n#8 0x56463c277cc7 <unknown>\n#9 0x56463c2764a8 <unknown>\n#10 0x56463c261196 <unknown>\n#11 0x56463c27706a <unknown>\n#12 0x56463c249020 <unknown>\n#13 0x56463c29db98 <unknown>\n#14 0x56463c29dd35 <unknown>\n#15 0x56463c2b0ffe <unknown>\n#16 0x7f2d2269caa4 <unknown>\n#17 0x7f2d22729c6c <unknown>\n"
   ],
   "browser_logs": [],
   "workflow_status": "failure",
-  "run_id": "30182269465",
-  "validated_sha": "0f94ccae32ac6caafc3e2683b3fd7c3ea7bdc595"
+  "run_id": "30182393946",
+  "validated_sha": "f632ff002e8a84441519698b5b6b02573f233c5a"
 }
