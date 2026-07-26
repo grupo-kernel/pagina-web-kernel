@@ -9,6 +9,7 @@ on:
       - index.html
       - assets/kernel-ui-language-unification.js
       - assets/kernel-ui-language-data-*.js
+      - platform/ui_language_boot_diagnostic.py
       - platform/ui_language_unification_regression.py
       - .github/workflows/kernel-ui-language-unification-gate.yml
   pull_request:
@@ -18,6 +19,7 @@ on:
       - index.html
       - assets/kernel-ui-language-unification.js
       - assets/kernel-ui-language-data-*.js
+      - platform/ui_language_boot_diagnostic.py
       - platform/ui_language_unification_regression.py
       - .github/workflows/kernel-ui-language-unification-gate.yml
 
@@ -42,7 +44,7 @@ jobs:
         run: |
           node --check assets/kernel-ui-language-unification.js
           for file in assets/kernel-ui-language-data-*.js; do node --check "$file"; done
-          python -m py_compile platform/ui_language_unification_regression.py
+          python -m py_compile platform/ui_language_boot_diagnostic.py platform/ui_language_unification_regression.py
           grep -q 'kernel-ui-language-unification.js?v=20260726-1' index.html
           test "$(ls assets/kernel-ui-language-data-*.js | wc -l)" -eq 5
           node - <<'NODE'
@@ -73,6 +75,18 @@ jobs:
           echo $! >/tmp/kernel-ui-language-http.pid
           sleep 2
 
+      - name: Verify language layer boot
+        env:
+          BASE_URL: http://127.0.0.1:4191
+          UI_LANGUAGE_BOOT_RESULT: /tmp/kernel-ui-language-boot.json
+        run: |
+          set +e
+          python platform/ui_language_boot_diagnostic.py > /tmp/kernel-ui-language-boot.log 2>&1
+          status=$?
+          cat /tmp/kernel-ui-language-boot.log
+          cat /tmp/kernel-ui-language-boot.json || true
+          exit $status
+
       - name: Run browser regression
         env:
           BASE_URL: http://127.0.0.1:4191
@@ -96,6 +110,8 @@ jobs:
           name: kernel-unified-ui-language-result
           path: |
             ci-ui-language/
+            /tmp/kernel-ui-language-boot.json
+            /tmp/kernel-ui-language-boot.log
             /tmp/kernel-ui-language-test.log
             /tmp/kernel-ui-language-http.log
           if-no-files-found: warn
