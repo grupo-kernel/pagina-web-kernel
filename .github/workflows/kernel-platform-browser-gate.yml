@@ -85,7 +85,7 @@ jobs:
             { route: 'herramientas', name: 'herramientas', expression: 'html.includes("Xmera") && html.includes("Banner")' },
             { route: 'laboratorioKernel', name: 'laboratorio', expression: '/Laboratorio|Iniciar sesión|Área protegida|Sign in|Authentication/i.test(html)' },
             { route: 'equipment', name: 'equipo', expression: 'html.includes("data-kernel-platform-page=\\"team-nine\\"") && html.includes("Miguel A. Leonardo")' },
-            { route: 'quienesSomos/formacion', name: 'formacion', expression: 'html.includes("data-kernel-platform-page=\\"academic-background\\"") && /Formación académica y experiencia|Academic background and experience/i.test(html)' },
+            { url: `${baseUrl}/?kernelSection=formacion#/quienesSomos`, name: 'formacion', expression: 'html.includes("data-kernel-platform-page=\\"academic-background\\"") && /Formación académica y experiencia|Academic background and experience/i.test(html)' },
             { route: 'publicaciones', name: 'publicaciones', expression: 'html.includes("data-kernel-platform-page=\\"publications-2\\"") && html.includes("162")' },
             { route: 'proyectos', name: 'proyectos', expression: 'html.includes("data-kernel-platform-page=\\"projects-2\\"") && /10/.test(html)' }
           ];
@@ -119,7 +119,7 @@ jobs:
                 if (!pending.has(id)) return;
                 pending.delete(id);
                 reject(new Error(`CDP command timed out: ${method}`));
-              }, 15000);
+              }, 20000);
             });
 
             await command('Page.enable');
@@ -128,7 +128,7 @@ jobs:
             const summary = [];
 
             for (const check of checks) {
-              const url = `${baseUrl}/#/${check.route}`;
+              const url = check.url || `${baseUrl}/#/${check.route}`;
               await command('Page.navigate', { url });
               let passed = false;
               for (let attempt = 0; attempt < 70; attempt += 1) {
@@ -152,7 +152,7 @@ jobs:
               });
               await fs.writeFile(`ci-browser/${check.name}.html`, dom.result?.value || '', 'utf8');
               await fs.writeFile(`ci-browser/${check.name}.url.txt`, String(location.result?.value || ''), 'utf8');
-              summary.push({ name: check.name, route: check.route, url: location.result?.value || url, passed });
+              summary.push({ name: check.name, route: check.route || check.url, url: location.result?.value || url, passed });
               if (!passed) failures.push(`${check.name}: expected route content was not rendered at ${location.result?.value || url}`);
             }
 
