@@ -1,0 +1,43 @@
+name: Phase 2B responsive submenu test correction
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - '.github/workflows/phase2b-responsive-submenu-fix.yml'
+      - 'platform/.responsive-submenu-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Apply responsive submenu test correction'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Use the native Research submenu identifier
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/kernel-responsive-visual-gate.yml')
+          text = path.read_text(encoding='utf-8')
+          old = "            await waitFor(`document.querySelector('#submenu-investigacion') && /Líneas|Research lines/.test(document.querySelector('#submenu-investigacion').textContent)`, 'mobile Research submenu');\n"
+          new = "            await waitFor(`document.querySelector('#submenu-nuestro-trabajo') && /Líneas|Research lines/.test(document.querySelector('#submenu-nuestro-trabajo').textContent)`, 'mobile Research submenu');\n"
+          if old not in text:
+              raise SystemExit('Expected responsive submenu check not found.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          rm -f platform/.responsive-submenu-trigger
+          rm -f .github/workflows/phase2b-responsive-submenu-fix.yml
+      - name: Commit responsive test correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .github/workflows/kernel-responsive-visual-gate.yml platform/.responsive-submenu-trigger .github/workflows/phase2b-responsive-submenu-fix.yml
+          git commit -m "Apply responsive submenu test correction"
+          git push origin HEAD:fase-2b-platform-integration
