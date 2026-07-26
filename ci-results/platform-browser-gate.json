@@ -1,7 +1,7 @@
 {
   "phase": "2B",
-  "status": "failure",
-  "step_outcome": "failure",
-  "run_id": "30181025769",
-  "validated_sha": "757329649172479038d3619f803897be838396b4"
+  "status": "success",
+  "step_outcome": "success",
+  "run_id": "30181277883",
+  "validated_sha": "850df8ec8bdba6062ebab9c78b466670e1351dfc"
 }
