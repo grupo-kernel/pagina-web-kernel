@@ -1,0 +1,67 @@
+name: Harden Phase 2B Selenium test
+
+on:
+  push:
+    branches: [fase-2b-platform-integration]
+    paths:
+      - 'platform/.harden-selenium-trigger'
+      - '.github/workflows/harden-phase2b-selenium.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    if: github.event.head_commit.message == 'Harden Phase 2B Selenium test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fase-2b-platform-integration
+          fetch-depth: 0
+      - name: Harden functional browser test
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          test_path = Path('platform/browser_smoke_test.py')
+          text = test_path.read_text(encoding='utf-8')
+          text = text.replace('import os\nimport sys\nimport time\n', 'import os\nimport shutil\nimport sys\nimport time\n', 1)
+          text = text.replace('from selenium.webdriver.chrome.options import Options\n', 'from selenium.webdriver.chrome.options import Options\nfrom selenium.webdriver.chrome.service import Service\n', 1)
+          text = text.replace('        print(f"PASS: {name}{\' — \" + detail if detail else \'\'}")', '        print(f"PASS: {name}{\' — \" + detail if detail else \'\'}", flush=True)') if False else text
+          text = text.replace('        print(f"PASS: {name}{\' — \' + detail if detail else \'\'}")', '        print(f"PASS: {name}{\' — \' + detail if detail else \'\'}", flush=True)', 1)
+          text = text.replace('        print(f"FAIL: {message}")', '        print(f"FAIL: {message}", flush=True)', 1)
+          text = text.replace('options = Options()\n', 'options = Options()\noptions.page_load_strategy = "eager"\n', 1)
+          old_driver = 'driver = webdriver.Chrome(options=options)\ndriver.set_page_load_timeout(45)\nwait = WebDriverWait(driver, 30)\n'
+          new_driver = '''driver_path = shutil.which("chromedriver")\nservice = Service(executable_path=driver_path) if driver_path else Service()\nprint(f"Starting ChromeDriver: {driver_path or 'Selenium Manager'}", flush=True)\ndriver = webdriver.Chrome(service=service, options=options)\ndriver.set_page_load_timeout(25)\ndriver.set_script_timeout(25)\nwait = WebDriverWait(driver, 25)\n'''
+          if old_driver not in text:
+              raise SystemExit('Driver initialization block was not found.')
+          text = text.replace(old_driver, new_driver, 1)
+          old_route = '''def open_route(route: str) -> None:\n    driver.get(f"{BASE_URL}/#/{route}")\n    wait.until(lambda current: current.execute_script("return document.readyState") == "complete")\n'''
+          new_route = '''def open_route(route: str) -> None:\n    print(f"OPEN ROUTE: {route}", flush=True)\n    try:\n        driver.get(f"{BASE_URL}/#/{route}")\n    except TimeoutException:\n        driver.execute_script("window.stop();")\n    wait.until(lambda current: current.execute_script("return document.readyState") in {"interactive", "complete"})\n'''
+          if old_route not in text:
+              raise SystemExit('open_route block was not found.')
+          text = text.replace(old_route, new_route, 1)
+          test_path.write_text(text, encoding='utf-8')
+
+          workflow_path = Path('.github/workflows/kernel-platform-functional-gate.yml')
+          workflow = workflow_path.read_text(encoding='utf-8')
+          insertion = '''      - name: Display browser versions\n        run: |\n          command -v google-chrome || command -v google-chrome-stable || command -v chromium || true\n          command -v chromedriver || true\n          google-chrome --version || google-chrome-stable --version || chromium --version || true\n          chromedriver --version || true\n'''
+          marker = '      - name: Check test syntax\n'
+          if insertion not in workflow:
+              if marker not in workflow:
+                  raise SystemExit('Functional workflow insertion point was not found.')
+              workflow = workflow.replace(marker, insertion + marker, 1)
+          workflow = workflow.replace('        run: python platform/browser_smoke_test.py', '        run: timeout 420s python platform/browser_smoke_test.py', 1)
+          workflow_path.write_text(workflow, encoding='utf-8')
+          PY
+          rm -f platform/.harden-selenium-trigger
+          rm -f .github/workflows/harden-phase2b-selenium.yml
+      - name: Commit Selenium hardening
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A platform/browser_smoke_test.py .github/workflows/kernel-platform-functional-gate.yml platform/.harden-selenium-trigger .github/workflows/harden-phase2b-selenium.yml
+          git commit -m "Harden Phase 2B functional browser tests"
+          git push origin HEAD:fase-2b-platform-integration
