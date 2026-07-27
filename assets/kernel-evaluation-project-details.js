@@ -143,7 +143,22 @@
     const titles = new Set([normalize(record.title), normalize(record.title_en)]);
     return [...document.querySelectorAll(".kernel-project-card")].find(card => {
       const title = normalize(card.querySelector("h2")?.textContent);
-      return titles.has(title);
+      return titles.has(title) || card.dataset.kernelProjectId === record.id;
+    });
+  }
+
+  function signature(record) {
+    return JSON.stringify({
+      language: language(),
+      id: record.id,
+      title: localized(record, "title"),
+      description: localized(record, "description"),
+      institution: record.institution || "",
+      duration: record.duration_months || null,
+      budget: record.budget || null,
+      program: record.program || "",
+      members: record.member_ids || [],
+      external: record.external_collaborators || []
     });
   }
 
@@ -151,12 +166,22 @@
     const card = projectCard(record);
     if (!card) return false;
 
+    const desiredSignature = signature(record);
+    if (
+      card.dataset.kernelEvaluationSignature === desiredSignature &&
+      card.querySelector("[data-kernel-project-overview]") &&
+      card.querySelectorAll(".kernel-project-detail").length === 6
+    ) {
+      return true;
+    }
+
     const t = labels();
     card.dataset.kernelEvaluationProject = "true";
     card.dataset.kernelProjectId = record.id;
 
     const heading = card.querySelector("h2");
-    if (heading) heading.textContent = localized(record, "title");
+    const desiredTitle = localized(record, "title");
+    if (heading && heading.textContent !== desiredTitle) heading.textContent = desiredTitle;
 
     let overview = card.querySelector("[data-kernel-project-overview]");
     if (!overview) {
@@ -194,7 +219,7 @@
         memberLabel.dataset.kernelProjectMemberLabel = "true";
         people.insertAdjacentElement("beforebegin", memberLabel);
       }
-      memberLabel.textContent = t.kernelMembers;
+      if (memberLabel.textContent !== t.kernelMembers) memberLabel.textContent = t.kernelMembers;
     }
 
     const external = [...card.querySelectorAll(".kernel-publication-authors")]
@@ -202,9 +227,11 @@
     if (external) {
       external.classList.add("kernel-project-other-members");
       const strong = external.querySelector("strong");
-      if (strong) strong.textContent = `${t.otherMembers}:`;
+      const desiredLabel = `${t.otherMembers}:`;
+      if (strong && strong.textContent !== desiredLabel) strong.textContent = desiredLabel;
     }
 
+    card.dataset.kernelEvaluationSignature = desiredSignature;
     return true;
   }
 
@@ -229,7 +256,11 @@
 
   new MutationObserver(mutations => {
     if (route() !== "proyectos") return;
-    if (mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+    const projectCardsAdded = mutations.some(mutation => [...mutation.addedNodes].some(node =>
+      node.nodeType === Node.ELEMENT_NODE &&
+      (node.matches?.(".kernel-project-card,.kernel-project-list") || node.querySelector?.(".kernel-project-card"))
+    ));
+    if (projectCardsAdded) schedule();
   }).observe(document.documentElement, { childList: true, subtree: true });
 
   window.addEventListener("hashchange", schedule);
@@ -239,7 +270,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelEvaluationProjectDetails = {
-    version: "1.0.0",
+    version: "1.1.0",
     apply,
     diagnostics: () => ({
       route: route(),
