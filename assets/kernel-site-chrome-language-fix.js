@@ -29,7 +29,10 @@
     "Solicitar diagnóstico": "Request an assessment"
   });
 
+  const RIGHTS_ES = "Todos los derechos reservados.";
+  const RIGHTS_EN = "All rights reserved.";
   const ORIGINAL = new WeakMap();
+  const COMPOSITE_ORIGINAL = new WeakMap();
   let applying = false;
   let timer = 0;
 
@@ -41,18 +44,17 @@
 
   function isTranslatable(value) {
     const clean = normalize(value);
-    return Boolean(MAP[clean]) || clean.includes("Todos los derechos reservados.") || clean.includes("All rights reserved.");
+    return Boolean(MAP[clean]) || clean.includes(RIGHTS_ES) || clean.includes(RIGHTS_EN);
   }
 
   function translateValue(original, lang) {
     const clean = normalize(original);
     if (MAP[clean]) return lang === "en" ? MAP[clean] : original;
-    if (lang === "en") return String(original).replace("Todos los derechos reservados.", "All rights reserved.");
-    return original;
+    if (lang === "en") return String(original).replace(RIGHTS_ES, RIGHTS_EN);
+    return String(original).replace(RIGHTS_EN, RIGHTS_ES);
   }
 
-  function translateRoot(root) {
-    if (!root) return;
+  function translateTextNodes(root, lang) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         return isTranslatable(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
@@ -60,16 +62,41 @@
     });
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
-    const lang = language();
     nodes.forEach(node => {
       if (!ORIGINAL.has(node)) {
         const current = node.nodeValue || "";
-        ORIGINAL.set(node, current.replace("All rights reserved.", "Todos los derechos reservados."));
+        ORIGINAL.set(node, current.replace(RIGHTS_EN, RIGHTS_ES));
       }
       const original = ORIGINAL.get(node) || "";
       const replacement = translateValue(original, lang);
       if (node.nodeValue !== replacement) node.nodeValue = replacement;
     });
+  }
+
+  function translateCompositeRights(root, lang) {
+    const candidates = [...root.querySelectorAll("p,small,span,div")].filter(element => {
+      const text = normalize(element.textContent);
+      return text.includes(RIGHTS_ES) || text.includes(RIGHTS_EN);
+    });
+    const target = candidates.find(element => ![...element.children].some(child => {
+      const text = normalize(child.textContent);
+      return text.includes(RIGHTS_ES) || text.includes(RIGHTS_EN);
+    }));
+    if (!target) return;
+
+    if (!COMPOSITE_ORIGINAL.has(target)) {
+      COMPOSITE_ORIGINAL.set(target, String(target.textContent || "").replace(RIGHTS_EN, RIGHTS_ES));
+    }
+    const original = COMPOSITE_ORIGINAL.get(target) || "";
+    const next = lang === "en" ? original.replace(RIGHTS_ES, RIGHTS_EN) : original;
+    if (target.textContent !== next) target.textContent = next;
+  }
+
+  function translateRoot(root) {
+    if (!root) return;
+    const lang = language();
+    translateTextNodes(root, lang);
+    translateCompositeRights(root, lang);
   }
 
   function apply() {
@@ -107,7 +134,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSiteChromeLanguageFix = {
-    version: "1.1.0",
+    version: "1.2.0",
     apply,
     diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length })
   };
