@@ -8,6 +8,7 @@
   const JOSE_NAME = "Jose Alberto Reyes Reyes";
   const JOSE_DEGREE = "Ph.D.";
   let timer = 0;
+  let applying = false;
 
   function installStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -46,12 +47,25 @@
     document.head.appendChild(style);
   }
 
-  function normalizeName(value, isJose = false) {
+  const escapeRegExp = value => String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  function normalizeName(value, isJose = false, degree = "") {
     let text = String(value || "")
       .replace(/José Alberto Reyes Reyes/g, JOSE_NAME)
-      .replace(/(?:\s*Ph\.D\.)+/gi, "")
       .replace(/\s+/g, " ")
       .trim();
+
+    const cleanDegree = String(degree || "").replace(/\s+/g, " ").trim();
+    if (cleanDegree) {
+      const escapedDegree = escapeRegExp(cleanDegree).replace(/\\ /g, "\\s+");
+      text = text.replace(new RegExp(`(?:\\s+${escapedDegree})+$`, "i"), "").trim();
+    }
+
+    text = text
+      .replace(/(?:\s+(?:Ph\.?D\.?|M\.?Sc\.?|MSc|B\.?Sc\.?|M\.?A\.?|Dr\.?))+$/gi, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
     if (isJose) text = JOSE_NAME;
     return text;
   }
@@ -67,8 +81,9 @@
   function normalizeHeading(heading, name, degree) {
     if (!heading || !name || !degree) return;
     const expected = `${name} ${degree}`;
+    const current = heading.textContent.replace(/\s+/g, " ").trim();
     const inline = heading.querySelectorAll('[data-kernel-degree-inline="true"]');
-    if (heading.textContent.replace(/\s+/g, " ").trim() === expected && inline.length === 1) return;
+    if (current === expected && inline.length === 1) return;
     heading.replaceChildren(document.createTextNode(`${name} `), degreeSpan(degree));
   }
 
@@ -85,8 +100,9 @@
       if (!heading || !degreeBlock) return;
       const researcherId = card.querySelector("[data-kernel-team-open]")?.dataset.kernelTeamOpen || "";
       const isJose = researcherId === JOSE_ID;
-      const degree = isJose ? JOSE_DEGREE : String(degreeBlock.textContent || "").trim();
-      const name = normalizeName(heading.textContent, isJose);
+      const degree = isJose ? JOSE_DEGREE : String(degreeBlock.textContent || "").replace(/\s+/g, " ").trim();
+      if (!degree) return;
+      const name = normalizeName(heading.textContent, isJose, degree);
       normalizeHeading(heading, name, degree);
       if (isJose && degreeBlock.textContent !== JOSE_DEGREE) degreeBlock.textContent = JOSE_DEGREE;
       degreeBlock.dataset.kernelDegreeMerged = "true";
@@ -99,9 +115,9 @@
       if (!heading) return;
       const researcherId = profile.dataset.kernelProfilePanel || new URLSearchParams(location.search).get("kernelProfile") || "";
       const isJose = researcherId === JOSE_ID;
-      const degree = isJose ? JOSE_DEGREE : String(heading.querySelector("small,[data-kernel-degree-inline]")?.textContent || "").trim();
+      const degree = isJose ? JOSE_DEGREE : String(heading.querySelector("small,[data-kernel-degree-inline]")?.textContent || "").replace(/\s+/g, " ").trim();
       if (!degree) return;
-      const name = normalizeName(heading.textContent, isJose);
+      const name = normalizeName(heading.textContent, isJose, degree);
       normalizeHeading(heading, name, degree);
       if (isJose) {
         profile.querySelectorAll("li").forEach(item => {
@@ -119,8 +135,9 @@
       if (!strong || !degreeLine) return;
       const researcherId = button.dataset.kernelAcademicSelect || "";
       const isJose = researcherId === JOSE_ID;
-      const degree = isJose ? JOSE_DEGREE : String(degreeLine.textContent || "").trim();
-      const name = normalizeName(strong.textContent, isJose);
+      const degree = isJose ? JOSE_DEGREE : String(degreeLine.textContent || "").replace(/\s+/g, " ").trim();
+      if (!degree) return;
+      const name = normalizeName(strong.textContent, isJose, degree);
       normalizeHeading(strong, name, degree);
       degreeLine.dataset.kernelAcademicDegreeHidden = "true";
     });
@@ -131,8 +148,9 @@
       if (!heading || !degreeBlock) return;
       const researcherId = profile.dataset.kernelResearcher || "";
       const isJose = researcherId === JOSE_ID;
-      const degree = isJose ? JOSE_DEGREE : String(degreeBlock.textContent || "").trim();
-      const name = normalizeName(heading.textContent, isJose);
+      const degree = isJose ? JOSE_DEGREE : String(degreeBlock.textContent || "").replace(/\s+/g, " ").trim();
+      if (!degree) return;
+      const name = normalizeName(heading.textContent, isJose, degree);
       normalizeHeading(heading, name, degree);
       if (isJose && degreeBlock.textContent !== JOSE_DEGREE) degreeBlock.textContent = JOSE_DEGREE;
       degreeBlock.dataset.kernelDegreeMerged = "true";
@@ -146,19 +164,26 @@
   }
 
   function apply() {
-    installStyles();
-    correctJoseText();
-    mergeCardDegrees();
-    mergeProfileDegrees();
-    mergeAcademicDegrees();
+    if (applying) return;
+    applying = true;
+    try {
+      installStyles();
+      correctJoseText();
+      mergeCardDegrees();
+      mergeProfileDegrees();
+      mergeAcademicDegrees();
+    } finally {
+      applying = false;
+    }
   }
 
   function schedule() {
     window.clearTimeout(timer);
-    timer = window.setTimeout(apply, 35);
+    timer = window.setTimeout(apply, 45);
   }
 
   new MutationObserver(mutations => {
+    if (applying) return;
     if (mutations.some(mutation => mutation.addedNodes.length)) schedule();
   }).observe(document.documentElement, { childList: true, subtree: true });
   window.addEventListener("hashchange", schedule);
@@ -167,9 +192,13 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelNameDegreeFix = {
-    version: "1.1.0",
+    version: "1.2.0",
     jose: { id: JOSE_ID, name: JOSE_NAME, degree: JOSE_DEGREE },
-    apply
+    apply,
+    diagnostics: () => ({
+      duplicateInlineDegrees: [...document.querySelectorAll(".kernel-team-core__card h2")]
+        .filter(heading => /(?:Ph\.?D\.?|M\.?Sc\.?)\s+(?:Ph\.?D\.?|M\.?Sc\.?)/i.test(heading.textContent)).length
+    })
   };
 
   apply();
