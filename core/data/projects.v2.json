@@ -40,48 +40,37 @@
     }
   ],
   "proposals": [
-  {
-    "id": "fondocyt-transporte-nutrientes",
-    "order": 1,
-    "title": "Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
-    "title_en": "Design and analysis of high-order iterative methods for solving nonlinear PDEs applied to nutrient-transport modelling in biological substrates",
-    "status": "under-review",
-    "program": "FONDOCyT / MESCyT",
-    "duration_months": 30,
-    "budget": {
-      "amount": 11901975.84,
-      "currency": "DOP"
+    {
+      "id":"fondocyt-transporte-nutrientes",
+      "order":1,
+      "title":"Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",
+      "title_en":"High-order iterative methods for solving nonlinear PDEs and their application to modelling nutrient transport in biological substrates",
+      "status":"under-review",
+      "program":"FONDOCyT 2025–2026 / MESCyT",
+      "institution":"Universidad APEC (UNAPEC)",
+      "duration_months":30,
+      "budget":{"amount":11955975.84,"currency":"DOP","fondocyt":9115545.17,"counterpart":2840430.67},
+      "member_ids":["miguel-leonardo","natanael-urena"],
+      "external_collaborators":["Neel Lobatchewski Báez Ureña","Juan Ramón Torregrosa Sánchez","Yaset Rodríguez Rodríguez","Luis De Francisco"],
+      "description":"El proyecto desarrollará y analizará métodos iterativos de alto orden para resolver EDPs no lineales que modelan la difusión y el transporte de nutrientes en sustratos biológicos. Integra modelización matemática, análisis de convergencia y estabilidad, implementación computacional y validación experimental con sustratos y plántulas, con aplicación al estudio de esquemas de fertirrigación para el cultivo de tomate.",
+      "description_en":"The project will develop and analyse high-order iterative methods for solving nonlinear PDEs that model nutrient diffusion and transport in biological substrates. It combines mathematical modelling, convergence and stability analysis, computational implementation, and experimental validation with substrates and seedlings, with an application to fertigation schemes for tomato cultivation.",
+      "verification":"documented-official-proposal"
     },
-    "member_ids": [
-      "miguel-leonardo",
-      "natanael-urena"
-    ],
-    "external_collaborators": [
-      "Neel Lobatchewski Báez Ureña"
-    ],
-    "verification": "documented-internal-record"
-  },
-  {
-    "id": "fondocyt-optimizacion-hibrida-redes-econometria",
-    "order": 2,
-    "title": "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
-    "title_en": "Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
-    "status": "under-review",
-    "program": "FONDOCyT / MESCyT",
-    "duration_months": null,
-    "budget": {
-      "amount": null,
-      "currency": "DOP"
-    },
-    "member_ids": [
-      "natanael-urena",
-      "miguel-leonardo",
-      "antmel-rodriguez"
-    ],
-    "external_collaborators": [],
-    "description": "Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
-    "description_en": "Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
-    "verification": "documented-official-proposal"
-  }
-]
+    {
+      "id":"fondocyt-optimizacion-hibrida-redes-econometria",
+      "order":2,
+      "title":"Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
+      "title_en":"Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
+      "status":"under-review",
+      "program":"FONDOCyT 2025–2026 / MESCyT",
+      "institution":"Universidad Autónoma de Santo Domingo (UASD)",
+      "duration_months":30,
+      "budget":{"amount":9790999.20,"currency":"DOP","fondocyt":7647972.35,"counterpart":2143026.85},
+      "member_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
+      "external_collaborators":["Alicia Cordero Barbero","Juan Ramón Torregrosa Sánchez"],
+      "description":"El proyecto diseñará y analizará una familia de métodos híbridos de optimización para problemas de alta dimensionalidad. Integra estructuras cuasi-Newton multipaso, pasos tipo Newton o Traub, búsquedas lineales, actualizaciones BFGS y DFP, regiones de confianza, funciones peso y variantes de memoria limitada, con validación en redes neuronales convolucionales y en modelización econométrica, financiera y actuarial.",
+      "description_en":"The project will design and analyse a family of hybrid optimization methods for high-dimensional problems. It combines multistep quasi-Newton structures, Newton- or Traub-type steps, line searches, BFGS and DFP updates, trust regions, weight functions, and limited-memory variants, with validation in convolutional neural networks and econometric, financial, and actuarial modelling.",
+      "verification":"documented-official-proposal"
+    }
+  ]
 }
