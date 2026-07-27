@@ -76,9 +76,7 @@ def set_language(language: str) -> None:
 
 
 def wait_route_ready(route: str) -> None:
-    if route == "home":
-        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '[data-kernel-platform-page="home-2b"]'))
-    elif route == "equipment":
+    if route == "equipment":
         wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9)
     elif route == "laboratorioKernel":
         wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, "#main form, #main button"))
@@ -86,8 +84,6 @@ def wait_route_ready(route: str) -> None:
         wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '#main button[aria-pressed="true"]'))
     elif route == "herramientas":
         wait.until(lambda current: current.find_elements(By.ID, "tab-xmera") and current.find_elements(By.ID, "tab-banner"))
-    elif route == "quienesSomos":
-        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '[data-kernel-platform-page="who-we-are"]'))
     elif route == "lineas":
         wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, ".lineas-shell"))
     elif route == "proyectos":
@@ -99,7 +95,7 @@ def wait_route_ready(route: str) -> None:
 def open_route(route: str, language: str = "en", expected: str | None = None) -> None:
     driver.get(f"{BASE_URL}/#/{route}")
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
-    wait.until(lambda current: current.execute_script("return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer)"))
+    wait.until(lambda current: current.execute_script("return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelUiI18nWatchdog)"))
     set_language(language)
     wait.until(
         lambda current: current.execute_script(
@@ -107,10 +103,10 @@ def open_route(route: str, language: str = "en", expected: str | None = None) ->
         )
     )
     wait_route_ready(route)
-    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle();")
+    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle(); window.KernelUiI18nWatchdog.apply();")
     if expected:
         WebDriverWait(driver, 15).until(lambda current: expected in body_text())
-    time.sleep(0.45)
+    time.sleep(0.55)
 
 
 def color_of(element) -> str:
@@ -157,11 +153,16 @@ try:
             details["xmera_initial"] = color_of(xmera)
             driver.execute_script("arguments[0].click()", banner)
             WebDriverWait(driver, 5).until(lambda current: banner.get_attribute("aria-selected") == "true")
+            WebDriverWait(driver, 10).until(lambda current: "Grade Publishing Generator" in body_text())
+            time.sleep(0.65)
             details["banner_after_click"] = color_of(banner)
             details["xmera_after_click"] = color_of(xmera)
+            details["banner_english"] = "Grade Publishing Generator" in body_text()
+            details["banner_spanish_present"] = "Generador de Publicaciones de Calificaciones" in body_text()
             ok = ok and details["xmera_initial"] == "rgb(15, 91, 93)"
             ok = ok and details["banner_after_click"] == "rgb(15, 91, 93)"
             ok = ok and details["xmera_after_click"] == "rgb(255, 255, 255)"
+            ok = ok and bool(details["banner_english"]) and not bool(details["banner_spanish_present"])
 
         elif route == "laboratorioKernel":
             sign_in = next(
