@@ -53,7 +53,8 @@
 
       await withTimeout(Promise.all([
         window.KernelUiI18nFinalizer?.settle?.(),
-        window.KernelLabNewsLanguage?.ready?.()
+        window.KernelLabNewsLanguage?.ready?.(),
+        window.KernelUiI18nUnification?.ready?.()
       ]));
 
       await call(() => window.KernelUiI18nUnification?.apply?.());
@@ -61,6 +62,7 @@
       await call(() => window.KernelToolsEnglishContent?.apply?.());
       await call(() => window.KernelTeamLanguageFix?.apply?.());
       await call(() => window.KernelLabNewsLanguage?.apply?.());
+      await call(() => window.KernelLabNewsPartialFix?.apply?.());
       await call(() => window.KernelSiteChromeLanguageFix?.apply?.());
       await call(() => window.KernelDataAffiliationsProjectsFix?.apply?.());
       await call(() => window.KernelNameDegreeFix?.apply?.());
@@ -68,6 +70,7 @@
       const language = String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase();
       if (language !== "en") await call(() => window.KernelSpanishRestoration?.apply?.());
 
+      await call(() => window.KernelLabNewsPartialFix?.apply?.());
       await call(() => window.KernelSiteChromeLanguageFix?.apply?.());
       await call(() => window.KernelDataAffiliationsProjectsFix?.apply?.());
       await nextFrame();
@@ -95,7 +98,7 @@
   document.addEventListener("DOMContentLoaded", () => schedule(25));
 
   window.KernelStableLanguage = {
-    version: "1.0.0",
+    version: "1.1.0",
     applyAll,
     schedule,
     diagnostics: () => ({ generation, running: Boolean(running), polling: false })
