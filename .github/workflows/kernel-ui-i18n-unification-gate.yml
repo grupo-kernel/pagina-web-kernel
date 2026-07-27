@@ -6,9 +6,14 @@ on:
     branches: [agent/ui-i18n-unification]
     paths:
       - 'index.html'
+      - 'assets/kernel-i18n-full.js'
+      - 'assets/kernel-name-degree-fix.js'
       - 'assets/kernel-ui-i18n-unification.js'
       - 'assets/kernel-ui-i18n-finalizer.js'
+      - 'assets/kernel-ui-i18n-watchdog.js'
+      - 'assets/kernel-tools-english-content.js'
       - 'assets/kernel-tools-tab-state-fix.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
@@ -17,9 +22,14 @@ on:
     branches: [gh-pages]
     paths:
       - 'index.html'
+      - 'assets/kernel-i18n-full.js'
+      - 'assets/kernel-name-degree-fix.js'
       - 'assets/kernel-ui-i18n-unification.js'
       - 'assets/kernel-ui-i18n-finalizer.js'
+      - 'assets/kernel-ui-i18n-watchdog.js'
+      - 'assets/kernel-tools-english-content.js'
       - 'assets/kernel-tools-tab-state-fix.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
@@ -44,9 +54,14 @@ jobs:
 
       - name: Validate assets
         run: |
+          node --check assets/kernel-i18n-full.js
+          node --check assets/kernel-name-degree-fix.js
           node --check assets/kernel-ui-i18n-unification.js
           node --check assets/kernel-ui-i18n-finalizer.js
+          node --check assets/kernel-ui-i18n-watchdog.js
+          node --check assets/kernel-tools-english-content.js
           node --check assets/kernel-tools-tab-state-fix.js
+          node --check assets/kernel-site-chrome-language-fix.js
           node --check assets/kernel-researcher-photo-source-stability.js
           python -m py_compile platform/test_ui_i18n_unification.py
           python - <<'PY'
@@ -60,12 +75,21 @@ jobs:
               total += len(data)
 
           index = Path('index.html').read_text(encoding='utf-8')
-          assert total >= 590, total
-          assert 'kernel-ui-i18n-unification.js' in index
-          assert 'kernel-ui-i18n-finalizer.js' in index
-          assert 'kernel-tools-tab-state-fix.js' in index
-          assert 'kernel-researcher-photo-source-stability.js' in index
-          print({'translations': total})
+          assert total >= 615, total
+          required = [
+              'kernel-i18n-full.js',
+              'kernel-name-degree-fix.js',
+              'kernel-ui-i18n-unification.js',
+              'kernel-ui-i18n-finalizer.js',
+              'kernel-ui-i18n-watchdog.js',
+              'kernel-tools-english-content.js',
+              'kernel-tools-tab-state-fix.js',
+              'kernel-site-chrome-language-fix.js',
+              'kernel-researcher-photo-source-stability.js',
+          ]
+          for asset in required:
+              assert asset in index, asset
+          print({'translations': total, 'assets': len(required)})
           PY
 
       - name: Install Selenium
