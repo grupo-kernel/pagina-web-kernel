@@ -18,6 +18,7 @@ on:
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
+      - 'platform/test_ui_i18n_unification_v2.py'
       - '.github/workflows/kernel-ui-i18n-unification-gate.yml'
   pull_request:
     branches: [gh-pages]
@@ -35,6 +36,7 @@ on:
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
+      - 'platform/test_ui_i18n_unification_v2.py'
       - '.github/workflows/kernel-ui-i18n-unification-gate.yml'
 
 permissions:
@@ -67,6 +69,7 @@ jobs:
           node --check assets/kernel-team-language-fix.js
           node --check assets/kernel-researcher-photo-source-stability.js
           python -m py_compile platform/test_ui_i18n_unification.py
+          python -m py_compile platform/test_ui_i18n_unification_v2.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -111,7 +114,7 @@ jobs:
           UI_I18N_RESULT_DIR: ci-ui-i18n
         run: |
           set -o pipefail
-          python platform/test_ui_i18n_unification.py 2>&1 | tee /tmp/kernel-ui-i18n-test.log
+          python platform/test_ui_i18n_unification_v2.py 2>&1 | tee /tmp/kernel-ui-i18n-test.log
 
       - name: Stop controlled preview
         if: always()
