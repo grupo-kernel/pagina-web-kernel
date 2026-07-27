@@ -1,0 +1,145 @@
+name: Live Researcher Photo Background Verification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [diagnostic/live-photo-background-verification]
+    paths:
+      - '.github/workflows/live-photo-background-verification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify public researcher photo backgrounds
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check selenium
+      - name: Inspect deployed public portraits
+        run: |
+          mkdir -p live-photo-background-verification
+          python - <<'PY'
+          import json
+          import time
+          import traceback
+          from pathlib import Path
+
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('live-photo-background-verification')
+          report = {'checks': {}, 'failures': [], 'exception': None}
+          expected = 'rgb(7, 24, 32)'
+
+          options = Options()
+          for argument in ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--window-size=1440,1800']:
+              options.add_argument(argument)
+          options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver, 90)
+
+          def save():
+              (out / 'result.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
+
+          def record(name, condition, detail=None):
+              report['checks'][name] = {'ok': bool(condition), 'detail': detail}
+              if not condition:
+                  report['failures'].append(name)
+              print(('PASS' if condition else 'FAIL') + ': ' + name + (f' — {detail}' if detail is not None else ''))
+              save()
+
+          try:
+              ready = False
+              for attempt in range(12):
+                  driver.get(f'https://www.grupoelkernel.com/?portraitBackground={int(time.time()*1000)}#/equipment')
+                  wait.until(lambda d: d.execute_script('return document.readyState') == 'complete')
+                  try:
+                      WebDriverWait(driver, 30).until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__photo img')) == 9)
+                  except Exception:
+                      time.sleep(5)
+                      continue
+                  version = driver.execute_script('return window.KernelPhotoFramingFix?.version || null')
+                  if version == '1.1.2':
+                      ready = True
+                      break
+                  time.sleep(10)
+
+              version = driver.execute_script('return window.KernelPhotoFramingFix?.version || null')
+              record('Public site loads portrait fix 1.1.2', ready and version == '1.1.2', version)
+
+              data = driver.execute_script('''
+                return [...document.querySelectorAll('.kernel-team-core__photo img')].map((image, index) => {
+                  const frame = image.parentElement;
+                  const imageStyle = getComputedStyle(image);
+                  const frameStyle = getComputedStyle(frame);
+                  return {
+                    index,
+                    alt: image.alt,
+                    imageBackground: imageStyle.backgroundColor,
+                    frameBackground: frameStyle.backgroundColor,
+                    objectFit: imageStyle.objectFit,
+                    loaded: image.complete && image.naturalWidth > 0
+                  };
+                });
+              ''')
+              record('Nine public researcher portraits are present', len(data) == 9, data)
+              record('All portrait images use the dark photo background', len(data) == 9 and all(item['imageBackground'] == expected for item in data), data)
+              record('All portrait frames use the dark photo background', len(data) == 9 and all(item['frameBackground'] == expected for item in data), data)
+              record('No portrait retains a white CSS background', all(item['imageBackground'] != 'rgb(255, 255, 255)' and item['frameBackground'] != 'rgb(255, 255, 255)' for item in data), data)
+              record('All portraits remain complete with contain', len(data) == 9 and all(item['objectFit'] == 'contain' and item['loaded'] for item in data), data)
+
+              driver.save_screenshot(str(out / 'team-portraits-dark-background.png'))
+
+              first = driver.find_element(By.CSS_SELECTOR, '[data-kernel-team-open]')
+              driver.execute_script('arguments[0].click()', first)
+              WebDriverWait(driver, 30).until(lambda d: d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__detail-photo img'))
+              detail = driver.execute_script('''
+                const image = document.querySelector('.kernel-team-core__detail-photo img');
+                return {
+                  imageBackground: getComputedStyle(image).backgroundColor,
+                  frameBackground: getComputedStyle(image.parentElement).backgroundColor,
+                  objectFit: getComputedStyle(image).objectFit
+                };
+              ''')
+              record('Complete profile portrait also has no white background', detail['imageBackground'] == expected and detail['frameBackground'] == expected and detail['objectFit'] == 'contain', detail)
+              driver.save_screenshot(str(out / 'complete-profile-dark-background.png'))
+
+              severe = [entry for entry in driver.get_log('browser') if entry.get('level') == 'SEVERE' and 'favicon' not in entry.get('message', '').lower()]
+              record('No severe JavaScript errors', not severe, severe)
+
+          except Exception as error:
+              report['exception'] = {
+                  'type': type(error).__name__,
+                  'message': str(error),
+                  'traceback': traceback.format_exc(),
+                  'url': driver.current_url,
+              }
+              report['failures'].append('exception')
+              save()
+              try:
+                  driver.save_screenshot(str(out / 'exception.png'))
+              except Exception:
+                  pass
+          finally:
+              save()
+              driver.quit()
+
+          print(json.dumps(report, indent=2, ensure_ascii=False))
+          if report['failures']:
+              raise SystemExit('Live photo background failures: ' + ', '.join(dict.fromkeys(report['failures'])))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-photo-background-verification
+          path: live-photo-background-verification/
+          if-no-files-found: error
+          retention-days: 7
