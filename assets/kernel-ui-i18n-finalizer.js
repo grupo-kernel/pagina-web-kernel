@@ -14,6 +14,7 @@
   let loadPromise = null;
   let applying = false;
   let timer = 0;
+  let settleGeneration = 0;
 
   const normalize = value => String(value ?? "").replace(/\s+/g, " ").trim();
   const language = () => {
@@ -89,9 +90,24 @@
     }
   }
 
-  function schedule(delay = 90) {
-    clearTimeout(timer);
-    timer = setTimeout(apply, delay);
+  function schedule(delay = 70) {
+    if (timer) return;
+    timer = setTimeout(() => {
+      timer = 0;
+      apply();
+    }, delay);
+  }
+
+  async function settle(rounds = 22, interval = 140) {
+    const generation = ++settleGeneration;
+    for (let round = 0; round < rounds && generation === settleGeneration; round += 1) {
+      await apply();
+      await new Promise(resolve => setTimeout(resolve, interval));
+    }
+  }
+
+  function beginSettling() {
+    settle().catch(error => console.error("Kernel English settling:", error));
   }
 
   new MutationObserver(mutations => {
@@ -99,17 +115,18 @@
     if (mutations.some(mutation => mutation.type === "characterData" || mutation.addedNodes.length)) schedule();
   }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 
-  window.addEventListener("hashchange", () => schedule(120));
-  window.addEventListener("pageshow", () => schedule(120));
-  window.addEventListener("kernel-language-change", () => schedule(160));
-  document.addEventListener("kernel-language-change", () => schedule(160));
-  document.addEventListener("DOMContentLoaded", () => schedule(100));
+  window.addEventListener("hashchange", beginSettling);
+  window.addEventListener("pageshow", beginSettling);
+  window.addEventListener("kernel-language-change", beginSettling);
+  document.addEventListener("kernel-language-change", beginSettling);
+  document.addEventListener("DOMContentLoaded", beginSettling);
 
   window.KernelUiI18nFinalizer = {
-    version: "1.0.0",
+    version: "1.1.0",
     apply,
-    diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length })
+    settle: beginSettling,
+    diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length, generation: settleGeneration })
   };
 
-  load().finally(() => schedule(100));
+  load().finally(beginSettling);
 })();
