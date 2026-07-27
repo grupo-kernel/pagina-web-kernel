@@ -1,0 +1,76 @@
+name: Deploy canonical projects catalog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'core/data/projects.v2.json'
+      - '.github/workflows/deploy-canonical-projects.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  actions: read
+
+concurrency:
+  group: kernel-canonical-projects-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate canonical projects catalog
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('core/data/projects.v2.json')
+          projects = json.loads(path.read_text(encoding='utf-8'))
+          approved = {item['id']: item for item in projects['approved_projects']}
+          antmel = approved['uasd-dinamica-sin-jacobiana']
+
+          assert projects['summary']['recorded_participations'] == 59
+          assert projects['summary']['featured_approved_projects'] == 11
+          assert projects['summary']['proposals_under_review'] == 2
+          assert antmel['status'] == 'approved'
+          assert antmel['member_ids'] == ['antmel-rodriguez']
+          assert antmel['institution'] == 'Universidad Autónoma de Santo Domingo (UASD)'
+          assert antmel['funding'] == {'amount': 1286178.40, 'currency': 'DOP', 'source': 'UASD'}
+          assert antmel['dates'] == {'start': '2026-01', 'end': '2027-06'}
+          print('Canonical projects catalog validated: 59 participations, 11 approved projects, Antmel project present.')
+          PY
+
+      - name: Publish canonical catalog to gh-pages
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages
+          rm -rf /tmp/kernel-projects-production
+          git worktree add --detach /tmp/kernel-projects-production origin/gh-pages
+          cp -f core/data/projects.v2.json /tmp/kernel-projects-production/core/data/projects.v2.json
+          cd /tmp/kernel-projects-production
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add core/data/projects.v2.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Deploy canonical projects catalog with Antmel approved project'
+            git push origin HEAD:gh-pages
+          else
+            echo 'gh-pages already contains the canonical projects catalog.'
+          fi
+
+      - name: Request GitHub Pages rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" >/tmp/pages-build-request.json || true
+          cat /tmp/pages-build-request.json || true
