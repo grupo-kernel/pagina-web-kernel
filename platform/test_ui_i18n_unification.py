@@ -103,7 +103,7 @@ def open_route(route: str, language: str = "en", expected: str | None = None) ->
         )
     )
     wait_route_ready(route)
-    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle(); window.KernelUiI18nWatchdog.apply();")
+    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle(); window.KernelUiI18nWatchdog.apply(); window.KernelNameDegreeFix?.apply();")
     if expected:
         WebDriverWait(driver, 15).until(lambda current: expected in body_text())
     time.sleep(0.55)
@@ -180,6 +180,20 @@ try:
                 )
             )
             ok = ok and bool(details["legacy_hero_hidden"])
+
+        elif route == "equipment":
+            jose_button = driver.find_element(By.CSS_SELECTOR, '[data-kernel-team-open="jose-alberto-reyes"]')
+            jose_card = jose_button.find_element(By.XPATH, "./ancestor::*[contains(@class,'kernel-team-core__card')][1]")
+            jose_heading = jose_card.find_element(By.CSS_SELECTOR, "h2")
+            details["jose_heading_initial"] = jose_heading.text
+            details["jose_degree_count_initial"] = jose_heading.text.count("Ph.D.")
+            time.sleep(1.8)
+            details["jose_heading_after_wait"] = jose_heading.text
+            details["jose_degree_count_after_wait"] = jose_heading.text.count("Ph.D.")
+            details["jose_card_height"] = round(jose_card.rect["height"], 2)
+            ok = ok and details["jose_degree_count_initial"] == 1
+            ok = ok and details["jose_degree_count_after_wait"] == 1
+            ok = ok and details["jose_card_height"] < 420
 
         elif route == "lineas":
             active = driver.find_element(By.CSS_SELECTOR, '[data-kernel-line-card].kernel-line-active')
