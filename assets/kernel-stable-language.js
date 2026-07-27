@@ -76,6 +76,7 @@
     await call(() => window.KernelLabNewsPartialFix?.apply?.());
     await call(() => window.KernelSiteChromeLanguageFix?.apply?.());
     await call(() => window.KernelDataAffiliationsProjectsFix?.apply?.());
+    await call(() => window.KernelEvaluationProjectDetails?.apply?.());
     await call(() => window.KernelNameDegreeFix?.apply?.());
 
     const currentLanguage = String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase();
@@ -84,6 +85,7 @@
     await call(() => window.KernelLabNewsPartialFix?.apply?.());
     await call(() => window.KernelSiteChromeLanguageFix?.apply?.());
     await call(() => window.KernelDataAffiliationsProjectsFix?.apply?.());
+    await call(() => window.KernelEvaluationProjectDetails?.apply?.());
   }
 
   async function applyAll() {
@@ -126,7 +128,7 @@
   document.addEventListener("DOMContentLoaded", () => schedule(25));
 
   window.KernelStableLanguage = {
-    version: "1.3.0",
+    version: "1.4.0",
     applyAll,
     applyPass,
     waitForDomQuiet,
