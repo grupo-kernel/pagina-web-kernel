@@ -46,6 +46,19 @@ def record(name: str, condition: bool, detail: object = None) -> None:
     save()
 
 
+def apply_project_details() -> None:
+    result = driver.execute_async_script(
+        """
+        const done = arguments[0];
+        Promise.resolve(window.KernelEvaluationProjectDetails.apply())
+          .then(value => done({ok:true, value}))
+          .catch(error => done({ok:false, error:String(error)}));
+        """
+    )
+    if not result.get("ok"):
+        raise RuntimeError(result.get("error") or "Project detail application failed")
+
+
 def set_language(language: str) -> None:
     driver.execute_script("window.KernelI18nController.apply(arguments[0])", language)
     driver.execute_async_script(
@@ -57,6 +70,7 @@ def set_language(language: str) -> None:
         """
     )
     wait.until(lambda current: not current.execute_script("return document.documentElement.classList.contains('kernel-language-updating')"))
+    apply_project_details()
     time.sleep(0.3)
 
 
@@ -79,13 +93,14 @@ def open_projects(language: str) -> None:
           .catch(error => done(String(error)));
         """
     )
+    apply_project_details()
     wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, '[data-kernel-evaluation-project="true"]')) == 2)
     time.sleep(0.35)
 
 
 def cards() -> dict[str, dict[str, object]]:
     return driver.execute_script(
-        """
+        r"""
         return Object.fromEntries([...document.querySelectorAll('[data-kernel-evaluation-project="true"]')].map(card => [
           card.dataset.kernelProjectId,
           {
@@ -134,7 +149,16 @@ try:
     driver.save_screenshot(str(RESULT_DIR / "projects-evaluation-es.png"))
 
     set_language("en")
-    wait.until(lambda current: "Project overview" in current.find_element(By.ID, "main").text)
+    wait.until(
+        lambda current: current.execute_script(
+            """
+            const cards = [...document.querySelectorAll('[data-kernel-evaluation-project="true"]')];
+            return cards.length === 2 &&
+              cards.every(card => card.querySelector('[data-kernel-project-overview] strong')?.textContent.trim() === 'Project overview') &&
+              cards.every(card => [...card.querySelectorAll('.kernel-project-detail strong')].some(label => label.textContent.trim() === 'Total project amount'));
+            """
+        )
+    )
     english = cards()
     record("English mode translates both official project cards", english["fondocyt-transporte-nutrientes"]["title"].startswith("High-order iterative methods") and english["fondocyt-optimizacion-hibrida-redes-econometria"]["title"].startswith("Design and analysis of hybrid optimization methods") and all("Total project amount" in [item["label"] for item in card["details"]] for card in english.values()), english)
     driver.save_screenshot(str(RESULT_DIR / "projects-evaluation-en.png"))
