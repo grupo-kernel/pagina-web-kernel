@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "status": "candidate-not-active",
-  "updated_at": "2026-07-25",
+  "status": "active",
+  "updated_at": "2026-07-27",
   "summary": {
-    "recorded_participations": 58,
-    "featured_approved_projects": 10,
+    "recorded_participations": 59,
+    "featured_approved_projects": 11,
     "additional_participations_not_itemized": 48,
     "proposals_under_review": 2,
-    "counting_note": "Las 58 participaciones no equivalen necesariamente a 58 proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
+    "counting_note": "Las participaciones registradas no equivalen necesariamente al mismo número de proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
   },
   "approved_projects": [
     {"id":"procesos-iterativos","order":1,"title":"Procesos iterativos para la resolución de ecuaciones y sistemas no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
@@ -19,19 +19,60 @@
     {"id":"filtraciones","order":7,"title":"Filtraciones y métodos iterativos asociados","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
     {"id":"flujos-nms","order":8,"title":"Flujos NMS","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
     {"id":"dinamica-asociada","order":9,"title":"Dinámica asociada a métodos iterativos para ecuaciones no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
-    {"id":"completacion-matrices","order":10,"title":"Completación de matrices","status":"approved","featured":true,"member_ids":["juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"}
+    {"id":"completacion-matrices","order":10,"title":"Completación de matrices","status":"approved","featured":true,"member_ids":["juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {
+      "id":"uasd-dinamica-sin-jacobiana",
+      "order":11,
+      "title":"Análisis dinámico y estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales",
+      "title_en":"Dynamic analysis and stability of Jacobian-free iterative methods for systems of nonlinear equations",
+      "status":"approved",
+      "featured":true,
+      "institution":"Universidad Autónoma de Santo Domingo (UASD)",
+      "member_ids":["antmel-rodriguez"],
+      "funding":{"amount":1286178.40,"currency":"DOP","source":"UASD"},
+      "dates":{"start":"2026-01","end":"2027-06"},
+      "duration_months":18,
+      "description":"Investigación sobre el comportamiento dinámico y la estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales, orientada a identificar regiones de convergencia, bifurcaciones y comportamientos dinámicos mediante simulaciones computacionales.",
+      "description_en":"Research on the dynamic behaviour and stability of Jacobian-free iterative methods for systems of nonlinear equations, aimed at identifying convergence regions, bifurcations and dynamic behaviour through computational simulations.",
+      "methodology":["Implementación en MATLAB y Python","Diagramas de bifurcación","Planos dinámicos","Análisis de estabilidad","Orden computacional aproximado de convergencia (ACOC)","Índice de eficiencia de Kung–Traub"],
+      "areas":["Métodos iterativos","Sistemas no lineales","Análisis numérico","Métodos sin Jacobiana","Dinámica y estabilidad","Computación científica"],
+      "verification":"documented-official-proposal"
+    }
   ],
   "proposals": [
     {
       "id":"fondocyt-transporte-nutrientes",
-      "title":"Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
+      "order":1,
+      "title":"Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",
+      "title_en":"High-order iterative methods for solving nonlinear PDEs and their application to modelling nutrient transport in biological substrates",
       "status":"under-review",
-      "program":"FONDOCyT / MESCyT",
+      "program":"FONDOCyT 2025–2026 / MESCyT",
+      "institution":"Universidad APEC (UNAPEC)",
       "duration_months":30,
-      "budget":{"amount":11901975.84,"currency":"DOP"},
+      "budget":{"amount":11955975.84,"currency":"DOP"},
+      "member_ids":["miguel-leonardo","natanael-urena"],
+      "external_collaborators":["Neel Lobatchewski Báez Ureña"],
+      "international_advisors":["Juan Ramón Torregrosa Sánchez"],
+      "national_biotechnology_advisors":["Luis de Francisco","Yaset Rodríguez Rodríguez"],
+      "description":"El proyecto desarrollará y analizará métodos iterativos de alto orden para resolver EDPs no lineales que modelan la difusión y el transporte de nutrientes en sustratos biológicos. Integra modelización matemática, análisis de convergencia y estabilidad, implementación computacional y validación experimental con sustratos y plántulas, con aplicación al estudio de esquemas de fertirrigación para el cultivo de tomate.",
+      "description_en":"The project will develop and analyse high-order iterative methods for solving nonlinear PDEs that model nutrient diffusion and transport in biological substrates. It combines mathematical modelling, convergence and stability analysis, computational implementation, and experimental validation with substrates and seedlings, with an application to fertigation schemes for tomato cultivation.",
+      "verification":"documented-official-proposal"
+    },
+    {
+      "id":"fondocyt-optimizacion-hibrida-redes-econometria",
+      "order":2,
+      "title":"Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
+      "title_en":"Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
+      "status":"under-review",
+      "program":"FONDOCyT 2025–2026 / MESCyT",
+      "institution":"Universidad Autónoma de Santo Domingo (UASD)",
+      "duration_months":30,
+      "budget":{"amount":9790999.20,"currency":"DOP"},
       "member_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
-      "external_collaborators":["Juan R. Torregrosa","Alicia Cordero"],
-      "verification":"documented-internal-record"
+      "external_collaborators":["Alicia Cordero Barbero","Juan Ramón Torregrosa Sánchez"],
+      "description":"El proyecto diseñará y analizará una familia de métodos híbridos de optimización para problemas de alta dimensionalidad. Integra estructuras cuasi-Newton multipaso, pasos tipo Newton o Traub, búsquedas lineales, actualizaciones BFGS y DFP, regiones de confianza, funciones peso y variantes de memoria limitada, con validación en redes neuronales convolucionales y en modelización econométrica, financiera y actuarial.",
+      "description_en":"The project will design and analyse a family of hybrid optimization methods for high-dimensional problems. It combines multistep quasi-Newton structures, Newton- or Traub-type steps, line searches, BFGS and DFP updates, trust regions, weight functions, and limited-memory variants, with validation in convolutional neural networks and econometric, financial, and actuarial modelling.",
+      "verification":"documented-official-proposal"
     }
   ]
 }
