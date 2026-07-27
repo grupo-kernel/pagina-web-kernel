@@ -87,24 +87,29 @@
     }
   }
 
-  function schedule(delay = 45) {
+  function schedule(delay = 35) {
     window.clearTimeout(timer);
     timer = window.setTimeout(apply, delay);
   }
 
   new MutationObserver(mutations => {
     if (applying) return;
-    if (mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+    const relevantAddition = mutations.some(mutation => [...mutation.addedNodes].some(node => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return false;
+      const element = node;
+      return element.id === "footer" || element.id === "header" || element.matches?.("[data-site-header]") || element.closest?.("#footer,#header,[data-site-header]") || element.querySelector?.("#footer,#header,[data-site-header]");
+    }));
+    if (relevantAddition) apply();
   }).observe(document.documentElement, { childList: true, subtree: true });
 
   window.addEventListener("hashchange", schedule);
   window.addEventListener("pageshow", schedule);
-  window.addEventListener("kernel-language-change", () => schedule(0));
-  document.addEventListener("kernel-language-change", () => schedule(0));
+  window.addEventListener("kernel-language-change", apply);
+  document.addEventListener("kernel-language-change", apply);
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSiteChromeLanguageFix = {
-    version: "2.1.0",
+    version: "2.2.0",
     apply,
     diagnostics: () => ({ language: language(), translations: ENTRIES.length, polling: false })
   };
