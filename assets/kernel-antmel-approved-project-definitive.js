@@ -6,11 +6,17 @@
   const TITLE_ES = "Análisis dinámico y estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales";
   const TITLE_EN = "Dynamic analysis and stability of Jacobian-free iterative methods for systems of nonlinear equations";
   const MEMBER = "Antmel Rodríguez Cabral";
+  const CONTAINER_ID = "kernel-antmel-approved-project-container";
   let applying = false;
   let timer = 0;
 
   const normalize = value => String(value ?? "").replace(/\s+/g, " ").trim();
-  const route = () => (location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean)[0] || "home").toLowerCase();
+  const currentRoute = () => {
+    const hash = location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean)[0] || "";
+    const path = location.pathname.split("/").filter(Boolean).pop() || "";
+    return (hash || path || "home").toLowerCase();
+  };
+  const onProjectsRoute = () => ["proyectos", "projects"].includes(currentRoute());
   const english = () => String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase().startsWith("en");
 
   function installStyles() {
@@ -18,6 +24,7 @@
     const style = document.createElement("style");
     style.id = "kernel-antmel-approved-project-styles";
     style.textContent = `
+      #${CONTAINER_ID}{display:grid;gap:1rem;margin-top:1rem}
       .kernel-project-card[data-kernel-project-id="${PROJECT_ID}"]{position:relative;overflow:hidden;border:1px solid #cbdde0;border-radius:1.35rem;background:#fff;padding:1.35rem;box-shadow:0 12px 34px rgba(7,24,32,.08)}
       .kernel-project-card[data-kernel-project-id="${PROJECT_ID}"]::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,#0f5b5d,#d5a54a)}
       .kernel-project-card[data-kernel-project-id="${PROJECT_ID}"] h2{margin:0;color:#071820;font-size:clamp(1.15rem,2.5vw,1.55rem);font-weight:900;line-height:1.3}
@@ -61,28 +68,36 @@
 
   function cardMarkup() {
     const isEnglish = english();
-    return `
-      <article class="kernel-project-card" data-kernel-project-id="${PROJECT_ID}" data-kernel-antmel-approved="true">
-        <span class="kernel-antmel-project-chip">${isEnglish ? "Approved" : "Aprobado"}</span>
-        <h2>${isEnglish ? TITLE_EN : TITLE_ES}</h2>
-        <p class="kernel-antmel-project-summary">${isEnglish
-          ? "Study of the dynamic behaviour and stability of Jacobian-free iterative methods for systems of nonlinear equations, including convergence regions, bifurcations and computational simulations."
-          : "Estudio del comportamiento dinámico y la estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales, incluyendo regiones de convergencia, bifurcaciones y simulaciones computacionales."}</p>
-        <div class="kernel-antmel-project-grid">
-          <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Institution" : "Institución"}</strong>Universidad Autónoma de Santo Domingo (UASD)</div>
-          <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Duration" : "Duración"}</strong>${isEnglish ? "January 2026 – June 2027 (18 months)" : "Enero 2026 – Junio 2027 (18 meses)"}</div>
-          <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Total amount" : "Monto total"}</strong>RD$ 1,286,178.40</div>
-          <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Funding source" : "Fuente de financiamiento"}</strong>UASD</div>
-        </div>
-        <p class="kernel-antmel-project-member"><strong>${isEnglish ? "Project member:" : "Miembro del proyecto:"}</strong> ${MEMBER}</p>
-      </article>`;
+    return `<article class="kernel-project-card" data-kernel-project-id="${PROJECT_ID}" data-kernel-antmel-approved="true">
+      <span class="kernel-antmel-project-chip">${isEnglish ? "Approved" : "Aprobado"}</span>
+      <h2>${isEnglish ? TITLE_EN : TITLE_ES}</h2>
+      <p class="kernel-antmel-project-summary">${isEnglish ? "Study of the dynamic behaviour and stability of Jacobian-free iterative methods for systems of nonlinear equations, including convergence regions, bifurcations and computational simulations." : "Estudio del comportamiento dinámico y la estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales, incluyendo regiones de convergencia, bifurcaciones y simulaciones computacionales."}</p>
+      <div class="kernel-antmel-project-grid">
+        <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Institution" : "Institución"}</strong>Universidad Autónoma de Santo Domingo (UASD)</div>
+        <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Duration" : "Duración"}</strong>${isEnglish ? "January 2026 – June 2027 (18 months)" : "Enero 2026 – Junio 2027 (18 meses)"}</div>
+        <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Total amount" : "Monto total"}</strong>RD$ 1,286,178.40</div>
+        <div class="kernel-antmel-project-detail"><strong>${isEnglish ? "Funding source" : "Fuente de financiamiento"}</strong>UASD</div>
+      </div>
+      <p class="kernel-antmel-project-member"><strong>${isEnglish ? "Project member:" : "Miembro del proyecto:"}</strong> ${MEMBER}</p>
+    </article>`;
   }
 
-  function findListHost() {
-    const cards = [...document.querySelectorAll("#main .kernel-project-card")];
-    if (cards.length) return cards[0].parentElement;
-    const resultHeading = [...document.querySelectorAll("#main h2,#main h3,p")].find(element => /resultados|results/i.test(normalize(element.textContent)));
-    return resultHeading?.nextElementSibling?.parentElement || document.getElementById("main");
+  function resultHeading() {
+    return [...document.querySelectorAll("#main h1,#main h2,#main h3,#main p")].find(element => /^\d+\s+(resultados?|results?)$/i.test(normalize(element.textContent)));
+  }
+
+  function ensureContainer() {
+    let container = document.getElementById(CONTAINER_ID);
+    if (container?.isConnected) return container;
+    container = document.createElement("div");
+    container.id = CONTAINER_ID;
+    container.dataset.kernelAntmelResults = "true";
+    const heading = resultHeading();
+    const emptyState = [...document.querySelectorAll("#main *")].find(element => /No hay proyectos que coincidan|No projects match/i.test(normalize(element.textContent)));
+    if (emptyState) emptyState.insertAdjacentElement("beforebegin", container);
+    else if (heading) heading.insertAdjacentElement("afterend", container);
+    else document.getElementById("main")?.appendChild(container);
+    return container;
   }
 
   function updateCounts(showing) {
@@ -91,16 +106,17 @@
       const text = normalize(element.textContent);
       if (/^58 participaciones$/i.test(text)) element.textContent = english() ? "59 participations" : "59 participaciones";
       if (/^10 proyectos aprobados$/i.test(text)) element.textContent = english() ? "11 approved projects" : "11 proyectos aprobados";
-      if (/^0 resultados?$/i.test(text) && showing) element.textContent = english() ? "1 result" : "1 resultado";
+      if (/^\d+\s+(resultados?|results?)$/i.test(text) && showing) element.textContent = english() ? "1 result" : "1 resultado";
     });
   }
 
-  function hideEmptyState(showing) {
-    const empty = [...document.querySelectorAll("#main *")].find(element => {
-      const text = normalize(element.textContent);
-      return element.children.length <= 2 && /No hay proyectos que coincidan|No projects match/i.test(text);
+  function toggleEmptyState(showing) {
+    document.querySelectorAll("#main *").forEach(element => {
+      if (/No hay proyectos que coincidan|No projects match/i.test(normalize(element.textContent))) {
+        const target = element.closest("article,section,div") || element;
+        target.style.display = showing ? "none" : "";
+      }
     });
-    if (empty) empty.style.display = showing ? "none" : "";
   }
 
   function bindControls() {
@@ -108,57 +124,47 @@
     [search, status, investigator].filter(Boolean).forEach(control => {
       if (control.dataset.kernelAntmelBound) return;
       control.dataset.kernelAntmelBound = "true";
-      control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => schedule(20));
+      control.addEventListener(control.tagName === "INPUT" ? "input" : "change", () => schedule(0), true);
     });
   }
 
   function apply() {
-    if (applying || route() !== "proyectos") return;
+    if (applying || !onProjectsRoute()) return;
     applying = true;
     try {
       installStyles();
       bindControls();
       const showing = shouldShow();
-      let card = document.querySelector(`[data-kernel-project-id="${PROJECT_ID}"]`);
-      if (showing) {
-        const host = findListHost();
-        if (!card && host) {
-          const holder = document.createElement("div");
-          holder.innerHTML = cardMarkup().trim();
-          card = holder.firstElementChild;
-          host.appendChild(card);
-        } else if (card) {
-          const holder = document.createElement("div");
-          holder.innerHTML = cardMarkup().trim();
-          card.replaceWith(holder.firstElementChild);
-          card = holder.firstElementChild;
-        }
-      } else {
-        card?.remove();
-      }
-      hideEmptyState(showing);
+      const container = ensureContainer();
+      if (!container) return;
+      if (showing) container.innerHTML = cardMarkup();
+      else container.replaceChildren();
+      container.style.display = showing ? "grid" : "none";
+      toggleEmptyState(showing);
       updateCounts(showing);
     } finally {
       applying = false;
     }
   }
 
-  function schedule(delay = 70) {
+  function schedule(delay = 40) {
     clearTimeout(timer);
     timer = setTimeout(apply, delay);
   }
 
   new MutationObserver(mutations => {
-    if (applying || route() !== "proyectos") return;
-    if (mutations.some(mutation => [...mutation.addedNodes, ...mutation.removedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+    if (applying || !onProjectsRoute()) return;
+    const structural = mutations.some(mutation => [...mutation.addedNodes, ...mutation.removedNodes].some(node => node.nodeType === Node.ELEMENT_NODE));
+    if (structural && !document.getElementById(CONTAINER_ID)) schedule(0);
   }).observe(document.documentElement, { childList: true, subtree: true });
 
-  window.addEventListener("hashchange", schedule);
-  window.addEventListener("pageshow", schedule);
+  window.addEventListener("hashchange", () => schedule(0));
+  window.addEventListener("popstate", () => schedule(0));
+  window.addEventListener("pageshow", () => schedule(0));
   window.addEventListener("kernel-language-change", () => schedule(0));
   document.addEventListener("kernel-language-change", () => schedule(0));
-  document.addEventListener("DOMContentLoaded", schedule);
+  document.addEventListener("DOMContentLoaded", () => schedule(0));
 
-  window.KernelAntmelApprovedProjectDefinitive = { version: "1.0.0", apply, projectId: PROJECT_ID };
-  schedule();
+  window.KernelAntmelApprovedProjectDefinitive = { version: "2.0.0", apply, projectId: PROJECT_ID };
+  schedule(0);
 })();
