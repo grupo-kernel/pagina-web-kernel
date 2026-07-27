@@ -22,7 +22,7 @@ CASES = [
     ("servicios", "Institutional catalog of professional and academic services", "Catálogo institucional de servicios profesionales y académicos"),
     ("herramientas", "Academic Tools", "Herramientas Académicas"),
     ("laboratorioKernel", "Sign in", "Iniciar sesión"),
-    ("quienesSomos", "Identity, purpose, and way of working", "Nuestro compromiso institucional"),
+    ("quienesSomos", "Who we are", "Nuestro compromiso institucional"),
     ("equipment", "Researcher in numerical methods, PDEs, and mathematics education", "Investigador en métodos numéricos"),
     ("lineas", "The group's scientific work areas", "Áreas de trabajo científico del grupo"),
     ("proyectos", "The 58 participations do not necessarily represent 58 unique projects", "Las 58 participaciones no equivalen"),
@@ -95,7 +95,11 @@ def wait_route_ready(route: str) -> None:
 def open_route(route: str, language: str = "en", expected: str | None = None) -> None:
     driver.get(f"{BASE_URL}/#/{route}")
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
-    wait.until(lambda current: current.execute_script("return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelUiI18nWatchdog)"))
+    wait.until(
+        lambda current: current.execute_script(
+            "return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelUiI18nWatchdog && window.KernelSiteChromeLanguageFix)"
+        )
+    )
     set_language(language)
     wait.until(
         lambda current: current.execute_script(
@@ -103,10 +107,12 @@ def open_route(route: str, language: str = "en", expected: str | None = None) ->
         )
     )
     wait_route_ready(route)
-    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle(); window.KernelUiI18nWatchdog.apply(); window.KernelNameDegreeFix?.apply();")
+    driver.execute_script(
+        "window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle(); window.KernelUiI18nWatchdog.apply(); window.KernelSiteChromeLanguageFix.apply(); window.KernelNameDegreeFix?.apply();"
+    )
     if expected:
         WebDriverWait(driver, 15).until(lambda current: expected in body_text())
-    time.sleep(0.55)
+    time.sleep(0.65)
 
 
 def color_of(element) -> str:
@@ -142,7 +148,16 @@ try:
         }
         ok = bool(details["expected_present"]) and not bool(details["forbidden_present"])
 
-        if route == "servicios":
+        if route == "home":
+            header = driver.find_element(By.ID, "header")
+            footer = driver.find_element(By.ID, "footer")
+            details["header_english"] = "Research and scientific services" in header.text
+            details["footer_rights_english"] = "All rights reserved" in footer.text
+            details["header_spanish_present"] = "Investigación y servicios científicos" in header.text
+            ok = ok and bool(details["header_english"]) and bool(details["footer_rights_english"])
+            ok = ok and not bool(details["header_spanish_present"])
+
+        elif route == "servicios":
             active = driver.find_element(By.CSS_SELECTOR, '#main button[aria-pressed="true"]')
             details["active_filter_background"] = color_of(active)
             ok = ok and details["active_filter_background"] == "rgb(15, 91, 93)"
@@ -174,6 +189,7 @@ try:
             ok = ok and details["login_background"] == "rgb(15, 91, 93)"
 
         elif route == "quienesSomos":
+            details["identity_english"] = "Identity, purpose, and way of working" in text.upper().title()
             details["legacy_hero_hidden"] = bool(
                 driver.execute_script(
                     "const e=document.querySelector('[data-kernel-legacy-who-hero]'); return e && getComputedStyle(e).display === 'none';"
@@ -188,11 +204,16 @@ try:
             details["jose_heading_initial"] = jose_heading.text
             details["jose_degree_count_initial"] = jose_heading.text.count("Ph.D.")
             time.sleep(1.8)
+            driver.execute_script("window.KernelNameDegreeFix?.apply(); window.KernelUiI18nFinalizer?.apply();")
             details["jose_heading_after_wait"] = jose_heading.text
             details["jose_degree_count_after_wait"] = jose_heading.text.count("Ph.D.")
             details["jose_card_height"] = round(jose_card.rect["height"], 2)
+            details["duplicate_degree_cards"] = driver.execute_script(
+                "return window.KernelNameDegreeFix?.diagnostics().duplicateInlineDegrees ?? -1"
+            )
             ok = ok and details["jose_degree_count_initial"] == 1
             ok = ok and details["jose_degree_count_after_wait"] == 1
+            ok = ok and details["duplicate_degree_cards"] == 0
             ok = ok and details["jose_card_height"] < 420
 
         elif route == "lineas":
