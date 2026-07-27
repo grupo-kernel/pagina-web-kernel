@@ -9,7 +9,7 @@ from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:4199").rstrip("/")
 RESULT_DIR = Path(os.environ.get("NATIVE_PROJECT_RESULT_DIR", "ci-native-antmel-project"))
@@ -62,6 +62,39 @@ def main_text() -> str:
     return normalize(driver.find_element(By.ID, "main").text)
 
 
+def set_input_value(element_id: str, value: str) -> None:
+    driver.execute_script(
+        """
+        const input = document.getElementById(arguments[0]);
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        setter.call(input, arguments[1]);
+        input.dispatchEvent(new InputEvent('input', {bubbles:true, inputType:'insertText', data:arguments[1]}));
+        input.dispatchEvent(new Event('change', {bubbles:true}));
+        """,
+        element_id,
+        value,
+    )
+
+
+def select_visible_text(element_id: str, visible_text: str) -> None:
+    selected = driver.execute_script(
+        """
+        const select = document.getElementById(arguments[0]);
+        const option = [...select.options].find(item => item.textContent.trim() === arguments[1]);
+        if (!option) return false;
+        const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set;
+        setter.call(select, option.value);
+        select.dispatchEvent(new Event('input', {bubbles:true}));
+        select.dispatchEvent(new Event('change', {bubbles:true}));
+        return true;
+        """,
+        element_id,
+        visible_text,
+    )
+    if not selected:
+        raise RuntimeError(f"Option not found in {element_id}: {visible_text}")
+
+
 try:
     driver.get(f"{BASE_URL}/#/proyectos")
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
@@ -94,17 +127,10 @@ try:
     record("Project summary shows 59 participations", "59 Participaciones registradas" in text, text[:1200])
     record("Project summary shows 11 approved projects", "11 Proyectos aprobados destacados" in text, text[:1200])
 
-    search = driver.find_element(By.ID, "kernel-project-search")
-    search.clear()
-    search.send_keys("Análisis dinámico y estabilidad de métodos")
-    wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
+    set_input_value("kernel-project-search", "Análisis dinámico y estabilidad de métodos")
+    select_visible_text("kernel-project-status", "Aprobado")
+    select_visible_text("kernel-project-researcher", "Antmel Rodríguez Cabral")
 
-    status = Select(driver.find_element(By.ID, "kernel-project-status"))
-    status.select_by_visible_text("Aprobado")
-    wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
-
-    researcher = Select(driver.find_element(By.ID, "kernel-project-researcher"))
-    researcher.select_by_visible_text("Antmel Rodríguez Cabral")
     wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
     time.sleep(0.35)
 
