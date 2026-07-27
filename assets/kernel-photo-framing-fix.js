@@ -4,6 +4,7 @@
   if (window.KernelPhotoFramingFix) return;
 
   const STYLE_ID = "kernel-photo-framing-styles";
+  const PORTRAIT_BACKGROUND = "#071820";
   const PHOTO_SELECTOR = [
     ".kernel-team-core__photo img",
     ".kernel-team-core__detail-photo img",
@@ -21,6 +22,8 @@
        * Retratos institucionales
        * Las imágenes incluyen una franja inferior con el nombre, por lo que
        * deben mostrarse completas y nunca recortarse con object-fit: cover.
+       * Los espacios que deja object-fit: contain usan el azul oscuro del
+       * fondo fotográfico en lugar de mostrar franjas blancas.
        */
       .kernel-team-core__photo,
       .kernel-team-core__detail-photo,
@@ -32,7 +35,7 @@
         min-height:0!important;
         overflow:hidden!important;
         box-sizing:border-box!important;
-        background:#ffffff!important;
+        background:${PORTRAIT_BACKGROUND}!important;
       }
 
       /*
@@ -59,7 +62,7 @@
         box-sizing:border-box!important;
         object-fit:contain!important;
         object-position:center center!important;
-        background:#ffffff!important;
+        background:${PORTRAIT_BACKGROUND}!important;
       }
 
       /* Mantener la misma proporción en tarjetas, perfiles y Formación. */
@@ -99,6 +102,8 @@
     image.decoding = "async";
     image.style.objectFit = "contain";
     image.style.objectPosition = "center center";
+    image.style.backgroundColor = PORTRAIT_BACKGROUND;
+    if (image.parentElement) image.parentElement.style.backgroundColor = PORTRAIT_BACKGROUND;
     image.dataset.kernelFullPortrait = "true";
   }
 
@@ -138,12 +143,15 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPhotoFramingFix = {
-    version: "1.1.1",
+    version: "1.1.2",
+    background: PORTRAIT_BACKGROUND,
     apply: schedule,
     diagnostics: () => ({
       fullPortraits: document.querySelectorAll('[data-kernel-full-portrait="true"]').length,
       objectFits: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
         .map(image => getComputedStyle(image).objectFit),
+      backgrounds: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
+        .map(image => getComputedStyle(image).backgroundColor),
       contained: [...document.querySelectorAll('[data-kernel-full-portrait="true"]')]
         .every(image => {
           const imageBox = image.getBoundingClientRect();
