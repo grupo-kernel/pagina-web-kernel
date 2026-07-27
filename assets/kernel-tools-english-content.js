@@ -57,24 +57,25 @@
     return saved === "en" || String(document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "es";
   };
 
-  function apply() {
-    if (applying || route() !== "herramientas" || !document.body) return;
+  function apply(root = document.querySelector("#main") || document.body) {
+    if (applying || route() !== "herramientas" || !root) return;
     applying = true;
     try {
       const lang = language();
-      const walker = document.createTreeWalker(document.querySelector("#main") || document.body, NodeFilter.SHOW_TEXT, {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
           const text = normalize(node.nodeValue);
-          return text && MAP[text] ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+          return text && (MAP[text] || [...ORIGINAL.values?.() || []]) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_ACCEPT;
         }
       });
       const nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
       nodes.forEach(node => {
-        if (!ORIGINAL.has(node)) ORIGINAL.set(node, node.nodeValue || "");
-        const original = ORIGINAL.get(node) || "";
-        const clean = normalize(original);
-        const next = lang === "en" ? MAP[clean] : original;
+        const current = normalize(node.nodeValue);
+        if (!ORIGINAL.has(node) && MAP[current]) ORIGINAL.set(node, node.nodeValue || "");
+        const original = ORIGINAL.get(node);
+        if (!original) return;
+        const next = lang === "en" ? MAP[normalize(original)] : original;
         if (next && node.nodeValue !== next) node.nodeValue = next;
       });
     } finally {
@@ -82,30 +83,25 @@
     }
   }
 
-  function schedule() {
-    if (timer) return;
-    timer = setTimeout(() => {
-      timer = 0;
-      apply();
-    }, 60);
+  function schedule(delay = 50) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => apply(), delay);
   }
 
   new MutationObserver(mutations => {
-    if (!applying && mutations.some(mutation => mutation.type === "characterData" || mutation.addedNodes.length)) schedule();
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    if (applying || route() !== "herramientas") return;
+    if (mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
-  window.setInterval(() => {
-    if (!document.hidden) apply();
-  }, 750);
   window.addEventListener("hashchange", schedule);
   window.addEventListener("kernel-language-change", schedule);
   document.addEventListener("kernel-language-change", schedule);
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelToolsEnglishContent = {
-    version: "1.0.0",
+    version: "2.0.0",
     apply,
-    diagnostics: () => ({ route: route(), language: language(), translations: Object.keys(MAP).length })
+    diagnostics: () => ({ route: route(), language: language(), translations: Object.keys(MAP).length, polling: false })
   };
 
   schedule();
