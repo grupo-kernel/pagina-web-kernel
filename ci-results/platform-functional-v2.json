@@ -39,78 +39,78 @@
   "browser_logs": [
     {
       "level": "SEVERE",
-      "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153253861
+      "timestamp": 1785153498135
     },
     {
       "level": "SEVERE",
-      "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153253933
+      "timestamp": 1785153498135
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/#/equipment 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
       "source": "javascript",
-      "timestamp": 1785153253963
+      "timestamp": 1785153498135
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/#/equipment 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
       "source": "javascript",
-      "timestamp": 1785153253963
+      "timestamp": 1785153498135
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153254210
+      "timestamp": 1785153498320
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153254210
+      "timestamp": 1785153498321
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/?kernelSection=formacion#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
       "source": "javascript",
-      "timestamp": 1785153254212
+      "timestamp": 1785153498353
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/?kernelSection=formacion#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
       "source": "javascript",
-      "timestamp": 1785153254213
+      "timestamp": 1785153498353
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153254337
-    },
-    {
-      "level": "SEVERE",
-      "message": "http://127.0.0.1:4174/?kernelSection=formacion&investigador=alicia-cordero#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
-      "source": "javascript",
-      "timestamp": 1785153254338
+      "timestamp": 1785153498493
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
       "source": "network",
-      "timestamp": 1785153254338
+      "timestamp": 1785153498493
     },
     {
       "level": "SEVERE",
       "message": "http://127.0.0.1:4174/?kernelSection=formacion&investigador=alicia-cordero#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
       "source": "javascript",
-      "timestamp": 1785153254338
+      "timestamp": 1785153498498
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/?kernelSection=formacion&investigador=alicia-cordero#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153498498
     }
   ],
   "workflow_status": "failure",
-  "run_id": "30263677827",
-  "validated_sha": "c874d35ce3716ecd4ae4a3da0b34ac1c0974089a"
+  "run_id": "30263947123",
+  "validated_sha": "b14b2861f6e19fc1fd25009e53e584a194ff5698"
 }
