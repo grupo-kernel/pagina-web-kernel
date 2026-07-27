@@ -29,7 +29,30 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta name="kernel-deployment" content="20260727-antmel-direct-1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="kernel-deployment" content="20260727-native-antmel-1">
+
+    <script>
+        (function asegurarVersionKernel() {
+            const version = "20260727-native-antmel-1";
+            const parametro = "kernel_build";
+            const marca = `kernel-build-${version}`;
+            const url = new URL(window.location.href);
+
+            if (url.searchParams.get(parametro) === version) {
+                sessionStorage.setItem(marca, "1");
+                return;
+            }
+
+            if (sessionStorage.getItem(marca)) return;
+
+            sessionStorage.setItem(marca, "1");
+            url.searchParams.set(parametro, version);
+            window.location.replace(url.toString());
+        })();
+    </script>
 
     <title>El Kernel - Grupo de investigación</title>
 
@@ -46,7 +69,7 @@
 
     <!-- Estas capas deben existir antes de que los módulos consuman los catálogos. -->
     <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
-    <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-7"></script>
+    <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-8"></script>
     <script src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
 
     <script>
@@ -69,7 +92,6 @@
                 "kernel-team-core-bridge.js?v=20260725-3",
                 "kernel-research-core-bridge.js?v=20260725-3",
                 "kernel-evaluation-project-details.js?v=20260727-3",
-                "kernel-antmel-approved-project-definitive.js?v=20260727-3",
                 "kernel-phase2b-compatibility.js?v=20260725-1",
                 "kernel-readability-navigation-fix.js?v=20260726-1",
                 "kernel-name-degree-fix.js?v=20260727-3",
@@ -99,8 +121,8 @@
             });
         })();
     </script>
-  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css">
+  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260727-native-antmel-1"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css?v=20260727-native-antmel-1">
 </head>
 
 <body class="min-h-screen flex flex-col overflow-x-hidden">
