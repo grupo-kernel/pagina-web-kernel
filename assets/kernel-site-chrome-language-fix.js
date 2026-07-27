@@ -4,6 +4,7 @@
 
   const MAP = Object.freeze({
     "Investigación y servicios científicos": "Research and scientific services",
+    "Grupo de Investigación El Kernel": "El Kernel Research Group",
     "Rigor matemático para investigar, enseñar y decidir mejor.": "Mathematical rigor to research, teach, and make better decisions.",
     "Matemática aplicada y computacional, estadística, ciencia de datos, educación, investigación e innovación al servicio de universidades, instituciones públicas, empresas y equipos científicos.": "Applied and computational mathematics, statistics, data science, education, research, and innovation serving universities, public institutions, companies, and scientific teams.",
     "SERVICIOS": "SERVICES",
@@ -31,6 +32,8 @@
 
   const RIGHTS_ES = "Todos los derechos reservados.";
   const RIGHTS_EN = "All rights reserved.";
+  const GROUP_ES = "Grupo de Investigación El Kernel";
+  const GROUP_EN = "El Kernel Research Group";
   const ORIGINAL = new WeakMap();
   const COMPOSITE_ORIGINAL = new WeakMap();
   let applying = false;
@@ -44,14 +47,19 @@
 
   function isTranslatable(value) {
     const clean = normalize(value);
-    return Boolean(MAP[clean]) || clean.includes(RIGHTS_ES) || clean.includes(RIGHTS_EN);
+    return Boolean(MAP[clean]) || clean.includes(RIGHTS_ES) || clean.includes(RIGHTS_EN) || clean.includes(GROUP_ES) || clean.includes(GROUP_EN);
   }
 
   function translateValue(original, lang) {
     const clean = normalize(original);
     if (MAP[clean]) return lang === "en" ? MAP[clean] : original;
-    if (lang === "en") return String(original).replace(RIGHTS_ES, RIGHTS_EN);
-    return String(original).replace(RIGHTS_EN, RIGHTS_ES);
+    let next = String(original);
+    if (lang === "en") {
+      next = next.replace(GROUP_ES, GROUP_EN).replace(RIGHTS_ES, RIGHTS_EN);
+    } else {
+      next = next.replace(GROUP_EN, GROUP_ES).replace(RIGHTS_EN, RIGHTS_ES);
+    }
+    return next;
   }
 
   function translateTextNodes(root, lang) {
@@ -65,7 +73,7 @@
     nodes.forEach(node => {
       if (!ORIGINAL.has(node)) {
         const current = node.nodeValue || "";
-        ORIGINAL.set(node, current.replace(RIGHTS_EN, RIGHTS_ES));
+        ORIGINAL.set(node, current.replace(GROUP_EN, GROUP_ES).replace(RIGHTS_EN, RIGHTS_ES));
       }
       const original = ORIGINAL.get(node) || "";
       const replacement = translateValue(original, lang);
@@ -73,30 +81,30 @@
     });
   }
 
-  function translateCompositeRights(root, lang) {
+  function translateComposite(root, lang) {
     const candidates = [...root.querySelectorAll("p,small,span,div")].filter(element => {
       const text = normalize(element.textContent);
-      return text.includes(RIGHTS_ES) || text.includes(RIGHTS_EN);
+      return text.includes(RIGHTS_ES) || text.includes(RIGHTS_EN) || text.includes(GROUP_ES) || text.includes(GROUP_EN);
     });
-    const target = candidates.find(element => ![...element.children].some(child => {
-      const text = normalize(child.textContent);
-      return text.includes(RIGHTS_ES) || text.includes(RIGHTS_EN);
-    }));
-    if (!target) return;
-
-    if (!COMPOSITE_ORIGINAL.has(target)) {
-      COMPOSITE_ORIGINAL.set(target, String(target.textContent || "").replace(RIGHTS_EN, RIGHTS_ES));
-    }
-    const original = COMPOSITE_ORIGINAL.get(target) || "";
-    const next = lang === "en" ? original.replace(RIGHTS_ES, RIGHTS_EN) : original;
-    if (target.textContent !== next) target.textContent = next;
+    candidates.forEach(target => {
+      if ([...target.children].some(child => isTranslatable(child.textContent))) return;
+      if (!COMPOSITE_ORIGINAL.has(target)) {
+        COMPOSITE_ORIGINAL.set(
+          target,
+          String(target.textContent || "").replace(GROUP_EN, GROUP_ES).replace(RIGHTS_EN, RIGHTS_ES)
+        );
+      }
+      const original = COMPOSITE_ORIGINAL.get(target) || "";
+      const next = translateValue(original, lang);
+      if (target.textContent !== next) target.textContent = next;
+    });
   }
 
   function translateRoot(root) {
     if (!root) return;
     const lang = language();
     translateTextNodes(root, lang);
-    translateCompositeRights(root, lang);
+    translateComposite(root, lang);
   }
 
   function apply() {
@@ -134,7 +142,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSiteChromeLanguageFix = {
-    version: "1.2.0",
+    version: "1.3.0",
     apply,
     diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length })
   };
