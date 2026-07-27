@@ -36,7 +36,7 @@
     institution: "Universidad Autónoma de Santo Domingo (UASD)",
     duration_months: 30,
     budget: { amount: 9790999.20, currency: "DOP" },
-    member_ids: ["miguel-leonardo", "natanael-urena"],
+    member_ids: ["miguel-leonardo", "natanael-urena", "antmel-rodriguez"],
     external_collaborators: ["Neel Lobatchewski Báez Ureña", "Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"],
     description: "El proyecto diseñará y analizará una familia de métodos híbridos de optimización para problemas de alta dimensionalidad. Integra estructuras cuasi-Newton multipaso, pasos tipo Newton o Traub, búsquedas lineales, actualizaciones BFGS y DFP, regiones de confianza, funciones peso y variantes de memoria limitada, con validación en redes neuronales convolucionales y en modelización econométrica, financiera y actuarial.",
     description_en: "The project will design and analyse a family of hybrid optimization methods for high-dimensional problems. It combines multistep quasi-Newton structures, Newton- or Traub-type steps, line searches, BFGS and DFP updates, trust regions, weight functions, and limited-memory variants, with validation in convolutional neural networks and econometric, financial, and actuarial modelling.",
@@ -208,7 +208,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelDataAffiliationsProjectsFix = {
-    version: "1.5.0",
+    version: "1.6.0",
     affiliations: [...MIGUEL_AFFILIATIONS],
     firstProposal: { ...FIRST_PROPOSAL },
     secondProposal: { ...SECOND_PROPOSAL },
