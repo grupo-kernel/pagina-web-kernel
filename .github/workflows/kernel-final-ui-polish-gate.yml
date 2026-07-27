@@ -1,0 +1,155 @@
+name: Kernel Final UI Polish Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [agent/final-ui-color-language-polish]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-final-ui-polish.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
+      - '.github/workflows/kernel-final-ui-polish-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-final-ui-polish.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
+      - '.github/workflows/kernel-final-ui-polish-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate remaining institutional colors and footer language
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate source assets
+        run: |
+          node --check assets/kernel-final-ui-polish.js
+          node --check assets/kernel-site-chrome-language-fix.js
+          grep -q 'kernel-final-ui-polish.js' index.html
+          grep -q 'kernel-site-chrome-language-fix.js?v=20260727-3' index.html
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4194 >/tmp/kernel-final-polish-http.log 2>&1 &
+          echo $! >/tmp/kernel-final-polish-http.pid
+          sleep 2
+      - name: Verify final palette and language
+        env:
+          BASE_URL: http://127.0.0.1:4194
+        run: |
+          mkdir -p ci-final-ui-polish
+          python - <<'PY'
+          import json
+          import time
+          import traceback
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          base='http://127.0.0.1:4194'
+          out=Path('ci-final-ui-polish')
+          report={'checks':{},'failures':[],'exception':None}
+          options=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1440,1800']:
+              options.add_argument(arg)
+          options.set_capability('goog:loggingPrefs',{'browser':'ALL'})
+          driver=webdriver.Chrome(options=options)
+          wait=WebDriverWait(driver,60)
+
+          def save():
+              (out/'result.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf-8')
+
+          def record(name,condition,detail=None):
+              report['checks'][name]={'ok':bool(condition),'detail':detail}
+              if not condition: report['failures'].append(name)
+              print(('PASS' if condition else 'FAIL')+': '+name)
+              save()
+
+          def set_language(lang):
+              driver.execute_script("localStorage.setItem('kernel-language',arguments[0]);document.documentElement.lang=arguments[0];window.dispatchEvent(new CustomEvent('kernel-language-change',{detail:{language:arguments[0]}}));document.dispatchEvent(new CustomEvent('kernel-language-change',{detail:{language:arguments[0]}}));",lang)
+
+          def open_route(route,selector=None):
+              driver.get(base+'/#/'+route)
+              wait.until(lambda d:d.execute_script('return document.readyState')=='complete')
+              wait.until(lambda d:d.execute_script('return Boolean(window.KernelFinalUiPolish&&window.KernelSiteChromeLanguageFix)'))
+              set_language('en')
+              if selector: wait.until(lambda d:d.find_elements(By.CSS_SELECTOR,selector))
+              driver.execute_script("window.KernelUiI18nUnification?.apply?.();window.KernelUiI18nFinalizer?.apply?.();window.KernelFinalUiPolish?.apply?.();window.KernelSiteChromeLanguageFix?.apply?.();")
+              time.sleep(1.2)
+
+          def style(selector,prop):
+              return driver.execute_script("const e=document.querySelector(arguments[0]);return e?getComputedStyle(e)[arguments[1]]:'';",selector,prop)
+
+          try:
+              open_route('quienesSomos','article.bg-\\[\\#1E1E1E\\]')
+              mission=style('article.bg-\\[\\#1E1E1E\\]','backgroundImage')
+              vision=style('article.bg-\\[\\#5580C1\\]','backgroundImage')
+              record('Mission uses institutional gradient','7, 24, 32' in mission and '30, 30, 30' not in mission,mission)
+              record('Vision uses institutional teal gradient','15, 91, 93' in vision and '85, 128, 193' not in vision,vision)
+              driver.save_screenshot(str(out/'about-polished.png'))
+
+              open_route('lineas','.lineas-shell')
+              detail=style('.lineas-shell .bg-\\[\\#1E1E1E\\]','backgroundImage')
+              summary_bg=style('.lineas-shell .bg-\\[\\#96B4E1\\]\\/20','backgroundColor')
+              record('Research-line detail uses institutional gradient','7, 24, 32' in detail and '30, 30, 30' not in detail,detail)
+              record('Research-line summaries use teal-soft background',summary_bg in ['rgb(238, 248, 247)','rgba(238, 248, 247, 1)'],summary_bg)
+              driver.save_screenshot(str(out/'lines-polished.png'))
+
+              open_route('herramientas','#tab-banner')
+              driver.find_element(By.ID,'tab-banner').click()
+              time.sleep(1)
+              buttons=driver.execute_script("return [...document.querySelectorAll('#main button')].filter(b=>(b.innerText||'').includes('Open tool')).map(b=>getComputedStyle(b).backgroundColor)")
+              allowed={'rgb(15, 91, 93)','rgb(213, 165, 74)','rgb(11, 47, 59)','rgb(7, 24, 32)'}
+              record('Banner period actions use only institutional colors',len(buttons)==3 and all(color in allowed for color in buttons),buttons)
+              driver.save_screenshot(str(out/'tools-polished.png'))
+
+              open_route('home','[data-kernel-platform-page="home-2b"]')
+              footer=driver.find_element(By.ID,'footer').text
+              record('Institutional name is English in footer','El Kernel Research Group' in footer and 'Grupo de Investigación El Kernel' not in footer,footer[:280])
+              record('Compound copyright is fully English','© 2026 El Kernel Research Group — All rights reserved.' in footer,footer[-260:])
+
+              set_language('es')
+              driver.execute_script("window.KernelSiteChromeLanguageFix.apply();window.KernelSpanishRestoration?.apply?.();")
+              time.sleep(.5)
+              footer_es=driver.find_element(By.ID,'footer').text
+              record('Institutional name restores to Spanish','Grupo de Investigación El Kernel' in footer_es and 'El Kernel Research Group' not in footer_es,footer_es[:180])
+
+              severe=[entry for entry in driver.get_log('browser') if entry.get('level')=='SEVERE' and 'favicon' not in entry.get('message','').lower()]
+              record('No severe JavaScript errors',not severe,severe)
+          except Exception as error:
+              report['exception']={'type':type(error).__name__,'message':str(error),'traceback':traceback.format_exc(),'url':driver.current_url}
+              report['failures'].append('exception')
+          finally:
+              save()
+              driver.quit()
+
+          print(json.dumps(report,indent=2,ensure_ascii=False))
+          if report['failures']:
+              raise SystemExit('Final UI polish failures: '+', '.join(dict.fromkeys(report['failures'])))
+          PY
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-final-polish-http.pid ]; then kill "$(cat /tmp/kernel-final-polish-http.pid)" || true; fi
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-final-ui-polish-result
+          path: |
+            ci-final-ui-polish/
+            /tmp/kernel-final-polish-http.log
+          if-no-files-found: warn
+          retention-days: 7
