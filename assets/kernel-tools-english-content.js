@@ -46,6 +46,7 @@
     "Universidad APEC · Publicación de calificaciones": "APEC University · Grade publishing"
   });
 
+  const REVERSE = Object.fromEntries(Object.entries(MAP).map(([spanish, english]) => [english, spanish]));
   const ORIGINAL = new WeakMap();
   let applying = false;
   let timer = 0;
@@ -57,6 +58,17 @@
     return saved === "en" || String(document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "es";
   };
 
+  function canonicalSpanish(value) {
+    const clean = normalize(value);
+    if (MAP[clean]) return clean;
+    return REVERSE[clean] || null;
+  }
+
+  function preserveWhitespace(original, replacement) {
+    const match = String(original).match(/^(\s*)([\s\S]*?)(\s*)$/);
+    return `${match?.[1] || ""}${replacement}${match?.[3] || ""}`;
+  }
+
   function apply(root = document.querySelector("#main") || document.body) {
     if (applying || route() !== "herramientas" || !root) return;
     applying = true;
@@ -64,19 +76,18 @@
       const lang = language();
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
-          const text = normalize(node.nodeValue);
-          return text && (MAP[text] || [...ORIGINAL.values?.() || []]) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_ACCEPT;
+          return canonicalSpanish(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         }
       });
       const nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
       nodes.forEach(node => {
-        const current = normalize(node.nodeValue);
-        if (!ORIGINAL.has(node) && MAP[current]) ORIGINAL.set(node, node.nodeValue || "");
-        const original = ORIGINAL.get(node);
-        if (!original) return;
-        const next = lang === "en" ? MAP[normalize(original)] : original;
-        if (next && node.nodeValue !== next) node.nodeValue = next;
+        if (!ORIGINAL.has(node)) ORIGINAL.set(node, canonicalSpanish(node.nodeValue) || node.nodeValue || "");
+        const spanish = ORIGINAL.get(node) || "";
+        const next = lang === "en" ? MAP[normalize(spanish)] : spanish;
+        if (!next) return;
+        const rendered = preserveWhitespace(node.nodeValue || spanish, next);
+        if (node.nodeValue !== rendered) node.nodeValue = rendered;
       });
     } finally {
       applying = false;
@@ -99,7 +110,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelToolsEnglishContent = {
-    version: "2.0.0",
+    version: "2.1.0",
     apply,
     diagnostics: () => ({ route: route(), language: language(), translations: Object.keys(MAP).length, polling: false })
   };
