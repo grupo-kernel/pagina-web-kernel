@@ -10,6 +10,7 @@ on:
       - 'assets/kernel-data-affiliations-projects-fix.js'
       - 'assets/kernel-institutional-history-project-fix.js'
       - 'assets/kernel-evaluation-project-details.js'
+      - 'assets/kernel-project-native-stability-fix.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
@@ -31,6 +32,7 @@ on:
       - 'assets/kernel-data-affiliations-projects-fix.js'
       - 'assets/kernel-institutional-history-project-fix.js'
       - 'assets/kernel-evaluation-project-details.js'
+      - 'assets/kernel-project-native-stability-fix.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
@@ -67,6 +69,7 @@ jobs:
           node --check assets/kernel-data-affiliations-projects-fix.js
           node --check assets/kernel-institutional-history-project-fix.js
           node --check assets/kernel-evaluation-project-details.js
+          node --check assets/kernel-project-native-stability-fix.js
           node --check assets/kernel-lab-news-language.js
           node --check assets/kernel-lab-news-partial-fix.js
           node --check assets/kernel-stable-language.js
@@ -104,14 +107,15 @@ jobs:
           assert optimization['external_collaborators'] == ['Alicia Cordero Barbero', 'Juan Ramón Torregrosa Sánchez']
 
           index = Path('index.html').read_text(encoding='utf-8')
-          assert 'kernel-deployment" content="20260727-native-antmel-1' in index
+          assert 'kernel-deployment" content="20260727-native-antmel-2' in index
           assert 'kernel_build' in index
           assert 'kernel-data-affiliations-projects-fix.js?v=20260727-8' in index
-          assert 'index-BEtvhqLu.js?v=20260727-native-antmel-1' in index
-          assert 'index-DDHYSPOT.css?v=20260727-native-antmel-1' in index
+          assert 'kernel-project-native-stability-fix.js?v=20260727-1' in index
+          assert 'index-BEtvhqLu.js?v=20260727-native-antmel-2' in index
+          assert 'index-DDHYSPOT.css?v=20260727-native-antmel-2' in index
           assert 'kernel-antmel-approved-project-definitive.js' not in index
           assert not Path('assets/kernel-antmel-approved-project-definitive.js').exists()
-          print({'approved_projects': 11, 'antmel_native': True, 'cache_busted': True})
+          print({'approved_projects': 11, 'antmel_native': True, 'cache_busted': True, 'stable_details': True})
           PY
 
       - name: Install Selenium
