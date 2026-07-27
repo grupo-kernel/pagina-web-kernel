@@ -9,6 +9,7 @@ on:
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
       - 'assets/kernel-lab-news-language.js'
+      - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
       - 'assets/kernel-i18n-full.js'
       - 'assets/kernel-ui-i18n-unification.js'
@@ -26,6 +27,7 @@ on:
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
       - 'assets/kernel-lab-news-language.js'
+      - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
       - 'assets/kernel-i18n-full.js'
       - 'assets/kernel-ui-i18n-unification.js'
@@ -58,6 +60,7 @@ jobs:
         run: |
           node --check assets/kernel-data-affiliations-projects-fix.js
           node --check assets/kernel-lab-news-language.js
+          node --check assets/kernel-lab-news-partial-fix.js
           node --check assets/kernel-stable-language.js
           node --check assets/kernel-i18n-full.js
           node --check assets/kernel-ui-i18n-unification.js
@@ -84,10 +87,12 @@ jobs:
           assert 'script.async = false' in index
           required = [
               'kernel-lab-news-language.js',
-              'kernel-stable-language.js',
+              'kernel-lab-news-partial-fix.js',
+              'kernel-stable-language.js?v=20260727-2',
               'kernel-i18n-full.js?v=20260727-3',
               'kernel-ui-i18n-finalizer.js?v=20260727-5',
               'kernel-ui-i18n-watchdog.js?v=20260727-2',
+              'kernel-site-chrome-language-fix.js?v=20260727-4',
           ]
           for asset in required:
               assert asset in index, asset
@@ -99,6 +104,7 @@ jobs:
               'assets/kernel-site-chrome-language-fix.js',
               'assets/kernel-spanish-restoration.js',
               'assets/kernel-lab-news-language.js',
+              'assets/kernel-lab-news-partial-fix.js',
               'assets/kernel-stable-language.js',
           ]
           for path in no_polling:
