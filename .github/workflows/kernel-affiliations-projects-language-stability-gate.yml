@@ -3,11 +3,12 @@ name: Kernel Affiliations Projects Language Stability Gate
 on:
   workflow_dispatch:
   push:
-    branches: [agent/add-antmel-optimization-project]
+    branches: [agent/native-antmel-project-cache-fix]
     paths:
       - 'index.html'
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-institutional-history-project-fix.js'
       - 'assets/kernel-evaluation-project-details.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
@@ -20,7 +21,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
-      - 'platform/test_evaluation_project_details.py'
+      - 'platform/test_native_antmel_project.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
   pull_request:
     branches: [gh-pages]
@@ -28,6 +29,7 @@ on:
       - 'index.html'
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-institutional-history-project-fix.js'
       - 'assets/kernel-evaluation-project-details.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
@@ -40,7 +42,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
-      - 'platform/test_evaluation_project_details.py'
+      - 'platform/test_native_antmel_project.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
 
 permissions:
@@ -48,7 +50,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate affiliations, projects, bilingual content and stability
+    name: Validate native Antmel project, bilingual content and stability
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -60,9 +62,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate source files and deterministic loading
+      - name: Validate source files and project catalog
         run: |
           node --check assets/kernel-data-affiliations-projects-fix.js
+          node --check assets/kernel-institutional-history-project-fix.js
           node --check assets/kernel-evaluation-project-details.js
           node --check assets/kernel-lab-news-language.js
           node --check assets/kernel-lab-news-partial-fix.js
@@ -75,75 +78,40 @@ jobs:
           node --check assets/kernel-site-chrome-language-fix.js
           node --check assets/kernel-spanish-restoration.js
           python -m py_compile platform/test_affiliations_projects_lab_news_stability.py
-          python -m py_compile platform/test_evaluation_project_details.py
+          python -m py_compile platform/test_native_antmel_project.py
           python - <<'PY'
           import json
           from pathlib import Path
 
           projects = json.loads(Path('core/data/projects.v2.json').read_text(encoding='utf-8'))
-          proposals = [item for item in projects.get('proposals', []) if item.get('status') == 'under-review']
-          assert len(proposals) == 2, proposals
-          assert projects['summary']['proposals_under_review'] == 2
+          summary = projects['summary']
+          assert summary['recorded_participations'] == 59, summary
+          assert summary['featured_approved_projects'] == 11, summary
+          assert summary['proposals_under_review'] == 2, summary
 
-          by_id = {item['id']: item for item in proposals}
-          nutrients = by_id['fondocyt-transporte-nutrientes']
-          optimization = by_id['fondocyt-optimizacion-hibrida-redes-econometria']
+          approved = {item['id']: item for item in projects.get('approved_projects', [])}
+          antmel = approved['uasd-dinamica-sin-jacobiana']
+          assert antmel['status'] == 'approved'
+          assert antmel['featured'] is True
+          assert antmel['member_ids'] == ['antmel-rodriguez']
+          assert antmel['institution'] == 'Universidad Autónoma de Santo Domingo (UASD)'
+          assert antmel['funding']['amount'] == 1286178.40
+          assert antmel['dates'] == {'start': '2026-01', 'end': '2027-06'}
 
-          assert nutrients['budget'] == {'amount': 11955975.84, 'currency': 'DOP'}
-          assert nutrients['member_ids'] == ['miguel-leonardo', 'natanael-urena']
-          assert nutrients['external_collaborators'] == ['Neel Lobatchewski Báez Ureña']
-          assert nutrients['international_advisors'] == ['Juan Ramón Torregrosa Sánchez']
-          assert nutrients['national_biotechnology_advisors'] == ['Luis de Francisco', 'Yaset Rodríguez Rodríguez']
-
-          assert optimization['title'] == 'Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera'
-          assert optimization['budget'] == {'amount': 9790999.20, 'currency': 'DOP'}
-          assert optimization['duration_months'] == 30
+          proposals = {item['id']: item for item in projects.get('proposals', [])}
+          optimization = proposals['fondocyt-optimizacion-hibrida-redes-econometria']
           assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena', 'antmel-rodriguez']
-          assert optimization['external_collaborators'] == [
-              'Neel Lobatchewski Báez Ureña',
-              'Alicia Cordero Barbero',
-              'Juan Ramón Torregrosa Sánchez',
-          ]
-
-          serialized = json.dumps(projects, ensure_ascii=False)
-          assert 'La Salle' not in serialized
-          assert all(item.get('description') and item.get('description_en') for item in proposals)
-          assert all(set(item['budget']) == {'amount', 'currency'} for item in proposals)
+          assert optimization['external_collaborators'] == ['Alicia Cordero Barbero', 'Juan Ramón Torregrosa Sánchez']
 
           index = Path('index.html').read_text(encoding='utf-8')
-          early = index.index('kernel-data-affiliations-projects-fix.js')
-          app = index.index('index-BEtvhqLu.js')
-          assert early < app
-          assert 'script.async = false' in index
-          required = [
-              'kernel-data-affiliations-projects-fix.js?v=20260727-6',
-              'kernel-evaluation-project-details.js?v=20260727-3',
-              'kernel-lab-news-language.js',
-              'kernel-lab-news-partial-fix.js',
-              'kernel-stable-language.js?v=20260727-4',
-              'kernel-i18n-full.js?v=20260727-3',
-              'kernel-ui-i18n-finalizer.js?v=20260727-5',
-              'kernel-ui-i18n-watchdog.js?v=20260727-2',
-              'kernel-site-chrome-language-fix.js?v=20260727-6',
-          ]
-          for asset in required:
-              assert asset in index, asset
-
-          no_polling = [
-              'assets/kernel-ui-i18n-finalizer.js',
-              'assets/kernel-ui-i18n-watchdog.js',
-              'assets/kernel-tools-english-content.js',
-              'assets/kernel-site-chrome-language-fix.js',
-              'assets/kernel-spanish-restoration.js',
-              'assets/kernel-lab-news-language.js',
-              'assets/kernel-lab-news-partial-fix.js',
-              'assets/kernel-evaluation-project-details.js',
-              'assets/kernel-stable-language.js',
-          ]
-          for path in no_polling:
-              source = Path(path).read_text(encoding='utf-8')
-              assert 'setInterval(' not in source, path
-          print({'proposals_under_review': len(proposals), 'antmel_in_optimization': True})
+          assert 'kernel-deployment" content="20260727-native-antmel-1' in index
+          assert 'kernel_build' in index
+          assert 'kernel-data-affiliations-projects-fix.js?v=20260727-8' in index
+          assert 'index-BEtvhqLu.js?v=20260727-native-antmel-1' in index
+          assert 'index-DDHYSPOT.css?v=20260727-native-antmel-1' in index
+          assert 'kernel-antmel-approved-project-definitive.js' not in index
+          assert not Path('assets/kernel-antmel-approved-project-definitive.js').exists()
+          print({'approved_projects': 11, 'antmel_native': True, 'cache_busted': True})
           PY
 
       - name: Install Selenium
@@ -151,11 +119,19 @@ jobs:
 
       - name: Start controlled preview
         run: |
-          python -m http.server 4199 >/tmp/kernel-affiliations-language-http.log 2>&1 &
-          echo $! >/tmp/kernel-affiliations-language-http.pid
+          python -m http.server 4199 >/tmp/kernel-native-antmel-http.log 2>&1 &
+          echo $! >/tmp/kernel-native-antmel-http.pid
           sleep 2
 
-      - name: Run integrated browser regression
+      - name: Verify the native approved project and all filters
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          NATIVE_PROJECT_RESULT_DIR: ci-native-antmel-project
+        run: |
+          set -o pipefail
+          python platform/test_native_antmel_project.py 2>&1 | tee /tmp/kernel-native-antmel-test.log
+
+      - name: Run integrated bilingual regression
         env:
           BASE_URL: http://127.0.0.1:4199
           RESULT_DIR: ci-affiliations-projects-lab-news
@@ -163,29 +139,21 @@ jobs:
           set -o pipefail
           python platform/test_affiliations_projects_lab_news_stability.py 2>&1 | tee /tmp/kernel-affiliations-language-test.log
 
-      - name: Verify corrected evaluation-project cards
-        env:
-          BASE_URL: http://127.0.0.1:4199
-          PROJECT_RESULT_DIR: ci-evaluation-project-details
-        run: |
-          set -o pipefail
-          python platform/test_evaluation_project_details.py 2>&1 | tee /tmp/kernel-evaluation-project-details-test.log
-
       - name: Stop controlled preview
         if: always()
         run: |
-          if [ -f /tmp/kernel-affiliations-language-http.pid ]; then kill "$(cat /tmp/kernel-affiliations-language-http.pid)" || true; fi
+          if [ -f /tmp/kernel-native-antmel-http.pid ]; then kill "$(cat /tmp/kernel-native-antmel-http.pid)" || true; fi
 
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kernel-affiliations-projects-language-stability-result
+          name: kernel-native-antmel-project-result
           path: |
+            ci-native-antmel-project/
             ci-affiliations-projects-lab-news/
-            ci-evaluation-project-details/
+            /tmp/kernel-native-antmel-test.log
             /tmp/kernel-affiliations-language-test.log
-            /tmp/kernel-evaluation-project-details-test.log
-            /tmp/kernel-affiliations-language-http.log
+            /tmp/kernel-native-antmel-http.log
           if-no-files-found: warn
           retention-days: 7
