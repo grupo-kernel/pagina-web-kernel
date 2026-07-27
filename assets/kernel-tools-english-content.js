@@ -46,6 +46,7 @@
     "Universidad APEC · Publicación de calificaciones": "APEC University · Grade publishing"
   });
 
+  const REVERSE = Object.fromEntries(Object.entries(MAP).map(([spanish, english]) => [english, spanish]));
   const ORIGINAL = new WeakMap();
   let applying = false;
   let timer = 0;
@@ -57,55 +58,61 @@
     return saved === "en" || String(document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "es";
   };
 
-  function apply() {
-    if (applying || route() !== "herramientas" || !document.body) return;
+  function canonicalSpanish(value) {
+    const clean = normalize(value);
+    if (MAP[clean]) return clean;
+    return REVERSE[clean] || null;
+  }
+
+  function preserveWhitespace(original, replacement) {
+    const match = String(original).match(/^(\s*)([\s\S]*?)(\s*)$/);
+    return `${match?.[1] || ""}${replacement}${match?.[3] || ""}`;
+  }
+
+  function apply(root = document.querySelector("#main") || document.body) {
+    if (applying || route() !== "herramientas" || !root) return;
     applying = true;
     try {
       const lang = language();
-      const walker = document.createTreeWalker(document.querySelector("#main") || document.body, NodeFilter.SHOW_TEXT, {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
-          const text = normalize(node.nodeValue);
-          return text && MAP[text] ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+          return canonicalSpanish(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         }
       });
       const nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
       nodes.forEach(node => {
-        if (!ORIGINAL.has(node)) ORIGINAL.set(node, node.nodeValue || "");
-        const original = ORIGINAL.get(node) || "";
-        const clean = normalize(original);
-        const next = lang === "en" ? MAP[clean] : original;
-        if (next && node.nodeValue !== next) node.nodeValue = next;
+        if (!ORIGINAL.has(node)) ORIGINAL.set(node, canonicalSpanish(node.nodeValue) || node.nodeValue || "");
+        const spanish = ORIGINAL.get(node) || "";
+        const next = lang === "en" ? MAP[normalize(spanish)] : spanish;
+        if (!next) return;
+        const rendered = preserveWhitespace(node.nodeValue || spanish, next);
+        if (node.nodeValue !== rendered) node.nodeValue = rendered;
       });
     } finally {
       applying = false;
     }
   }
 
-  function schedule() {
-    if (timer) return;
-    timer = setTimeout(() => {
-      timer = 0;
-      apply();
-    }, 60);
+  function schedule(delay = 50) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => apply(), delay);
   }
 
   new MutationObserver(mutations => {
-    if (!applying && mutations.some(mutation => mutation.type === "characterData" || mutation.addedNodes.length)) schedule();
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    if (applying || route() !== "herramientas") return;
+    if (mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
-  window.setInterval(() => {
-    if (!document.hidden) apply();
-  }, 750);
   window.addEventListener("hashchange", schedule);
   window.addEventListener("kernel-language-change", schedule);
   document.addEventListener("kernel-language-change", schedule);
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelToolsEnglishContent = {
-    version: "1.0.0",
+    version: "2.1.0",
     apply,
-    diagnostics: () => ({ route: route(), language: language(), translations: Object.keys(MAP).length })
+    diagnostics: () => ({ route: route(), language: language(), translations: Object.keys(MAP).length, polling: false })
   };
 
   schedule();

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const ID = "kernel-i18n-full-v2";
+  const ID = "kernel-i18n-full-v3";
   if (window[ID]) return;
   window[ID] = true;
 
@@ -22,16 +22,15 @@
     const detail = { language, source: "kernel-i18n-controller" };
     window.dispatchEvent(new CustomEvent("kernel-language-change", { detail }));
     document.dispatchEvent(new CustomEvent("kernel-language-change", { detail }));
-    [0, 80, 240, 600].forEach(delay => window.setTimeout(() => {
-      window.KernelUiI18nUnification?.apply?.();
-      window.KernelUiI18nFinalizer?.apply?.();
-      window.KernelUiI18nFinalizer?.settle?.();
-    }, delay));
+    window.KernelStableLanguage?.schedule?.(0);
+    if (!window.KernelStableLanguage) window.KernelUiI18nFinalizer?.apply?.();
   }
 
   function apply(language = currentLanguage()) {
     const normalized = language === "en" ? "en" : "es";
     localStorage.setItem("kernel-language", normalized);
+    localStorage.setItem("language", normalized);
+    localStorage.setItem("lang", normalized);
     document.documentElement.lang = normalized;
     renderButton(normalized);
     notify(normalized);
@@ -52,7 +51,7 @@
     timer = window.setTimeout(() => {
       bindButton();
       apply(currentLanguage());
-    }, 60);
+    }, 55);
   }
 
   new MutationObserver(mutations => {
@@ -63,11 +62,11 @@
 
   window.addEventListener("hashchange", () => {
     bindButton();
-    notify(currentLanguage());
+    window.KernelStableLanguage?.schedule?.(55);
   });
   window.addEventListener("pageshow", schedule);
   document.addEventListener("DOMContentLoaded", schedule);
 
-  window.KernelI18nController = { version: "2.0.0", apply, language: currentLanguage };
+  window.KernelI18nController = { version: "3.0.0", apply, language: currentLanguage };
   schedule();
 })();

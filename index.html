@@ -42,8 +42,9 @@
         rel="stylesheet"
     >
 
-    <!-- Se ejecuta antes del enrutador para precargar los catálogos y ocultar vistas intermedias. -->
+    <!-- Estas capas deben existir antes de que los módulos consuman los catálogos. -->
     <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
+    <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-2"></script>
 
     <script>
         (function cargarActualizacionesKernel() {
@@ -51,7 +52,6 @@
                 "kernel-stats-patch.js?v=20260725-3",
                 "kernel-phase1-patch.js?v=20260725-1",
                 "kernel-phase1-fix.js?v=20260725-2",
-                "kernel-i18n-full.js?v=20260727-2",
                 "kernel-home-2b-bridge.js?v=20260725-1",
                 "kernel-home-2b-route-fix.js?v=20260725-1",
                 "kernel-home-icon-fix.js?v=20260726-1",
@@ -71,19 +71,24 @@
                 "kernel-investigation-menu-typography.js?v=20260726-1",
                 "kernel-researcher-order-mobile-fix.js?v=20260726-1",
                 "kernel-photo-framing-fix.js?v=20260726-3",
-                "kernel-ui-i18n-unification.js?v=20260727-4",
                 "kernel-tools-tab-state-fix.js?v=20260727-2",
-                "kernel-ui-i18n-finalizer.js?v=20260727-4",
-                "kernel-ui-i18n-watchdog.js?v=20260727-1",
-                "kernel-tools-english-content.js?v=20260727-1",
-                "kernel-site-chrome-language-fix.js?v=20260727-2",
+                "kernel-ui-i18n-unification.js?v=20260727-6",
+                "kernel-ui-i18n-finalizer.js?v=20260727-5",
+                "kernel-tools-english-content.js?v=20260727-3",
+                "kernel-site-chrome-language-fix.js?v=20260727-6",
                 "kernel-team-language-fix.js?v=20260727-1",
-                "kernel-spanish-restoration.js?v=20260727-1"
+                "kernel-lab-news-language.js?v=20260727-1",
+                "kernel-lab-news-partial-fix.js?v=20260727-1",
+                "kernel-spanish-restoration.js?v=20260727-2",
+                "kernel-stable-language.js?v=20260727-3",
+                "kernel-ui-i18n-watchdog.js?v=20260727-2",
+                "kernel-i18n-full.js?v=20260727-3"
             ];
 
             archivos.forEach((archivo) => {
                 const script = document.createElement("script");
                 script.src = `./assets/${archivo}`;
+                script.async = false;
                 script.defer = true;
                 document.head.appendChild(script);
             });

@@ -5,38 +5,35 @@
   let timer = 0;
 
   function apply() {
-    if (document.hidden) return;
-    window.KernelUiI18nFinalizer?.apply?.();
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      timer = 0;
+      window.KernelStableLanguage?.applyAll?.();
+      if (!window.KernelStableLanguage) window.KernelUiI18nFinalizer?.apply?.();
+    }, 60);
   }
 
   function start() {
-    if (timer) return;
-    timer = window.setInterval(apply, 650);
     apply();
   }
 
   function stop() {
-    if (!timer) return;
-    window.clearInterval(timer);
+    window.clearTimeout(timer);
     timer = 0;
   }
 
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stop();
-    else start();
-  });
   window.addEventListener("hashchange", apply);
-  window.addEventListener("pageshow", start);
+  window.addEventListener("pageshow", apply);
   window.addEventListener("kernel-language-change", apply);
   document.addEventListener("kernel-language-change", apply);
-  document.addEventListener("DOMContentLoaded", start);
+  document.addEventListener("DOMContentLoaded", apply);
 
   window.KernelUiI18nWatchdog = {
-    version: "1.0.0",
+    version: "2.0.0",
     start,
     stop,
     apply,
-    diagnostics: () => ({ active: Boolean(timer), hidden: document.hidden })
+    diagnostics: () => ({ active: Boolean(timer), polling: false })
   };
 
   start();

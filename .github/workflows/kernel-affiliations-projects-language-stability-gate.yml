@@ -1,0 +1,148 @@
+name: Kernel Affiliations Projects Language Stability Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [agent/affiliations-projects-lab-news-stability]
+    paths:
+      - 'index.html'
+      - 'core/data/projects.v2.json'
+      - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-lab-news-language.js'
+      - 'assets/kernel-lab-news-partial-fix.js'
+      - 'assets/kernel-stable-language.js'
+      - 'assets/kernel-i18n-full.js'
+      - 'assets/kernel-ui-i18n-unification.js'
+      - 'assets/kernel-ui-i18n-finalizer.js'
+      - 'assets/kernel-ui-i18n-watchdog.js'
+      - 'assets/kernel-tools-english-content.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
+      - 'assets/kernel-spanish-restoration.js'
+      - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'core/data/projects.v2.json'
+      - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-lab-news-language.js'
+      - 'assets/kernel-lab-news-partial-fix.js'
+      - 'assets/kernel-stable-language.js'
+      - 'assets/kernel-i18n-full.js'
+      - 'assets/kernel-ui-i18n-unification.js'
+      - 'assets/kernel-ui-i18n-finalizer.js'
+      - 'assets/kernel-ui-i18n-watchdog.js'
+      - 'assets/kernel-tools-english-content.js'
+      - 'assets/kernel-site-chrome-language-fix.js'
+      - 'assets/kernel-spanish-restoration.js'
+      - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate affiliations, projects, bilingual content and stability
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate source files and deterministic loading
+        run: |
+          node --check assets/kernel-data-affiliations-projects-fix.js
+          node --check assets/kernel-lab-news-language.js
+          node --check assets/kernel-lab-news-partial-fix.js
+          node --check assets/kernel-stable-language.js
+          node --check assets/kernel-i18n-full.js
+          node --check assets/kernel-ui-i18n-unification.js
+          node --check assets/kernel-ui-i18n-finalizer.js
+          node --check assets/kernel-ui-i18n-watchdog.js
+          node --check assets/kernel-tools-english-content.js
+          node --check assets/kernel-site-chrome-language-fix.js
+          node --check assets/kernel-spanish-restoration.js
+          python -m py_compile platform/test_affiliations_projects_lab_news_stability.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          projects = json.loads(Path('core/data/projects.v2.json').read_text(encoding='utf-8'))
+          proposals = [item for item in projects.get('proposals', []) if item.get('status') == 'under-review']
+          assert len(proposals) == 2, proposals
+          assert projects['summary']['proposals_under_review'] == 2
+          assert any(item['id'] == 'fondocyt-cuasi-newton-lasalle' for item in proposals)
+
+          index = Path('index.html').read_text(encoding='utf-8')
+          early = index.index('kernel-data-affiliations-projects-fix.js')
+          app = index.index('index-BEtvhqLu.js')
+          assert early < app
+          assert 'script.async = false' in index
+          required = [
+              'kernel-lab-news-language.js',
+              'kernel-lab-news-partial-fix.js',
+              'kernel-stable-language.js?v=20260727-3',
+              'kernel-i18n-full.js?v=20260727-3',
+              'kernel-ui-i18n-finalizer.js?v=20260727-5',
+              'kernel-ui-i18n-watchdog.js?v=20260727-2',
+              'kernel-site-chrome-language-fix.js?v=20260727-6',
+          ]
+          for asset in required:
+              assert asset in index, asset
+
+          no_polling = [
+              'assets/kernel-ui-i18n-finalizer.js',
+              'assets/kernel-ui-i18n-watchdog.js',
+              'assets/kernel-tools-english-content.js',
+              'assets/kernel-site-chrome-language-fix.js',
+              'assets/kernel-spanish-restoration.js',
+              'assets/kernel-lab-news-language.js',
+              'assets/kernel-lab-news-partial-fix.js',
+              'assets/kernel-stable-language.js',
+          ]
+          for path in no_polling:
+              source = Path(path).read_text(encoding='utf-8')
+              assert 'setInterval(' not in source, path
+          print({'proposals_under_review': len(proposals), 'deterministic_assets': len(required)})
+          PY
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4199 >/tmp/kernel-affiliations-language-http.log 2>&1 &
+          echo $! >/tmp/kernel-affiliations-language-http.pid
+          sleep 2
+
+      - name: Run integrated browser regression
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          RESULT_DIR: ci-affiliations-projects-lab-news
+        run: |
+          set -o pipefail
+          python platform/test_affiliations_projects_lab_news_stability.py 2>&1 | tee /tmp/kernel-affiliations-language-test.log
+
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-affiliations-language-http.pid ]; then kill "$(cat /tmp/kernel-affiliations-language-http.pid)" || true; fi
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-affiliations-projects-language-stability-result
+          path: |
+            ci-affiliations-projects-lab-news/
+            /tmp/kernel-affiliations-language-test.log
+            /tmp/kernel-affiliations-language-http.log
+          if-no-files-found: warn
+          retention-days: 7

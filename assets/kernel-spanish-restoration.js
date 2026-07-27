@@ -86,13 +86,14 @@
     });
   }
 
-  async function apply() {
-    if (applying || language() !== "es" || !document.body) return;
+  async function apply(root = document.body) {
+    if (applying || language() !== "es" || !root) return;
     applying = true;
     await load();
     try {
-      restoreText(document.body);
-      restoreAttributes(document);
+      restoreText(root);
+      restoreAttributes(root === document.body ? document : root);
+      await window.KernelLabNewsLanguage?.apply?.(root);
       window.KernelSiteChromeLanguageFix?.apply?.();
       window.KernelTeamLanguageFix?.apply?.();
       window.KernelToolsEnglishContent?.apply?.();
@@ -102,22 +103,16 @@
     }
   }
 
-  function schedule(delay = 80) {
-    if (timer) return;
-    timer = window.setTimeout(() => {
-      timer = 0;
-      apply();
-    }, delay);
+  function schedule(delay = 65) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => apply(), delay);
   }
 
   new MutationObserver(mutations => {
     if (applying || language() !== "es") return;
-    if (mutations.some(mutation => mutation.type === "characterData" || mutation.addedNodes.length)) schedule();
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    if (mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE))) schedule();
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
-  window.setInterval(() => {
-    if (!document.hidden && language() === "es") apply();
-  }, 800);
   window.addEventListener("hashchange", schedule);
   window.addEventListener("pageshow", schedule);
   window.addEventListener("kernel-language-change", schedule);
@@ -125,9 +120,9 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSpanishRestoration = {
-    version: "1.0.0",
+    version: "2.0.0",
     apply,
-    diagnostics: () => ({ language: language(), translations: Object.keys(REVERSE).length })
+    diagnostics: () => ({ language: language(), translations: Object.keys(REVERSE).length, polling: false })
   };
 
   load().finally(schedule);

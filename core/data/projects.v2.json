@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "status": "candidate-not-active",
-  "updated_at": "2026-07-25",
+  "status": "active",
+  "updated_at": "2026-07-27",
   "summary": {
     "recorded_participations": 58,
     "featured_approved_projects": 10,
@@ -24,13 +24,28 @@
   "proposals": [
     {
       "id":"fondocyt-transporte-nutrientes",
+      "order":1,
       "title":"Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
+      "title_en":"Design and analysis of high-order iterative methods for solving nonlinear PDEs applied to nutrient-transport modelling in biological substrates",
       "status":"under-review",
       "program":"FONDOCyT / MESCyT",
       "duration_months":30,
       "budget":{"amount":11901975.84,"currency":"DOP"},
       "member_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
       "external_collaborators":["Juan R. Torregrosa","Alicia Cordero"],
+      "verification":"documented-internal-record"
+    },
+    {
+      "id":"fondocyt-cuasi-newton-lasalle",
+      "order":2,
+      "title":"Diseño de un proyecto sobre métodos híbridos cuasi-Newton, actualizaciones tipo La Salle y optimización numérica",
+      "title_en":"Design of a project on hybrid quasi-Newton methods, La Salle-type updates and numerical optimization",
+      "status":"under-review",
+      "program":"FONDOCyT / MESCyT",
+      "duration_months":null,
+      "budget":{"amount":null,"currency":"DOP"},
+      "member_ids":["miguel-leonardo","antmel-rodriguez","marino-brito"],
+      "external_collaborators":[],
       "verification":"documented-internal-record"
     }
   ]
