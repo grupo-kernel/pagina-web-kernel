@@ -7,6 +7,7 @@ on:
     paths:
       - 'index.html'
       - 'assets/kernel-ui-i18n-unification.js'
+      - 'assets/kernel-ui-i18n-finalizer.js'
       - 'assets/kernel-tools-tab-state-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
@@ -17,6 +18,7 @@ on:
     paths:
       - 'index.html'
       - 'assets/kernel-ui-i18n-unification.js'
+      - 'assets/kernel-ui-i18n-finalizer.js'
       - 'assets/kernel-tools-tab-state-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
@@ -43,6 +45,7 @@ jobs:
       - name: Validate assets
         run: |
           node --check assets/kernel-ui-i18n-unification.js
+          node --check assets/kernel-ui-i18n-finalizer.js
           node --check assets/kernel-tools-tab-state-fix.js
           node --check assets/kernel-researcher-photo-source-stability.js
           python -m py_compile platform/test_ui_i18n_unification.py
@@ -59,6 +62,7 @@ jobs:
           index = Path('index.html').read_text(encoding='utf-8')
           assert total >= 590, total
           assert 'kernel-ui-i18n-unification.js' in index
+          assert 'kernel-ui-i18n-finalizer.js' in index
           assert 'kernel-tools-tab-state-fix.js' in index
           assert 'kernel-researcher-photo-source-stability.js' in index
           print({'translations': total})
