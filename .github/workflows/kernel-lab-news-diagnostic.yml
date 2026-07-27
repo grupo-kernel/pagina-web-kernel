@@ -1,0 +1,82 @@
+name: Kernel Lab and News Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [agent/affiliations-projects-lab-news-stability]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'core/data/**'
+      - '.github/workflows/kernel-lab-news-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check selenium
+      - name: Start local site
+        run: |
+          python -m http.server 4196 >/tmp/kernel-diagnostic-http.log 2>&1 &
+          echo $! >/tmp/kernel-diagnostic-http.pid
+          sleep 2
+      - name: Capture lab and news DOM
+        run: |
+          mkdir -p kernel-lab-news-diagnostic
+          python - <<'PY'
+          import json, time
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out=Path('kernel-lab-news-diagnostic')
+          options=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1440,1800']:
+              options.add_argument(arg)
+          driver=webdriver.Chrome(options=options)
+          wait=WebDriverWait(driver,60)
+          result={}
+          try:
+              for route in ['laboratorioKernel','noticias']:
+                  driver.get(f'http://127.0.0.1:4196/#/{route}')
+                  wait.until(lambda d:d.execute_script('return document.readyState')=='complete')
+                  wait.until(lambda d:d.find_elements('css selector','#main'))
+                  time.sleep(2.5)
+                  result[route]=driver.execute_script("""
+                    const root=document.getElementById('main');
+                    const normalize=v=>String(v||'').replace(/\s+/g,' ').trim();
+                    return {
+                      text:normalize(root?.innerText),
+                      html:root?.innerHTML||'',
+                      elements:[...root.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,label,button,a,input,select,option,summary')].map(e=>({
+                        tag:e.tagName.toLowerCase(),id:e.id||'',className:typeof e.className==='string'?e.className:'',text:normalize(e.innerText||e.textContent),placeholder:e.getAttribute('placeholder')||'',ariaLabel:e.getAttribute('aria-label')||''
+                      })).filter(x=>x.text||x.placeholder||x.ariaLabel)
+                    };
+                  """)
+                  (out/f'{route}.html').write_text(result[route]['html'],encoding='utf-8')
+                  driver.save_screenshot(str(out/f'{route}.png'))
+          finally:
+              driver.quit()
+          (out/'result.json').write_text(json.dumps(result,indent=2,ensure_ascii=False),encoding='utf-8')
+          print(json.dumps({key:len(value['elements']) for key,value in result.items()},indent=2))
+          PY
+      - name: Stop local site
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-diagnostic-http.pid ]; then kill "$(cat /tmp/kernel-diagnostic-http.pid)" || true; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kernel-lab-news-diagnostic
+          path: kernel-lab-news-diagnostic/
+          if-no-files-found: error
+          retention-days: 7
