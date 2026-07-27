@@ -92,7 +92,7 @@ jobs:
               'kernel-i18n-full.js?v=20260727-3',
               'kernel-ui-i18n-finalizer.js?v=20260727-5',
               'kernel-ui-i18n-watchdog.js?v=20260727-2',
-              'kernel-site-chrome-language-fix.js?v=20260727-5',
+              'kernel-site-chrome-language-fix.js?v=20260727-6',
           ]
           for asset in required:
               assert asset in index, asset
