@@ -1,6 +1,6 @@
 {
   "base_url": "http://127.0.0.1:4174",
-  "passed": true,
+  "passed": false,
   "checks": [
     "Navegación principal",
     "Menú Nosotros",
@@ -22,7 +22,6 @@
     "Laboratorio Inteligente accesible",
     "Control de acceso del Laboratorio",
     "Equipo de nueve investigadores",
-    "Fotografías del equipo",
     "Fotografía actualizada de Miguel referenciada",
     "Formación académica de nueve investigadores",
     "Alicia disponible en Formación",
@@ -34,9 +33,84 @@
     "Proyectos 2.0 muestra 48 participaciones adicionales",
     "Proyectos 2.0 tiene filtros"
   ],
-  "failures": [],
-  "browser_logs": [],
-  "workflow_status": "success",
-  "run_id": "30182621367",
-  "validated_sha": "64e73e7701d49073c64aeebb1023b701df476a77"
+  "failures": [
+    "Fotografías del equipo — fotografías=7"
+  ],
+  "browser_logs": [
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242012
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242036
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/#/equipment 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242095
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/#/equipment 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242095
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242362
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242362
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/?kernelSection=formacion#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242367
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/?kernelSection=formacion#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242367
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/randy.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242479
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/antmel.jpg - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1785153242479
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/?kernelSection=formacion&investigador=alicia-cordero#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242483
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:4174/?kernelSection=formacion&investigador=alicia-cordero#/quienesSomos 0:44 Uncaught TypeError: Cannot set properties of null (setting 'textContent')",
+      "source": "javascript",
+      "timestamp": 1785153242484
+    }
+  ],
+  "workflow_status": "failure",
+  "run_id": "30263677823",
+  "validated_sha": "c874d35ce3716ecd4ae4a3da0b34ac1c0974089a"
 }
