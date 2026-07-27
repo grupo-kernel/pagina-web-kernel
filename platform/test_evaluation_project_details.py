@@ -162,14 +162,16 @@ try:
     record(
         "Kernel members retain the requested group order",
         nutrient_members == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo"]
-        and optimization_members == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo"],
+        and optimization_members == [
+            "Miguel A. Leonardo Sepúlveda",
+            "Natanael Ureña Castillo",
+            "Antmel Rodríguez Cabral",
+        ],
         {"nutrients": nutrient_members, "optimization": optimization_members},
     )
     record(
-        "Antmel is removed and Neel Báez is added to the optimization project",
-        "Antmel Rodríguez Cabral" not in optimization.get("other", "")
-        and "Antmel Rodríguez Cabral" not in optimization_members
-        and "Neel Lobatchewski Báez Ureña" in optimization.get("other", ""),
+        "Antmel Rodríguez Cabral is included in the optimization project",
+        "Antmel Rodríguez Cabral" in optimization_members,
         {"members": optimization_members, "other": optimization.get("other")},
     )
     record(
@@ -225,6 +227,11 @@ try:
             "National biotechnology advisors: Luis de Francisco, Yaset Rodríguez Rodríguez",
         ],
         english["fondocyt-transporte-nutrientes"]["advisors"],
+    )
+    record(
+        "Antmel remains visible in the English optimization-project card",
+        any(item.startswith("Antmel Rodríguez Cabral") for item in english["fondocyt-optimizacion-hibrida-redes-econometria"]["members"]),
+        english["fondocyt-optimizacion-hibrida-redes-econometria"]["members"],
     )
     driver.save_screenshot(str(RESULT_DIR / "projects-evaluation-en.png"))
 
