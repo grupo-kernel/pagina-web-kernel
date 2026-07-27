@@ -20,22 +20,22 @@
     duration: "Duration",
     months: "months",
     total: "Total project amount",
-    fondocyt: "FONDOCyT contribution",
-    counterpart: "Institutional counterpart",
     program: "Call / program",
     kernelMembers: "El Kernel members in the project",
-    otherMembers: "Other project participants"
+    otherMembers: "Other project participants",
+    internationalAdvisor: "International advisor",
+    nationalBiotechnologyAdvisors: "National biotechnology advisors"
   } : {
     overview: "Bosquejo del proyecto",
     institution: "Institución",
     duration: "Duración",
     months: "meses",
     total: "Monto total del proyecto",
-    fondocyt: "Aporte FONDOCyT",
-    counterpart: "Contrapartida institucional",
     program: "Convocatoria / programa",
     kernelMembers: "Miembros de El Kernel en el proyecto",
-    otherMembers: "Otros integrantes del proyecto"
+    otherMembers: "Otros integrantes del proyecto",
+    internationalAdvisor: "Asesor internacional",
+    nationalBiotechnologyAdvisors: "Asesores nacionales en biotecnología"
   };
 
   function installStyles() {
@@ -76,7 +76,7 @@
         text-transform:uppercase;
       }
       .kernel-project-card[data-kernel-evaluation-project="true"] .kernel-project-details{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:repeat(2,minmax(0,1fr));
       }
       .kernel-project-detail--amount{
         border:1px solid #ead39b;
@@ -96,9 +96,20 @@
         padding-top:.72rem;
         border-top:1px solid #e2e8f0;
       }
-      @media(max-width:820px){
-        .kernel-project-card[data-kernel-evaluation-project="true"] .kernel-project-details{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .kernel-project-advisor-groups{
+        display:grid;
+        gap:.5rem;
+        margin:.75rem 0 0;
+        padding:.8rem .9rem;
+        border:1px solid #dce7e9;
+        border-radius:.85rem;
+        background:#f8fafc;
+        color:#475569;
+        font-size:.75rem;
+        line-height:1.55;
       }
+      .kernel-project-advisor-groups p{margin:0}
+      .kernel-project-advisor-groups strong{color:#071820;font-weight:950}
       @media(max-width:560px){
         .kernel-project-card[data-kernel-evaluation-project="true"] .kernel-project-details{grid-template-columns:1fr}
       }
@@ -183,8 +194,40 @@
       budget: record.budget || null,
       program: record.program || "",
       members: record.member_ids || [],
-      external: record.external_collaborators || []
+      external: record.external_collaborators || [],
+      internationalAdvisors: record.international_advisors || [],
+      nationalBiotechnologyAdvisors: record.national_biotechnology_advisors || []
     });
+  }
+
+  function advisorRow(label, names) {
+    const paragraph = document.createElement("p");
+    const strong = document.createElement("strong");
+    strong.textContent = `${label}: `;
+    paragraph.append(strong, document.createTextNode(names.join(", ")));
+    return paragraph;
+  }
+
+  function renderAdvisors(card, record, t, anchor) {
+    const international = Array.isArray(record.international_advisors) ? record.international_advisors.filter(Boolean) : [];
+    const national = Array.isArray(record.national_biotechnology_advisors) ? record.national_biotechnology_advisors.filter(Boolean) : [];
+    let container = card.querySelector("[data-kernel-project-advisors]");
+
+    if (!international.length && !national.length) {
+      container?.remove();
+      return;
+    }
+
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "kernel-project-advisor-groups";
+      container.dataset.kernelProjectAdvisors = "true";
+      anchor?.insertAdjacentElement("afterend", container);
+    }
+
+    container.replaceChildren();
+    if (international.length) container.append(advisorRow(t.internationalAdvisor, international));
+    if (national.length) container.append(advisorRow(t.nationalBiotechnologyAdvisors, national));
   }
 
   function enrich(record) {
@@ -192,10 +235,12 @@
     if (!card) return false;
 
     const desiredSignature = signature(record);
+    const expectedAdvisorRows = Number(Boolean(record.international_advisors?.length)) + Number(Boolean(record.national_biotechnology_advisors?.length));
     if (
       card.dataset.kernelEvaluationSignature === desiredSignature &&
       card.querySelector("[data-kernel-project-overview]") &&
-      card.querySelectorAll(".kernel-project-detail").length === 6
+      card.querySelectorAll(".kernel-project-detail").length === 4 &&
+      card.querySelectorAll("[data-kernel-project-advisors] p").length === expectedAdvisorRows
     ) {
       return true;
     }
@@ -230,8 +275,6 @@
       detail(t.institution, record.institution || "—"),
       detail(t.duration, record.duration_months ? `${record.duration_months} ${t.months}` : "—"),
       detail(t.total, money(record.budget?.amount), true),
-      detail(t.fondocyt, money(record.budget?.fondocyt), true),
-      detail(t.counterpart, money(record.budget?.counterpart), true),
       detail(t.program, record.program || "—")
     );
 
@@ -256,6 +299,7 @@
       if (strong && strong.textContent !== desiredLabel) strong.textContent = desiredLabel;
     }
 
+    renderAdvisors(card, record, t, external || people || details);
     card.dataset.kernelEvaluationSignature = desiredSignature;
     return true;
   }
@@ -295,7 +339,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelEvaluationProjectDetails = {
-    version: "1.2.0",
+    version: "1.3.0",
     apply,
     diagnostics: () => ({
       route: route(),
