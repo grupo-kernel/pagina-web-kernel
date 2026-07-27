@@ -1,0 +1,118 @@
+name: Kernel Unified UI and English Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/unified-tabs-complete-english
+    paths:
+      - index.html
+      - assets/kernel-ui-language-unification.js
+      - assets/kernel-ui-language-data-*.js
+      - platform/ui_language_boot_diagnostic.py
+      - platform/ui_language_unification_regression.py
+      - .github/workflows/kernel-ui-language-unification-gate.yml
+  pull_request:
+    branches:
+      - gh-pages
+    paths:
+      - index.html
+      - assets/kernel-ui-language-unification.js
+      - assets/kernel-ui-language-data-*.js
+      - platform/ui_language_boot_diagnostic.py
+      - platform/ui_language_unification_regression.py
+      - .github/workflows/kernel-ui-language-unification-gate.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate unified tabs and complete English
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate source files and language data
+        run: |
+          node --check assets/kernel-ui-language-unification.js
+          for file in assets/kernel-ui-language-data-*.js; do node --check "$file"; done
+          python -m py_compile platform/ui_language_boot_diagnostic.py platform/ui_language_unification_regression.py
+          grep -q 'kernel-ui-language-unification.js?v=20260726-1' index.html
+          test "$(ls assets/kernel-ui-language-data-*.js | wc -l)" -eq 5
+          node - <<'NODE'
+          global.window = global;
+          const fs = require('fs');
+          const vm = require('vm');
+          for (const file of fs.readdirSync('assets').filter(name => /^kernel-ui-language-data-\d+\.js$/.test(name)).sort()) {
+            vm.runInThisContext(fs.readFileSync(`assets/${file}`, 'utf8'), { filename: file });
+          }
+          const data = global.__KernelUIData || {};
+          const summary = {
+            entries: data.entries?.length || 0,
+            researchers: Object.keys(data.researchers || {}).length,
+            lines: Object.keys(data.lines || {}).length
+          };
+          console.log(JSON.stringify(summary));
+          if (summary.entries < 529 || summary.researchers !== 9 || summary.lines !== 9) {
+            throw new Error(`Incomplete language data: ${JSON.stringify(summary)}`);
+          }
+          NODE
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4191 >/tmp/kernel-ui-language-http.log 2>&1 &
+          echo $! >/tmp/kernel-ui-language-http.pid
+          sleep 2
+
+      - name: Verify language layer boot
+        env:
+          BASE_URL: http://127.0.0.1:4191
+          UI_LANGUAGE_BOOT_RESULT: /tmp/kernel-ui-language-boot.json
+        run: |
+          set +e
+          python platform/ui_language_boot_diagnostic.py > /tmp/kernel-ui-language-boot.log 2>&1
+          status=$?
+          cat /tmp/kernel-ui-language-boot.log
+          cat /tmp/kernel-ui-language-boot.json || true
+          exit $status
+
+      - name: Run browser regression
+        env:
+          BASE_URL: http://127.0.0.1:4191
+          UI_LANGUAGE_RESULT: ci-ui-language/result.json
+        run: |
+          set +e
+          python platform/ui_language_unification_regression.py > /tmp/kernel-ui-language-test.log 2>&1
+          status=$?
+          cat /tmp/kernel-ui-language-test.log
+          exit $status
+
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-ui-language-http.pid ]; then kill "$(cat /tmp/kernel-ui-language-http.pid)" || true; fi
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-unified-ui-language-result
+          path: |
+            ci-ui-language/
+            /tmp/kernel-ui-language-boot.json
+            /tmp/kernel-ui-language-boot.log
+            /tmp/kernel-ui-language-test.log
+            /tmp/kernel-ui-language-http.log
+          if-no-files-found: warn
+          retention-days: 7
