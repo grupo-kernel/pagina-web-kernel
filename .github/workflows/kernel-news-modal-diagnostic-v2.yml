@@ -1,0 +1,109 @@
+name: Kernel News Modal Diagnostic v2
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - '.github/workflows/kernel-news-modal-diagnostic-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-modals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check selenium
+      - name: Start local site
+        run: |
+          python -m http.server 4198 >/tmp/kernel-news-modal-v2-http.log 2>&1 &
+          echo $! >/tmp/kernel-news-modal-v2-http.pid
+          sleep 2
+      - name: Capture each detail in a fresh page
+        run: |
+          mkdir -p kernel-news-modal-diagnostic-v2
+          python - <<'PY'
+          import json
+          import time
+          import traceback
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('kernel-news-modal-diagnostic-v2')
+          options = Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1440,1800']:
+              options.add_argument(arg)
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver,60)
+          output = []
+
+          def normalize_script():
+              return "String(arguments[0]||'').replace(/\\s+/g,' ').trim()"
+
+          try:
+              driver.get('http://127.0.0.1:4198/#/noticias')
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR,'[data-news-btn]')) >= 10)
+              ids = driver.execute_script("return [...document.querySelectorAll('[data-news-btn]')].map(b=>b.dataset.newsBtn)")
+
+              for news_id in ids:
+                  item = {'id':news_id,'error':None,'detail':None}
+                  try:
+                      driver.get('http://127.0.0.1:4198/#/noticias')
+                      wait.until(lambda d, nid=news_id: d.find_elements(By.CSS_SELECTOR, f'[data-news-btn="{nid}"]'))
+                      before = driver.execute_script("return new Set([...document.body.querySelectorAll('*')]).size")
+                      button = driver.find_element(By.CSS_SELECTOR, f'[data-news-btn="{news_id}"]')
+                      driver.execute_script('arguments[0].click()', button)
+                      time.sleep(.7)
+                      detail = driver.execute_script("""
+                        const normalize=v=>String(v||'').replace(/\s+/g,' ').trim();
+                        const visible=e=>{const s=getComputedStyle(e),b=e.getBoundingClientRect();return b.width>320&&b.height>220&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)!==0;};
+                        const candidates=[...document.querySelectorAll('[role="dialog"],[aria-modal="true"],.fixed.inset-0,body>div')]
+                          .filter(e=>visible(e)&&normalize(e.innerText));
+                        const scored=candidates.map(e=>({e,score:(parseInt(getComputedStyle(e).zIndex)||0)*1000000+e.getBoundingClientRect().width*e.getBoundingClientRect().height})).sort((a,b)=>b.score-a.score);
+                        const modal=scored[0]?.e;
+                        if(!modal)return {found:false,top:[...document.body.children].map(e=>({tag:e.tagName,id:e.id||'',className:typeof e.className==='string'?e.className:'',text:normalize(e.innerText).slice(0,300),display:getComputedStyle(e).display,z:getComputedStyle(e).zIndex}))};
+                        return {
+                          found:true,
+                          tag:modal.tagName.toLowerCase(),
+                          id:modal.id||'',
+                          className:typeof modal.className==='string'?modal.className:'',
+                          text:normalize(modal.innerText),
+                          html:modal.outerHTML,
+                          elements:[...modal.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,button,a')].map(e=>({tag:e.tagName.toLowerCase(),text:normalize(e.innerText||e.textContent),ariaLabel:e.getAttribute('aria-label')||''})).filter(x=>x.text||x.ariaLabel)
+                        };
+                      """)
+                      item['detail'] = detail
+                      if detail.get('found'):
+                          (out/f'{news_id}.html').write_text(detail['html'],encoding='utf-8')
+                      driver.save_screenshot(str(out/f'{news_id}.png'))
+                  except Exception as error:
+                      item['error'] = {'type':type(error).__name__,'message':str(error),'traceback':traceback.format_exc()}
+                  output.append(item)
+          finally:
+              driver.quit()
+
+          (out/'result.json').write_text(json.dumps(output,indent=2,ensure_ascii=False),encoding='utf-8')
+          print(json.dumps({item['id']:{'found':bool(item.get('detail',{}).get('found')),'error':item['error'] and item['error']['message']} for item in output},indent=2,ensure_ascii=False))
+          PY
+      - name: Stop local site
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-news-modal-v2-http.pid ]; then kill "$(cat /tmp/kernel-news-modal-v2-http.pid)" || true; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kernel-news-modal-diagnostic-v2
+          path: kernel-news-modal-diagnostic-v2/
+          if-no-files-found: error
+          retention-days: 7
