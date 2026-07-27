@@ -14,6 +14,7 @@ on:
       - 'assets/kernel-tools-english-content.js'
       - 'assets/kernel-tools-tab-state-fix.js'
       - 'assets/kernel-site-chrome-language-fix.js'
+      - 'assets/kernel-team-language-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
@@ -30,6 +31,7 @@ on:
       - 'assets/kernel-tools-english-content.js'
       - 'assets/kernel-tools-tab-state-fix.js'
       - 'assets/kernel-site-chrome-language-fix.js'
+      - 'assets/kernel-team-language-fix.js'
       - 'assets/kernel-researcher-photo-source-stability.js'
       - 'assets/i18n/kernel-ui-en-*.json'
       - 'platform/test_ui_i18n_unification.py'
@@ -62,6 +64,7 @@ jobs:
           node --check assets/kernel-tools-english-content.js
           node --check assets/kernel-tools-tab-state-fix.js
           node --check assets/kernel-site-chrome-language-fix.js
+          node --check assets/kernel-team-language-fix.js
           node --check assets/kernel-researcher-photo-source-stability.js
           python -m py_compile platform/test_ui_i18n_unification.py
           python - <<'PY'
@@ -85,6 +88,7 @@ jobs:
               'kernel-tools-english-content.js',
               'kernel-tools-tab-state-fix.js',
               'kernel-site-chrome-language-fix.js',
+              'kernel-team-language-fix.js',
               'kernel-researcher-photo-source-stability.js',
           ]
           for asset in required:
