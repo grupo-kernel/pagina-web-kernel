@@ -75,18 +75,42 @@ def set_language(language: str) -> None:
     )
 
 
-def open_route(route: str, language: str = "en") -> None:
+def wait_route_ready(route: str) -> None:
+    if route == "home":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '[data-kernel-platform-page="home-2b"]'))
+    elif route == "equipment":
+        wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, ".kernel-team-core__card")) == 9)
+    elif route == "laboratorioKernel":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, "#main form, #main button"))
+    elif route == "servicios":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '#main button[aria-pressed="true"]'))
+    elif route == "herramientas":
+        wait.until(lambda current: current.find_elements(By.ID, "tab-xmera") and current.find_elements(By.ID, "tab-banner"))
+    elif route == "quienesSomos":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, '[data-kernel-platform-page="who-we-are"]'))
+    elif route == "lineas":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, ".lineas-shell"))
+    elif route == "proyectos":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, ".kernel-project-card"))
+    elif route == "publicaciones":
+        wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, ".kernel-publication-card"))
+
+
+def open_route(route: str, language: str = "en", expected: str | None = None) -> None:
     driver.get(f"{BASE_URL}/#/{route}")
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
-    wait.until(lambda current: current.execute_script("return Boolean(window.KernelUiI18nUnification)"))
+    wait.until(lambda current: current.execute_script("return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer)"))
     set_language(language)
     wait.until(
         lambda current: current.execute_script(
-            "return window.KernelUiI18nUnification?.diagnostics().translations >= 590"
+            "return window.KernelUiI18nUnification?.diagnostics().translations >= 590 && window.KernelUiI18nFinalizer?.diagnostics().translations >= 590"
         )
     )
-    driver.execute_script("return window.KernelUiI18nUnification.apply()")
-    time.sleep(1.2)
+    wait_route_ready(route)
+    driver.execute_script("window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.settle();")
+    if expected:
+        WebDriverWait(driver, 15).until(lambda current: expected in body_text())
+    time.sleep(0.45)
 
 
 def color_of(element) -> str:
@@ -99,7 +123,20 @@ try:
     set_language("en")
 
     for route, expected, forbidden in CASES:
-        open_route(route, "en")
+        try:
+            open_route(route, "en", expected)
+        except Exception as error:  # noqa: BLE001
+            report["routes"][route] = {
+                "ok": False,
+                "expected": expected,
+                "forbidden": forbidden,
+                "readiness_error": f"{type(error).__name__}: {error}",
+            }
+            report["failures"].append(route)
+            driver.save_screenshot(str(OUT / f"{route}-english.png"))
+            save_report()
+            continue
+
         text = body_text()
         details: dict[str, object] = {
             "expected": expected,
@@ -119,7 +156,7 @@ try:
             banner = driver.find_element(By.ID, "tab-banner")
             details["xmera_initial"] = color_of(xmera)
             driver.execute_script("arguments[0].click()", banner)
-            time.sleep(0.4)
+            WebDriverWait(driver, 5).until(lambda current: banner.get_attribute("aria-selected") == "true")
             details["banner_after_click"] = color_of(banner)
             details["xmera_after_click"] = color_of(xmera)
             ok = ok and details["xmera_initial"] == "rgb(15, 91, 93)"
@@ -156,7 +193,7 @@ try:
             report["failures"].append(route)
         save_report()
 
-    open_route("diagnosticoServicios", "es")
+    open_route("diagnosticoServicios", "es", "Cuéntenos qué necesita resolver")
     spanish_text = body_text()
     report["spanish_restore"] = "Cuéntenos qué necesita resolver" in spanish_text
     if not report["spanish_restore"]:
