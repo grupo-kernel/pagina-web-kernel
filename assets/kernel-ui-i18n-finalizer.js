@@ -8,7 +8,8 @@
     "./assets/i18n/kernel-ui-en-1.json?v=20260727-1",
     "./assets/i18n/kernel-ui-en-2.json?v=20260727-1",
     "./assets/i18n/kernel-ui-en-3.json?v=20260727-1",
-    "./assets/i18n/kernel-ui-en-4.json?v=20260727-1"
+    "./assets/i18n/kernel-ui-en-4.json?v=20260727-1",
+    "./assets/i18n/kernel-ui-en-5.json?v=20260727-1"
   ];
   const PROTECTED = new Set(["SCRIPT", "STYLE", "CODE", "PRE", "TEXTAREA", "NOSCRIPT"]);
   let loadPromise = null;
@@ -39,10 +40,14 @@
   }
 
   function originalText(node) {
-    const genericOriginal = typeof node.__kernelEs === "string" ? node.__kernelEs : "";
-    if (normalize(genericOriginal)) return genericOriginal;
+    const genericOriginal = typeof node.__kernelCanonicalEs === "string" && normalize(node.__kernelCanonicalEs)
+      ? node.__kernelCanonicalEs
+      : typeof node.__kernelEs === "string" && normalize(node.__kernelEs)
+        ? node.__kernelEs
+        : "";
+    if (normalize(genericOriginal) && MAP[normalize(genericOriginal)]) return genericOriginal;
     if (!ORIGINAL.has(node)) ORIGINAL.set(node, node.nodeValue || "");
-    return ORIGINAL.get(node) || "";
+    return ORIGINAL.get(node) || genericOriginal || "";
   }
 
   function preserveWhitespace(original, replacement) {
@@ -122,7 +127,7 @@
   document.addEventListener("DOMContentLoaded", beginSettling);
 
   window.KernelUiI18nFinalizer = {
-    version: "1.1.0",
+    version: "1.2.0",
     apply,
     settle: beginSettling,
     diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length, generation: settleGeneration })
