@@ -139,12 +139,37 @@
     return record[key] || "";
   }
 
+  function proposalCards() {
+    return [...document.querySelectorAll(".kernel-project-card")].filter(card => {
+      const chips = [...card.querySelectorAll(".kernel-research-chip")];
+      return card.querySelector(".kernel-research-chip--gold") || chips.some(chip => /En evaluación|Under review/i.test(chip.textContent));
+    });
+  }
+
   function projectCard(record) {
     const titles = new Set([normalize(record.title), normalize(record.title_en)]);
-    return [...document.querySelectorAll(".kernel-project-card")].find(card => {
+    const allCards = [...document.querySelectorAll(".kernel-project-card")];
+    const exact = allCards.find(card => {
       const title = normalize(card.querySelector("h2")?.textContent);
       return titles.has(title) || card.dataset.kernelProjectId === record.id;
     });
+    if (exact) return exact;
+
+    const candidates = proposalCards();
+    const keywordMatch = candidates.find(card => {
+      const title = normalize(card.querySelector("h2")?.textContent).toLowerCase();
+      if (record.id === "fondocyt-transporte-nutrientes") {
+        return /(nutriente|nutrient)/.test(title) && /(sustrat|substrat)/.test(title);
+      }
+      if (record.id === "fondocyt-optimizacion-hibrida-redes-econometria") {
+        return /(convolucional|convolutional)/.test(title) && /(econometr)/.test(title);
+      }
+      return false;
+    });
+    if (keywordMatch) return keywordMatch;
+
+    const fallbackIndex = Math.max(0, Number(record.order || 1) - 1);
+    return candidates[fallbackIndex] || null;
   }
 
   function signature(record) {
@@ -270,7 +295,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelEvaluationProjectDetails = {
-    version: "1.1.0",
+    version: "1.2.0",
     apply,
     diagnostics: () => ({
       route: route(),
