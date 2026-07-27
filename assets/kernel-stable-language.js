@@ -12,15 +12,12 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
-      html.kernel-language-updating #header,
-      html.kernel-language-updating #main,
-      html.kernel-language-updating #footer{
-        visibility:hidden!important;
-      }
-      html.kernel-language-ready #header,
-      html.kernel-language-ready #main,
-      html.kernel-language-ready #footer{
-        visibility:visible;
+      html.kernel-language-updating #navBar *,
+      html.kernel-language-updating #header *,
+      html.kernel-language-updating #footer *,
+      html.kernel-language-updating #main *{
+        transition:none!important;
+        animation:none!important;
       }
     `;
     document.head.appendChild(style);
@@ -97,7 +94,6 @@
       installStyles();
       const root = document.documentElement;
       root.classList.add("kernel-language-updating");
-      root.classList.remove("kernel-language-ready");
 
       await withTimeout(Promise.all([
         window.KernelUiI18nFinalizer?.settle?.(),
@@ -110,10 +106,7 @@
       await applyPass();
       await nextFrame();
 
-      if (currentGeneration === generation) {
-        root.classList.remove("kernel-language-updating");
-        root.classList.add("kernel-language-ready");
-      }
+      if (currentGeneration === generation) root.classList.remove("kernel-language-updating");
     })().finally(() => {
       if (currentGeneration === generation) running = null;
     });
@@ -133,7 +126,7 @@
   document.addEventListener("DOMContentLoaded", () => schedule(25));
 
   window.KernelStableLanguage = {
-    version: "1.2.0",
+    version: "1.3.0",
     applyAll,
     applyPass,
     waitForDomQuiet,
