@@ -87,20 +87,27 @@
     }
   }
 
-  function schedule(delay = 35) {
+  function schedule(delay = 30) {
     window.clearTimeout(timer);
     timer = window.setTimeout(apply, delay);
   }
 
+  function isWithinChrome(node) {
+    const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    return Boolean(element?.closest?.("#footer,#header,[data-site-header]"));
+  }
+
   new MutationObserver(mutations => {
     if (applying) return;
-    const relevantAddition = mutations.some(mutation => [...mutation.addedNodes].some(node => {
-      if (node.nodeType !== Node.ELEMENT_NODE) return false;
-      const element = node;
-      return element.id === "footer" || element.id === "header" || element.matches?.("[data-site-header]") || element.closest?.("#footer,#header,[data-site-header]") || element.querySelector?.("#footer,#header,[data-site-header]");
-    }));
-    if (relevantAddition) apply();
-  }).observe(document.documentElement, { childList: true, subtree: true });
+    const relevant = mutations.some(mutation => {
+      if (mutation.type === "characterData") return isWithinChrome(mutation.target);
+      return [...mutation.addedNodes, ...mutation.removedNodes].some(node => {
+        if (isWithinChrome(node)) return true;
+        return node.nodeType === Node.ELEMENT_NODE && Boolean(node.querySelector?.("#footer,#header,[data-site-header]"));
+      });
+    });
+    if (relevant) apply();
+  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 
   window.addEventListener("hashchange", schedule);
   window.addEventListener("pageshow", schedule);
@@ -109,9 +116,9 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSiteChromeLanguageFix = {
-    version: "2.2.0",
+    version: "2.3.0",
     apply,
-    diagnostics: () => ({ language: language(), translations: ENTRIES.length, polling: false })
+    diagnostics: () => ({ language: language(), translations: ENTRIES.length, polling: false, scopedCharacterObserver: true })
   };
 
   schedule();
