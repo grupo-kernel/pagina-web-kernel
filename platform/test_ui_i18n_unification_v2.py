@@ -63,16 +63,26 @@ def open_route(route: str, selector: str | None = None, language: str = "en") ->
     wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
     wait.until(
         lambda d: d.execute_script(
-            "return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelSiteChromeLanguageFix && window.KernelNameDegreeFix && window.KernelTeamLanguageFix)"
+            "return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelSiteChromeLanguageFix && window.KernelNameDegreeFix && window.KernelTeamLanguageFix && window.KernelSpanishRestoration)"
         )
     )
     set_language(language)
     if selector:
         wait.until(lambda d: d.find_elements(By.CSS_SELECTOR, selector))
     driver.execute_script(
-        "window.KernelUiI18nUnification.apply(); window.KernelUiI18nFinalizer.apply(); window.KernelSiteChromeLanguageFix.apply(); window.KernelTeamLanguageFix.apply(); window.KernelNameDegreeFix.apply();"
+        """
+        window.KernelUiI18nUnification.apply();
+        window.KernelUiI18nFinalizer.apply();
+        window.KernelSiteChromeLanguageFix.apply();
+        window.KernelTeamLanguageFix.apply();
+        window.KernelNameDegreeFix.apply();
+        window.KernelSpanishRestoration.apply();
+        """
     )
-    time.sleep(1.2)
+    time.sleep(1.5)
+    if language == "es":
+        driver.execute_script("window.KernelSpanishRestoration.apply(); window.KernelSiteChromeLanguageFix.apply(); window.KernelTeamLanguageFix.apply();")
+        time.sleep(0.4)
 
 
 def background(selector: str) -> str:
@@ -138,7 +148,8 @@ try:
     record("publications English", "El Kernel publications" in text() and "Producción científica verificable" not in text())
 
     open_route("diagnosticoServicios", "form", "es")
-    record("Spanish restored", "Cuéntenos qué necesita resolver" in text())
+    spanish_text = text()
+    record("Spanish restored", "Cuéntenos qué necesita resolver" in spanish_text and "Tell us what you need to solve" not in spanish_text, spanish_text[:500])
 
     severe = [entry for entry in driver.get_log("browser") if entry.get("level") == "SEVERE" and "favicon" not in entry.get("message", "").lower()]
     record("no severe JavaScript errors", not severe, severe)
