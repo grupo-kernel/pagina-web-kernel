@@ -7,17 +7,19 @@
   const MIGUEL_ID = "miguel-leonardo";
   const MIGUEL_AFFILIATIONS = ["ITLA", "ISFODOSU", "UNAPEC"];
   const SECOND_PROPOSAL = Object.freeze({
-    id: "fondocyt-cuasi-newton-lasalle",
+    id: "fondocyt-optimizacion-hibrida-redes-econometria",
     order: 2,
-    title: "Diseño de un proyecto sobre métodos híbridos cuasi-Newton, actualizaciones tipo La Salle y optimización numérica",
-    title_en: "Design of a project on hybrid quasi-Newton methods, La Salle-type updates and numerical optimization",
+    title: "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
+    title_en: "Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
     status: "under-review",
     program: "FONDOCyT / MESCyT",
     duration_months: null,
     budget: { amount: null, currency: "DOP" },
     member_ids: ["miguel-leonardo", "antmel-rodriguez", "marino-brito"],
     external_collaborators: [],
-    verification: "documented-internal-record"
+    description: "Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
+    description_en: "Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
+    verification: "documented-official-proposal"
   });
 
   const nativeFetch = window.fetch.bind(window);
@@ -60,6 +62,8 @@
   function patchProjects(payload) {
     if (!payload || typeof payload !== "object") return payload;
     const proposals = Array.isArray(payload.proposals) ? [...payload.proposals] : [];
+    const legacyIndex = proposals.findIndex(project => project?.id === "fondocyt-cuasi-newton-lasalle");
+    if (legacyIndex >= 0) proposals.splice(legacyIndex, 1);
     const index = proposals.findIndex(project => project?.id === SECOND_PROPOSAL.id);
     if (index >= 0) proposals[index] = { ...proposals[index], ...SECOND_PROPOSAL };
     else proposals.push({ ...SECOND_PROPOSAL });
@@ -177,7 +181,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelDataAffiliationsProjectsFix = {
-    version: "1.2.0",
+    version: "1.3.0",
     affiliations: [...MIGUEL_AFFILIATIONS],
     secondProposal: { ...SECOND_PROPOSAL },
     patchResearchers,
