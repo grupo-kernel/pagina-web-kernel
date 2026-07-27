@@ -40,33 +40,48 @@
     }
   ],
   "proposals": [
-    {
-      "id":"fondocyt-transporte-nutrientes",
-      "order":1,
-      "title":"Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
-      "title_en":"Design and analysis of high-order iterative methods for solving nonlinear PDEs applied to nutrient-transport modelling in biological substrates",
-      "status":"under-review",
-      "program":"FONDOCyT / MESCyT",
-      "duration_months":30,
-      "budget":{"amount":11901975.84,"currency":"DOP"},
-      "member_ids":["miguel-leonardo","natanael-urena","Neel Lobatchewski Báez Ureña"],
-      "external_collaborators":["Juan R. Torregrosa","Alicia Cordero"],
-      "verification":"documented-internal-record"
+  {
+    "id": "fondocyt-transporte-nutrientes",
+    "order": 1,
+    "title": "Diseño y análisis de métodos iterativos de alto orden para la resolución de EDPs no lineales aplicadas a la modelización del transporte de nutrientes en sustratos biológicos",
+    "title_en": "Design and analysis of high-order iterative methods for solving nonlinear PDEs applied to nutrient-transport modelling in biological substrates",
+    "status": "under-review",
+    "program": "FONDOCyT / MESCyT",
+    "duration_months": 30,
+    "budget": {
+      "amount": 11901975.84,
+      "currency": "DOP"
     },
-    {
-      "id":"fondocyt-optimizacion-hibrida-redes-econometria",
-      "order":2,
-      "title":"Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
-      "title_en":"Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
-      "status":"under-review",
-      "program":"FONDOCyT / MESCyT",
-      "duration_months":null,
-      "budget":{"amount":null,"currency":"DOP"},
-      "member_ids":["miguel-leonardo","antmel-rodriguez","antmel-rodriguez"],
-      "external_collaborators":[],
-      "description":"Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
-      "description_en":"Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
-      "verification":"documented-official-proposal"
-    }
-  ]
+    "member_ids": [
+      "miguel-leonardo",
+      "natanael-urena"
+    ],
+    "external_collaborators": [
+      "Neel Lobatchewski Báez Ureña"
+    ],
+    "verification": "documented-internal-record"
+  },
+  {
+    "id": "fondocyt-optimizacion-hibrida-redes-econometria",
+    "order": 2,
+    "title": "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
+    "title_en": "Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
+    "status": "under-review",
+    "program": "FONDOCyT / MESCyT",
+    "duration_months": null,
+    "budget": {
+      "amount": null,
+      "currency": "DOP"
+    },
+    "member_ids": [
+      "natanael-urena",
+      "miguel-leonardo",
+      "antmel-rodriguez"
+    ],
+    "external_collaborators": [],
+    "description": "Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
+    "description_en": "Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
+    "verification": "documented-official-proposal"
+  }
+]
 }
