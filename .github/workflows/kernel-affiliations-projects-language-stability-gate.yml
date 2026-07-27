@@ -3,7 +3,7 @@ name: Kernel Affiliations Projects Language Stability Gate
 on:
   workflow_dispatch:
   push:
-    branches: [agent/evaluation-project-details-official]
+    branches: [agent/project-members-advisors-total-only]
     paths:
       - 'index.html'
       - 'core/data/projects.v2.json'
@@ -89,28 +89,27 @@ jobs:
           nutrients = by_id['fondocyt-transporte-nutrientes']
           optimization = by_id['fondocyt-optimizacion-hibrida-redes-econometria']
 
-          assert nutrients['title'].startswith('Métodos iterativos de alto orden')
-          assert nutrients['budget'] == {
-              'amount': 11955975.84,
-              'currency': 'DOP',
-              'fondocyt': 9115545.17,
-              'counterpart': 2840430.67,
-          }
+          assert nutrients['budget'] == {'amount': 11955975.84, 'currency': 'DOP'}
           assert nutrients['member_ids'] == ['miguel-leonardo', 'natanael-urena']
+          assert nutrients['external_collaborators'] == ['Neel Lobatchewski Báez Ureña']
+          assert nutrients['international_advisors'] == ['Juan Ramón Torregrosa Sánchez']
+          assert nutrients['national_biotechnology_advisors'] == ['Luis de Francisco', 'Yaset Rodríguez Rodríguez']
 
           assert optimization['title'] == 'Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera'
-          assert optimization['budget'] == {
-              'amount': 9790999.20,
-              'currency': 'DOP',
-              'fondocyt': 7647972.35,
-              'counterpart': 2143026.85,
-          }
+          assert optimization['budget'] == {'amount': 9790999.20, 'currency': 'DOP'}
           assert optimization['duration_months'] == 30
-          assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena', 'antmel-rodriguez']
+          assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena']
+          assert optimization['external_collaborators'] == [
+              'Neel Lobatchewski Báez Ureña',
+              'Alicia Cordero Barbero',
+              'Juan Ramón Torregrosa Sánchez',
+          ]
+          assert 'antmel-rodriguez' not in optimization['member_ids']
 
           serialized = json.dumps(projects, ensure_ascii=False)
           assert 'La Salle' not in serialized
           assert all(item.get('description') and item.get('description_en') for item in proposals)
+          assert all(set(item['budget']) == {'amount', 'currency'} for item in proposals)
 
           index = Path('index.html').read_text(encoding='utf-8')
           early = index.index('kernel-data-affiliations-projects-fix.js')
@@ -118,7 +117,8 @@ jobs:
           assert early < app
           assert 'script.async = false' in index
           required = [
-              'kernel-evaluation-project-details.js?v=20260727-2',
+              'kernel-data-affiliations-projects-fix.js?v=20260727-5',
+              'kernel-evaluation-project-details.js?v=20260727-3',
               'kernel-lab-news-language.js',
               'kernel-lab-news-partial-fix.js',
               'kernel-stable-language.js?v=20260727-4',
@@ -144,7 +144,7 @@ jobs:
           for path in no_polling:
               source = Path(path).read_text(encoding='utf-8')
               assert 'setInterval(' not in source, path
-          print({'proposals_under_review': len(proposals), 'official_project_details': True})
+          print({'proposals_under_review': len(proposals), 'total_amount_only': True, 'advisors_classified': True})
           PY
 
       - name: Install Selenium
@@ -164,7 +164,7 @@ jobs:
           set -o pipefail
           python platform/test_affiliations_projects_lab_news_stability.py 2>&1 | tee /tmp/kernel-affiliations-language-test.log
 
-      - name: Verify official evaluation-project cards
+      - name: Verify corrected evaluation-project cards
         env:
           BASE_URL: http://127.0.0.1:4199
           PROJECT_RESULT_DIR: ci-evaluation-project-details

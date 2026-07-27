@@ -6,12 +6,26 @@
   const PROJECTS_PATH = "/core/data/projects.v2.json";
   const MIGUEL_ID = "miguel-leonardo";
   const MIGUEL_AFFILIATIONS = ["ITLA", "ISFODOSU", "UNAPEC"];
+
   const FIRST_PROPOSAL = Object.freeze({
     id: "fondocyt-transporte-nutrientes",
     order: 1,
     title: "Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",
-    title_en: "High-order iterative methods for solving nonlinear PDEs and their application to modelling nutrient transport in biological substrates"
+    title_en: "High-order iterative methods for solving nonlinear PDEs and their application to modelling nutrient transport in biological substrates",
+    status: "under-review",
+    program: "FONDOCyT 2025–2026 / MESCyT",
+    institution: "Universidad APEC (UNAPEC)",
+    duration_months: 30,
+    budget: { amount: 11955975.84, currency: "DOP" },
+    member_ids: ["miguel-leonardo", "natanael-urena"],
+    external_collaborators: ["Neel Lobatchewski Báez Ureña"],
+    international_advisors: ["Juan Ramón Torregrosa Sánchez"],
+    national_biotechnology_advisors: ["Luis de Francisco", "Yaset Rodríguez Rodríguez"],
+    description: "El proyecto desarrollará y analizará métodos iterativos de alto orden para resolver EDPs no lineales que modelan la difusión y el transporte de nutrientes en sustratos biológicos. Integra modelización matemática, análisis de convergencia y estabilidad, implementación computacional y validación experimental con sustratos y plántulas, con aplicación al estudio de esquemas de fertirrigación para el cultivo de tomate.",
+    description_en: "The project will develop and analyse high-order iterative methods for solving nonlinear PDEs that model nutrient diffusion and transport in biological substrates. It combines mathematical modelling, convergence and stability analysis, computational implementation, and experimental validation with substrates and seedlings, with an application to fertigation schemes for tomato cultivation.",
+    verification: "documented-official-proposal"
   });
+
   const SECOND_PROPOSAL = Object.freeze({
     id: "fondocyt-optimizacion-hibrida-redes-econometria",
     order: 2,
@@ -21,9 +35,9 @@
     program: "FONDOCyT 2025–2026 / MESCyT",
     institution: "Universidad Autónoma de Santo Domingo (UASD)",
     duration_months: 30,
-    budget: { amount: 9790999.20, currency: "DOP", fondocyt: 7647972.35, counterpart: 2143026.85 },
-    member_ids: ["miguel-leonardo", "natanael-urena", "antmel-rodriguez"],
-    external_collaborators: ["Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"],
+    budget: { amount: 9790999.20, currency: "DOP" },
+    member_ids: ["miguel-leonardo", "natanael-urena"],
+    external_collaborators: ["Neel Lobatchewski Báez Ureña", "Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"],
     description: "El proyecto diseñará y analizará una familia de métodos híbridos de optimización para problemas de alta dimensionalidad. Integra estructuras cuasi-Newton multipaso, pasos tipo Newton o Traub, búsquedas lineales, actualizaciones BFGS y DFP, regiones de confianza, funciones peso y variantes de memoria limitada, con validación en redes neuronales convolucionales y en modelización econométrica, financiera y actuarial.",
     description_en: "The project will design and analyse a family of hybrid optimization methods for high-dimensional problems. It combines multistep quasi-Newton structures, Newton- or Traub-type steps, line searches, BFGS and DFP updates, trust regions, weight functions, and limited-memory variants, with validation in convolutional neural networks and econometric, financial, and actuarial modelling.",
     verification: "documented-official-proposal"
@@ -66,14 +80,20 @@
     };
   }
 
+  function upsertProposal(proposals, proposal) {
+    const index = proposals.findIndex(project => project?.id === proposal.id);
+    if (index >= 0) proposals[index] = { ...proposals[index], ...proposal };
+    else proposals.push({ ...proposal });
+  }
+
   function patchProjects(payload) {
     if (!payload || typeof payload !== "object") return payload;
     const proposals = Array.isArray(payload.proposals) ? [...payload.proposals] : [];
     const legacyIndex = proposals.findIndex(project => project?.id === "fondocyt-cuasi-newton-lasalle");
     if (legacyIndex >= 0) proposals.splice(legacyIndex, 1);
-    const index = proposals.findIndex(project => project?.id === SECOND_PROPOSAL.id);
-    if (index >= 0) proposals[index] = { ...proposals[index], ...SECOND_PROPOSAL };
-    else proposals.push({ ...SECOND_PROPOSAL });
+
+    upsertProposal(proposals, FIRST_PROPOSAL);
+    upsertProposal(proposals, SECOND_PROPOSAL);
     proposals.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
 
     return {
@@ -188,7 +208,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelDataAffiliationsProjectsFix = {
-    version: "1.4.0",
+    version: "1.5.0",
     affiliations: [...MIGUEL_AFFILIATIONS],
     firstProposal: { ...FIRST_PROPOSAL },
     secondProposal: { ...SECOND_PROPOSAL },

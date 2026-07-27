@@ -111,7 +111,8 @@ def cards() -> dict[str, dict[str, object]]:
               value: item.textContent.replace(item.querySelector('strong')?.textContent || '', '').replace(/\s+/g,' ').trim()
             })),
             members: [...card.querySelectorAll('.kernel-project-people a')].map(link => link.textContent.replace(/\s+/g,' ').trim()),
-            other: card.querySelector('.kernel-project-other-members')?.textContent?.replace(/\s+/g,' ').trim() || ''
+            other: card.querySelector('.kernel-project-other-members')?.textContent?.replace(/\s+/g,' ').trim() || '',
+            advisors: [...card.querySelectorAll('[data-kernel-project-advisors] p')].map(item => item.textContent.replace(/\s+/g,' ').trim())
           }
         ]));
         """
@@ -140,12 +141,56 @@ try:
     nutrient_details = {item["label"]: item["value"] for item in nutrients.get("details", [])}
     optimization_details = {item["label"]: item["value"] for item in optimization.get("details", [])}
     record("Nutrient project total amount is shown", nutrient_details.get("Monto total del proyecto") == "RD$ 11,955,975.84", nutrient_details)
-    record("Nutrient project FONDOCyT and counterpart amounts are shown", nutrient_details.get("Aporte FONDOCyT") == "RD$ 9,115,545.17" and nutrient_details.get("Contrapartida institucional") == "RD$ 2,840,430.67", nutrient_details)
     record("Optimization project total amount is shown", optimization_details.get("Monto total del proyecto") == "RD$ 9,790,999.20", optimization_details)
-    record("Optimization project FONDOCyT and counterpart amounts are shown", optimization_details.get("Aporte FONDOCyT") == "RD$ 7,647,972.35" and optimization_details.get("Contrapartida institucional") == "RD$ 2,143,026.85", optimization_details)
-    record("Both proposals include a concise project overview", "difusión y el transporte de nutrientes" in nutrients.get("overview", "") and "métodos híbridos de optimización" in optimization.get("overview", ""), {"nutrients": nutrients.get("overview"), "optimization": optimization.get("overview")})
-    record("Kernel members retain the group order", [item.split(" · ")[0] for item in nutrients.get("members", [])] == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo"] and [item.split(" · ")[0] for item in optimization.get("members", [])] == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo", "Antmel Rodríguez Cabral"], {"nutrients": nutrients.get("members"), "optimization": optimization.get("members")})
-    record("Other project participants are listed", all(name in nutrients.get("other", "") for name in ["Neel Lobatchewski Báez Ureña", "Juan Ramón Torregrosa Sánchez", "Yaset Rodríguez Rodríguez", "Luis De Francisco"]) and all(name in optimization.get("other", "") for name in ["Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"]), {"nutrients": nutrients.get("other"), "optimization": optimization.get("other")})
+    record(
+        "Only total project amounts are displayed",
+        len(nutrient_details) == 4
+        and len(optimization_details) == 4
+        and not {"Aporte FONDOCyT", "Contrapartida institucional"}.intersection(nutrient_details)
+        and not {"Aporte FONDOCyT", "Contrapartida institucional"}.intersection(optimization_details),
+        {"nutrients": nutrient_details, "optimization": optimization_details},
+    )
+    record(
+        "Both proposals include a concise project overview",
+        "difusión y el transporte de nutrientes" in nutrients.get("overview", "")
+        and "métodos híbridos de optimización" in optimization.get("overview", ""),
+        {"nutrients": nutrients.get("overview"), "optimization": optimization.get("overview")},
+    )
+
+    nutrient_members = [item.split(" · ")[0] for item in nutrients.get("members", [])]
+    optimization_members = [item.split(" · ")[0] for item in optimization.get("members", [])]
+    record(
+        "Kernel members retain the requested group order",
+        nutrient_members == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo"]
+        and optimization_members == ["Miguel A. Leonardo Sepúlveda", "Natanael Ureña Castillo"],
+        {"nutrients": nutrient_members, "optimization": optimization_members},
+    )
+    record(
+        "Antmel is removed and Neel Báez is added to the optimization project",
+        "Antmel Rodríguez Cabral" not in optimization.get("other", "")
+        and "Antmel Rodríguez Cabral" not in optimization_members
+        and "Neel Lobatchewski Báez Ureña" in optimization.get("other", ""),
+        {"members": optimization_members, "other": optimization.get("other")},
+    )
+    record(
+        "Nutrient-project advisors are classified correctly",
+        nutrients.get("advisors") == [
+            "Asesor internacional: Juan Ramón Torregrosa Sánchez",
+            "Asesores nacionales en biotecnología: Luis de Francisco, Yaset Rodríguez Rodríguez",
+        ],
+        nutrients.get("advisors"),
+    )
+    record(
+        "Only Neel appears as the other project participant in the nutrient project",
+        "Neel Lobatchewski Báez Ureña" in nutrients.get("other", "")
+        and all(name not in nutrients.get("other", "") for name in ["Juan Ramón Torregrosa Sánchez", "Luis de Francisco", "Yaset Rodríguez Rodríguez"]),
+        nutrients.get("other"),
+    )
+    record(
+        "Optimization project retains Neel, Alicia and Juan Ramón as other participants",
+        all(name in optimization.get("other", "") for name in ["Neel Lobatchewski Báez Ureña", "Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"]),
+        optimization.get("other"),
+    )
     driver.save_screenshot(str(RESULT_DIR / "projects-evaluation-es.png"))
 
     set_language("en")
@@ -160,7 +205,27 @@ try:
         )
     )
     english = cards()
-    record("English mode translates both official project cards", english["fondocyt-transporte-nutrientes"]["title"].startswith("High-order iterative methods") and english["fondocyt-optimizacion-hibrida-redes-econometria"]["title"].startswith("Design and analysis of hybrid optimization methods") and all("Total project amount" in [item["label"] for item in card["details"]] for card in english.values()), english)
+    english_labels = [item["label"] for card in english.values() for item in card["details"]]
+    record(
+        "English mode translates both official project cards",
+        english["fondocyt-transporte-nutrientes"]["title"].startswith("High-order iterative methods")
+        and english["fondocyt-optimizacion-hibrida-redes-econometria"]["title"].startswith("Design and analysis of hybrid optimization methods")
+        and all("Total project amount" in [item["label"] for item in card["details"]] for card in english.values()),
+        english,
+    )
+    record(
+        "English mode also shows only total project amounts",
+        "FONDOCyT contribution" not in english_labels and "Institutional counterpart" not in english_labels,
+        english_labels,
+    )
+    record(
+        "Advisor categories are translated into English",
+        english["fondocyt-transporte-nutrientes"]["advisors"] == [
+            "International advisor: Juan Ramón Torregrosa Sánchez",
+            "National biotechnology advisors: Luis de Francisco, Yaset Rodríguez Rodríguez",
+        ],
+        english["fondocyt-transporte-nutrientes"]["advisors"],
+    )
     driver.save_screenshot(str(RESULT_DIR / "projects-evaluation-en.png"))
 
     severe = [
