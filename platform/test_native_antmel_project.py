@@ -17,6 +17,7 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 RESULT_PATH = RESULT_DIR / "result.json"
 
 TITLE = "Análisis dinámico y estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales"
+DEPLOYMENT = "20260727-native-antmel-2"
 report: dict[str, object] = {"checks": {}, "failures": [], "exception": None}
 
 options = Options()
@@ -100,6 +101,8 @@ try:
     wait.until(lambda current: current.execute_script("return document.readyState") == "complete")
     wait.until(lambda current: current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list"))
     wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 13)
+    wait.until(lambda current: current.execute_script("return Boolean(window.KernelProjectNativeStabilityFix)"))
+    driver.execute_script("window.KernelProjectNativeStabilityFix.apply()")
     time.sleep(0.5)
 
     deployment = driver.execute_script(
@@ -111,12 +114,17 @@ try:
     stylesheet = driver.execute_script(
         "return [...document.querySelectorAll('link[rel=stylesheet]')].map(link => link.href).find(href => href.includes('index-DDHYSPOT.css')) || ''"
     )
-    record("New deployment marker is present", deployment == "20260727-native-antmel-1", deployment)
-    record("Application bundle is cache-busted", "20260727-native-antmel-1" in module_source, module_source)
-    record("Application stylesheet is cache-busted", "20260727-native-antmel-1" in stylesheet, stylesheet)
+    record("New deployment marker is present", deployment == DEPLOYMENT, deployment)
+    record("Application bundle is cache-busted", DEPLOYMENT in module_source, module_source)
+    record("Application stylesheet is cache-busted", DEPLOYMENT in stylesheet, stylesheet)
     record(
         "Obsolete overlay module is not loaded",
         not driver.execute_script("return Boolean(window.KernelAntmelApprovedProjectDefinitive)"),
+    )
+    record(
+        "Native project stabilizer is loaded",
+        driver.execute_script("return window.KernelProjectNativeStabilityFix?.version") == "1.0.0",
+        driver.execute_script("return window.KernelProjectNativeStabilityFix?.diagnostics()"),
     )
 
     titles = project_titles()
@@ -132,6 +140,8 @@ try:
     select_visible_text("kernel-project-researcher", "Antmel Rodríguez Cabral")
 
     wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
+    wait.until(lambda current: normalize(current.find_element(By.CSS_SELECTOR, "#main .kernel-research-count").text) == "1 resultado")
+    driver.execute_script("window.KernelProjectNativeStabilityFix.apply()")
     time.sleep(0.35)
 
     filtered_titles = project_titles()
@@ -143,15 +153,22 @@ try:
     record("Filtered result displays the UASD amount", "RD$ 1,286,178.40" in filtered_text, filtered_text[-1800:])
     record("Empty-state message is absent", "No hay proyectos que coincidan" not in filtered_text, filtered_text[-1000:])
 
-    result_count = next(
-        (
-            normalize(element.text)
-            for element in driver.find_elements(By.CSS_SELECTOR, "#main .kernel-research-count")
-            if normalize(element.text)
-        ),
-        "",
+    result_count = normalize(driver.find_element(By.CSS_SELECTOR, "#main .kernel-research-count").text)
+    record("Filtered result counter is grammatically correct", result_count == "1 resultado", result_count)
+
+    duplicate_details = driver.execute_script(
+        """
+        const title = arguments[0];
+        const card = [...document.querySelectorAll('#main .kernel-project-list .kernel-project-card')]
+          .find(item => item.querySelector('h2,h3')?.textContent.replace(/\s+/g,' ').trim() === title);
+        return {
+          direct: card ? [...card.children].filter(child => child.hasAttribute('data-kernel-antmel-project-details')).length : -1,
+          total: document.querySelectorAll('#main [data-kernel-antmel-project-details]').length
+        };
+        """,
+        TITLE,
     )
-    record("Filtered result counter is one", result_count == "1 resultado", result_count)
+    record("Antmel extended details appear only once", duplicate_details == {"direct": 1, "total": 1}, duplicate_details)
 
     driver.save_screenshot(str(RESULT_DIR / "native-antmel-project-mobile.png"))
 
