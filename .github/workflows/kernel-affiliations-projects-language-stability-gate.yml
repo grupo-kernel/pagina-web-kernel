@@ -118,7 +118,7 @@ jobs:
           assert early < app
           assert 'script.async = false' in index
           required = [
-              'kernel-evaluation-project-details.js?v=20260727-1',
+              'kernel-evaluation-project-details.js?v=20260727-2',
               'kernel-lab-news-language.js',
               'kernel-lab-news-partial-fix.js',
               'kernel-stable-language.js?v=20260727-4',
