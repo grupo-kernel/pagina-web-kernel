@@ -39,26 +39,36 @@
     return saved === "en" || String(document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "es";
   };
 
+  function isTranslatable(value) {
+    const clean = normalize(value);
+    return Boolean(MAP[clean]) || clean.includes("Todos los derechos reservados.") || clean.includes("All rights reserved.");
+  }
+
+  function translateValue(original, lang) {
+    const clean = normalize(original);
+    if (MAP[clean]) return lang === "en" ? MAP[clean] : original;
+    if (lang === "en") return String(original).replace("Todos los derechos reservados.", "All rights reserved.");
+    return original;
+  }
+
   function translateRoot(root) {
     if (!root) return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
-        return MAP[normalize(node.nodeValue)] ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        return isTranslatable(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
       }
     });
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     const lang = language();
     nodes.forEach(node => {
-      if (!ORIGINAL.has(node)) ORIGINAL.set(node, node.nodeValue || "");
+      if (!ORIGINAL.has(node)) {
+        const current = node.nodeValue || "";
+        ORIGINAL.set(node, current.replace("All rights reserved.", "Todos los derechos reservados."));
+      }
       const original = ORIGINAL.get(node) || "";
-      const clean = normalize(original);
-      const replacement = lang === "en" ? MAP[clean] : original;
-      if (!replacement || node.nodeValue === replacement) return;
-      const whitespace = original.match(/^(\s*)([\s\S]*?)(\s*)$/);
-      node.nodeValue = lang === "en"
-        ? `${whitespace?.[1] || ""}${replacement}${whitespace?.[3] || ""}`
-        : replacement;
+      const replacement = translateValue(original, lang);
+      if (node.nodeValue !== replacement) node.nodeValue = replacement;
     });
   }
 
@@ -97,7 +107,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelSiteChromeLanguageFix = {
-    version: "1.0.0",
+    version: "1.1.0",
     apply,
     diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length })
   };
