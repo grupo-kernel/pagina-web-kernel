@@ -6,19 +6,26 @@
   const PROJECTS_PATH = "/core/data/projects.v2.json";
   const MIGUEL_ID = "miguel-leonardo";
   const MIGUEL_AFFILIATIONS = ["ITLA", "ISFODOSU", "UNAPEC"];
+  const FIRST_PROPOSAL = Object.freeze({
+    id: "fondocyt-transporte-nutrientes",
+    order: 1,
+    title: "Métodos iterativos de alto orden para la resolución de EDPs no lineales y su aplicación a la modelización del transporte de nutrientes en sustratos biológicos",
+    title_en: "High-order iterative methods for solving nonlinear PDEs and their application to modelling nutrient transport in biological substrates"
+  });
   const SECOND_PROPOSAL = Object.freeze({
     id: "fondocyt-optimizacion-hibrida-redes-econometria",
     order: 2,
     title: "Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera",
     title_en: "Design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling",
     status: "under-review",
-    program: "FONDOCyT / MESCyT",
-    duration_months: null,
-    budget: { amount: null, currency: "DOP" },
-    member_ids: ["miguel-leonardo", "antmel-rodriguez", "marino-brito"],
-    external_collaborators: [],
-    description: "Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
-    description_en: "Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
+    program: "FONDOCyT 2025–2026 / MESCyT",
+    institution: "Universidad Autónoma de Santo Domingo (UASD)",
+    duration_months: 30,
+    budget: { amount: 9790999.20, currency: "DOP", fondocyt: 7647972.35, counterpart: 2143026.85 },
+    member_ids: ["miguel-leonardo", "natanael-urena", "antmel-rodriguez"],
+    external_collaborators: ["Alicia Cordero Barbero", "Juan Ramón Torregrosa Sánchez"],
+    description: "El proyecto diseñará y analizará una familia de métodos híbridos de optimización para problemas de alta dimensionalidad. Integra estructuras cuasi-Newton multipaso, pasos tipo Newton o Traub, búsquedas lineales, actualizaciones BFGS y DFP, regiones de confianza, funciones peso y variantes de memoria limitada, con validación en redes neuronales convolucionales y en modelización econométrica, financiera y actuarial.",
+    description_en: "The project will design and analyse a family of hybrid optimization methods for high-dimensional problems. It combines multistep quasi-Newton structures, Newton- or Traub-type steps, line searches, BFGS and DFP updates, trust regions, weight functions, and limited-memory variants, with validation in convolutional neural networks and econometric, financial, and actuarial modelling.",
     verification: "documented-official-proposal"
   });
 
@@ -147,14 +154,14 @@
   }
 
   function translateProjectTitles() {
-    const english = String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase().startsWith("en");
+    const isEnglish = String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase().startsWith("en");
     document.querySelectorAll(".kernel-project-card h2").forEach(heading => {
       const text = normalize(heading.textContent);
-      if (english) {
-        if (text === SECOND_PROPOSAL.title) heading.textContent = SECOND_PROPOSAL.title_en;
-        if (text.startsWith("Diseño y análisis de métodos iterativos de alto orden")) {
-          heading.textContent = "Design and analysis of high-order iterative methods for solving nonlinear PDEs applied to nutrient-transport modelling in biological substrates";
-        }
+      if (text === FIRST_PROPOSAL.title || text === FIRST_PROPOSAL.title_en) {
+        heading.textContent = isEnglish ? FIRST_PROPOSAL.title_en : FIRST_PROPOSAL.title;
+      }
+      if (text === SECOND_PROPOSAL.title || text === SECOND_PROPOSAL.title_en) {
+        heading.textContent = isEnglish ? SECOND_PROPOSAL.title_en : SECOND_PROPOSAL.title;
       }
     });
   }
@@ -181,8 +188,9 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelDataAffiliationsProjectsFix = {
-    version: "1.3.0",
+    version: "1.4.0",
     affiliations: [...MIGUEL_AFFILIATIONS],
+    firstProposal: { ...FIRST_PROPOSAL },
     secondProposal: { ...SECOND_PROPOSAL },
     patchResearchers,
     patchProjects,
