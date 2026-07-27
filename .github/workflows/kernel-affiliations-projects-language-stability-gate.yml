@@ -3,7 +3,7 @@ name: Kernel Affiliations Projects Language Stability Gate
 on:
   workflow_dispatch:
   push:
-    branches: [agent/project-members-advisors-total-only]
+    branches: [agent/add-antmel-optimization-project]
     paths:
       - 'index.html'
       - 'core/data/projects.v2.json'
@@ -98,13 +98,12 @@ jobs:
           assert optimization['title'] == 'Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera'
           assert optimization['budget'] == {'amount': 9790999.20, 'currency': 'DOP'}
           assert optimization['duration_months'] == 30
-          assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena']
+          assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena', 'antmel-rodriguez']
           assert optimization['external_collaborators'] == [
               'Neel Lobatchewski Báez Ureña',
               'Alicia Cordero Barbero',
               'Juan Ramón Torregrosa Sánchez',
           ]
-          assert 'antmel-rodriguez' not in optimization['member_ids']
 
           serialized = json.dumps(projects, ensure_ascii=False)
           assert 'La Salle' not in serialized
@@ -117,7 +116,7 @@ jobs:
           assert early < app
           assert 'script.async = false' in index
           required = [
-              'kernel-data-affiliations-projects-fix.js?v=20260727-5',
+              'kernel-data-affiliations-projects-fix.js?v=20260727-6',
               'kernel-evaluation-project-details.js?v=20260727-3',
               'kernel-lab-news-language.js',
               'kernel-lab-news-partial-fix.js',
@@ -144,7 +143,7 @@ jobs:
           for path in no_polling:
               source = Path(path).read_text(encoding='utf-8')
               assert 'setInterval(' not in source, path
-          print({'proposals_under_review': len(proposals), 'total_amount_only': True, 'advisors_classified': True})
+          print({'proposals_under_review': len(proposals), 'antmel_in_optimization': True})
           PY
 
       - name: Install Selenium
