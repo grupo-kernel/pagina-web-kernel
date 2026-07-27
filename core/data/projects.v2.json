@@ -49,7 +49,7 @@
       "program":"FONDOCyT / MESCyT",
       "duration_months":30,
       "budget":{"amount":11901975.84,"currency":"DOP"},
-      "member_ids":["miguel-leonardo","natanael-urena","antmel-rodriguez"],
+      "member_ids":["miguel-leonardo","natanael-urena","Neel Lobatchewski Báez Ureña"],
       "external_collaborators":["Juan R. Torregrosa","Alicia Cordero"],
       "verification":"documented-internal-record"
     },
@@ -62,7 +62,7 @@
       "program":"FONDOCyT / MESCyT",
       "duration_months":null,
       "budget":{"amount":null,"currency":"DOP"},
-      "member_ids":["miguel-leonardo","antmel-rodriguez","marino-brito"],
+      "member_ids":["miguel-leonardo","antmel-rodriguez","antmel-rodriguez"],
       "external_collaborators":[],
       "description":"Propuesta orientada al diseño y análisis de métodos híbridos de optimización con aplicación en el entrenamiento de redes neuronales convolucionales y en la modelización econométrico-financiera. Considera estructuras cuasi-Newton multipaso, actualizaciones BFGS y DFP, variantes de memoria limitada, funciones peso, búsquedas lineales y estrategias de región de confianza.",
       "description_en":"Proposal focused on the design and analysis of hybrid optimization methods applied to convolutional neural-network training and econometric-financial modelling. It considers multistep quasi-Newton structures, BFGS and DFP updates, limited-memory variants, weight functions, line searches and trust-region strategies.",
