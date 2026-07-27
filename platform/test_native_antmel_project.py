@@ -95,14 +95,16 @@ try:
     record("Project summary shows 11 approved projects", "11 Proyectos aprobados destacados" in text, text[:1200])
 
     search = driver.find_element(By.ID, "kernel-project-search")
-    status = Select(driver.find_element(By.ID, "kernel-project-status"))
-    researcher = Select(driver.find_element(By.ID, "kernel-project-researcher"))
-
     search.clear()
     search.send_keys("Análisis dinámico y estabilidad de métodos")
-    status.select_by_visible_text("Aprobado")
-    researcher.select_by_visible_text("Antmel Rodríguez Cabral")
+    wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
 
+    status = Select(driver.find_element(By.ID, "kernel-project-status"))
+    status.select_by_visible_text("Aprobado")
+    wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
+
+    researcher = Select(driver.find_element(By.ID, "kernel-project-researcher"))
+    researcher.select_by_visible_text("Antmel Rodríguez Cabral")
     wait.until(lambda current: len(current.find_elements(By.CSS_SELECTOR, "#main .kernel-project-list .kernel-project-card")) == 1)
     time.sleep(0.35)
 
