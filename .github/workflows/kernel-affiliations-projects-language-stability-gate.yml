@@ -3,11 +3,12 @@ name: Kernel Affiliations Projects Language Stability Gate
 on:
   workflow_dispatch:
   push:
-    branches: [agent/affiliations-projects-lab-news-stability]
+    branches: [agent/evaluation-project-details-official]
     paths:
       - 'index.html'
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-evaluation-project-details.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
@@ -19,6 +20,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - 'platform/test_evaluation_project_details.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
   pull_request:
     branches: [gh-pages]
@@ -26,6 +28,7 @@ on:
       - 'index.html'
       - 'core/data/projects.v2.json'
       - 'assets/kernel-data-affiliations-projects-fix.js'
+      - 'assets/kernel-evaluation-project-details.js'
       - 'assets/kernel-lab-news-language.js'
       - 'assets/kernel-lab-news-partial-fix.js'
       - 'assets/kernel-stable-language.js'
@@ -37,6 +40,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - 'platform/test_evaluation_project_details.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
 
 permissions:
@@ -46,7 +50,7 @@ jobs:
   validate:
     name: Validate affiliations, projects, bilingual content and stability
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout candidate
         uses: actions/checkout@v4
@@ -59,6 +63,7 @@ jobs:
       - name: Validate source files and deterministic loading
         run: |
           node --check assets/kernel-data-affiliations-projects-fix.js
+          node --check assets/kernel-evaluation-project-details.js
           node --check assets/kernel-lab-news-language.js
           node --check assets/kernel-lab-news-partial-fix.js
           node --check assets/kernel-stable-language.js
@@ -70,6 +75,7 @@ jobs:
           node --check assets/kernel-site-chrome-language-fix.js
           node --check assets/kernel-spanish-restoration.js
           python -m py_compile platform/test_affiliations_projects_lab_news_stability.py
+          python -m py_compile platform/test_evaluation_project_details.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -78,7 +84,33 @@ jobs:
           proposals = [item for item in projects.get('proposals', []) if item.get('status') == 'under-review']
           assert len(proposals) == 2, proposals
           assert projects['summary']['proposals_under_review'] == 2
-          assert any(item['id'] == 'fondocyt-cuasi-newton-lasalle' for item in proposals)
+
+          by_id = {item['id']: item for item in proposals}
+          nutrients = by_id['fondocyt-transporte-nutrientes']
+          optimization = by_id['fondocyt-optimizacion-hibrida-redes-econometria']
+
+          assert nutrients['title'].startswith('Métodos iterativos de alto orden')
+          assert nutrients['budget'] == {
+              'amount': 11955975.84,
+              'currency': 'DOP',
+              'fondocyt': 9115545.17,
+              'counterpart': 2840430.67,
+          }
+          assert nutrients['member_ids'] == ['miguel-leonardo', 'natanael-urena']
+
+          assert optimization['title'] == 'Diseño y análisis de métodos híbridos de optimización con aplicación en entrenamientos de redes neuronales convolucionales y en la modelización econométrico-financiera'
+          assert optimization['budget'] == {
+              'amount': 9790999.20,
+              'currency': 'DOP',
+              'fondocyt': 7647972.35,
+              'counterpart': 2143026.85,
+          }
+          assert optimization['duration_months'] == 30
+          assert optimization['member_ids'] == ['miguel-leonardo', 'natanael-urena', 'antmel-rodriguez']
+
+          serialized = json.dumps(projects, ensure_ascii=False)
+          assert 'La Salle' not in serialized
+          assert all(item.get('description') and item.get('description_en') for item in proposals)
 
           index = Path('index.html').read_text(encoding='utf-8')
           early = index.index('kernel-data-affiliations-projects-fix.js')
@@ -86,9 +118,10 @@ jobs:
           assert early < app
           assert 'script.async = false' in index
           required = [
+              'kernel-evaluation-project-details.js?v=20260727-2',
               'kernel-lab-news-language.js',
               'kernel-lab-news-partial-fix.js',
-              'kernel-stable-language.js?v=20260727-3',
+              'kernel-stable-language.js?v=20260727-4',
               'kernel-i18n-full.js?v=20260727-3',
               'kernel-ui-i18n-finalizer.js?v=20260727-5',
               'kernel-ui-i18n-watchdog.js?v=20260727-2',
@@ -105,12 +138,13 @@ jobs:
               'assets/kernel-spanish-restoration.js',
               'assets/kernel-lab-news-language.js',
               'assets/kernel-lab-news-partial-fix.js',
+              'assets/kernel-evaluation-project-details.js',
               'assets/kernel-stable-language.js',
           ]
           for path in no_polling:
               source = Path(path).read_text(encoding='utf-8')
               assert 'setInterval(' not in source, path
-          print({'proposals_under_review': len(proposals), 'deterministic_assets': len(required)})
+          print({'proposals_under_review': len(proposals), 'official_project_details': True})
           PY
 
       - name: Install Selenium
@@ -130,6 +164,14 @@ jobs:
           set -o pipefail
           python platform/test_affiliations_projects_lab_news_stability.py 2>&1 | tee /tmp/kernel-affiliations-language-test.log
 
+      - name: Verify official evaluation-project cards
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          PROJECT_RESULT_DIR: ci-evaluation-project-details
+        run: |
+          set -o pipefail
+          python platform/test_evaluation_project_details.py 2>&1 | tee /tmp/kernel-evaluation-project-details-test.log
+
       - name: Stop controlled preview
         if: always()
         run: |
@@ -142,7 +184,9 @@ jobs:
           name: kernel-affiliations-projects-language-stability-result
           path: |
             ci-affiliations-projects-lab-news/
+            ci-evaluation-project-details/
             /tmp/kernel-affiliations-language-test.log
+            /tmp/kernel-evaluation-project-details-test.log
             /tmp/kernel-affiliations-language-http.log
           if-no-files-found: warn
           retention-days: 7
