@@ -3,11 +3,11 @@
   "status": "active",
   "updated_at": "2026-07-27",
   "summary": {
-    "recorded_participations": 58,
-    "featured_approved_projects": 10,
+    "recorded_participations": 59,
+    "featured_approved_projects": 11,
     "additional_participations_not_itemized": 48,
     "proposals_under_review": 2,
-    "counting_note": "Las 58 participaciones no equivalen necesariamente a 58 proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
+    "counting_note": "Las participaciones registradas no equivalen necesariamente al mismo número de proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
   },
   "approved_projects": [
     {"id":"procesos-iterativos","order":1,"title":"Procesos iterativos para la resolución de ecuaciones y sistemas no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
@@ -19,7 +19,25 @@
     {"id":"filtraciones","order":7,"title":"Filtraciones y métodos iterativos asociados","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
     {"id":"flujos-nms","order":8,"title":"Flujos NMS","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
     {"id":"dinamica-asociada","order":9,"title":"Dinámica asociada a métodos iterativos para ecuaciones no lineales","status":"approved","featured":true,"member_ids":["alicia-cordero","juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
-    {"id":"completacion-matrices","order":10,"title":"Completación de matrices","status":"approved","featured":true,"member_ids":["juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"}
+    {"id":"completacion-matrices","order":10,"title":"Completación de matrices","status":"approved","featured":true,"member_ids":["juan-torregrosa"],"funding":{"amount":null,"currency":null},"dates":{"start":null,"end":null},"verification":"pending-source-consolidation"},
+    {
+      "id":"uasd-dinamica-sin-jacobiana",
+      "order":11,
+      "title":"Análisis dinámico y estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales",
+      "title_en":"Dynamic analysis and stability of Jacobian-free iterative methods for systems of nonlinear equations",
+      "status":"approved",
+      "featured":true,
+      "institution":"Universidad Autónoma de Santo Domingo (UASD)",
+      "member_ids":["antmel-rodriguez"],
+      "funding":{"amount":1286178.40,"currency":"DOP","source":"UASD"},
+      "dates":{"start":"2026-01","end":"2027-06"},
+      "duration_months":18,
+      "description":"Investigación sobre el comportamiento dinámico y la estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales, orientada a identificar regiones de convergencia, bifurcaciones y comportamientos dinámicos mediante simulaciones computacionales.",
+      "description_en":"Research on the dynamic behaviour and stability of Jacobian-free iterative methods for systems of nonlinear equations, aimed at identifying convergence regions, bifurcations and dynamic behaviour through computational simulations.",
+      "methodology":["Implementación en MATLAB y Python","Diagramas de bifurcación","Planos dinámicos","Análisis de estabilidad","Orden computacional aproximado de convergencia (ACOC)","Índice de eficiencia de Kung–Traub"],
+      "areas":["Métodos iterativos","Sistemas no lineales","Análisis numérico","Métodos sin Jacobiana","Dinámica y estabilidad","Computación científica"],
+      "verification":"documented-official-proposal"
+    }
   ],
   "proposals": [
     {
@@ -46,6 +64,8 @@
       "budget":{"amount":null,"currency":"DOP"},
       "member_ids":["miguel-leonardo","antmel-rodriguez","marino-brito"],
       "external_collaborators":[],
+      "description":"Propuesta orientada al diseño, análisis e implementación de métodos híbridos cuasi-Newton, actualizaciones tipo La Salle y técnicas de optimización numérica para problemas no lineales.",
+      "description_en":"Proposal focused on the design, analysis and implementation of hybrid quasi-Newton methods, La Salle-type updates and numerical optimization techniques for nonlinear problems.",
       "verification":"documented-internal-record"
     }
   ]
