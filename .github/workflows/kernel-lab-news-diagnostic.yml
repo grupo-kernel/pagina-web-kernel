@@ -9,6 +9,13 @@ on:
       - 'assets/**'
       - 'core/data/**'
       - '.github/workflows/kernel-lab-news-diagnostic.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'core/data/**'
+      - '.github/workflows/kernel-lab-news-diagnostic.yml'
 
 permissions:
   contents: read
