@@ -20,6 +20,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - 'platform/test_evaluation_project_details.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
   pull_request:
     branches: [gh-pages]
@@ -39,6 +40,7 @@ on:
       - 'assets/kernel-site-chrome-language-fix.js'
       - 'assets/kernel-spanish-restoration.js'
       - 'platform/test_affiliations_projects_lab_news_stability.py'
+      - 'platform/test_evaluation_project_details.py'
       - '.github/workflows/kernel-affiliations-projects-language-stability-gate.yml'
 
 permissions:
@@ -48,7 +50,7 @@ jobs:
   validate:
     name: Validate affiliations, projects, bilingual content and stability
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout candidate
         uses: actions/checkout@v4
@@ -73,6 +75,7 @@ jobs:
           node --check assets/kernel-site-chrome-language-fix.js
           node --check assets/kernel-spanish-restoration.js
           python -m py_compile platform/test_affiliations_projects_lab_news_stability.py
+          python -m py_compile platform/test_evaluation_project_details.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -161,6 +164,14 @@ jobs:
           set -o pipefail
           python platform/test_affiliations_projects_lab_news_stability.py 2>&1 | tee /tmp/kernel-affiliations-language-test.log
 
+      - name: Verify official evaluation-project cards
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          PROJECT_RESULT_DIR: ci-evaluation-project-details
+        run: |
+          set -o pipefail
+          python platform/test_evaluation_project_details.py 2>&1 | tee /tmp/kernel-evaluation-project-details-test.log
+
       - name: Stop controlled preview
         if: always()
         run: |
@@ -173,7 +184,9 @@ jobs:
           name: kernel-affiliations-projects-language-stability-result
           path: |
             ci-affiliations-projects-lab-news/
+            ci-evaluation-project-details/
             /tmp/kernel-affiliations-language-test.log
+            /tmp/kernel-evaluation-project-details-test.log
             /tmp/kernel-affiliations-language-http.log
           if-no-files-found: warn
           retention-days: 7
