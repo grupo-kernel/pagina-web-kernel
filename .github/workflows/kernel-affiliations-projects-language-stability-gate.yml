@@ -88,11 +88,11 @@ jobs:
           required = [
               'kernel-lab-news-language.js',
               'kernel-lab-news-partial-fix.js',
-              'kernel-stable-language.js?v=20260727-2',
+              'kernel-stable-language.js?v=20260727-3',
               'kernel-i18n-full.js?v=20260727-3',
               'kernel-ui-i18n-finalizer.js?v=20260727-5',
               'kernel-ui-i18n-watchdog.js?v=20260727-2',
-              'kernel-site-chrome-language-fix.js?v=20260727-4',
+              'kernel-site-chrome-language-fix.js?v=20260727-5',
           ]
           for asset in required:
               assert asset in index, asset
