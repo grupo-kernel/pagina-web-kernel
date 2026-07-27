@@ -15,7 +15,6 @@
   let loadPromise = null;
   let applying = false;
   let timer = 0;
-  let settleGeneration = 0;
 
   const normalize = value => String(value ?? "").replace(/\s+/g, " ").trim();
   const language = () => {
@@ -65,13 +64,13 @@
     return null;
   }
 
-  async function apply() {
-    if (applying || !document.body) return;
+  async function apply(root = document.body) {
+    if (applying || !root) return;
     applying = true;
     await load();
     try {
       const lang = language();
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
           if (!node.parentElement || PROTECTED.has(node.parentElement.tagName)) return NodeFilter.FILTER_REJECT;
           return normalize(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
@@ -95,43 +94,35 @@
     }
   }
 
-  function schedule(delay = 70) {
-    if (timer) return;
-    timer = setTimeout(() => {
-      timer = 0;
-      apply();
-    }, delay);
+  function schedule(delay = 55) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => apply(), delay);
   }
 
-  async function settle(rounds = 22, interval = 140) {
-    const generation = ++settleGeneration;
-    for (let round = 0; round < rounds && generation === settleGeneration; round += 1) {
-      await apply();
-      await new Promise(resolve => setTimeout(resolve, interval));
-    }
-  }
-
-  function beginSettling() {
-    settle().catch(error => console.error("Kernel English settling:", error));
+  async function settle() {
+    await apply();
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    await apply();
   }
 
   new MutationObserver(mutations => {
     if (applying) return;
-    if (mutations.some(mutation => mutation.type === "characterData" || mutation.addedNodes.length)) schedule();
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    const added = mutations.some(mutation => [...mutation.addedNodes].some(node => node.nodeType === Node.ELEMENT_NODE));
+    if (added) schedule();
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
-  window.addEventListener("hashchange", beginSettling);
-  window.addEventListener("pageshow", beginSettling);
-  window.addEventListener("kernel-language-change", beginSettling);
-  document.addEventListener("kernel-language-change", beginSettling);
-  document.addEventListener("DOMContentLoaded", beginSettling);
+  window.addEventListener("hashchange", schedule);
+  window.addEventListener("pageshow", schedule);
+  window.addEventListener("kernel-language-change", schedule);
+  document.addEventListener("kernel-language-change", schedule);
+  document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelUiI18nFinalizer = {
-    version: "1.2.0",
+    version: "2.0.0",
     apply,
-    settle: beginSettling,
-    diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length, generation: settleGeneration })
+    settle,
+    diagnostics: () => ({ language: language(), translations: Object.keys(MAP).length, polling: false })
   };
 
-  load().finally(beginSettling);
+  load().finally(schedule);
 })();
