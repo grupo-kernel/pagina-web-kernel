@@ -1,12 +1,15 @@
 (() => {
   "use strict";
 
-  if (window.KernelHomeQuickAccessFix?.version === "2.0.0") {
+  if (window.KernelHomeQuickAccessFix?.version === "3.0.0") {
     return;
   }
 
-  const SELECTOR =
+  const SOURCE_SELECTOR =
     ".kernel-home-2b__quick-card[data-kernel-home-route]";
+
+  const NATIVE_SELECTOR =
+    ".kernel-home-2b__quick-card[data-kernel-quick-route]";
 
   let timer = 0;
 
@@ -47,27 +50,54 @@
     return url.toString();
   }
 
-  function convertButton(button) {
-    if (
-      !button ||
-      button.tagName === "A" ||
-      button.dataset.kernelNativeLink === "true"
-    ) {
-      return false;
-    }
-
-    const target =
-      button.dataset.kernelHomeRoute || "";
-
+  function prepareNativeLink(link, target) {
     const href = destination(target);
 
     if (!href) return false;
 
+    link.href = href;
+    link.dataset.kernelQuickRoute = target;
+    link.dataset.kernelNativeLink = "true";
+
+    /*
+     * El controlador antiguo de la portada escucha
+     * data-kernel-home-route y sustituye Formación por
+     * la ruta inválida #/formacion. Al eliminar este
+     * atributo, el enlace nativo conserva su destino.
+     */
+    link.removeAttribute("data-kernel-home-route");
+    link.removeAttribute("type");
+
+    link.style.display = "block";
+    link.style.textDecoration = "none";
+    link.style.cursor = "pointer";
+
+    return true;
+  }
+
+  function convertElement(element) {
+    if (!element) return false;
+
+    const target =
+      element.dataset.kernelHomeRoute ||
+      element.dataset.kernelQuickRoute ||
+      "";
+
+    if (!target) return false;
+
+    if (element.tagName === "A") {
+      return prepareNativeLink(
+        element,
+        target
+      );
+    }
+
     const link = document.createElement("a");
 
-    [...button.attributes].forEach(attribute => {
+    [...element.attributes].forEach(attribute => {
       if (
         attribute.name !== "type" &&
+        attribute.name !== "data-kernel-home-route" &&
         attribute.name !== "data-kernel-native-link"
       ) {
         link.setAttribute(
@@ -77,23 +107,23 @@
       }
     });
 
-    link.href = href;
-    link.innerHTML = button.innerHTML;
-    link.dataset.kernelNativeLink = "true";
+    link.innerHTML = element.innerHTML;
 
-    link.style.display = "block";
-    link.style.textDecoration = "none";
-    link.style.cursor = "pointer";
+    if (!prepareNativeLink(link, target)) {
+      return false;
+    }
 
-    button.replaceWith(link);
+    element.replaceWith(link);
 
     return true;
   }
 
   function apply() {
     document
-      .querySelectorAll(SELECTOR)
-      .forEach(convertButton);
+      .querySelectorAll(
+        `${SOURCE_SELECTOR}, ${NATIVE_SELECTOR}`
+      )
+      .forEach(convertElement);
   }
 
   function schedule(delay = 30) {
@@ -142,15 +172,20 @@
   );
 
   window.KernelHomeQuickAccessFix = {
-    version: "2.0.0",
+    version: "3.0.0",
     apply,
+    destination,
     diagnostics: () => ({
-      buttons:
-        document.querySelectorAll(SELECTOR).length,
+      pendingButtons:
+        document.querySelectorAll(
+          SOURCE_SELECTOR
+        ).length,
       nativeLinks:
         document.querySelectorAll(
-          ".kernel-home-2b__quick-card[data-kernel-native-link='true']"
-        ).length
+          NATIVE_SELECTOR
+        ).length,
+      formationHref:
+        destination("formacion")
     })
   };
 
