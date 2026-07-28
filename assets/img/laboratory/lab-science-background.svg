@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Fondo científico abstracto del Laboratorio Inteligente</title>
+  <desc id="desc">Red de datos, curvas de nivel, fórmulas y ondas matemáticas en tonos azul, verde petróleo y dorado.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fcff"/>
+      <stop offset="0.52" stop-color="#eef8f7"/>
+      <stop offset="1" stop-color="#e8f1fb"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.18" cy="0.2" r="0.55">
+      <stop offset="0" stop-color="#5aa8c9" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#5aa8c9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.85" cy="0.78" r="0.52">
+      <stop offset="0" stop-color="#0f5b5d" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#0f5b5d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#0f5b5d" stroke-opacity="0.06" stroke-width="1"/>
+      <circle cx="0" cy="0" r="2" fill="#d5a54a" fill-opacity="0.18"/>
+    </pattern>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#glowA)"/>
+  <rect width="1600" height="1000" fill="url(#glowB)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+
+  <g fill="none" stroke="#1267ca" stroke-opacity="0.13" stroke-width="3">
+    <path d="M-40 760C160 610 280 910 470 730S770 520 950 690s330 10 520-160 250-40 290 20"/>
+    <path d="M-60 825C160 670 300 970 500 790s300-210 490-20 330 0 520-170 220-70 280-10"/>
+    <path d="M-30 690C180 550 300 820 480 660s310-200 480-30 340 35 530-130 230-35 270 25"/>
+  </g>
+
+  <g fill="none" stroke="#0f5b5d" stroke-opacity="0.17" stroke-width="2">
+    <ellipse cx="1260" cy="280" rx="260" ry="155" transform="rotate(-15 1260 280)"/>
+    <ellipse cx="1260" cy="280" rx="215" ry="125" transform="rotate(-15 1260 280)"/>
+    <ellipse cx="1260" cy="280" rx="165" ry="92" transform="rotate(-15 1260 280)"/>
+    <ellipse cx="1260" cy="280" rx="110" ry="58" transform="rotate(-15 1260 280)"/>
+  </g>
+
+  <g stroke="#0f5b5d" stroke-opacity="0.24" stroke-width="2">
+    <path d="M140 170L280 105 415 205 555 125 670 245 790 155" fill="none"/>
+    <path d="M280 105L330 300 500 355 670 245 760 360" fill="none"/>
+    <path d="M140 170L205 350 330 300 415 205" fill="none"/>
+    <path d="M500 355L610 475 760 360 850 500" fill="none"/>
+  </g>
+  <g fill="#fff" stroke="#0f5b5d" stroke-width="3">
+    <circle cx="140" cy="170" r="11"/><circle cx="280" cy="105" r="14"/><circle cx="415" cy="205" r="10"/>
+    <circle cx="555" cy="125" r="13"/><circle cx="670" cy="245" r="11"/><circle cx="790" cy="155" r="13"/>
+    <circle cx="205" cy="350" r="10"/><circle cx="330" cy="300" r="14"/><circle cx="500" cy="355" r="12"/>
+    <circle cx="610" cy="475" r="10"/><circle cx="760" cy="360" r="14"/><circle cx="850" cy="500" r="11"/>
+  </g>
+  <g fill="#d5a54a">
+    <circle cx="280" cy="105" r="5"/><circle cx="555" cy="125" r="5"/><circle cx="330" cy="300" r="5"/><circle cx="760" cy="360" r="5"/>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#071820" fill-opacity="0.22">
+    <text x="1040" y="145" font-size="44">F(x)=0</text>
+    <text x="1145" y="530" font-size="36">∂u/∂t = D∇²u</text>
+    <text x="180" y="570" font-size="34">xₖ₊₁ = xₖ − J(xₖ)⁻¹F(xₖ)</text>
+    <text x="1040" y="845" font-size="34">min f(x)</text>
+  </g>
+
+  <g transform="translate(1010 610)" fill="none" stroke-linecap="round">
+    <path d="M0 145C70 25 145 250 215 105S355 30 430 165" stroke="#1267ca" stroke-opacity="0.34" stroke-width="6"/>
+    <path d="M0 175C80 65 150 210 225 135S350 75 430 190" stroke="#d5a54a" stroke-opacity="0.45" stroke-width="4"/>
+    <path d="M0 205H440" stroke="#071820" stroke-opacity="0.12" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#soft)" fill="#d5a54a" fill-opacity="0.12">
+    <circle cx="230" cy="820" r="78"/><circle cx="1380" cy="710" r="92"/>
+  </g>
+</svg>
