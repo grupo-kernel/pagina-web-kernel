@@ -42,26 +42,57 @@
     return saved === "en" || String(document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "es";
   };
 
-  async function inflateDictionary() {
-    if (dictionary) return dictionary;
-    if (!loadPromise) {
-      loadPromise = (async () => {
-        try {
-          if (!("DecompressionStream" in window)) throw new Error("DecompressionStream unavailable");
-          const binary = atob(COMPRESSED_MAP);
-          const bytes = Uint8Array.from(binary, character => character.charCodeAt(0));
-          const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-          dictionary = await new Response(stream).json();
-        } catch (error) {
-          console.error("Kernel Laboratory/News translation dictionary:", error);
-          dictionary = { ...FALLBACK };
+ async function inflateDictionary() {
+  if (dictionary) return dictionary;
+
+  if (!loadPromise) {
+    loadPromise = (async () => {
+      try {
+        if (!("DecompressionStream" in window)) {
+          throw new Error("DecompressionStream unavailable");
         }
-        reverse = Object.fromEntries(Object.entries(dictionary).map(([spanish, english]) => [normalize(english), spanish]));
-        return dictionary;
-      })();
-    }
-    return loadPromise;
+
+        const binary = atob(COMPRESSED_MAP);
+
+        const bytes = Uint8Array.from(
+          binary,
+          character => character.charCodeAt(0)
+        );
+
+        const stream = new Blob([bytes])
+          .stream()
+          .pipeThrough(new DecompressionStream("gzip"));
+
+        dictionary = {
+          ...(await new Response(stream).json()),
+          ...FALLBACK
+        };
+      } catch (error) {
+        console.error(
+          "Kernel Laboratory/News translation dictionary:",
+          error
+        );
+
+        dictionary = {
+          ...FALLBACK
+        };
+      }
+
+      reverse = Object.fromEntries(
+        Object.entries(dictionary).map(
+          ([spanish, english]) => [
+            normalize(english),
+            spanish
+          ]
+        )
+      );
+
+      return dictionary;
+    })();
   }
+
+  return loadPromise;
+}
 
   function preserveWhitespace(original, replacement) {
     const match = String(original).match(/^(\s*)([\s\S]*?)(\s*)$/);
