@@ -22,7 +22,7 @@
     .toLowerCase();
 
   const route = () => (location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean)[0] || "home").toLowerCase();
-  const relevantRoute = () => ["publicaciones", "publications"].includes(route());
+  const publicationsRoute = () => ["publicaciones", "publications"].includes(route());
 
   function loadPublications() {
     if (!payloadPromise) {
@@ -45,7 +45,9 @@
   }
 
   function q1Count(records) {
-    return records.filter(record => String(record.metrics?.quartile?.value || "").toUpperCase() === "Q1").length;
+    return records.filter(record =>
+      String(record.metrics?.quartile?.value || "").trim().toUpperCase() === "Q1"
+    ).length;
   }
 
   function leafElements(root = document) {
@@ -55,8 +57,10 @@
 
   function metricContainer(labelElement) {
     let node = labelElement.parentElement;
-    for (let depth = 0; node && depth < 4; depth += 1, node = node.parentElement) {
-      const numeric = leafElements(node).some(element => /^[\d.,]+\+?$/.test(String(element.textContent || "").trim()));
+    for (let depth = 0; node && depth < 5; depth += 1, node = node.parentElement) {
+      const numeric = leafElements(node).some(element =>
+        /^[\d.,]+\+?$/.test(String(element.textContent || "").trim())
+      );
       if (numeric) return node;
     }
     return null;
@@ -71,17 +75,17 @@
       const container = metricContainer(labelElement);
       if (!container) return;
 
-      const valueElement = leafElements(container)
-        .find(element => element !== labelElement && /^[\d.,]+\+?$/.test(String(element.textContent || "").trim()));
+      const valueElement = leafElements(container).find(element =>
+        element !== labelElement && /^[\d.,]+\+?$/.test(String(element.textContent || "").trim())
+      );
 
       if (valueElement && valueElement.textContent !== value) {
         valueElement.textContent = value;
       }
 
-      container.setAttribute(
-        "title",
-        `${value} publicaciones del catálogo tienen cuartil Q1 documentado.`
-      );
+      const description = `${value} publicaciones del catálogo tienen cuartil Q1 documentado.`;
+      container.setAttribute("title", description);
+      container.setAttribute("aria-label", `${value} publicaciones Q1 registradas. ${description}`);
     });
   }
 
@@ -89,8 +93,7 @@
     const map = new Map();
     records.forEach(record => {
       const title = normalize(record.title);
-      if (!title) return;
-      map.set(title, publicationTimestamp(record));
+      if (title) map.set(title, publicationTimestamp(record));
     });
     return map;
   }
@@ -119,6 +122,8 @@
   }
 
   function sortPublicationCards(records) {
+    if (!publicationsRoute()) return 0;
+
     const timestampByTitle = titleTimestampMap(records);
     const containers = new Set([
       ...document.querySelectorAll(".kernel-publication-list,[data-kernel-publication-list],[data-kernel-publications]")
@@ -138,7 +143,7 @@
   }
 
   async function apply() {
-    if (applying || !relevantRoute()) return;
+    if (applying) return;
     applying = true;
 
     try {
@@ -159,7 +164,7 @@
   }
 
   new MutationObserver(mutations => {
-    if (applying || !relevantRoute()) return;
+    if (applying) return;
     const relevant = mutations.some(mutation => mutation.addedNodes.length || mutation.type === "characterData");
     if (relevant) schedule();
   }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
@@ -171,7 +176,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelPublicationsOrderQ1Fix = {
-    version: "1.0.0",
+    version: "1.1.0",
     apply,
     diagnostics: async () => {
       const payload = await loadPublications();
