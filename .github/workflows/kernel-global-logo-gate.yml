@@ -1,0 +1,75 @@
+name: Kernel Global Logo Gate
+
+on:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/logo-el-kernel-20260728.svg'
+      - 'assets/kernel-global-logo-fix.js'
+      - 'platform/test_global_logo_update.py'
+      - '.github/workflows/kernel-global-logo-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate the global El Kernel logo
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate source files
+        run: |
+          node --check assets/kernel-global-logo-fix.js
+          python -m py_compile platform/test_global_logo_update.py
+          python - <<'PY'
+          from pathlib import Path
+          from xml.etree import ElementTree
+
+          ElementTree.parse('assets/logo-el-kernel-20260728.svg')
+          index = Path('index.html').read_text(encoding='utf-8')
+          assert 'kernel-global-logo-fix.js?v=20260728-1' in index
+          assert '20260728-global-logo-1' in index
+          print('Global logo sources validated.')
+          PY
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4199 >/tmp/kernel-global-logo-http.log 2>&1 &
+          echo $! >/tmp/kernel-global-logo-http.pid
+          sleep 2
+
+      - name: Verify header, footer, favicon and mobile layout
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          LOGO_RESULT_DIR: ci-global-logo
+        run: python platform/test_global_logo_update.py
+
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-global-logo-http.pid ]; then kill "$(cat /tmp/kernel-global-logo-http.pid)" || true; fi
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-global-logo-result
+          path: |
+            ci-global-logo/
+            /tmp/kernel-global-logo-http.log
+          if-no-files-found: warn
+          retention-days: 7
