@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.KernelHomeQuickAccessFix?.version === "3.0.0") {
+  if (window.KernelHomeQuickAccessFix?.version === "4.0.0") {
     return;
   }
 
@@ -13,15 +13,23 @@
 
   let timer = 0;
 
+  const normalize = value => String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+  const isFormationTarget = target =>
+    target === "formacion" ||
+    target === "quienesSomos/formacion";
+
   function destination(target) {
     const url = new URL(window.location.href);
 
     url.searchParams.delete("investigador");
 
-    if (
-      target === "formacion" ||
-      target === "quienesSomos/formacion"
-    ) {
+    if (isFormationTarget(target)) {
       url.searchParams.set(
         "kernelSection",
         "formacion"
@@ -50,6 +58,41 @@
     return url.toString();
   }
 
+  function findFormationMenuButton() {
+    const candidates = [
+      ...document.querySelectorAll(
+        "#navBar button, #navBar a, [data-site-header] button, [data-site-header] a"
+      )
+    ];
+
+    return candidates.find(element => {
+      const text = normalize(element.textContent);
+
+      return (
+        text === "formacion academica" ||
+        text === "academic background" ||
+        text === "academic formation"
+      );
+    }) || null;
+  }
+
+  function openFormation() {
+    const menuButton = findFormationMenuButton();
+
+    if (menuButton) {
+      menuButton.click();
+      return true;
+    }
+
+    const href = destination("formacion");
+
+    if (!href) return false;
+
+    window.location.assign(href);
+
+    return true;
+  }
+
   function prepareNativeLink(link, target) {
     const href = destination(target);
 
@@ -61,9 +104,8 @@
 
     /*
      * El controlador antiguo de la portada escucha
-     * data-kernel-home-route y sustituye Formación por
-     * la ruta inválida #/formacion. Al eliminar este
-     * atributo, el enlace nativo conserva su destino.
+     * data-kernel-home-route. Se elimina para impedir
+     * que sustituya Formación por la ruta #/formacion.
      */
     link.removeAttribute("data-kernel-home-route");
     link.removeAttribute("type");
@@ -118,6 +160,24 @@
     return true;
   }
 
+  function handleQuickAccess(event) {
+    const link = event.target.closest?.(
+      NATIVE_SELECTOR
+    );
+
+    if (!link) return;
+
+    const target =
+      link.dataset.kernelQuickRoute || "";
+
+    if (!isFormationTarget(target)) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    openFormation();
+  }
+
   function apply() {
     document
       .querySelectorAll(
@@ -146,6 +206,12 @@
     subtree: true
   });
 
+  document.addEventListener(
+    "click",
+    handleQuickAccess,
+    true
+  );
+
   window.addEventListener(
     "hashchange",
     schedule
@@ -172,9 +238,10 @@
   );
 
   window.KernelHomeQuickAccessFix = {
-    version: "3.0.0",
+    version: "4.0.0",
     apply,
     destination,
+    openFormation,
     diagnostics: () => ({
       pendingButtons:
         document.querySelectorAll(
@@ -184,6 +251,8 @@
         document.querySelectorAll(
           NATIVE_SELECTOR
         ).length,
+      formationMenuFound:
+        Boolean(findFormationMenuButton()),
       formationHref:
         destination("formacion")
     })
