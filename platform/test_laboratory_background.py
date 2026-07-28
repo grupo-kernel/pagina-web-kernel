@@ -68,6 +68,9 @@ try:
         const card = document.querySelector('.kernel-lab-access-card');
         const shell = document.querySelector('.kernel-lab-access-shell');
         const form = document.getElementById('kernel-login');
+        const heading = card?.querySelector('h1');
+        const cardBox = card?.getBoundingClientRect();
+        const headingBox = heading?.getBoundingClientRect();
         return {
           mainBackground: getComputedStyle(main).backgroundImage,
           beforeBackground: getComputedStyle(main, '::before').backgroundImage,
@@ -76,7 +79,9 @@ try:
           cardBackdrop: getComputedStyle(card).backdropFilter || getComputedStyle(card).webkitBackdropFilter,
           formVisible: Boolean(form && form.getBoundingClientRect().width > 200 && form.getBoundingClientRect().height > 200),
           shellWidth: shell?.getBoundingClientRect().width || 0,
-          cardWidth: card?.getBoundingClientRect().width || 0,
+          cardWidth: cardBox?.width || 0,
+          cardHeight: cardBox?.height || 0,
+          headingOffset: cardBox && headingBox ? headingBox.top - cardBox.top : 9999,
           overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
         };
         """
@@ -84,6 +89,11 @@ try:
     record("Scientific background image is applied", "lab-science-background.svg" in visual["mainBackground"], visual)
     record("Neural-orbit decorative image is applied", "lab-neural-orbit.svg" in visual["beforeBackground"], visual)
     record("Login card remains readable and visible", visual["formVisible"] and "rgba(0, 0, 0, 0)" not in visual["cardBackground"], visual)
+    record(
+        "Login content starts near the top of the card",
+        visual["headingOffset"] < 190 and visual["cardHeight"] < 1000,
+        visual,
+    )
     record("Desktop layout has no horizontal overflow", visual["overflow"] <= 2, visual)
     driver.save_screenshot(str(RESULT_DIR / "laboratory-background-desktop.png"))
 
@@ -94,11 +104,16 @@ try:
         """
         const card = document.querySelector('.kernel-lab-access-card');
         const main = document.getElementById('main');
+        const heading = card?.querySelector('h1');
+        const cardBox = card?.getBoundingClientRect();
+        const headingBox = heading?.getBoundingClientRect();
         return {
           viewport: document.documentElement.clientWidth,
           scrollWidth: document.documentElement.scrollWidth,
-          cardLeft: card?.getBoundingClientRect().left || 0,
-          cardRight: card?.getBoundingClientRect().right || 0,
+          cardLeft: cardBox?.left || 0,
+          cardRight: cardBox?.right || 0,
+          cardHeight: cardBox?.height || 0,
+          headingOffset: cardBox && headingBox ? headingBox.top - cardBox.top : 9999,
           mainBackground: getComputedStyle(main).backgroundImage
         };
         """
@@ -108,6 +123,11 @@ try:
         mobile["scrollWidth"] <= mobile["viewport"] + 2
         and mobile["cardLeft"] >= -1
         and mobile["cardRight"] <= mobile["viewport"] + 1,
+        mobile,
+    )
+    record(
+        "Mobile login content has no artificial blank block",
+        mobile["headingOffset"] < 190 and mobile["cardHeight"] < 1000,
         mobile,
     )
     driver.save_screenshot(str(RESULT_DIR / "laboratory-background-mobile.png"))
