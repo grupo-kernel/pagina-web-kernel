@@ -46,12 +46,12 @@
 
     <meta
         name="kernel-deployment"
-        content="20260728-home-current-projects-1"
+        content="20260728-lines-no-flash-2"
     >
 
     <script>
         (function asegurarVersionKernel() {
-            const version = "20260728-home-current-projects-1";
+            const version = "20260728-lines-no-flash-2";
             const parametro = "kernel_build";
             const marca = `kernel-build-${version}`;
             const url = new URL(window.location.href);
@@ -94,6 +94,46 @@
             color: #1267ca !important;
         }
     </style>
+
+    <!-- Evita mostrar la portada heredada mientras se estabiliza la vista actual de Líneas. -->
+    <style id="kernel-research-lines-prepaint-style">
+        html[data-kernel-research-lines-pending="true"] #main {
+            visibility: hidden !important;
+        }
+    </style>
+    <script>
+        (function prepararVistaDeLineas() {
+            const root = document.documentElement;
+            const attribute = "data-kernel-research-lines-pending";
+            const routes = new Set(["research-lines", "lineas", "research"]);
+
+            function route() {
+                return window.location.hash
+                    .replace(/^#\/?/, "")
+                    .split(/[/?]/)
+                    .filter(Boolean)[0]
+                    ?.toLowerCase() || "";
+            }
+
+            function isResearchLinesRoute() {
+                const path = window.location.pathname.toLowerCase();
+                return routes.has(route()) || /\/lineas(?:\.html)?\/?$/.test(path);
+            }
+
+            function synchronize() {
+                if (isResearchLinesRoute()) {
+                    root.setAttribute(attribute, "true");
+                } else {
+                    root.removeAttribute(attribute);
+                }
+            }
+
+            synchronize();
+            window.addEventListener("hashchange", synchronize, true);
+            window.addEventListener("popstate", synchronize, true);
+        })();
+    </script>
+    <script src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
 
     <!-- Capas necesarias antes de consumir los catálogos. -->
     <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
@@ -172,13 +212,13 @@
     <script
         type="module"
         crossorigin
-        src="./assets/index-BEtvhqLu.js?v=20260728-home-current-projects-1"
+        src="./assets/index-BEtvhqLu.js?v=20260728-lines-no-flash-2"
     ></script>
 
     <link
         rel="stylesheet"
         crossorigin
-        href="./assets/index-DDHYSPOT.css?v=20260728-home-current-projects-1"
+        href="./assets/index-DDHYSPOT.css?v=20260728-lines-no-flash-2"
     >
 </head>
 
