@@ -1,7 +1,8 @@
 (function () {
   "use strict";
 
-  const VERSION = "20260728-1";
+  const VERSION = "20260728-2";
+  const PENDING_ATTRIBUTE = "data-kernel-research-lines-pending";
   const routes = ["research-lines", "lineas", "research"];
   const cards = [
     {
@@ -41,12 +42,29 @@
     }
   ];
 
+  const root = document.documentElement;
+  let scheduled = false;
+  let revealTicket = 0;
+  let observedMain = null;
+  let mainObserver = null;
+
   function isResearchLinesView() {
     const hash = window.location.hash.toLowerCase();
-    if (routes.some(route => hash.includes(route))) return true;
+    const path = window.location.pathname.toLowerCase();
+
+    if (hash) return routes.some(route => hash.includes(route));
+    if (/\/lineas(?:\.html)?\/?$/.test(path)) return true;
+
     const main = document.getElementById("main");
-    if (!main) return false;
-    return /líneas de investigación|research lines/i.test(main.textContent || "");
+    return Boolean(main && /líneas de investigación|research lines/i.test(main.textContent || ""));
+  }
+
+  function markPending() {
+    root.setAttribute(PENDING_ATTRIBUTE, "true");
+  }
+
+  function clearPending() {
+    root.removeAttribute(PENDING_ATTRIBUTE);
   }
 
   function ensureStyles() {
@@ -74,14 +92,38 @@
     document.head.appendChild(style);
   }
 
+  function revealWhenStable(main) {
+    const ticket = ++revealTicket;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (ticket !== revealTicket || !isResearchLinesView()) return;
+        if (main.querySelector('[data-kernel-research-lines-page="true"]')) clearPending();
+      });
+    });
+  }
+
   function render() {
-    if (!isResearchLinesView()) return;
+    if (!isResearchLinesView()) {
+      clearPending();
+      return;
+    }
+
+    markPending();
     const main = document.getElementById("main");
-    if (!main || main.dataset.kernelResearchLines === VERSION) return;
+    if (!main) return;
+
     ensureStyles();
+    if (
+      main.dataset.kernelResearchLines === VERSION &&
+      main.querySelector('[data-kernel-research-lines-page="true"]')
+    ) {
+      revealWhenStable(main);
+      return;
+    }
+
     main.dataset.kernelResearchLines = VERSION;
     main.innerHTML = `
-      <section class="kernel-lines" aria-labelledby="kernel-lines-title">
+      <section class="kernel-lines" data-kernel-research-lines-page="true" aria-labelledby="kernel-lines-title">
         <header class="kernel-lines__hero">
           <span class="kernel-lines__eyebrow"><i class="bx bx-pulse"></i> Agenda científica</span>
           <h1 id="kernel-lines-title">Líneas de investigación</h1>
@@ -94,7 +136,7 @@
         <div class="kernel-lines__grid">
           ${cards.map((card, index) => `
             <article class="kernel-lines__card">
-              <div class="kernel-lines__media"><img src="${card.image}?v=${VERSION}" alt="${card.alt}" loading="lazy"></div>
+              <div class="kernel-lines__media"><img src="${card.image}?v=${VERSION}" alt="${card.alt}" loading="${index < 2 ? "eager" : "lazy"}"></div>
               <div class="kernel-lines__body">
                 <span class="kernel-lines__number"><i class="${card.icon}"></i> Línea ${index + 1}</span>
                 <h2>${card.title}</h2>
@@ -103,22 +145,68 @@
             </article>`).join("")}
         </div>
       </section>`;
+
+    revealWhenStable(main);
   }
 
-  let scheduled = false;
   function schedule() {
     if (scheduled) return;
     scheduled = true;
-    requestAnimationFrame(() => { scheduled = false; render(); });
+    queueMicrotask(() => {
+      scheduled = false;
+      render();
+    });
   }
 
-  window.addEventListener("hashchange", () => setTimeout(schedule, 40));
-  window.addEventListener("popstate", () => setTimeout(schedule, 40));
-  document.addEventListener("DOMContentLoaded", () => {
-    schedule();
+  function attachMainObserver() {
     const main = document.getElementById("main");
-    if (main) new MutationObserver(schedule).observe(main, {childList:true,subtree:true});
+    if (!main || main === observedMain) return Boolean(main);
+
+    if (mainObserver) mainObserver.disconnect();
+    observedMain = main;
+    mainObserver = new MutationObserver(() => {
+      if (isResearchLinesView()) markPending();
+      schedule();
+    });
+    mainObserver.observe(main, { childList: true, subtree: true });
+    return true;
+  }
+
+  function handleRouteChange() {
+    if (isResearchLinesView()) markPending();
+    else clearPending();
+    attachMainObserver();
+    schedule();
+  }
+
+  if (isResearchLinesView()) markPending();
+  ensureStyles();
+
+  const documentObserver = new MutationObserver(() => {
+    if (attachMainObserver()) documentObserver.disconnect();
+    handleRouteChange();
   });
-  setTimeout(schedule, 250);
-  setTimeout(schedule, 900);
+  documentObserver.observe(document.documentElement, { childList: true, subtree: true });
+
+  window.addEventListener("hashchange", handleRouteChange, true);
+  window.addEventListener("popstate", handleRouteChange, true);
+  document.addEventListener("DOMContentLoaded", handleRouteChange, { once: true });
+
+  attachMainObserver();
+  schedule();
+
+  setTimeout(() => {
+    if (isResearchLinesView()) schedule();
+  }, 250);
+  setTimeout(() => {
+    if (isResearchLinesView()) schedule();
+  }, 900);
+  setTimeout(() => {
+    if (!document.querySelector('[data-kernel-research-lines-page="true"]')) clearPending();
+  }, 3500);
+
+  window.KernelResearchLinesVisualSection = {
+    version: VERSION,
+    render: schedule
+  };
 })();
