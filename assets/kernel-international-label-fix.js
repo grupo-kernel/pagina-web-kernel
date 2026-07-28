@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.KernelInternationalLabelFix?.version === "1.1.0") return;
+  if (window.KernelInternationalLabelFix?.version === "1.2.0") return;
 
   const STYLE_ID = "kernel-miguel-leadership-title-styles";
 
@@ -10,9 +10,14 @@
     [/International researcher\s*[·•|-]\s*Member of El Kernel/gi, "International researcher"]
   ];
 
+  const MIGUEL_BADGES = {
+    es: "Investigador nacional",
+    en: "National researcher"
+  };
+
   const MIGUEL_TITLES = {
-    es: "Miembro · Fundador de El Kernel · Director del Grupo de Investigación",
-    en: "Member · Founder of El Kernel · Director of the Research Group"
+    es: "Miembro fundador del Grupo de Investigación El Kernel · Director del Grupo de Investigación",
+    en: "Founding member of the El Kernel Research Group · Director of the Research Group"
   };
 
   let scheduled = false;
@@ -41,20 +46,32 @@
   };
 
   function installStyles() {
-    if (document.getElementById(STYLE_ID)) return;
+    let style = document.getElementById(STYLE_ID);
 
-    const style = document.createElement("style");
-    style.id = STYLE_ID;
+    if (!style) {
+      style = document.createElement("style");
+      style.id = STYLE_ID;
+      document.head.appendChild(style);
+    }
+
     style.textContent = `
-      [data-kernel-miguel-leadership-title="true"]{
-        max-width:100%!important;
-        white-space:normal!important;
-        line-height:1.3!important;
+      .kernel-miguel-leadership-role{
+        margin:0 0 .48rem!important;
+        color:#0f5b5d!important;
+        font-size:.83rem!important;
+        font-weight:900!important;
+        line-height:1.45!important;
         text-align:left!important;
       }
-    `;
 
-    document.head.appendChild(style);
+      .kernel-miguel-leadership-role--detail{
+        margin:.58rem 0 0!important;
+        color:#efc86f!important;
+        font-size:.86rem!important;
+        font-weight:900!important;
+        line-height:1.45!important;
+      }
+    `;
   }
 
   function corrected(value) {
@@ -76,22 +93,57 @@
     );
   }
 
+  function ensureLeadershipLine(panel, title) {
+    let line = panel.querySelector(
+      '[data-kernel-miguel-leadership-role="true"]'
+    );
+
+    const isDetail = panel.matches(
+      ".kernel-team-core__detail"
+    );
+
+    if (!line) {
+      line = document.createElement("p");
+      line.dataset.kernelMiguelLeadershipRole = "true";
+      line.className = isDetail
+        ? "kernel-miguel-leadership-role kernel-miguel-leadership-role--detail"
+        : "kernel-miguel-leadership-role";
+
+      const reference = isDetail
+        ? panel.querySelector(".kernel-team-core__detail-role")
+        : panel.querySelector(".kernel-team-core__role");
+
+      if (reference) {
+        reference.insertAdjacentElement(
+          "beforebegin",
+          line
+        );
+      }
+    }
+
+    if (line && line.textContent !== title) {
+      line.textContent = title;
+    }
+  }
+
   function applyMiguelTitle(root = document) {
-    const panels = [];
+    const panels = new Set();
 
     if (
       root.matches?.(
         ".kernel-team-core__card, .kernel-team-core__detail"
       )
     ) {
-      panels.push(root);
+      panels.add(root);
     }
 
     root.querySelectorAll?.(
       ".kernel-team-core__card, .kernel-team-core__detail"
-    ).forEach(panel => panels.push(panel));
+    ).forEach(panel => panels.add(panel));
 
-    const title = MIGUEL_TITLES[language()];
+    const lang = language();
+    const badge = MIGUEL_BADGES[lang];
+    const title = MIGUEL_TITLES[lang];
 
     panels.forEach(panel => {
       if (!isMiguel(panel)) return;
@@ -100,13 +152,17 @@
         ".kernel-team-core__badge, .kernel-team-core__eyebrow"
       );
 
-      if (!label) return;
+      if (label) {
+        label.removeAttribute(
+          "data-kernel-miguel-leadership-title"
+        );
 
-      if (label.textContent !== title) {
-        label.textContent = title;
+        if (label.textContent !== badge) {
+          label.textContent = badge;
+        }
       }
 
-      label.dataset.kernelMiguelLeadershipTitle = "true";
+      ensureLeadershipLine(panel, title);
     });
   }
 
@@ -230,14 +286,20 @@
   );
 
   window.KernelInternationalLabelFix = {
-    version: "1.1.0",
+    version: "1.2.0",
     apply,
     corrected,
     applyMiguelTitle,
     diagnostics: () => ({
       language: language(),
-      titledElements: document.querySelectorAll(
-        '[data-kernel-miguel-leadership-title="true"]'
+      nationalBadges: [...document.querySelectorAll(
+        ".kernel-team-core__badge, .kernel-team-core__eyebrow"
+      )].filter(element =>
+        normalize(element.textContent) ===
+        normalize(MIGUEL_BADGES[language()])
+      ).length,
+      leadershipLines: document.querySelectorAll(
+        '[data-kernel-miguel-leadership-role="true"]'
       ).length
     })
   };
