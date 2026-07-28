@@ -1,0 +1,130 @@
+name: Live Laboratory Background Diagnostic
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/live-laboratory-background-diagnostic.yml'
+      - 'diagnostics/trigger-live-laboratory-background.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check selenium requests
+      - name: Inspect public Laboratory login
+        run: |
+          cat > /tmp/live_lab.py <<'PY'
+          import json
+          import time
+          from pathlib import Path
+
+          import requests
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('live-laboratory-background')
+          out.mkdir(exist_ok=True)
+          report = {'checks': {}, 'failures': [], 'console': []}
+
+          def check(name, ok, detail=None):
+              report['checks'][name] = {'ok': bool(ok), 'detail': detail}
+              if not ok:
+                  report['failures'].append(name)
+              print(('PASS' if ok else 'FAIL') + ': ' + name)
+
+          for url in [
+              'https://www.grupoelkernel.com/assets/kernel-laboratory-background.js?v=20260728-2',
+              'https://www.grupoelkernel.com/assets/img/laboratory/lab-science-background.svg',
+              'https://www.grupoelkernel.com/assets/img/laboratory/lab-neural-orbit.svg',
+          ]:
+              response = requests.get(url, timeout=30, headers={'Cache-Control':'no-cache'})
+              check('HTTP 200 ' + url.rsplit('/', 1)[-1], response.status_code == 200 and len(response.content) > 1000, {'status': response.status_code, 'bytes': len(response.content)})
+
+          options = Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1440,1400']:
+              options.add_argument(arg)
+          options.set_capability('goog:loggingPrefs', {'browser':'ALL'})
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver, 75)
+          try:
+              url = 'https://www.grupoelkernel.com/?kernel_build=20260728-laboratory-background-2&live_lab=1#/laboratorioKernel'
+              driver.get(url)
+              wait.until(lambda d: d.execute_script('return document.readyState') == 'complete')
+              wait.until(lambda d: d.find_elements(By.ID, 'kernel-login'))
+              wait.until(lambda d: d.execute_script('return Boolean(window.KernelLaboratoryBackground)'))
+              driver.execute_script('window.KernelLaboratoryBackground.apply()')
+              wait.until(lambda d: d.execute_script("return document.getElementById('main')?.classList.contains('kernel-lab-visual-page')"))
+              time.sleep(1)
+
+              state = driver.execute_script('''
+                const main = document.getElementById('main');
+                const card = document.querySelector('.kernel-lab-access-card');
+                const form = document.getElementById('kernel-login');
+                const heading = card?.querySelector('h1');
+                const cardBox = card?.getBoundingClientRect();
+                const headingBox = heading?.getBoundingClientRect();
+                return {
+                  deployment: document.querySelector('meta[name=kernel-deployment]')?.content || '',
+                  module: window.KernelLaboratoryBackground?.version || '',
+                  mainClass: main?.classList.contains('kernel-lab-visual-page') || false,
+                  background: getComputedStyle(main).backgroundImage,
+                  beforeBackground: getComputedStyle(main, '::before').backgroundImage,
+                  cardClass: Boolean(card),
+                  cardBackground: card ? getComputedStyle(card).backgroundColor : '',
+                  headingOffset: cardBox && headingBox ? headingBox.top - cardBox.top : 9999,
+                  formVisible: Boolean(form && form.getBoundingClientRect().width > 200 && form.getBoundingClientRect().height > 200),
+                  overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+                  url: location.href
+                };
+              ''')
+              check('Current deployment marker', state['deployment'] == '20260728-laboratory-background-2', state)
+              check('Visual module loaded', state['module'] == '1.0.2', state)
+              check('Scientific background active', state['mainClass'] and 'lab-science-background.svg' in state['background'], state)
+              check('Neural orbit active', 'lab-neural-orbit.svg' in state['beforeBackground'], state)
+              check('Readable login card', state['cardClass'] and state['formVisible'] and state['headingOffset'] < 190, state)
+              check('No desktop horizontal overflow', state['overflow'] <= 2, state)
+              driver.save_screenshot(str(out / 'live-laboratory-desktop.png'))
+
+              driver.set_window_size(390, 844)
+              time.sleep(0.8)
+              driver.execute_script('window.KernelLaboratoryBackground.apply()')
+              mobile = driver.execute_script('''
+                const card = document.querySelector('.kernel-lab-access-card');
+                const box = card?.getBoundingClientRect();
+                return {
+                  viewport: document.documentElement.clientWidth,
+                  scrollWidth: document.documentElement.scrollWidth,
+                  left: box?.left || 0,
+                  right: box?.right || 0,
+                  width: box?.width || 0
+                };
+              ''')
+              check('Live mobile card fits viewport', mobile['scrollWidth'] <= mobile['viewport'] + 2 and mobile['left'] >= -1 and mobile['right'] <= mobile['viewport'] + 1, mobile)
+              driver.save_screenshot(str(out / 'live-laboratory-mobile.png'))
+              report['console'] = driver.get_log('browser')
+          finally:
+              driver.quit()
+
+          (out / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+          if report['failures']:
+              raise SystemExit('Live laboratory failures: ' + ', '.join(report['failures']))
+          PY
+          python /tmp/live_lab.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-laboratory-background-diagnostic
+          path: live-laboratory-background/
+          retention-days: 7
