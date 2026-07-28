@@ -37,8 +37,10 @@
     if (!current.includes("logo-el-kernel-20260728.svg")) {
       image.setAttribute("src", LOGO);
     }
-    image.removeAttribute("srcset");
-    image.setAttribute("alt", "Logotipo del Grupo de Investigación El Kernel");
+    if (image.hasAttribute("srcset")) image.removeAttribute("srcset");
+    if (image.getAttribute("alt") !== "Logotipo del Grupo de Investigación El Kernel") {
+      image.setAttribute("alt", "Logotipo del Grupo de Investigación El Kernel");
+    }
     image.dataset.kernelLogoVersion = VERSION;
     image.style.objectFit = "contain";
     image.style.backgroundColor = "#ffffff";
@@ -47,7 +49,9 @@
 
   function updateFavicons() {
     document.querySelectorAll('link[rel*="icon"]').forEach(link => {
-      link.setAttribute("href", LOGO);
+      if (!String(link.getAttribute("href") || "").includes("logo-el-kernel-20260728.svg")) {
+        link.setAttribute("href", LOGO);
+      }
       link.setAttribute("type", "image/svg+xml");
       link.dataset.kernelLogoVersion = VERSION;
     });
@@ -75,15 +79,10 @@
       mutation.addedNodes.forEach(node => {
         if (node.nodeType === Node.ELEMENT_NODE) apply(node);
       });
-      if (mutation.type === "attributes" && mutation.target instanceof HTMLImageElement) {
-        updateImage(mutation.target);
-      }
     });
   }).observe(document.documentElement, {
     childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["src", "srcset", "alt", "title"]
+    subtree: true
   });
 
   document.addEventListener("DOMContentLoaded", () => apply());
