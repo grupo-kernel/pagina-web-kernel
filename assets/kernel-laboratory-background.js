@@ -100,9 +100,9 @@
           radial-gradient(circle at 0% 100%, rgba(15, 91, 93, 0.12), transparent 32%);
       }
 
-      .${CARD_CLASS} > * {
+      .${CARD_CLASS} > .relative.z-10 {
         position: relative;
-        z-index: 1;
+        z-index: 2;
       }
 
       .${CARD_CLASS} input[type="email"],
@@ -222,7 +222,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelLaboratoryBackground = {
-    version: "1.0.1",
+    version: "1.0.2",
     apply,
     diagnostics: () => ({
       active: document.getElementById("main")?.classList.contains(MAIN_CLASS) || false,
