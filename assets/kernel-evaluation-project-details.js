@@ -179,8 +179,7 @@
     });
     if (keywordMatch) return keywordMatch;
 
-    const fallbackIndex = Math.max(0, Number(record.order || 1) - 1);
-    return candidates[fallbackIndex] || null;
+    return null;
   }
 
   function signature(record) {
