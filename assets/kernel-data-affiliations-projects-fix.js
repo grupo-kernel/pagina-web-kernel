@@ -43,6 +43,39 @@
     verification: "documented-official-proposal"
   });
 
+  const ANTMEL_APPROVED_PROJECT = Object.freeze({
+    id: "uasd-dinamica-sin-jacobiana",
+    order: 11,
+    title: "Análisis dinámico y estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales",
+    title_en: "Dynamic analysis and stability of Jacobian-free iterative methods for systems of nonlinear equations",
+    status: "approved",
+    featured: true,
+    institution: "Universidad Autónoma de Santo Domingo (UASD)",
+    member_ids: ["antmel-rodriguez"],
+    funding: { amount: 1286178.40, currency: "DOP", source: "UASD" },
+    dates: { start: "2026-01", end: "2027-06" },
+    duration_months: 18,
+    description: "Investigación sobre el comportamiento dinámico y la estabilidad de métodos iterativos sin Jacobiana para sistemas de ecuaciones no lineales, orientada a identificar regiones de convergencia, bifurcaciones y comportamientos dinámicos mediante simulaciones computacionales.",
+    description_en: "Research on the dynamic behaviour and stability of Jacobian-free iterative methods for systems of nonlinear equations, aimed at identifying convergence regions, bifurcations and dynamic behaviour through computational simulations.",
+    methodology: [
+      "Implementación en MATLAB y Python",
+      "Diagramas de bifurcación",
+      "Planos dinámicos",
+      "Análisis de estabilidad",
+      "Orden computacional aproximado de convergencia (ACOC)",
+      "Índice de eficiencia de Kung–Traub"
+    ],
+    areas: [
+      "Métodos iterativos",
+      "Sistemas no lineales",
+      "Análisis numérico",
+      "Métodos sin Jacobiana",
+      "Dinámica y estabilidad",
+      "Computación científica"
+    ],
+    verification: "documented-official-proposal"
+  });
+
   const nativeFetch = window.fetch.bind(window);
   let timer = 0;
 
@@ -80,29 +113,50 @@
     };
   }
 
-  function upsertProposal(proposals, proposal) {
-    const index = proposals.findIndex(project => project?.id === proposal.id);
-    if (index >= 0) proposals[index] = { ...proposals[index], ...proposal };
-    else proposals.push({ ...proposal });
+  function upsertProject(records, project) {
+    const index = records.findIndex(record => record?.id === project.id);
+    if (index >= 0) records[index] = { ...records[index], ...project };
+    else records.push({ ...project });
   }
 
   function patchProjects(payload) {
     if (!payload || typeof payload !== "object") return payload;
-    const proposals = Array.isArray(payload.proposals) ? [...payload.proposals] : [];
+
+    const approvedProjects = Array.isArray(payload.approved_projects)
+      ? [...payload.approved_projects]
+      : [];
+    const proposals = Array.isArray(payload.proposals)
+      ? [...payload.proposals]
+      : [];
+
     const legacyIndex = proposals.findIndex(project => project?.id === "fondocyt-cuasi-newton-lasalle");
     if (legacyIndex >= 0) proposals.splice(legacyIndex, 1);
 
-    upsertProposal(proposals, FIRST_PROPOSAL);
-    upsertProposal(proposals, SECOND_PROPOSAL);
+    upsertProject(approvedProjects, ANTMEL_APPROVED_PROJECT);
+    upsertProject(proposals, FIRST_PROPOSAL);
+    upsertProject(proposals, SECOND_PROPOSAL);
+
+    approvedProjects.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
     proposals.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
+
+    const approvedFeaturedCount = approvedProjects.filter(project =>
+      project?.status === "approved" && project?.featured === true
+    ).length;
+    const underReviewCount = proposals.filter(project => project?.status === "under-review").length;
+    const previousRecorded = Number(payload.summary?.recorded_participations || 0);
 
     return {
       ...payload,
       updated_at: "2026-07-27",
       summary: {
         ...(payload.summary || {}),
-        proposals_under_review: proposals.filter(project => project?.status === "under-review").length
+        recorded_participations: Math.max(previousRecorded, 59),
+        featured_approved_projects: approvedFeaturedCount,
+        additional_participations_not_itemized: Number(payload.summary?.additional_participations_not_itemized || 48),
+        proposals_under_review: underReviewCount,
+        counting_note: "Las participaciones registradas no equivalen necesariamente al mismo número de proyectos únicos, porque un mismo proyecto puede incluir a más de un integrante del grupo."
       },
+      approved_projects: approvedProjects,
       proposals
     };
   }
@@ -115,7 +169,10 @@
 
     try {
       const payload = await response.clone().json();
-      return jsonResponse(response, path === RESEARCHERS_PATH ? patchResearchers(payload) : patchProjects(payload));
+      return jsonResponse(
+        response,
+        path === RESEARCHERS_PATH ? patchResearchers(payload) : patchProjects(payload)
+      );
     } catch (error) {
       console.error("Kernel data/affiliations/projects patch:", error);
       return response;
@@ -175,14 +232,12 @@
 
   function translateProjectTitles() {
     const isEnglish = String(localStorage.getItem("kernel-language") || document.documentElement.lang || "es").toLowerCase().startsWith("en");
+    const translations = [FIRST_PROPOSAL, SECOND_PROPOSAL, ANTMEL_APPROVED_PROJECT];
+
     document.querySelectorAll(".kernel-project-card h2").forEach(heading => {
       const text = normalize(heading.textContent);
-      if (text === FIRST_PROPOSAL.title || text === FIRST_PROPOSAL.title_en) {
-        heading.textContent = isEnglish ? FIRST_PROPOSAL.title_en : FIRST_PROPOSAL.title;
-      }
-      if (text === SECOND_PROPOSAL.title || text === SECOND_PROPOSAL.title_en) {
-        heading.textContent = isEnglish ? SECOND_PROPOSAL.title_en : SECOND_PROPOSAL.title;
-      }
+      const project = translations.find(item => text === item.title || text === item.title_en);
+      if (project) heading.textContent = isEnglish ? project.title_en : project.title;
     });
   }
 
@@ -208,10 +263,11 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelDataAffiliationsProjectsFix = {
-    version: "1.7.0",
+    version: "1.8.0",
     affiliations: [...MIGUEL_AFFILIATIONS],
     firstProposal: { ...FIRST_PROPOSAL },
     secondProposal: { ...SECOND_PROPOSAL },
+    antmelApprovedProject: { ...ANTMEL_APPROVED_PROJECT },
     patchResearchers,
     patchProjects,
     apply: applyDom,
@@ -220,7 +276,10 @@
       miguelAffiliations: [...document.querySelectorAll(".kernel-team-core__card")]
         .find(card => normalize(card.querySelector("h2")?.textContent).startsWith("Miguel A. Leonardo Sepúlveda"))
         ?.querySelector(".kernel-team-core__affiliations")?.textContent || null,
-      proposalsVisible: document.querySelectorAll('.kernel-project-card .kernel-research-chip--gold').length
+      approvedVisible: document.querySelectorAll(".kernel-project-card .kernel-research-chip--accent").length,
+      proposalsVisible: document.querySelectorAll(".kernel-project-card .kernel-research-chip--gold").length,
+      antmelCardVisible: [...document.querySelectorAll(".kernel-project-card h2")]
+        .some(heading => [ANTMEL_APPROVED_PROJECT.title, ANTMEL_APPROVED_PROJECT.title_en].includes(normalize(heading.textContent)))
     })
   };
 
