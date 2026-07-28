@@ -1,64 +1,160 @@
 (() => {
   "use strict";
 
-  if (window.KernelHomeQuickAccessFix) return;
+  if (window.KernelHomeQuickAccessFix?.version === "2.0.0") {
+    return;
+  }
 
-  const SELECTOR = ".kernel-home-2b__quick-card[data-kernel-home-route]";
+  const SELECTOR =
+    ".kernel-home-2b__quick-card[data-kernel-home-route]";
 
-  function openRoute(target) {
-    if (!target) return;
+  let timer = 0;
 
-    if (target === "formacion" || target === "quienesSomos/formacion") {
-      const url = new URL(window.location.href);
-      url.searchParams.set("kernelSection", "formacion");
-      url.searchParams.delete("investigador");
-      url.hash = "#/quienesSomos";
-      window.location.href = url.toString();
-      return;
-    }
-
-    const allowedRoutes = new Set([
-      "equipment",
-      "publicaciones",
-      "proyectos",
-      "quienesSomos"
-    ]);
-
-    if (!allowedRoutes.has(target)) return;
-
+  function destination(target) {
     const url = new URL(window.location.href);
-    url.searchParams.delete("kernelSection");
-    url.searchParams.delete("investigador");
-    url.hash = `#/${target}`;
 
-    if (window.location.href === url.toString()) {
-      window.dispatchEvent(new HashChangeEvent("hashchange"));
-      return;
+    url.searchParams.delete("investigador");
+
+    if (
+      target === "formacion" ||
+      target === "quienesSomos/formacion"
+    ) {
+      url.searchParams.set(
+        "kernelSection",
+        "formacion"
+      );
+
+      url.hash = "#/quienesSomos";
+
+      return url.toString();
     }
 
-    window.location.href = url.toString();
+    url.searchParams.delete("kernelSection");
+
+    const routes = {
+      equipment: "#/equipment",
+      publicaciones: "#/publicaciones",
+      proyectos: "#/proyectos",
+      quienesSomos: "#/quienesSomos"
+    };
+
+    const hash = routes[target];
+
+    if (!hash) return "";
+
+    url.hash = hash;
+
+    return url.toString();
   }
 
-  function handleClick(event) {
-    const button = event.target.closest?.(SELECTOR);
-    if (!button) return;
+  function convertButton(button) {
+    if (
+      !button ||
+      button.tagName === "A" ||
+      button.dataset.kernelNativeLink === "true"
+    ) {
+      return false;
+    }
 
-    event.preventDefault();
-    event.stopImmediatePropagation();
+    const target =
+      button.dataset.kernelHomeRoute || "";
 
-    openRoute(button.dataset.kernelHomeRoute || "");
+    const href = destination(target);
+
+    if (!href) return false;
+
+    const link = document.createElement("a");
+
+    [...button.attributes].forEach(attribute => {
+      if (
+        attribute.name !== "type" &&
+        attribute.name !== "data-kernel-native-link"
+      ) {
+        link.setAttribute(
+          attribute.name,
+          attribute.value
+        );
+      }
+    });
+
+    link.href = href;
+    link.innerHTML = button.innerHTML;
+    link.dataset.kernelNativeLink = "true";
+
+    link.style.display = "block";
+    link.style.textDecoration = "none";
+    link.style.cursor = "pointer";
+
+    button.replaceWith(link);
+
+    return true;
   }
 
-  document.addEventListener("click", handleClick, true);
+  function apply() {
+    document
+      .querySelectorAll(SELECTOR)
+      .forEach(convertButton);
+  }
+
+  function schedule(delay = 30) {
+    window.clearTimeout(timer);
+
+    timer = window.setTimeout(
+      apply,
+      delay
+    );
+  }
+
+  new MutationObserver(mutations => {
+    const relevant = mutations.some(
+      mutation => mutation.addedNodes.length > 0
+    );
+
+    if (relevant) schedule();
+  }).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  window.addEventListener(
+    "hashchange",
+    schedule
+  );
+
+  window.addEventListener(
+    "pageshow",
+    schedule
+  );
+
+  window.addEventListener(
+    "kernel-language-change",
+    schedule
+  );
+
+  document.addEventListener(
+    "kernel-language-change",
+    schedule
+  );
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    schedule
+  );
 
   window.KernelHomeQuickAccessFix = {
-    version: "1.0.0",
-    openRoute,
+    version: "2.0.0",
+    apply,
     diagnostics: () => ({
-      buttons: document.querySelectorAll(SELECTOR).length,
-      routes: [...document.querySelectorAll(SELECTOR)].map(button =>
-        button.dataset.kernelHomeRoute || ""
-      )
+      buttons:
+        document.querySelectorAll(SELECTOR).length,
+      nativeLinks:
+        document.querySelectorAll(
+          ".kernel-home-2b__quick-card[data-kernel-native-link='true']"
+        ).length
     })
   };
+
+  [0, 100, 300, 800].forEach(delay => {
+    window.setTimeout(apply, delay);
+  });
 })();
