@@ -1604,7 +1604,7 @@
                       )}
 
                       ${quickCard(
-                        "quienesSomos/formacion",
+                        "formacion",
                         "bx-graduation",
                         t.formation
                       )}
@@ -1723,22 +1723,7 @@
         </section>
       `;
 
-      main
-        .querySelectorAll(
-          "[data-kernel-home-route]"
-        )
-        .forEach(button => {
-          button.addEventListener(
-            "click",
-            () => {
-              const target =
-                button.dataset.kernelHomeRoute;
-
-              location.hash = `#/${target}`;
-            }
-          );
-        });
-    } catch (error) {
+          } catch (error) {
       if (
         currentTicket !== renderTicket ||
         route() !== "home"
@@ -1760,6 +1745,30 @@
         error
       );
     }
+  }
+
+  function handleHomeRouteClick(event) {
+    const button = event.target.closest(
+      "[data-kernel-home-route]"
+    );
+
+    if (!button) return;
+
+    const target =
+      button.dataset.kernelHomeRoute;
+
+    if (!target) return;
+
+    event.preventDefault();
+
+    const nextHash = `#/${target}`;
+
+    if (location.hash === nextHash) {
+      schedule();
+      return;
+    }
+
+    location.hash = nextHash;
   }
 
   function restoreMain() {
@@ -1788,20 +1797,32 @@
     addStyles();
 
     if (route() === "home") {
-      [0, 80, 260].forEach(delay =>
-        setTimeout(render, delay)
-      );
+      [0, 80, 260].forEach(delay => {
+        window.setTimeout(render, delay);
+      });
     } else {
       restoreMain();
     }
   }
 
+  let mutationTimer = 0;
+
   new MutationObserver(() => {
-    schedule();
+    window.clearTimeout(mutationTimer);
+
+    mutationTimer = window.setTimeout(
+      schedule,
+      50
+    );
   }).observe(document.documentElement, {
     childList: true,
     subtree: true
   });
+
+  document.addEventListener(
+    "click",
+    handleHomeRouteClick
+  );
 
   window.addEventListener(
     "hashchange",
@@ -1809,6 +1830,16 @@
   );
 
   window.addEventListener(
+    "pageshow",
+    schedule
+  );
+
+  window.addEventListener(
+    "kernel-language-change",
+    schedule
+  );
+
+  document.addEventListener(
     "kernel-language-change",
     schedule
   );
