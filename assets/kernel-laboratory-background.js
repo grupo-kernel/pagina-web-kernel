@@ -168,14 +168,12 @@
 
   function findCard(form) {
     return form.closest("div.relative.w-full.max-w-lg") ||
-      [...form.querySelectorAll(":scope")].map(() => null)[0] ||
       form.closest("div[class*='max-w-lg']") ||
       form.parentElement;
   }
 
   function clearPageState() {
-    const main = document.getElementById("main");
-    main?.classList.remove(MAIN_CLASS);
+    document.getElementById("main")?.classList.remove(MAIN_CLASS);
   }
 
   function apply() {
@@ -224,7 +222,7 @@
   document.addEventListener("DOMContentLoaded", schedule);
 
   window.KernelLaboratoryBackground = {
-    version: "1.0.0",
+    version: "1.0.1",
     apply,
     diagnostics: () => ({
       active: document.getElementById("main")?.classList.contains(MAIN_CLASS) || false,
