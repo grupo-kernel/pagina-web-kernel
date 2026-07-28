@@ -1,6 +1,7 @@
 (() => {
   "use strict";
-  if (window.KernelValuesExtension) return;
+
+  if (window.KernelValuesExtension?.version === "3.0.0") return;
 
   let applying = false;
   let timer = 0;
@@ -21,7 +22,9 @@
     ).toLowerCase();
 
     return saved === "en" ||
-      String(document.documentElement.lang || "").toLowerCase().startsWith("en")
+      String(document.documentElement.lang || "")
+        .toLowerCase()
+        .startsWith("en")
       ? "en"
       : "es";
   };
@@ -38,9 +41,12 @@
           text: "Compromiso ético con el grupo, sus integrantes, las instituciones colaboradoras y los objetivos científicos comunes, actuando con respeto, transparencia y responsabilidad."
         }
       ],
-      commitmentConfidentiality: "Confidencialidad, integridad académica y protección de la información.",
-      commitmentLoyalty: "Lealtad institucional, respeto y compromiso con los objetivos comunes."
+      commitmentConfidentiality:
+        "Confidencialidad, integridad académica y protección de la información.",
+      commitmentLoyalty:
+        "Lealtad institucional, respeto y compromiso con los objetivos comunes."
     },
+
     en: {
       detailed: [
         {
@@ -52,53 +58,88 @@
           text: "Ethical commitment to the group, its members, partner institutions, and shared scientific goals, acting with respect, transparency, and responsibility."
         }
       ],
-      commitmentConfidentiality: "Confidentiality, academic integrity, and protection of information.",
-      commitmentLoyalty: "Institutional loyalty, respect, and commitment to shared goals."
+      commitmentConfidentiality:
+        "Confidentiality, academic integrity, and protection of information.",
+      commitmentLoyalty:
+        "Institutional loyalty, respect, and commitment to shared goals."
     }
   };
 
-  function leafElements(root = document) {
-    return [...root.querySelectorAll("p,li,span,div,h1,h2,h3,h4")]
-      .filter(element => element.children.length === 0 && normalize(element.textContent));
+  function matchingElements(root, selector) {
+    return [...root.querySelectorAll(selector)]
+      .filter(element => normalize(element.textContent));
   }
 
   function findDetailedTemplate() {
-    return leafElements().find(element => {
+    return matchingElements(document, "p, li").find(element => {
       const text = normalize(element.textContent);
-      return text.startsWith("excelencia docente:") || text.startsWith("teaching excellence:");
+
+      return (
+        text.startsWith("excelencia docente:") ||
+        text.startsWith("teaching excellence:")
+      );
     }) || null;
   }
 
   function createDetailedValue(template, item, index, lang) {
     const element = template.cloneNode(false);
+
+    element.removeAttribute("id");
     element.dataset.kernelAddedValue = String(index + 1);
     element.dataset.kernelValuesLanguage = lang;
 
     const strong = document.createElement("strong");
     strong.textContent = `${item.label} `;
-    element.replaceChildren(strong, document.createTextNode(item.text));
+
+    element.replaceChildren(
+      strong,
+      document.createTextNode(item.text)
+    );
+
     return element;
   }
 
   function updateDetailedValues(lang) {
     const template = findDetailedTemplate();
-    if (!template || !template.parentElement) return false;
+
+    if (!template || !template.parentElement) {
+      return false;
+    }
 
     const parent = template.parentElement;
     const desired = COPY[lang].detailed;
-    const existing = [...parent.querySelectorAll(":scope > [data-kernel-added-value]")];
 
-    const alreadyCorrect = existing.length === desired.length && existing.every((element, index) => {
-      const expected = normalize(`${desired[index].label} ${desired[index].text}`);
-      return element.dataset.kernelValuesLanguage === lang && normalize(element.textContent) === expected;
-    });
+    const existing = [
+      ...parent.querySelectorAll("[data-kernel-added-value]")
+    ];
+
+    const alreadyCorrect =
+      existing.length === desired.length &&
+      existing.every((element, index) => {
+        const expected = normalize(
+          `${desired[index].label} ${desired[index].text}`
+        );
+
+        return (
+          element.dataset.kernelValuesLanguage === lang &&
+          normalize(element.textContent) === expected
+        );
+      });
 
     if (alreadyCorrect) return true;
 
     existing.forEach(element => element.remove());
+
     let anchor = template;
+
     desired.forEach((item, index) => {
-      const element = createDetailedValue(template, item, index, lang);
+      const element = createDetailedValue(
+        template,
+        item,
+        index,
+        lang
+      );
+
       anchor.insertAdjacentElement("afterend", element);
       anchor = element;
     });
@@ -106,21 +147,43 @@
     return true;
   }
 
-  function commitmentPanel() {
-    const heading = leafElements().find(element => {
+  function commitmentHeading() {
+    return matchingElements(
+      document,
+      "h1, h2, h3, h4, p, span, div"
+    ).find(element => {
       const text = normalize(element.textContent);
-      return text === "nuestro compromiso institucional" || text === "our institutional commitment";
-    });
+
+      return (
+        text === "nuestro compromiso institucional" ||
+        text === "our institutional commitment"
+      );
+    }) || null;
+  }
+
+  function commitmentPanel() {
+    const heading = commitmentHeading();
 
     if (!heading) return null;
 
     let node = heading.parentElement;
-    for (let depth = 0; node && depth < 5; depth += 1, node = node.parentElement) {
+
+    for (
+      let depth = 0;
+      node && depth < 7;
+      depth += 1, node = node.parentElement
+    ) {
       const text = normalize(node.textContent);
-      if (
-        (text.includes("rigor cientifico") || text.includes("scientific rigor")) &&
-        (text.includes("reproducibilidad") || text.includes("reproducibility"))
-      ) {
+
+      const hasRigor =
+        text.includes("rigor cientifico") ||
+        text.includes("scientific rigor");
+
+      const hasReproducibility =
+        text.includes("reproducibilidad") ||
+        text.includes("reproducibility");
+
+      if (hasRigor && hasReproducibility) {
         return node;
       }
     }
@@ -128,68 +191,172 @@
     return heading.parentElement;
   }
 
-  function bulletPrefix(text) {
-    const match = String(text || "").match(/^(\s*[•·▪‣*-]\s*)/);
-    return match?.[1] || "• ";
+  function commitmentItems(panel) {
+    return matchingElements(panel, "p, li");
+  }
+
+  function findCommitmentItem(items, expressions) {
+    return items.find(element => {
+      const text = normalize(element.textContent);
+
+      return expressions.some(expression =>
+        text.includes(expression)
+      );
+    }) || null;
+  }
+
+  function itemPrefix(element) {
+    const text = String(element.textContent || "");
+
+    const match = text.match(/^(\s*[•·▪‣*-]\s*)/);
+
+    if (match) return match[1];
+
+    if (element.tagName === "LI") return "";
+
+    return "• ";
+  }
+
+  function setCommitmentText(
+    element,
+    text,
+    lang,
+    identifier
+  ) {
+    if (!element) return;
+
+    const desired = `${itemPrefix(element)}${text}`;
+
+    if (element.textContent !== desired) {
+      element.textContent = desired;
+    }
+
+    element.dataset.kernelValuesLanguage = lang;
+    element.dataset.kernelCommitmentValue = identifier;
+  }
+
+  function cloneCommitmentItem(
+    template,
+    text,
+    lang,
+    identifier
+  ) {
+    const element = template.cloneNode(false);
+
+    element.removeAttribute("id");
+
+    setCommitmentText(
+      element,
+      text,
+      lang,
+      identifier
+    );
+
+    return element;
   }
 
   function updateCommitmentValues(lang) {
     const panel = commitmentPanel();
+
     if (!panel) return false;
 
     const copy = COPY[lang];
-    const leaves = leafElements(panel);
 
-    let confidentiality = leaves.find(element => {
-      const text = normalize(element.textContent);
-      return text.includes("confidencialidad") || text.includes("confidentiality");
-    });
+    let items = commitmentItems(panel);
+
+    const reproducibility = findCommitmentItem(items, [
+      "reproducibilidad",
+      "reproducibility"
+    ]);
+
+    const rigor = findCommitmentItem(items, [
+      "rigor cientifico",
+      "scientific rigor"
+    ]);
+
+    let confidentiality = findCommitmentItem(items, [
+      "confidencialidad",
+      "confidentiality"
+    ]);
 
     if (confidentiality) {
-      const desired = `${bulletPrefix(confidentiality.textContent)}${copy.commitmentConfidentiality}`;
-      if (confidentiality.textContent !== desired) confidentiality.textContent = desired;
-    }
-
-    const loyaltyExists = leafElements(panel).some(element => {
-      const text = normalize(element.textContent);
-      return text.includes("lealtad institucional") || text.includes("institutional loyalty");
-    });
-
-    if (!loyaltyExists) {
-      const template = confidentiality || leaves.find(element => {
-        const text = normalize(element.textContent);
-        return text.includes("reproducibilidad") || text.includes("reproducibility");
-      });
+      setCommitmentText(
+        confidentiality,
+        copy.commitmentConfidentiality,
+        lang,
+        "confidentiality"
+      );
+    } else {
+      const template =
+        reproducibility ||
+        rigor ||
+        items[0];
 
       if (template && template.parentElement) {
-        const loyalty = template.cloneNode(false);
-        loyalty.dataset.kernelCommitmentLoyalty = "true";
-        loyalty.dataset.kernelValuesLanguage = lang;
-        loyalty.textContent = `${bulletPrefix(template.textContent)}${copy.commitmentLoyalty}`;
-        template.insertAdjacentElement("afterend", loyalty);
+        confidentiality = cloneCommitmentItem(
+          template,
+          copy.commitmentConfidentiality,
+          lang,
+          "confidentiality"
+        );
+
+        template.insertAdjacentElement(
+          "afterend",
+          confidentiality
+        );
       }
-    } else {
-      leafElements(panel).forEach(element => {
-        const text = normalize(element.textContent);
-        if (text.includes("lealtad institucional") || text.includes("institutional loyalty")) {
-          const desired = `${bulletPrefix(element.textContent)}${copy.commitmentLoyalty}`;
-          if (element.textContent !== desired) element.textContent = desired;
-          element.dataset.kernelValuesLanguage = lang;
-        }
-      });
     }
 
-    return true;
+    items = commitmentItems(panel);
+
+    let loyalty = findCommitmentItem(items, [
+      "lealtad institucional",
+      "institutional loyalty"
+    ]);
+
+    if (loyalty) {
+      setCommitmentText(
+        loyalty,
+        copy.commitmentLoyalty,
+        lang,
+        "loyalty"
+      );
+    } else {
+      const template =
+        confidentiality ||
+        reproducibility ||
+        rigor ||
+        items[0];
+
+      if (template && template.parentElement) {
+        loyalty = cloneCommitmentItem(
+          template,
+          copy.commitmentLoyalty,
+          lang,
+          "loyalty"
+        );
+
+        template.insertAdjacentElement(
+          "afterend",
+          loyalty
+        );
+      }
+    }
+
+    return Boolean(confidentiality || loyalty);
   }
 
   function apply() {
     if (applying || !document.body) return false;
+
     applying = true;
 
     try {
       const lang = language();
+
       const detailed = updateDetailedValues(lang);
       const commitment = updateCommitmentValues(lang);
+
       return detailed || commitment;
     } finally {
       applying = false;
@@ -201,11 +368,20 @@
     timer = window.setTimeout(apply, delay);
   }
 
+  function scheduleSeries() {
+    [0, 80, 250, 700].forEach(delay => {
+      window.setTimeout(apply, delay);
+    });
+  }
+
   new MutationObserver(mutations => {
     if (applying) return;
+
     const relevant = mutations.some(mutation =>
-      mutation.type === "characterData" || mutation.addedNodes.length > 0
+      mutation.type === "characterData" ||
+      mutation.addedNodes.length > 0
     );
+
     if (relevant) schedule();
   }).observe(document.documentElement, {
     childList: true,
@@ -213,16 +389,46 @@
     characterData: true
   });
 
-  window.addEventListener("hashchange", schedule);
-  window.addEventListener("pageshow", schedule);
-  window.addEventListener("kernel-language-change", () => schedule(0));
-  document.addEventListener("kernel-language-change", () => schedule(0));
-  document.addEventListener("DOMContentLoaded", schedule);
+  window.addEventListener(
+    "hashchange",
+    scheduleSeries
+  );
+
+  window.addEventListener(
+    "pageshow",
+    scheduleSeries
+  );
+
+  window.addEventListener(
+    "kernel-language-change",
+    scheduleSeries
+  );
+
+  document.addEventListener(
+    "kernel-language-change",
+    scheduleSeries
+  );
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    scheduleSeries
+  );
 
   window.KernelValuesExtension = {
-    version: "2.0.0",
-    apply
+    version: "3.0.0",
+    apply,
+    diagnostics: () => ({
+      language: language(),
+      detailedValues:
+        document.querySelectorAll(
+          "[data-kernel-added-value]"
+        ).length,
+      commitmentValues:
+        document.querySelectorAll(
+          "[data-kernel-commitment-value]"
+        ).length
+    })
   };
 
-  schedule();
+  scheduleSeries();
 })();
