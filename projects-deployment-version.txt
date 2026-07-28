@@ -1,6 +1,6 @@
 source_branch=main
-source_sha=d5062a4521b7ee0176ef37c3ddc1377cfd227655
+source_sha=abe7935d05e5e470ccebfd691007b75acc7df648
 recorded_participations=59
 featured_approved_projects=11
 antmel_project=uasd-dinamica-sin-jacobiana
-deployed_at=2026-07-28T00:28:48Z
+deployed_at=2026-07-28T00:29:10Z
