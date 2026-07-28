@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Logotipo del Grupo de Investigación El Kernel</title>
+  <desc id="desc">Emblema circular verde petróleo y dorado, con una K matemática y el nombre El Kernel.</desc>
+  <defs>
+    <path id="topArc" d="M 115 350 A 285 285 0 0 1 685 350"/>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#073f42"/>
+      <stop offset="1" stop-color="#0f5b5d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="#ffffff"/>
+  <g>
+    <circle cx="400" cy="370" r="250" fill="#ffffff" stroke="#b78126" stroke-width="5"/>
+    <circle cx="400" cy="370" r="238" fill="#ffffff" stroke="url(#teal)" stroke-width="22"/>
+    <circle cx="400" cy="370" r="220" fill="#ffffff" stroke="#b78126" stroke-width="2"/>
+  </g>
+  <text fill="#b78126" font-family="Georgia, 'Times New Roman', serif" font-size="43" font-weight="600" letter-spacing="7">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">GRUPO DE INVESTIGACIÓN</textPath>
+  </text>
+  <circle cx="92" cy="355" r="7" fill="#b78126"/>
+  <circle cx="708" cy="355" r="7" fill="#b78126"/>
+  <text x="405" y="520" text-anchor="middle" fill="url(#teal)" font-family="Georgia, 'Times New Roman', serif" font-size="330" font-weight="500">K</text>
+  <g transform="translate(250 282)" fill="none" stroke-linecap="round">
+    <path d="M40 0H0V176H40" stroke="#b78126" stroke-width="8"/>
+    <circle cx="24" cy="50" r="9" fill="#0f5b5d" stroke="none"/>
+    <circle cx="24" cy="88" r="9" fill="#0f5b5d" stroke="none"/>
+    <circle cx="24" cy="126" r="9" fill="#0f5b5d" stroke="none"/>
+  </g>
+  <g stroke="#b78126" stroke-width="4">
+    <line x1="205" y1="630" x2="340" y2="630"/>
+    <line x1="460" y1="630" x2="595" y2="630"/>
+  </g>
+  <circle cx="400" cy="630" r="6" fill="#b78126"/>
+  <text x="400" y="730" text-anchor="middle" fill="#073f42" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700" letter-spacing="16">EL KERNEL</text>
+</svg>
