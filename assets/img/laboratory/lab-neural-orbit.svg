@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-labelledby="title desc">
+  <title id="title">Red neuronal y órbita matemática</title>
+  <desc id="desc">Ilustración abstracta con nodos conectados, órbitas, curvas de convergencia y símbolos matemáticos.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071820"/>
+      <stop offset="1" stop-color="#0f5b5d"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#5ec6cf" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#5ec6cf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="360" cy="360" r="335" fill="url(#panel)"/>
+  <circle cx="360" cy="360" r="300" fill="url(#halo)"/>
+  <g fill="none" stroke-linecap="round">
+    <ellipse cx="360" cy="360" rx="250" ry="104" transform="rotate(-22 360 360)" stroke="#d5a54a" stroke-opacity="0.72" stroke-width="5"/>
+    <ellipse cx="360" cy="360" rx="195" ry="80" transform="rotate(26 360 360)" stroke="#72d2d7" stroke-opacity="0.65" stroke-width="4"/>
+    <ellipse cx="360" cy="360" rx="125" ry="240" transform="rotate(13 360 360)" stroke="#fff" stroke-opacity="0.2" stroke-width="3"/>
+  </g>
+  <g stroke="#d9f5f4" stroke-opacity="0.32" stroke-width="2">
+    <path d="M170 220L265 150 355 225 445 142 548 220" fill="none"/>
+    <path d="M170 220L232 345 355 225 472 350 548 220" fill="none"/>
+    <path d="M232 345L170 475 300 555 472 350 555 485" fill="none"/>
+    <path d="M300 555L410 580 555 485" fill="none"/>
+  </g>
+  <g fill="#0f5b5d" stroke="#d9f5f4" stroke-width="4">
+    <circle cx="170" cy="220" r="14"/><circle cx="265" cy="150" r="15"/><circle cx="355" cy="225" r="18"/>
+    <circle cx="445" cy="142" r="14"/><circle cx="548" cy="220" r="16"/><circle cx="232" cy="345" r="15"/>
+    <circle cx="472" cy="350" r="17"/><circle cx="170" cy="475" r="13"/><circle cx="300" cy="555" r="17"/>
+    <circle cx="410" cy="580" r="13"/><circle cx="555" cy="485" r="15"/>
+  </g>
+  <g fill="#d5a54a">
+    <circle cx="355" cy="225" r="7"/><circle cx="472" cy="350" r="7"/><circle cx="300" cy="555" r="7"/>
+  </g>
+  <circle cx="360" cy="360" r="48" fill="#fff" fill-opacity="0.12" stroke="#fff" stroke-opacity="0.48" stroke-width="3"/>
+  <circle cx="360" cy="360" r="12" fill="#d5a54a"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#fff" fill-opacity="0.72">
+    <text x="90" y="120" font-size="34">∇f(x)</text>
+    <text x="485" y="620" font-size="30">F(x)=0</text>
+    <text x="82" y="610" font-size="26">ACOC</text>
+  </g>
+</svg>
