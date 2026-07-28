@@ -1,313 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"
-    ></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-V1BBZYECVK", { send_page_view: false });
+  </script>
 
-    <script>
-        window.dataLayer = window.dataLayer || [];
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="kernel-deployment" content="20260728-quick-access-restored-1">
 
-        function gtag() {
-            window.dataLayer.push(arguments);
-        }
+  <script>
+    (function asegurarVersionKernel(){
+      const version = "20260728-quick-access-restored-1";
+      const parametro = "kernel_build";
+      const marca = `kernel-build-${version}`;
+      const url = new URL(window.location.href);
+      if (url.searchParams.get(parametro) === version) {
+        sessionStorage.setItem(marca, "1");
+        return;
+      }
+      if (sessionStorage.getItem(marca)) return;
+      sessionStorage.setItem(marca, "1");
+      url.searchParams.set(parametro, version);
+      window.location.replace(url.toString());
+    })();
+  </script>
 
-        gtag("js", new Date());
+  <title>El Kernel - Grupo de investigación</title>
+  <link rel="shortcut icon" href="./assets/favicon-jkozwFvM.ico" type="image/x-icon">
+  <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
 
-        gtag("config", "G-V1BBZYECVK", {
-            send_page_view: false
-        });
-    </script>
+  <style>
+    .kernel-team-core__card p[data-kernel-miguel-leadership-role="true"],
+    .kernel-team-core__detail p[data-kernel-miguel-leadership-role="true"] {
+      color:#1267ca !important;
+    }
+  </style>
 
-    <meta charset="UTF-8">
+  <style id="kernel-research-lines-prepaint-style">
+    html[data-kernel-research-lines-pending="true"] #main { visibility:hidden !important; }
+  </style>
+  <script>
+    (function prepararVistaDeLineas(){
+      const root = document.documentElement;
+      const attribute = "data-kernel-research-lines-pending";
+      const routes = new Set(["research-lines", "lineas", "research"]);
+      function route(){
+        return window.location.hash.replace(/^#\/?/, "").split(/[/?]/).filter(Boolean)[0]?.toLowerCase() || "";
+      }
+      function isResearchLinesRoute(){
+        const path = window.location.pathname.toLowerCase();
+        return routes.has(route()) || /\/lineas(?:\.html)?\/?$/.test(path);
+      }
+      function synchronize(){
+        if (isResearchLinesRoute()) root.setAttribute(attribute, "true");
+        else root.removeAttribute(attribute);
+      }
+      synchronize();
+      window.addEventListener("hashchange", synchronize, true);
+      window.addEventListener("popstate", synchronize, true);
+    })();
+  </script>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <script src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
+  <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
+  <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
+  <script src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
+  <script src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
 
-    <meta
-        http-equiv="Cache-Control"
-        content="no-cache, no-store, must-revalidate"
-    >
+  <script>
+    (function cargarActualizacionesKernel(){
+      const archivos = [
+        "kernel-stats-patch.js?v=20260725-3",
+        "kernel-phase1-patch.js?v=20260725-1",
+        "kernel-phase1-fix.js?v=20260725-2",
+        "kernel-home-2b-bridge.js?v=20260727-3",
+        "kernel-home-quick-access-fix.js?v=20260728-3",
+        "kernel-quick-access-emergency-fix.js?v=20260728-1",
+        "kernel-home-icon-fix.js?v=20260726-1",
+        "kernel-home-visitor-counter.js?v=20260726-1",
+        "kernel-home-country-panel.js?v=20260726-1",
+        "kernel-international-label-fix.js?v=20260728-2",
+        "kernel-visitor-counter-international-label.js?v=20260726-1",
+        "kernel-research-visual-refresh.js?v=20260726-1",
+        "kernel-researcher-photo-source-stability.js?v=20260727-1",
+        "kernel-platform-bridge.js?v=20260725-3",
+        "kernel-team-profile-fix.js?v=20260726-1",
+        "kernel-team-core-bridge.js?v=20260725-3",
+        "kernel-research-core-bridge.js?v=20260727-4",
+        "kernel-evaluation-project-details.js?v=20260727-3",
+        "kernel-project-native-stability-fix.js?v=20260727-1",
+        "kernel-phase2b-compatibility.js?v=20260725-1",
+        "kernel-readability-navigation-fix.js?v=20260726-1",
+        "kernel-name-degree-fix.js?v=20260727-3",
+        "kernel-investigation-menu-typography.js?v=20260726-1",
+        "kernel-researcher-order-mobile-fix.js?v=20260726-1",
+        "kernel-photo-framing-fix.js?v=20260726-3",
+        "kernel-tools-tab-state-fix.js?v=20260727-2",
+        "kernel-ui-i18n-unification.js?v=20260727-6",
+        "kernel-ui-i18n-finalizer.js?v=20260727-5",
+        "kernel-tools-english-content.js?v=20260727-3",
+        "kernel-site-chrome-language-fix.js?v=20260727-6",
+        "kernel-team-language-fix.js?v=20260727-1",
+        "kernel-lab-news-language.js?v=20260727-2",
+        "kernel-lab-news-partial-fix.js?v=20260727-2",
+        "kernel-laboratory-background.js?v=20260728-2",
+        "kernel-spanish-restoration.js?v=20260727-2",
+        "kernel-stable-language.js?v=20260727-4",
+        "kernel-ui-i18n-watchdog.js?v=20260727-2",
+        "kernel-i18n-full.js?v=20260727-3",
+        "kernel-values-extension.js?v=20260727-3",
+        "kernel-remove-publication-service.js?v=20260727-1"
+      ];
+      archivos.forEach(archivo => {
+        const script = document.createElement("script");
+        script.src = `./assets/${archivo}`;
+        script.async = false;
+        script.addEventListener("error", () => console.error(`No se pudo cargar: ${archivo}`));
+        document.head.appendChild(script);
+      });
+    })();
+  </script>
 
-    <meta
-        http-equiv="Pragma"
-        content="no-cache"
-    >
-
-    <meta
-        http-equiv="Expires"
-        content="0"
-    >
-
-    <meta
-        name="kernel-deployment"
-        content="20260728-laboratory-background-2"
-    >
-
-    <script>
-        (function asegurarVersionKernel() {
-            const version = "20260728-laboratory-background-2";
-            const parametro = "kernel_build";
-            const marca = `kernel-build-${version}`;
-            const url = new URL(window.location.href);
-
-            if (
-                url.searchParams.get(parametro) ===
-                version
-            ) {
-                sessionStorage.setItem(marca, "1");
-                return;
-            }
-
-            if (sessionStorage.getItem(marca)) {
-                return;
-            }
-
-            sessionStorage.setItem(marca, "1");
-            url.searchParams.set(parametro, version);
-            window.location.replace(url.toString());
-        })();
-    </script>
-
-    <title>El Kernel - Grupo de investigación</title>
-
-    <link
-        rel="shortcut icon"
-        href="./assets/favicon-jkozwFvM.ico"
-        type="image/x-icon"
-    >
-
-    <link
-        href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Color azul del título institucional debajo del nombre de Miguel. -->
-    <style>
-        .kernel-team-core__card p[data-kernel-miguel-leadership-role="true"],
-        .kernel-team-core__detail p[data-kernel-miguel-leadership-role="true"] {
-            color: #1267ca !important;
-        }
-    </style>
-
-    <!-- Evita mostrar la portada heredada mientras se estabiliza la vista actual de Líneas. -->
-    <style id="kernel-research-lines-prepaint-style">
-        html[data-kernel-research-lines-pending="true"] #main {
-            visibility: hidden !important;
-        }
-    </style>
-    <script>
-        (function prepararVistaDeLineas() {
-            const root = document.documentElement;
-            const attribute = "data-kernel-research-lines-pending";
-            const routes = new Set(["research-lines", "lineas", "research"]);
-
-            function route() {
-                return window.location.hash
-                    .replace(/^#\/?/, "")
-                    .split(/[/?]/)
-                    .filter(Boolean)[0]
-                    ?.toLowerCase() || "";
-            }
-
-            function isResearchLinesRoute() {
-                const path = window.location.pathname.toLowerCase();
-                return routes.has(route()) || /\/lineas(?:\.html)?\/?$/.test(path);
-            }
-
-            function synchronize() {
-                if (isResearchLinesRoute()) {
-                    root.setAttribute(attribute, "true");
-                } else {
-                    root.removeAttribute(attribute);
-                }
-            }
-
-            synchronize();
-            window.addEventListener("hashchange", synchronize, true);
-            window.addEventListener("popstate", synchronize, true);
-        })();
-    </script>
-    <script src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
-
-    <!-- Capas necesarias antes de consumir los catálogos. -->
-    <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
-    <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
-    <script src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
-    <script src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
-
-    <script>
-        (function cargarActualizacionesKernel() {
-            const archivos = [
-                "kernel-stats-patch.js?v=20260725-3",
-                "kernel-phase1-patch.js?v=20260725-1",
-                "kernel-phase1-fix.js?v=20260725-2",
-
-                "kernel-home-2b-bridge.js?v=20260727-3",
-                "kernel-home-quick-access-fix.js?v=20260728-3",
-                "kernel-home-icon-fix.js?v=20260726-1",
-                "kernel-home-visitor-counter.js?v=20260726-1",
-                "kernel-home-country-panel.js?v=20260726-1",
-
-                "kernel-international-label-fix.js?v=20260728-2",
-                "kernel-visitor-counter-international-label.js?v=20260726-1",
-
-                "kernel-research-visual-refresh.js?v=20260726-1",
-                "kernel-researcher-photo-source-stability.js?v=20260727-1",
-
-                "kernel-platform-bridge.js?v=20260725-3",
-                "kernel-team-profile-fix.js?v=20260726-1",
-                "kernel-team-core-bridge.js?v=20260725-3",
-
-                "kernel-research-core-bridge.js?v=20260727-4",
-                "kernel-evaluation-project-details.js?v=20260727-3",
-                "kernel-project-native-stability-fix.js?v=20260727-1",
-
-                "kernel-phase2b-compatibility.js?v=20260725-1",
-                "kernel-readability-navigation-fix.js?v=20260726-1",
-                "kernel-name-degree-fix.js?v=20260727-3",
-                "kernel-investigation-menu-typography.js?v=20260726-1",
-                "kernel-researcher-order-mobile-fix.js?v=20260726-1",
-                "kernel-photo-framing-fix.js?v=20260726-3",
-
-                "kernel-tools-tab-state-fix.js?v=20260727-2",
-
-                "kernel-ui-i18n-unification.js?v=20260727-6",
-                "kernel-ui-i18n-finalizer.js?v=20260727-5",
-                "kernel-tools-english-content.js?v=20260727-3",
-                "kernel-site-chrome-language-fix.js?v=20260727-6",
-                "kernel-team-language-fix.js?v=20260727-1",
-
-                "kernel-lab-news-language.js?v=20260727-2",
-                "kernel-lab-news-partial-fix.js?v=20260727-2",
-                "kernel-laboratory-background.js?v=20260728-2",
-
-                "kernel-spanish-restoration.js?v=20260727-2",
-                "kernel-stable-language.js?v=20260727-4",
-                "kernel-ui-i18n-watchdog.js?v=20260727-2",
-                "kernel-i18n-full.js?v=20260727-3",
-
-                "kernel-values-extension.js?v=20260727-3",
-                "kernel-remove-publication-service.js?v=20260727-1"
-            ];
-
-            archivos.forEach((archivo) => {
-                const script = document.createElement("script");
-                script.src = `./assets/${archivo}`;
-                script.async = false;
-
-                script.addEventListener("error", () => {
-                    console.error(`No se pudo cargar: ${archivo}`);
-                });
-
-                document.head.appendChild(script);
-            });
-        })();
-    </script>
-
-    <script
-        type="module"
-        crossorigin
-        src="./assets/index-BEtvhqLu.js?v=20260728-laboratory-background-2"
-    ></script>
-
-    <link
-        rel="stylesheet"
-        crossorigin
-        href="./assets/index-DDHYSPOT.css?v=20260728-laboratory-background-2"
-    >
+  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260728-quick-access-restored-1"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css?v=20260728-quick-access-restored-1">
 </head>
-
 <body class="min-h-screen flex flex-col overflow-x-hidden">
-
-    <!-- Encabezado y navegación principal -->
-    <div
-        data-site-header
-        class="sticky top-0 z-[200] w-full overflow-visible border-b border-slate-200 bg-white/95 shadow-lg backdrop-blur-md"
-    >
-        <div
-            class="relative z-[210] grid w-full grid-cols-4 items-center overflow-visible px-4 lg:grid-cols-18 lg:px-6"
-        >
-            <header
-                id="header"
-                class="col-span-4 flex items-center py-2 lg:col-span-5 xl:col-span-4"
-            ></header>
-
-            <nav
-                id="navBar"
-                class="
-                    hidden
-                    fixed
-                    top-0 left-0
-                    z-[300]
-                    h-[100svh]
-                    w-[88%]
-                    max-w-sm
-                    overflow-y-auto
-                    border-r border-slate-200
-                    bg-white
-                    p-2
-                    shadow-2xl
-                    transition-transform
-                    duration-300
-                    ease-in-out
-
-                    lg:relative
-                    lg:top-auto
-                    lg:left-auto
-                    lg:z-[220]
-                    lg:flex
-                    lg:h-auto
-                    lg:w-auto
-                    lg:max-w-none
-                    lg:overflow-visible
-                    lg:border-0
-                    lg:bg-transparent
-                    lg:p-0
-                    lg:shadow-none
-                    lg:col-span-13
-                    lg:flex-row
-                    lg:text-lg
-
-                    xl:col-span-14
-                    2xl:text-5xl
-                "
-            ></nav>
-        </div>
+  <div data-site-header class="sticky top-0 z-[200] w-full overflow-visible border-b border-slate-200 bg-white/95 shadow-lg backdrop-blur-md">
+    <div class="relative z-[210] grid w-full grid-cols-4 items-center overflow-visible px-4 lg:grid-cols-18 lg:px-6">
+      <header id="header" class="col-span-4 flex items-center py-2 lg:col-span-5 xl:col-span-4"></header>
+      <nav id="navBar" class="hidden fixed top-0 left-0 z-[300] h-[100svh] w-[88%] max-w-sm overflow-y-auto border-r border-slate-200 bg-white p-2 shadow-2xl transition-transform duration-300 ease-in-out lg:relative lg:top-auto lg:left-auto lg:z-[220] lg:flex lg:h-auto lg:w-auto lg:max-w-none lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:col-span-13 lg:flex-row lg:text-lg xl:col-span-14 2xl:text-5xl"></nav>
     </div>
-
-    <!-- Contenido dinámico -->
-    <main
-        id="main"
-        class="
-            flex-1
-            min-w-0
-            w-full
-            max-w-7xl
-            2xl:max-w-500
-            3xl:max-w-none
-            tabletBig:max-w-6xl
-            xl:max-w-7xl
-            m-auto
-            p-2
-            mt-8
-            mb-30
-            md:mt-12
-            md:mb-0
-            lg:mb-0
-        "
-    ></main>
-
-    <!-- Pie de página -->
-    <footer
-        id="footer"
-        class="mt-16 h-auto w-full bg-footer-primary md:mt-10"
-    ></footer>
-
+  </div>
+  <main id="main" class="flex-1 min-w-0 w-full max-w-7xl 2xl:max-w-500 3xl:max-w-none tabletBig:max-w-6xl xl:max-w-7xl m-auto p-2 mt-8 mb-30 md:mt-12 md:mb-0 lg:mb-0"></main>
+  <footer id="footer" class="mt-16 h-auto w-full bg-footer-primary md:mt-10"></footer>
 </body>
 </html>
