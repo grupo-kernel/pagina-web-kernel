@@ -1,0 +1,65 @@
+name: Live Global Logo Diagnostic
+
+on:
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/live-global-logo-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check selenium requests
+      - name: Inspect public global logo
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          out = Path('live-global-logo')
+          out.mkdir(exist_ok=True)
+          options = Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1440,1200']:
+              options.add_argument(arg)
+          driver = webdriver.Chrome(options=options)
+          wait = WebDriverWait(driver, 90)
+          try:
+              url = 'https://www.grupoelkernel.com/?kernel_build=20260728-global-logo-1#/home'
+              driver.get(url)
+              wait.until(lambda d: d.execute_script('return document.readyState') == 'complete')
+              wait.until(lambda d: d.execute_script('return Boolean(window.KernelGlobalLogoFix)'))
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, "img[data-kernel-logo-version='20260728-1']")) >= 2)
+              time.sleep(0.5)
+              data = driver.execute_script('return window.KernelGlobalLogoFix.diagnostics()')
+              marker = driver.execute_script("return document.querySelector('meta[name=kernel-deployment]')?.content")
+              result = {'url': driver.current_url, 'marker': marker, 'diagnostics': data}
+              assert marker == '20260728-global-logo-1', result
+              assert len(data['images']) >= 2, result
+              assert all('logo-el-kernel-20260728.svg' in item['src'] for item in data['images']), result
+              assert any('logo-el-kernel-20260728.svg' in href for href in data['favicons']), result
+              driver.save_screenshot(str(out / 'public-global-logo.png'))
+              (out / 'result.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+          finally:
+              driver.quit()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-global-logo-diagnostic
+          path: live-global-logo/
+          if-no-files-found: warn
+          retention-days: 7
