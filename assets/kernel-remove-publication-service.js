@@ -115,3 +115,12 @@
 
   schedule();
 })();
+
+(function cargarLineasVisualesKernel(){
+  if(document.querySelector('script[data-kernel-research-lines]')) return;
+  const script=document.createElement('script');
+  script.src='./assets/kernel-research-lines-visual-section.js?v=20260728-2';
+  script.async=false;
+  script.dataset.kernelResearchLines='true';
+  document.head.appendChild(script);
+})();
