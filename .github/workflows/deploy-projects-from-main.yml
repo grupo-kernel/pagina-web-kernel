@@ -1,0 +1,75 @@
+name: Deploy canonical projects from main
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'core/data/projects.v2.json'
+      - 'core/activation/.projects-production-trigger'
+      - '.github/workflows/deploy-projects-from-main.yml'
+
+permissions:
+  contents: write
+  pages: write
+  actions: read
+
+concurrency:
+  group: kernel-projects-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate canonical project catalog
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('core/data/projects.v2.json').read_text(encoding='utf-8'))
+          assert data['summary']['recorded_participations'] == 59
+          assert data['summary']['featured_approved_projects'] == 11
+          projects = {p['id']: p for p in data['approved_projects']}
+          antmel = projects['uasd-dinamica-sin-jacobiana']
+          assert antmel['member_ids'] == ['antmel-rodriguez']
+          assert antmel['institution'] == 'Universidad Autónoma de Santo Domingo (UASD)'
+          assert antmel['funding']['amount'] == 1286178.40
+          print('Canonical project catalog validated: 59 participations, 11 approved projects.')
+          PY
+
+      - name: Publish project catalog to gh-pages
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages
+          rm -rf /tmp/kernel-projects-production
+          git worktree add --detach /tmp/kernel-projects-production origin/gh-pages
+          mkdir -p /tmp/kernel-projects-production/core/data
+          cp core/data/projects.v2.json /tmp/kernel-projects-production/core/data/projects.v2.json
+          cat > /tmp/kernel-projects-production/projects-deployment-version.txt <<EOF
+          source_branch=main
+          source_sha=$(git rev-parse HEAD)
+          recorded_participations=59
+          featured_approved_projects=11
+          antmel_project=uasd-dinamica-sin-jacobiana
+          deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          EOF
+          cd /tmp/kernel-projects-production
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add core/data/projects.v2.json projects-deployment-version.txt
+          if ! git diff --cached --quiet; then
+            git commit -m 'Deploy canonical projects from main'
+            git push origin HEAD:gh-pages
+          else
+            echo 'The published catalog already matches main.'
+            git commit --allow-empty -m 'Refresh canonical projects deployment'
+            git push origin HEAD:gh-pages
+          fi
