@@ -1,0 +1,96 @@
+name: Kernel Laboratory Background Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [agent/laboratory-scientific-background]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-laboratory-background.js'
+      - 'assets/img/laboratory/lab-science-background.svg'
+      - 'assets/img/laboratory/lab-neural-orbit.svg'
+      - 'platform/test_laboratory_background.py'
+      - '.github/workflows/kernel-laboratory-background-gate.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - 'index.html'
+      - 'assets/kernel-laboratory-background.js'
+      - 'assets/img/laboratory/lab-science-background.svg'
+      - 'assets/img/laboratory/lab-neural-orbit.svg'
+      - 'platform/test_laboratory_background.py'
+      - '.github/workflows/kernel-laboratory-background-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate scientific background on the laboratory login
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate source files
+        run: |
+          node --check assets/kernel-laboratory-background.js
+          python -m py_compile platform/test_laboratory_background.py
+          python - <<'PY'
+          from pathlib import Path
+          from xml.etree import ElementTree
+
+          for path in [
+              Path('assets/img/laboratory/lab-science-background.svg'),
+              Path('assets/img/laboratory/lab-neural-orbit.svg'),
+          ]:
+              ElementTree.parse(path)
+              assert path.stat().st_size > 1000, path
+
+          index = Path('index.html').read_text(encoding='utf-8')
+          assert 'kernel-laboratory-background.js?v=20260728-1' in index
+          assert '20260728-laboratory-background-1' in index
+          print({'svg_assets': 2, 'module_loaded': True})
+          PY
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Start controlled preview
+        run: |
+          python -m http.server 4199 >/tmp/kernel-lab-background-http.log 2>&1 &
+          echo $! >/tmp/kernel-lab-background-http.pid
+          sleep 2
+
+      - name: Run desktop and mobile visual checks
+        env:
+          BASE_URL: http://127.0.0.1:4199
+          LAB_BACKGROUND_RESULT_DIR: ci-laboratory-background
+        run: |
+          set -o pipefail
+          python platform/test_laboratory_background.py 2>&1 | tee /tmp/kernel-lab-background-test.log
+
+      - name: Stop controlled preview
+        if: always()
+        run: |
+          if [ -f /tmp/kernel-lab-background-http.pid ]; then
+            kill "$(cat /tmp/kernel-lab-background-http.pid)" || true
+          fi
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-laboratory-background-result
+          path: |
+            ci-laboratory-background/
+            /tmp/kernel-lab-background-test.log
+            /tmp/kernel-lab-background-http.log
+          if-no-files-found: warn
+          retention-days: 7
