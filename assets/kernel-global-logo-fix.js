@@ -1,10 +1,11 @@
 (() => {
   "use strict";
 
-  if (window.KernelGlobalLogoFix?.version === "20260730-1") return;
+  if (window.KernelGlobalLogoFix?.version === "20260730-2") return;
 
-  const VERSION = "20260730-1";
-  const LOGO = `./assets/logo-el-kernel-20260728.svg?v=${VERSION}`;
+  const VERSION = "20260730-2";
+  const HEADER_LOGO = `./assets/logo-el-kernel-header-20260730.svg?v=${VERSION}`;
+  const FULL_LOGO = `./assets/logo-el-kernel-20260728.svg?v=${VERSION}`;
   const TARGET_SOURCES = [
     "elkernel-bvhowfrq.webp",
     "elkernel.png",
@@ -12,10 +13,12 @@
   ];
   let timer = 0;
 
-  const preload = new Image();
-  preload.decoding = "sync";
-  preload.fetchPriority = "high";
-  preload.src = LOGO;
+  [HEADER_LOGO, FULL_LOGO].forEach(source => {
+    const preload = new Image();
+    preload.decoding = "sync";
+    preload.fetchPriority = "high";
+    preload.src = source;
+  });
 
   const normalize = value => String(value || "")
     .normalize("NFD")
@@ -37,18 +40,27 @@
       title === "el kernel";
   }
 
+  function isHeaderLogo(image) {
+    return Boolean(image.closest("#header") || image.closest(".kernel-brand"));
+  }
+
   function updateImage(image) {
     if (!isKernelLogo(image)) return false;
 
-    if (!String(image.getAttribute("src") || "").includes("logo-el-kernel-20260728.svg")) {
-      image.src = LOGO;
-    }
+    const header = isHeaderLogo(image);
+    const target = header ? HEADER_LOGO : FULL_LOGO;
+    const current = String(image.getAttribute("src") || "");
+
+    if (current !== target) image.setAttribute("src", target);
 
     image.removeAttribute("srcset");
-    image.alt = "Logotipo del Grupo de Investigación El Kernel";
+    image.alt = header
+      ? "Marca del Grupo de Investigación El Kernel"
+      : "Logotipo del Grupo de Investigación El Kernel";
     image.decoding = "sync";
     image.fetchPriority = "high";
     image.dataset.kernelLogoVersion = VERSION;
+    image.dataset.kernelLogoVariant = header ? "header" : "full";
 
     Object.assign(image.style, {
       objectFit: "contain",
@@ -57,7 +69,8 @@
       imageRendering: "auto",
       filter: "none",
       transform: "none",
-      backfaceVisibility: "hidden"
+      backfaceVisibility: "hidden",
+      opacity: "1"
     });
 
     return true;
@@ -65,7 +78,7 @@
 
   function updateFavicons() {
     document.querySelectorAll('link[rel*="icon"]').forEach(link => {
-      link.href = LOGO;
+      link.href = HEADER_LOGO;
       link.type = "image/svg+xml";
       link.dataset.kernelLogoVersion = VERSION;
     });
@@ -110,15 +123,16 @@
 
   window.KernelGlobalLogoFix = {
     version: VERSION,
-    logo: LOGO,
+    headerLogo: HEADER_LOGO,
+    fullLogo: FULL_LOGO,
     apply,
     diagnostics: () => ({
-      logo: LOGO,
-      complete: preload.complete,
-      naturalWidth: preload.naturalWidth,
+      headerLogo: HEADER_LOGO,
+      fullLogo: FULL_LOGO,
       images: [...document.querySelectorAll("img[data-kernel-logo-version]")].map(image => ({
         src: image.getAttribute("src"),
         alt: image.getAttribute("alt"),
+        variant: image.dataset.kernelLogoVariant,
         version: image.dataset.kernelLogoVersion,
         width: image.getBoundingClientRect().width,
         height: image.getBoundingClientRect().height
