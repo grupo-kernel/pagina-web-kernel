@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  if (window.KernelGlobalLogoFix) return;
+  if (window.KernelGlobalLogoFix?.version === "20260730-1") return;
 
-  const VERSION = "20260728-1";
+  const VERSION = "20260730-1";
   const LOGO = `./assets/logo-el-kernel-20260728.svg?v=${VERSION}`;
   const TARGET_SOURCES = [
     "elkernel-bvhowfrq.webp",
@@ -11,6 +11,11 @@
     "logo-el-kernel"
   ];
   let timer = 0;
+
+  const preload = new Image();
+  preload.decoding = "sync";
+  preload.fetchPriority = "high";
+  preload.src = LOGO;
 
   const normalize = value => String(value || "")
     .normalize("NFD")
@@ -22,74 +27,86 @@
     const src = normalize(image.getAttribute("src"));
     const alt = normalize(image.getAttribute("alt"));
     const title = normalize(image.getAttribute("title"));
-    const branded = Boolean(image.closest(".kernel-brand"));
+    const branded = Boolean(image.closest(".kernel-brand") || image.closest("#header"));
 
     return branded ||
       TARGET_SOURCES.some(source => src.includes(source)) ||
       alt.includes("logo del grupo de investigacion el kernel") ||
+      alt.includes("logotipo del grupo de investigacion el kernel") ||
       alt === "el kernel" ||
       title === "el kernel";
   }
 
   function updateImage(image) {
     if (!isKernelLogo(image)) return false;
-    const current = image.getAttribute("src") || "";
-    if (!current.includes("logo-el-kernel-20260728.svg")) {
-      image.setAttribute("src", LOGO);
+
+    if (!String(image.getAttribute("src") || "").includes("logo-el-kernel-20260728.svg")) {
+      image.src = LOGO;
     }
-    if (image.hasAttribute("srcset")) image.removeAttribute("srcset");
-    if (image.getAttribute("alt") !== "Logotipo del Grupo de Investigación El Kernel") {
-      image.setAttribute("alt", "Logotipo del Grupo de Investigación El Kernel");
-    }
+
+    image.removeAttribute("srcset");
+    image.alt = "Logotipo del Grupo de Investigación El Kernel";
+    image.decoding = "sync";
+    image.fetchPriority = "high";
     image.dataset.kernelLogoVersion = VERSION;
-    image.style.objectFit = "contain";
-    image.style.backgroundColor = "#ffffff";
+
+    Object.assign(image.style, {
+      objectFit: "contain",
+      objectPosition: "center",
+      backgroundColor: "#ffffff",
+      imageRendering: "auto",
+      filter: "none",
+      transform: "none",
+      backfaceVisibility: "hidden"
+    });
+
     return true;
   }
 
   function updateFavicons() {
     document.querySelectorAll('link[rel*="icon"]').forEach(link => {
-      if (!String(link.getAttribute("href") || "").includes("logo-el-kernel-20260728.svg")) {
-        link.setAttribute("href", LOGO);
-      }
-      link.setAttribute("type", "image/svg+xml");
+      link.href = LOGO;
+      link.type = "image/svg+xml";
       link.dataset.kernelLogoVersion = VERSION;
     });
   }
 
   function apply(root = document) {
     let updated = 0;
+
     if (root instanceof HTMLImageElement) {
       updated += updateImage(root) ? 1 : 0;
     }
+
     root.querySelectorAll?.("img").forEach(image => {
       updated += updateImage(image) ? 1 : 0;
     });
+
     updateFavicons();
     return updated;
   }
 
-  function schedule(delay = 20) {
+  function schedule(delay = 0) {
     window.clearTimeout(timer);
     timer = window.setTimeout(() => apply(), delay);
   }
 
   new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
         if (node.nodeType === Node.ELEMENT_NODE) apply(node);
-      });
-    });
+      }
+    }
   }).observe(document.documentElement, {
     childList: true,
     subtree: true
   });
 
-  document.addEventListener("DOMContentLoaded", () => apply());
+  document.addEventListener("DOMContentLoaded", () => apply(), { once:true });
   window.addEventListener("pageshow", () => apply());
-  window.addEventListener("hashchange", () => schedule(0));
-  window.addEventListener("kernel-language-change", () => schedule(0));
-  document.addEventListener("kernel-language-change", () => schedule(0));
+  window.addEventListener("hashchange", () => schedule());
+  window.addEventListener("kernel-language-change", () => schedule());
+  document.addEventListener("kernel-language-change", () => schedule());
 
   window.KernelGlobalLogoFix = {
     version: VERSION,
@@ -97,14 +114,17 @@
     apply,
     diagnostics: () => ({
       logo: LOGO,
+      complete: preload.complete,
+      naturalWidth: preload.naturalWidth,
       images: [...document.querySelectorAll("img[data-kernel-logo-version]")].map(image => ({
         src: image.getAttribute("src"),
         alt: image.getAttribute("alt"),
-        version: image.dataset.kernelLogoVersion
-      })),
-      favicons: [...document.querySelectorAll('link[rel*="icon"]')].map(link => link.getAttribute("href"))
+        version: image.dataset.kernelLogoVersion,
+        width: image.getBoundingClientRect().width,
+        height: image.getBoundingClientRect().height
+      }))
     })
   };
 
-  [0, 100, 350, 900].forEach(delay => window.setTimeout(() => apply(), delay));
+  apply();
 })();
