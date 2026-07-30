@@ -11,36 +11,45 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <meta name="kernel-deployment" content="20260728-global-logo-1">
-
-  <script>
-    (function asegurarVersionKernel(){
-      const version = "20260728-global-logo-1";
-      const parametro = "kernel_build";
-      const marca = `kernel-build-${version}`;
-      const url = new URL(window.location.href);
-      if (url.searchParams.get(parametro) === version) {
-        sessionStorage.setItem(marca, "1");
-        return;
-      }
-      if (sessionStorage.getItem(marca)) return;
-      sessionStorage.setItem(marca, "1");
-      url.searchParams.set(parametro, version);
-      window.location.replace(url.toString());
-    })();
-  </script>
+  <meta name="kernel-deployment" content="20260730-performance-logo-1">
 
   <title>El Kernel - Grupo de investigación</title>
-  <link rel="shortcut icon" href="./assets/logo-el-kernel-20260728.svg?v=20260728-1" type="image/svg+xml">
+  <link rel="shortcut icon" href="./assets/logo-el-kernel-20260728.svg?v=20260730-1" type="image/svg+xml">
+  <link rel="preload" href="./assets/logo-el-kernel-20260728.svg?v=20260730-1" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="modulepreload" href="./assets/index-BEtvhqLu.js?v=20260730-performance-logo-1">
+  <link rel="preload" href="./assets/index-DDHYSPOT.css?v=20260730-performance-logo-1" as="style">
+  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css?v=20260730-performance-logo-1">
   <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
 
   <style>
     .kernel-team-core__card p[data-kernel-miguel-leadership-role="true"],
     .kernel-team-core__detail p[data-kernel-miguel-leadership-role="true"] {
       color:#1267ca !important;
+    }
+
+    #header img,
+    .kernel-brand img,
+    img[data-kernel-logo-version] {
+      width:56px !important;
+      height:56px !important;
+      min-width:56px !important;
+      object-fit:contain !important;
+      object-position:center !important;
+      image-rendering:auto !important;
+      filter:none !important;
+      transform:none !important;
+      backface-visibility:hidden;
+      background:#fff !important;
+    }
+
+    @media (min-width:768px) {
+      #header img,
+      .kernel-brand img,
+      img[data-kernel-logo-version] {
+        width:64px !important;
+        height:64px !important;
+        min-width:64px !important;
+      }
     }
   </style>
 
@@ -69,15 +78,17 @@
     })();
   </script>
 
-  <script src="./assets/kernel-global-logo-fix.js?v=20260728-1"></script>
+  <script src="./assets/kernel-global-logo-fix.js?v=20260730-1"></script>
   <script src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
   <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
   <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
   <script src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
   <script src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
 
+  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260730-performance-logo-1"></script>
+
   <script>
-    (function cargarActualizacionesKernel(){
+    (function cargarActualizacionesKernelSinBloquear(){
       const archivos = [
         "kernel-stats-patch.js?v=20260725-3",
         "kernel-phase1-patch.js?v=20260725-1",
@@ -120,18 +131,32 @@
         "kernel-values-extension.js?v=20260727-3",
         "kernel-remove-publication-service.js?v=20260727-1"
       ];
-      archivos.forEach(archivo => {
+
+      function cargarSecuencialmente(indice = 0){
+        if (indice >= archivos.length) return;
         const script = document.createElement("script");
-        script.src = `./assets/${archivo}`;
+        script.src = `./assets/${archivos[indice]}`;
         script.async = false;
-        script.addEventListener("error", () => console.error(`No se pudo cargar: ${archivo}`));
+        script.onload = () => cargarSecuencialmente(indice + 1);
+        script.onerror = () => {
+          console.error(`No se pudo cargar: ${archivos[indice]}`);
+          cargarSecuencialmente(indice + 1);
+        };
         document.head.appendChild(script);
-      });
+      }
+
+      function iniciar(){
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(() => cargarSecuencialmente(), { timeout: 1200 });
+        } else {
+          window.setTimeout(() => cargarSecuencialmente(), 250);
+        }
+      }
+
+      if (document.readyState === "complete") iniciar();
+      else window.addEventListener("load", iniciar, { once:true });
     })();
   </script>
-
-  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260728-global-logo-1"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css?v=20260728-global-logo-1">
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden">
   <div data-site-header class="sticky top-0 z-[200] w-full overflow-visible border-b border-slate-200 bg-white/95 shadow-lg backdrop-blur-md">
