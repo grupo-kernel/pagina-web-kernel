@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  if (window.KernelGlobalLogoFix?.version === "20260730-3") return;
+  if (window.KernelGlobalLogoFix?.version === "20260730-4") return;
 
-  const VERSION = "20260730-3";
+  const VERSION = "20260730-4";
   const LOGO = `./assets/logo-el-kernel-20260728.svg?v=${VERSION}`;
   const TARGET_SOURCES = [
     "elkernel-bvhowfrq.webp",
