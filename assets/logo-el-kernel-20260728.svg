@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
   <title id="title">Logotipo del Grupo de Investigación El Kernel</title>
-  <desc id="desc">Emblema circular verde petróleo y dorado, con una K matemática y el nombre El Kernel.</desc>
+  <desc id="desc">Emblema circular verde petróleo y dorado, con una K matemática vectorial y el nombre El Kernel.</desc>
   <defs>
     <path id="topArc" d="M 115 350 A 285 285 0 0 1 685 350"/>
     <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
@@ -19,7 +19,10 @@
   </text>
   <circle cx="92" cy="355" r="7" fill="#b78126"/>
   <circle cx="708" cy="355" r="7" fill="#b78126"/>
-  <text x="405" y="520" text-anchor="middle" fill="url(#teal)" font-family="Georgia, 'Times New Roman', serif" font-size="330" font-weight="500">K</text>
+
+  <!-- La K se convierte en trazado vectorial para evitar el desenfoque tipográfico al reducir el logotipo. -->
+  <path d="M287.50,520.00 L287.50,499.75 L313.20,499.75 L313.20,290.25 L287.50,290.25 L287.50,270.00 L390.82,270.00 L390.82,290.25 L364.99,290.25 L364.99,381.55 L450.14,290.25 L428.61,290.25 L428.61,270.00 L503.56,270.00 L503.56,290.25 L476.78,290.25 L404.68,367.46 L502.74,499.75 L522.50,499.75 L522.50,520.00 L454.44,520.00 L364.99,398.59 L364.99,499.75 L390.82,499.75 L390.82,520.00 L287.50,520.00 Z" fill="#073f42"/>
+
   <g transform="translate(250 282)" fill="none" stroke-linecap="round">
     <path d="M40 0H0V176H40" stroke="#b78126" stroke-width="8"/>
     <circle cx="24" cy="50" r="9" fill="#0f5b5d" stroke="none"/>
