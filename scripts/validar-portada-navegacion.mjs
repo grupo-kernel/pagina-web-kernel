@@ -97,7 +97,16 @@ MODULOS_LABORATORIO.forEach((modulo) => {
     );
 });
 
-assert.match(laboratorio, /MODULOS_LABORATORIO\.map\(crearTarjetaModulo\)/);
+assert.match(
+    laboratorio,
+    /GRUPOS_CATALOGO_LABORATORIO\.map\(crearGrupoCatalogo\)/,
+    "El Laboratorio debe construir el catálogo desde sus grupos declarativos."
+);
+assert.match(
+    laboratorio,
+    /modulos\.map\(crearTarjetaModulo\)/,
+    "Cada grupo debe renderizar sus herramientas mediante la tarjeta común."
+);
 assert.match(laboratorio, /iconoLaboratorio\(modulo\.icono/);
 assert.match(laboratorio, /data-route=/);
 assert.doesNotMatch(laboratorio, /onclick\s*=/i, "La navegación no debe depender de atributos onclick.");
