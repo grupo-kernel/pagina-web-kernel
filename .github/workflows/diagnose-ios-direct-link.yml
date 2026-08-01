@@ -70,6 +70,7 @@ jobs:
                 loading: Boolean(document.querySelector('.kernel-home-2b__loading')),
                 ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
                 title: document.querySelector('.kernel-home-2b__hero h1')?.textContent?.replace(/\s+/g, ' ').trim() || null,
+                safeguardVersion: window.KernelHomeDirectEntryFix?.version || null,
                 diagnostics: window.KernelHomeDirectEntryFix?.diagnostics?.() || null,
                 bodyText: document.body.innerText.slice(0, 700)
               }));
@@ -90,12 +91,18 @@ jobs:
 
               if (!result.ready) throw new Error('The integrated homepage did not render on a cold direct entry.');
               if (result.loading) throw new Error('The loading placeholder remained visible.');
+              if (result.safeguardVersion !== '2.0.0') {
+                throw new Error(`Unexpected safeguard version: ${result.safeguardVersion}`);
+              }
               if (!result.diagnostics) throw new Error('The direct-entry safeguard did not initialize.');
               if (delayedRequests.length < 3) {
                 throw new Error(`Only ${delayedRequests.length} institutional requests were delayed.`);
               }
               if ((result.diagnostics.fallbacksUsed || []).length < 3) {
                 throw new Error('The controlled stalled requests did not activate all safe fallbacks.');
+              }
+              if ((result.diagnostics.recoveryAttempts || 0) < 1) {
+                throw new Error('The clean bridge recovery was not activated.');
               }
             } finally {
               await browser?.close().catch(() => {});
