@@ -227,7 +227,7 @@ async function mostrarCalculadoraUnaMuestra() {
     }
 
     const contenidoPreparado = main.querySelector(
-        "#formulario-dos-grupos, [data-calculadora-dos-grupos], h1"
+        "#formulario-dos-grupos"
     );
     if (!contenidoPreparado) return;
 
