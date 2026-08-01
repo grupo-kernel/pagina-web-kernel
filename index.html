@@ -15,7 +15,7 @@
 
     (function instalarSeguimientoDePaginasKernel(){
       function rutaActual(){
-        return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        return window.location.pathname + window.location.search + window.location.hash;
       }
       function registrarVista(){
         const pagePath = rutaActual();
@@ -46,14 +46,14 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="kernel-deployment" content="20260801-direct-entry-analytics-1">
+  <meta name="kernel-deployment" content="source-8086fd2c94d1">
 
   <title>El Kernel - Grupo de investigación</title>
   <link rel="shortcut icon" href="./assets/logo-el-kernel-20260728.svg?v=20260730-4" type="image/svg+xml">
   <link rel="preload" href="./assets/logo-el-kernel-20260728.svg?v=20260730-4" as="image" type="image/svg+xml" fetchpriority="high">
-  <link rel="modulepreload" href="./assets/index-BEtvhqLu.js?v=20260730-performance-logo-1">
-  <link rel="preload" href="./assets/index-DDHYSPOT.css?v=20260730-performance-logo-1" as="style">
-  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css?v=20260730-performance-logo-1">
+  <link rel="modulepreload" href="./assets/index-BEtvhqLu.js">
+  <link rel="preload" href="./assets/index-DDHYSPOT.css" as="style">
+  <link rel="stylesheet" crossorigin href="./assets/index-DDHYSPOT.css">
   <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
 
   <style>
@@ -129,7 +129,7 @@
   <script defer src="./assets/kernel-home-visitor-counter.js?v=20260801-1"></script>
   <script defer src="./assets/kernel-home-country-panel.js?v=20260801-1"></script>
 
-  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260730-performance-logo-1"></script>
+  <script type="module" crossorigin src="./assets/index-BEtvhqLu.js"></script>
 
   <script>
     (function cargarActualizacionesKernelSinBloquear(){
@@ -176,11 +176,11 @@
       function cargarSecuencialmente(indice = 0){
         if (indice >= archivos.length) return;
         const script = document.createElement("script");
-        script.src = `./assets/${archivos[indice]}`;
+        script.src = "./assets/" + archivos[indice];
         script.async = false;
         script.onload = () => cargarSecuencialmente(indice + 1);
         script.onerror = () => {
-          console.error(`No se pudo cargar: ${archivos[indice]}`);
+          console.error("No se pudo cargar: " + archivos[indice]);
           cargarSecuencialmente(indice + 1);
         };
         document.head.appendChild(script);
