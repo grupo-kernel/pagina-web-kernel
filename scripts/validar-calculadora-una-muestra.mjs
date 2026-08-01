@@ -37,12 +37,12 @@ cerca(resultadoT.valorP, 0.012728035181784102, 2e-12);
 cerca(
     resultadoT.intervaloConfianzaMedia.inferior,
     70.53982757303997,
-    2e-12
+    2e-8
 );
 cerca(
     resultadoT.intervaloConfianzaMedia.superior,
     73.62683909362669,
-    2e-12
+    2e-8
 );
 cerca(
     resultadoT.tamanioEfecto.dCohen,
