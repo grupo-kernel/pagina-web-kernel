@@ -1,0 +1,249 @@
+import fs from "node:fs";
+import path from "node:path";
+
+const indexPath = path.resolve("dist/index.html");
+const generated = fs.readFileSync(indexPath, "utf8");
+
+function requireMatch(pattern, label) {
+  const match = generated.match(pattern);
+  if (!match) {
+    throw new Error(`No se encontró ${label} en dist/index.html`);
+  }
+  return match[0];
+}
+
+const moduleTag = requireMatch(
+  /<script\b(?=[^>]*\btype=["']module["'])(?=[^>]*\bsrc=["']\.\/assets\/index-[^"']+\.js["'])[^>]*><\/script>/i,
+  "el módulo principal generado por Vite"
+);
+const stylesheetTag = requireMatch(
+  /<link\b(?=[^>]*\brel=["']stylesheet["'])(?=[^>]*\bhref=["']\.\/assets\/index-[^"']+\.css["'])[^>]*>/i,
+  "la hoja de estilos principal generada por Vite"
+);
+const moduleSrc = moduleTag.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+const stylesheetHref = stylesheetTag.match(/\bhref=["']([^"']+)["']/i)?.[1];
+
+if (!moduleSrc || !stylesheetHref) {
+  throw new Error("No se pudieron extraer las rutas de los recursos principales.");
+}
+
+const deploymentId = process.env.GITHUB_SHA
+  ? process.env.GITHUB_SHA.slice(0, 12)
+  : String(Date.now());
+
+const output = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
+    gtag("js", new Date());
+    gtag("config", "G-V1BBZYECVK", {
+      anonymize_ip: true,
+      transport_type: "beacon",
+      send_page_view: false
+    });
+
+    (function instalarSeguimientoDePaginasKernel(){
+      function rutaActual(){
+        return window.location.pathname + window.location.search + window.location.hash;
+      }
+      function registrarVista(){
+        const pagePath = rutaActual();
+        if (window.__kernelLastTrackedPage === pagePath) return;
+        window.__kernelLastTrackedPage = pagePath;
+        gtag("event", "page_view", {
+          page_title: document.title,
+          page_location: window.location.href,
+          page_path: pagePath
+        });
+      }
+      window.__kernelTrackPageView = registrarVista;
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", registrarVista, { once:true });
+      } else {
+        registrarVista();
+      }
+      window.addEventListener("hashchange", () => window.setTimeout(registrarVista, 0));
+      window.addEventListener("popstate", () => window.setTimeout(registrarVista, 0));
+      window.addEventListener("pageshow", event => {
+        if (event.persisted) {
+          window.__kernelLastTrackedPage = "";
+          window.setTimeout(registrarVista, 0);
+        }
+      });
+    })();
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="kernel-deployment" content="source-${deploymentId}">
+
+  <title>El Kernel - Grupo de investigación</title>
+  <link rel="shortcut icon" href="./assets/logo-el-kernel-20260728.svg?v=20260730-4" type="image/svg+xml">
+  <link rel="preload" href="./assets/logo-el-kernel-20260728.svg?v=20260730-4" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="modulepreload" href="${moduleSrc}">
+  <link rel="preload" href="${stylesheetHref}" as="style">
+  ${stylesheetTag}
+  <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
+
+  <style>
+    .kernel-team-core__card p[data-kernel-miguel-leadership-role="true"],
+    .kernel-team-core__detail p[data-kernel-miguel-leadership-role="true"] {
+      color:#1267ca !important;
+    }
+
+    #header img:not([data-kernel-logo-version]),
+    .kernel-brand img:not([data-kernel-logo-version]) {
+      opacity:0 !important;
+    }
+
+    #header img[data-kernel-logo-version],
+    .kernel-brand img[data-kernel-logo-version] {
+      width:76px !important;
+      height:76px !important;
+      min-width:76px !important;
+      object-fit:contain !important;
+      object-position:center !important;
+      image-rendering:auto !important;
+      filter:none !important;
+      transform:none !important;
+      backface-visibility:hidden;
+      background:#fff !important;
+      opacity:1 !important;
+      transition:none !important;
+    }
+
+    @media (min-width:768px) {
+      #header img[data-kernel-logo-version],
+      .kernel-brand img[data-kernel-logo-version] {
+        width:84px !important;
+        height:84px !important;
+        min-width:84px !important;
+      }
+    }
+  </style>
+
+  <style id="kernel-research-lines-prepaint-style">
+    html[data-kernel-research-lines-pending="true"] #main { visibility:hidden !important; }
+  </style>
+  <script>
+    (function prepararVistaDeLineas(){
+      const root = document.documentElement;
+      const attribute = "data-kernel-research-lines-pending";
+      const routes = new Set(["research-lines", "lineas", "research"]);
+      function route(){
+        return window.location.hash.replace(/^#\\/?/, "").split(/[/?]/).filter(Boolean)[0]?.toLowerCase() || "";
+      }
+      function isResearchLinesRoute(){
+        const path = window.location.pathname.toLowerCase();
+        return routes.has(route()) || /\\/lineas(?:\\.html)?\\/?$/.test(path);
+      }
+      function synchronize(){
+        if (isResearchLinesRoute()) root.setAttribute(attribute, "true");
+        else root.removeAttribute(attribute);
+      }
+      synchronize();
+      window.addEventListener("hashchange", synchronize, true);
+      window.addEventListener("popstate", synchronize, true);
+    })();
+  </script>
+
+  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-global-logo-fix.js?v=20260730-4"></script>
+  <script defer src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
+  <script defer src="./assets/kernel-home-navigation-fix.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
+  <script defer src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
+  <script defer src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
+  <script defer src="./assets/kernel-home-2b-bridge.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-home-visitor-counter.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-home-country-panel.js?v=20260801-1"></script>
+
+  ${moduleTag}
+
+  <script>
+    (function cargarActualizacionesKernelSinBloquear(){
+      const archivos = [
+        "kernel-stats-patch.js?v=20260725-3",
+        "kernel-phase1-patch.js?v=20260725-1",
+        "kernel-phase1-fix.js?v=20260725-2",
+        "kernel-home-quick-access-fix.js?v=20260728-3",
+        "kernel-quick-access-emergency-fix.js?v=20260728-1",
+        "kernel-home-icon-fix.js?v=20260726-1",
+        "kernel-international-label-fix.js?v=20260728-2",
+        "kernel-visitor-counter-international-label.js?v=20260726-1",
+        "kernel-research-visual-refresh.js?v=20260726-1",
+        "kernel-researcher-photo-source-stability.js?v=20260727-1",
+        "kernel-platform-bridge.js?v=20260725-3",
+        "kernel-team-profile-fix.js?v=20260726-1",
+        "kernel-team-core-bridge.js?v=20260725-3",
+        "kernel-research-core-bridge.js?v=20260727-4",
+        "kernel-evaluation-project-details.js?v=20260727-3",
+        "kernel-project-native-stability-fix.js?v=20260727-1",
+        "kernel-phase2b-compatibility.js?v=20260725-1",
+        "kernel-readability-navigation-fix.js?v=20260726-1",
+        "kernel-name-degree-fix.js?v=20260727-3",
+        "kernel-investigation-menu-typography.js?v=20260726-1",
+        "kernel-researcher-order-mobile-fix.js?v=20260726-1",
+        "kernel-photo-framing-fix.js?v=20260726-3",
+        "kernel-tools-tab-state-fix.js?v=20260727-2",
+        "kernel-ui-i18n-unification.js?v=20260727-6",
+        "kernel-ui-i18n-finalizer.js?v=20260727-5",
+        "kernel-tools-english-content.js?v=20260727-3",
+        "kernel-site-chrome-language-fix.js?v=20260727-6",
+        "kernel-team-language-fix.js?v=20260727-1",
+        "kernel-lab-news-language.js?v=20260727-2",
+        "kernel-lab-news-partial-fix.js?v=20260727-2",
+        "kernel-laboratory-background.js?v=20260728-2",
+        "kernel-spanish-restoration.js?v=20260727-2",
+        "kernel-stable-language.js?v=20260727-4",
+        "kernel-ui-i18n-watchdog.js?v=20260727-2",
+        "kernel-i18n-full.js?v=20260727-3",
+        "kernel-values-extension.js?v=20260727-3",
+        "kernel-remove-publication-service.js?v=20260727-1"
+      ];
+
+      function cargarSecuencialmente(indice = 0){
+        if (indice >= archivos.length) return;
+        const script = document.createElement("script");
+        script.src = "./assets/" + archivos[indice];
+        script.async = false;
+        script.onload = () => cargarSecuencialmente(indice + 1);
+        script.onerror = () => {
+          console.error("No se pudo cargar: " + archivos[indice]);
+          cargarSecuencialmente(indice + 1);
+        };
+        document.head.appendChild(script);
+      }
+
+      function iniciar(){
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(() => cargarSecuencialmente(), { timeout: 1200 });
+        } else {
+          window.setTimeout(() => cargarSecuencialmente(), 250);
+        }
+      }
+
+      if (document.readyState === "complete") iniciar();
+      else window.addEventListener("load", iniciar, { once:true });
+    })();
+  </script>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+  <div data-site-header class="sticky top-0 z-[200] w-full overflow-visible border-b border-slate-200 bg-white/95 shadow-lg backdrop-blur-md">
+    <div class="relative z-[210] grid w-full grid-cols-4 items-center overflow-visible px-4 lg:grid-cols-18 lg:px-6">
+      <header id="header" class="col-span-4 flex items-center py-2 lg:col-span-5 xl:col-span-4"></header>
+      <nav id="navBar" class="hidden fixed top-0 left-0 z-[300] h-[100svh] w-[88%] max-w-sm overflow-y-auto border-r border-slate-200 bg-white p-2 shadow-2xl transition-transform duration-300 ease-in-out lg:relative lg:top-auto lg:left-auto lg:z-[220] lg:flex lg:h-auto lg:w-auto lg:max-w-none lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:col-span-13 lg:flex-row lg:text-lg xl:col-span-14 2xl:text-5xl"></nav>
+    </div>
+  </div>
+  <main id="main" class="flex-1 min-w-0 w-full max-w-7xl 2xl:max-w-500 3xl:max-w-none tabletBig:max-w-6xl xl:max-w-7xl m-auto p-2 mt-8 mb-30 md:mt-12 md:mb-0 lg:mb-0"></main>
+  <footer id="footer" class="mt-16 h-auto w-full bg-footer-primary md:mt-10"></footer>
+</body>
+</html>
+`;
+
+fs.writeFileSync(indexPath, output, "utf8");
+console.log(`Prepared ${indexPath} with deployment id source-${deploymentId}`);
