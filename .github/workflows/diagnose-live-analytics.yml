@@ -1,0 +1,114 @@
+name: Diagnose live analytics
+
+on:
+  pull_request:
+    branches:
+      - El-Kernel-2.0
+    paths:
+      - .github/workflows/diagnose-live-analytics.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Inspect live HTML and API
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl -L --fail --show-error --silent --dump-header /tmp/site.headers https://www.grupoelkernel.com/ -o /tmp/site.html
+          sed -n '1,30p' /tmp/site.headers
+          grep -o '<meta name="kernel-deployment"[^>]*>' /tmp/site.html || true
+          grep -o '<script[^>]*kernel-home-visitor-counter[^>]*>' /tmp/site.html || true
+          grep -o '<script[^>]*kernel-home-country-panel[^>]*>' /tmp/site.html || true
+
+          curl -L --fail --show-error --silent --dump-header /tmp/api.headers 'https://script.google.com/macros/s/AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q/exec?diagnostic=1' -o /tmp/api.json
+          sed -n '1,40p' /tmp/api.headers
+          echo 'TOTAL API BODY:'
+          cat /tmp/api.json
+          echo
+
+          curl -L --fail --show-error --silent --dump-header /tmp/countries.headers 'https://script.google.com/macros/s/AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q/exec?countries=1&diagnostic=1' -o /tmp/countries.json
+          sed -n '1,40p' /tmp/countries.headers
+          echo 'COUNTRIES API BODY:'
+          cat /tmp/countries.json
+          echo
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.54.2
+          npx playwright install --with-deps chromium
+
+      - name: Inspect rendered live page
+        shell: bash
+        run: |
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+            const messages = [];
+            page.on('console', message => messages.push(`CONSOLE ${message.type()}: ${message.text()}`));
+            page.on('pageerror', error => messages.push(`PAGEERROR: ${error.stack || error.message}`));
+            page.on('requestfailed', request => messages.push(`REQUESTFAILED: ${request.url()} :: ${request.failure()?.errorText}`));
+            page.on('response', async response => {
+              const url = response.url();
+              if (url.includes('script.google.com/macros/s/') || url.includes('kernel-home-visitor-counter') || url.includes('kernel-home-country-panel') || url.includes('kernel-entry-analytics-fix')) {
+                messages.push(`RESPONSE ${response.status()}: ${url}`);
+              }
+            });
+
+            await page.goto('https://www.grupoelkernel.com/#/home', { waitUntil: 'networkidle', timeout: 90000 });
+            await page.waitForTimeout(5000);
+
+            const result = await page.evaluate(() => {
+              const section = document.getElementById('kernel-home-visitor-counter');
+              const values = section ? [...section.querySelectorAll('[data-counter-value]')].map(el => ({ key: el.dataset.counterValue, text: el.textContent, value: el.dataset.value })) : [];
+              const countryPanel = document.getElementById('kernel-home-country-panel');
+              return {
+                href: location.href,
+                title: document.title,
+                deployment: document.querySelector('meta[name="kernel-deployment"]')?.content || null,
+                mainText: document.getElementById('main')?.innerText.slice(0, 1000) || '',
+                home2b: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
+                counterPresent: Boolean(section),
+                counterStatus: section?.querySelector('[data-counter-status]')?.textContent || null,
+                values,
+                countryPanelPresent: Boolean(countryPanel),
+                countryBody: countryPanel?.querySelector('[data-country-body]')?.innerText || null,
+                entryDiagnostics: window.KernelEntryAnalyticsFix?.diagnostics?.() || null,
+                counterDiagnostics: window.KernelHomeVisitorCounter?.diagnostics?.() || null,
+                countryDiagnostics: window.KernelHomeCountryPanel?.diagnostics?.() || null,
+                dataLayerTail: Array.isArray(window.dataLayer) ? window.dataLayer.slice(-10) : null
+              };
+            });
+            console.log('RENDER RESULT');
+            console.log(JSON.stringify(result, null, 2));
+            console.log('MESSAGES');
+            console.log(messages.join('\n'));
+            await page.screenshot({ path: '/tmp/kernel-live.png', fullPage: true });
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exitCode = 1;
+          });
+          NODE
+
+      - name: Upload screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-live-diagnostic
+          path: /tmp/kernel-live.png
+          if-no-files-found: ignore
