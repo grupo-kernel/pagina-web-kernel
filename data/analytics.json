@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "propiedad": "546100922",
+  "actualizadoEn": "2026-08-01T13:31:53.321Z",
+  "visitantes": {
+    "total": 69,
+    "hoy": 1,
+    "ultimos7Dias": 55,
+    "ultimos30Dias": 69
+  },
+  "paises": [
+    {
+      "pais": "Dominican Republic",
+      "codigo": "DO",
+      "usuarios": 59
+    },
+    {
+      "pais": "United States",
+      "codigo": "US",
+      "usuarios": 4
+    },
+    {
+      "pais": "Ireland",
+      "codigo": "IE",
+      "usuarios": 3
+    },
+    {
+      "pais": "Germany",
+      "codigo": "DE",
+      "usuarios": 2
+    },
+    {
+      "pais": "Hong Kong",
+      "codigo": "HK",
+      "usuarios": 1
+    },
+    {
+      "pais": "South Korea",
+      "codigo": "KR",
+      "usuarios": 1
+    }
+  ]
+}
