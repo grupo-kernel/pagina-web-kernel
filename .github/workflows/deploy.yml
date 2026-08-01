@@ -39,6 +39,9 @@ jobs:
       - name: Build project (Vite)
         run: npm run build
 
+      - name: Prepare complete production entry point
+        run: node scripts/prepare-gh-pages-index.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
