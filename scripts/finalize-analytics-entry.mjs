@@ -10,11 +10,15 @@ html = html.replaceAll(
   "kernel-entry-analytics-fix.js?v=20260801-1",
   "kernel-entry-analytics-fix.js?v=20260801-2"
 );
+html = html.replaceAll(
+  "kernel-home-direct-entry-fix.js?v=20260801-1",
+  "kernel-home-direct-entry-fix.js?v=20260801-2"
+);
 
 const analyticsLoader =
   '  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-2"></script>';
 const directEntryLoader =
-  '  <script defer src="./assets/kernel-home-direct-entry-fix.js?v=20260801-1"></script>';
+  '  <script defer src="./assets/kernel-home-direct-entry-fix.js?v=20260801-2"></script>';
 
 if (!html.includes(directEntryLoader)) {
   if (!html.includes(analyticsLoader)) {
@@ -28,5 +32,5 @@ if (!html.includes(directEntryLoader)) {
 
 fs.writeFileSync(indexPath, html, "utf8");
 console.log(
-  "Finalized entry: one GA4 page-view source, Analytics loader v20260801-2 and direct-link watchdog enabled."
+  "Finalized entry: one GA4 page-view source, Analytics loader v20260801-2 and direct-link recovery v20260801-2 enabled."
 );

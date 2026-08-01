@@ -5,8 +5,16 @@
 
   const REQUEST_TIMEOUT = 2500;
   const WATCHDOG_DELAYS = [3200, 5200];
+  const MAX_RECOVERY_ATTEMPTS = 2;
+  const currentScriptUrl = document.currentScript?.src || document.baseURI;
+  const BRIDGE_URL = new URL("./kernel-home-2b-bridge.js", currentScriptUrl).href;
   const originalFetch = window.fetch.bind(window);
   const fallbacksUsed = [];
+  const fallbackPaths = new Set();
+
+  let recoveryAttempts = 0;
+  let recoveryInProgress = false;
+  let lastRecoveryReason = "";
 
   const FALLBACKS = new Map([
     [
@@ -82,6 +90,107 @@
     });
   }
 
+  function homeState() {
+    return {
+      loading: Boolean(document.querySelector(".kernel-home-2b__loading")),
+      ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]'))
+    };
+  }
+
+  function temporarilySuppressDuplicateBridgeSubscriptions() {
+    const NativeMutationObserver = window.MutationObserver;
+    const nativeWindowAddEventListener = window.addEventListener;
+    const nativeDocumentAddEventListener = document.addEventListener;
+    const suppressedWindowEvents = new Set([
+      "hashchange",
+      "pageshow",
+      "kernel-language-change"
+    ]);
+    const suppressedDocumentEvents = new Set([
+      "click",
+      "DOMContentLoaded",
+      "kernel-language-change"
+    ]);
+
+    class RecoveryMutationObserver extends NativeMutationObserver {
+      observe(target, options) {
+        if (
+          target === document.documentElement &&
+          options?.childList === true &&
+          options?.subtree === true
+        ) {
+          return;
+        }
+        return super.observe(target, options);
+      }
+    }
+
+    window.MutationObserver = RecoveryMutationObserver;
+    window.addEventListener = function kernelRecoveryWindowListener(type, listener, options) {
+      if (suppressedWindowEvents.has(type)) return;
+      return nativeWindowAddEventListener.call(this, type, listener, options);
+    };
+    document.addEventListener = function kernelRecoveryDocumentListener(type, listener, options) {
+      if (suppressedDocumentEvents.has(type)) return;
+      return nativeDocumentAddEventListener.call(this, type, listener, options);
+    };
+
+    let restored = false;
+    return () => {
+      if (restored) return;
+      restored = true;
+      window.MutationObserver = NativeMutationObserver;
+      window.addEventListener = nativeWindowAddEventListener;
+      document.addEventListener = nativeDocumentAddEventListener;
+    };
+  }
+
+  function recoverIntegratedHome(reason = "watchdog") {
+    const state = homeState();
+    if (!state.loading || state.ready) return;
+    if (recoveryInProgress || recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) return;
+
+    recoveryInProgress = true;
+    recoveryAttempts += 1;
+    lastRecoveryReason = reason;
+
+    const restoreSubscriptions = temporarilySuppressDuplicateBridgeSubscriptions();
+    const recoveryScript = document.createElement("script");
+    const source = new URL(BRIDGE_URL);
+    source.searchParams.set("kernel-direct-recovery", `${Date.now()}-${recoveryAttempts}`);
+    recoveryScript.src = source.href;
+    recoveryScript.async = true;
+    recoveryScript.dataset.kernelHomeDirectRecovery = String(recoveryAttempts);
+
+    const restore = () => {
+      restoreSubscriptions();
+      recoveryInProgress = false;
+    };
+
+    recoveryScript.onload = () => {
+      restore();
+      window.setTimeout(() => {
+        const nextState = homeState();
+        if (nextState.loading && !nextState.ready) {
+          recoverIntegratedHome("post-recovery-check");
+        }
+      }, 700);
+    };
+
+    recoveryScript.onerror = error => {
+      restore();
+      console.error("Kernel direct entry: bridge recovery failed.", error);
+      window.dispatchEvent(new Event("pageshow"));
+    };
+
+    window.setTimeout(restore, 5000);
+    document.head.appendChild(recoveryScript);
+  }
+
+  function scheduleRecovery(reason) {
+    window.setTimeout(() => recoverIntegratedHome(reason), 20);
+  }
+
   function fallbackResponse(payload, url, reason) {
     const record = {
       path: url.pathname,
@@ -89,6 +198,7 @@
       reason: String(reason?.message || reason || "fallback")
     };
     fallbacksUsed.push(record);
+    fallbackPaths.add(url.pathname);
     if (fallbacksUsed.length > 12) fallbacksUsed.shift();
 
     console.warn(
@@ -99,6 +209,10 @@
     window.dispatchEvent(
       new CustomEvent("kernel-home-data-fallback", { detail: record })
     );
+
+    if (fallbackPaths.size >= FALLBACKS.size) {
+      scheduleRecovery("institutional-data-timeout");
+    }
 
     return new Response(JSON.stringify(payload), {
       status: 200,
@@ -132,12 +246,12 @@
   };
 
   function releaseStalledHome() {
-    const loading = document.querySelector(".kernel-home-2b__loading");
-    const ready = document.querySelector('[data-kernel-platform-page="home-2b"]');
-    if (!loading || ready) return;
+    const state = homeState();
+    if (!state.loading || state.ready) return;
 
     window.dispatchEvent(new Event("pageshow"));
     window.dispatchEvent(new Event("kernel-language-change"));
+    scheduleRecovery("loading-watchdog");
   }
 
   function startWatchdog() {
@@ -153,14 +267,18 @@
   }
 
   window.KernelHomeDirectEntryFix = {
-    version: "1.0.0",
+    version: "2.0.0",
     timeoutMs: REQUEST_TIMEOUT,
+    bridgeUrl: BRIDGE_URL,
     releaseStalledHome,
+    recoverIntegratedHome,
     diagnostics: () => ({
       route: location.hash || "#/home (implicit)",
-      loading: Boolean(document.querySelector(".kernel-home-2b__loading")),
-      ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
-      fallbacksUsed: fallbacksUsed.map(item => ({ ...item }))
+      ...homeState(),
+      fallbacksUsed: fallbacksUsed.map(item => ({ ...item })),
+      recoveryAttempts,
+      recoveryInProgress,
+      lastRecoveryReason
     })
   };
 })();
