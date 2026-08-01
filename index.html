@@ -5,13 +5,48 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ window.dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
     gtag("js", new Date());
-    gtag("config", "G-V1BBZYECVK", { send_page_view: false });
+    gtag("config", "G-V1BBZYECVK", {
+      anonymize_ip: true,
+      transport_type: "beacon",
+      send_page_view: false
+    });
+
+    (function instalarSeguimientoDePaginasKernel(){
+      function rutaActual(){
+        return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      }
+      function registrarVista(){
+        const pagePath = rutaActual();
+        if (window.__kernelLastTrackedPage === pagePath) return;
+        window.__kernelLastTrackedPage = pagePath;
+        gtag("event", "page_view", {
+          page_title: document.title,
+          page_location: window.location.href,
+          page_path: pagePath
+        });
+      }
+      window.__kernelTrackPageView = registrarVista;
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", registrarVista, { once:true });
+      } else {
+        registrarVista();
+      }
+      window.addEventListener("hashchange", () => window.setTimeout(registrarVista, 0));
+      window.addEventListener("popstate", () => window.setTimeout(registrarVista, 0));
+      window.addEventListener("pageshow", event => {
+        if (event.persisted) {
+          window.__kernelLastTrackedPage = "";
+          window.setTimeout(registrarVista, 0);
+        }
+      });
+    })();
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="kernel-deployment" content="20260730-vector-k-4">
+  <meta name="kernel-deployment" content="20260801-direct-entry-analytics-1">
 
   <title>El Kernel - Grupo de investigación</title>
   <link rel="shortcut icon" href="./assets/logo-el-kernel-20260728.svg?v=20260730-4" type="image/svg+xml">
@@ -83,12 +118,16 @@
     })();
   </script>
 
-  <script src="./assets/kernel-global-logo-fix.js?v=20260730-4"></script>
-  <script src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
-  <script src="./assets/kernel-home-navigation-fix.js?v=20260726-1"></script>
-  <script src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
-  <script src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
-  <script src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
+  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-global-logo-fix.js?v=20260730-4"></script>
+  <script defer src="./assets/kernel-research-lines-visual-section.js?v=20260728-2"></script>
+  <script defer src="./assets/kernel-home-navigation-fix.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-data-affiliations-projects-fix.js?v=20260727-9"></script>
+  <script defer src="./assets/kernel-institutional-history-project-fix.js?v=20260727-2"></script>
+  <script defer src="./assets/kernel-publications-order-q1-fix.js?v=20260728-1"></script>
+  <script defer src="./assets/kernel-home-2b-bridge.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-home-visitor-counter.js?v=20260801-1"></script>
+  <script defer src="./assets/kernel-home-country-panel.js?v=20260801-1"></script>
 
   <script type="module" crossorigin src="./assets/index-BEtvhqLu.js?v=20260730-performance-logo-1"></script>
 
@@ -98,12 +137,9 @@
         "kernel-stats-patch.js?v=20260725-3",
         "kernel-phase1-patch.js?v=20260725-1",
         "kernel-phase1-fix.js?v=20260725-2",
-        "kernel-home-2b-bridge.js?v=20260727-3",
         "kernel-home-quick-access-fix.js?v=20260728-3",
         "kernel-quick-access-emergency-fix.js?v=20260728-1",
         "kernel-home-icon-fix.js?v=20260726-1",
-        "kernel-home-visitor-counter.js?v=20260726-1",
-        "kernel-home-country-panel.js?v=20260726-1",
         "kernel-international-label-fix.js?v=20260728-2",
         "kernel-visitor-counter-international-label.js?v=20260726-1",
         "kernel-research-visual-refresh.js?v=20260726-1",
