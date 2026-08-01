@@ -15,11 +15,65 @@
             window.dataLayer.push(arguments);
         }
 
+        window.gtag = window.gtag || gtag;
         gtag("js", new Date());
 
         gtag("config", "G-V1BBZYECVK", {
+            anonymize_ip: true,
+            transport_type: "beacon",
             send_page_view: false
         });
+
+        (function instalarSeguimientoDePaginasKernel() {
+            function rutaActual() {
+                return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+            }
+
+            function registrarVista() {
+                const pagePath = rutaActual();
+
+                if (window.__kernelLastTrackedPage === pagePath) {
+                    return;
+                }
+
+                window.__kernelLastTrackedPage = pagePath;
+
+                gtag("event", "page_view", {
+                    page_title: document.title,
+                    page_location: window.location.href,
+                    page_path: pagePath
+                });
+            }
+
+            window.__kernelTrackPageView = registrarVista;
+
+            if (document.readyState === "loading") {
+                document.addEventListener(
+                    "DOMContentLoaded",
+                    registrarVista,
+                    { once: true }
+                );
+            } else {
+                registrarVista();
+            }
+
+            window.addEventListener(
+                "hashchange",
+                () => window.setTimeout(registrarVista, 0)
+            );
+
+            window.addEventListener(
+                "popstate",
+                () => window.setTimeout(registrarVista, 0)
+            );
+
+            window.addEventListener("pageshow", (event) => {
+                if (event.persisted) {
+                    window.__kernelLastTrackedPage = "";
+                    window.setTimeout(registrarVista, 0);
+                }
+            });
+        })();
     </script>
 
     <meta charset="UTF-8">
@@ -41,6 +95,11 @@
         href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css"
         rel="stylesheet"
     >
+
+    <script
+        defer
+        src="/assets/kernel-entry-analytics-fix.js?v=20260801-1"
+    ></script>
 
     <script>
         (function cargarActualizacionesKernel() {
