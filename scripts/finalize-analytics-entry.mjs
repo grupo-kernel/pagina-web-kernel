@@ -19,6 +19,8 @@ const analyticsLoader =
   '  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-2"></script>';
 const directEntryLoader =
   '  <script defer src="./assets/kernel-home-direct-entry-fix.js?v=20260801-2"></script>';
+const ksdeVisibleLoader =
+  '  <script defer src="./assets/kernel-ksde-visible-results.js?v=20260801-1"></script>';
 
 if (!html.includes(directEntryLoader)) {
   if (!html.includes(analyticsLoader)) {
@@ -30,7 +32,17 @@ if (!html.includes(directEntryLoader)) {
   );
 }
 
+if (!html.includes(ksdeVisibleLoader)) {
+  if (!html.includes(directEntryLoader)) {
+    throw new Error("No se encontró el punto de inserción para KSDE 2.0 en dist/index.html.");
+  }
+  html = html.replace(
+    directEntryLoader,
+    `${directEntryLoader}\n${ksdeVisibleLoader}`
+  );
+}
+
 fs.writeFileSync(indexPath, html, "utf8");
 console.log(
-  "Finalized entry: one GA4 page-view source, Analytics loader v20260801-2 and direct-link recovery v20260801-2 enabled."
+  "Finalized entry: analytics, direct-link recovery and visible KSDE 2.0 result details enabled."
 );
