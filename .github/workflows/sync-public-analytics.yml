@@ -1,0 +1,69 @@
+name: Sync public analytics snapshot
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/sync-public-analytics.yml
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kernel-public-analytics
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout published branch
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Fetch and validate Analytics snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          API_URL='https://script.google.com/macros/s/AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q/exec'
+          curl --location --fail --show-error --silent \
+            --retry 4 --retry-delay 3 --retry-all-errors \
+            "${API_URL}?snapshot=1&ts=$(date +%s)" \
+            --output /tmp/kernel-analytics.json
+
+          jq -e '
+            .ok == true and
+            (.visitantes | type == "object") and
+            (.visitantes.total | numbers) and
+            (.visitantes.hoy | numbers) and
+            (.visitantes.ultimos7Dias | numbers) and
+            (.visitantes.ultimos30Dias | numbers) and
+            (.paises | type == "array")
+          ' /tmp/kernel-analytics.json >/dev/null
+
+          mkdir -p data
+          jq -S . /tmp/kernel-analytics.json > /tmp/kernel-analytics.normalized.json
+
+          if [[ -f data/analytics.json ]]; then
+            jq -S 'del(.actualizadoEn)' data/analytics.json > /tmp/kernel-analytics.previous-core.json
+            jq -S 'del(.actualizadoEn)' /tmp/kernel-analytics.normalized.json > /tmp/kernel-analytics.new-core.json
+            if cmp -s /tmp/kernel-analytics.previous-core.json /tmp/kernel-analytics.new-core.json; then
+              echo "Analytics values have not changed."
+              exit 0
+            fi
+          fi
+
+          mv /tmp/kernel-analytics.normalized.json data/analytics.json
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/analytics.json
+          git commit -m "chore: refresh public analytics snapshot"
+          git push origin HEAD:gh-pages
