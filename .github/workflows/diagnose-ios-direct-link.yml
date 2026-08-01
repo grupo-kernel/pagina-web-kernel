@@ -31,63 +31,78 @@ jobs:
       - name: Test cold direct entry with stalled institutional data
         shell: bash
         run: |
-          node <<'NODE'
+          timeout 90s node <<'NODE'
           const { webkit, devices } = require('playwright');
 
+          let browser;
+
           (async () => {
-            const browser = await webkit.launch({ headless: true });
-            const context = await browser.newContext({
-              ...devices['iPhone 13'],
-              locale: 'es-DO'
-            });
+            try {
+              browser = await webkit.launch({ headless: true });
+              const context = await browser.newContext({
+                ...devices['iPhone 13'],
+                locale: 'es-DO'
+              });
 
-            await context.route(/\/core\/data\/(researchers|publications|projects)\.v2\.json(?:\?.*)?$/, async route => {
-              await new Promise(resolve => setTimeout(resolve, 7000));
-              await route.continue();
-            });
+              const delayedRequests = [];
+              await context.route(/\/core\/data\/(researchers|publications|projects)\.v2\.json(?:\?.*)?$/, async route => {
+                delayedRequests.push(route.request().url());
+                await new Promise(resolve => setTimeout(resolve, 7000));
+                await route.continue();
+              });
 
-            const page = await context.newPage();
-            const messages = [];
-            page.on('console', message => messages.push(`${message.type()}: ${message.text()}`));
-            page.on('pageerror', error => messages.push(`pageerror: ${error.stack || error.message}`));
-            page.on('requestfailed', request => messages.push(`failed: ${request.url()} :: ${request.failure()?.errorText}`));
+              const page = await context.newPage();
+              const messages = [];
+              page.on('console', message => messages.push(`${message.type()}: ${message.text()}`));
+              page.on('pageerror', error => messages.push(`pageerror: ${error.stack || error.message}`));
+              page.on('requestfailed', request => messages.push(`failed: ${request.url()} :: ${request.failure()?.errorText}`));
 
-            const startedAt = Date.now();
-            await page.goto(`https://www.grupoelkernel.com/?ios-direct-test=${Date.now()}`, {
-              waitUntil: 'domcontentloaded',
-              timeout: 60000
-            });
-            await page.waitForTimeout(4800);
+              const startedAt = Date.now();
+              await page.goto(`https://www.grupoelkernel.com/?ios-direct-test=${Date.now()}`, {
+                waitUntil: 'domcontentloaded',
+                timeout: 60000
+              });
+              await page.waitForTimeout(4800);
 
-            const result = await page.evaluate(() => ({
-              href: location.href,
-              deployment: document.querySelector('meta[name="kernel-deployment"]')?.content || null,
-              loading: Boolean(document.querySelector('.kernel-home-2b__loading')),
-              ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
-              title: document.querySelector('.kernel-home-2b__hero h1')?.textContent?.replace(/\s+/g, ' ').trim() || null,
-              diagnostics: window.KernelHomeDirectEntryFix?.diagnostics?.() || null,
-              bodyText: document.body.innerText.slice(0, 700)
-            }));
+              const result = await page.evaluate(() => ({
+                href: location.href,
+                deployment: document.querySelector('meta[name="kernel-deployment"]')?.content || null,
+                loading: Boolean(document.querySelector('.kernel-home-2b__loading')),
+                ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
+                title: document.querySelector('.kernel-home-2b__hero h1')?.textContent?.replace(/\s+/g, ' ').trim() || null,
+                diagnostics: window.KernelHomeDirectEntryFix?.diagnostics?.() || null,
+                bodyText: document.body.innerText.slice(0, 700)
+              }));
 
-            result.elapsedMs = Date.now() - startedAt;
-            console.log('IOS DIRECT-LINK RESULT');
-            console.log(JSON.stringify(result, null, 2));
-            console.log('MESSAGES');
-            console.log(messages.join('\n'));
+              result.elapsedMs = Date.now() - startedAt;
+              result.delayedRequests = delayedRequests;
 
-            await page.screenshot({ path: '/tmp/kernel-ios-direct-link.png', fullPage: true });
+              console.log('IOS DIRECT-LINK RESULT');
+              console.log(JSON.stringify(result, null, 2));
+              console.log('MESSAGES');
+              console.log(messages.join('\n'));
 
-            if (!result.ready) throw new Error('The integrated homepage did not render on a cold direct entry.');
-            if (result.loading) throw new Error('The loading placeholder remained visible.');
-            if (!result.diagnostics) throw new Error('The direct-entry safeguard did not initialize.');
-            if ((result.diagnostics.fallbacksUsed || []).length < 3) {
-              throw new Error('The controlled stalled requests did not activate all safe fallbacks.');
+              await page.screenshot({
+                path: '/tmp/kernel-ios-direct-link.png',
+                fullPage: true,
+                timeout: 15000
+              });
+
+              if (!result.ready) throw new Error('The integrated homepage did not render on a cold direct entry.');
+              if (result.loading) throw new Error('The loading placeholder remained visible.');
+              if (!result.diagnostics) throw new Error('The direct-entry safeguard did not initialize.');
+              if (delayedRequests.length < 3) {
+                throw new Error(`Only ${delayedRequests.length} institutional requests were delayed.`);
+              }
+              if ((result.diagnostics.fallbacksUsed || []).length < 3) {
+                throw new Error('The controlled stalled requests did not activate all safe fallbacks.');
+              }
+            } finally {
+              await browser?.close().catch(() => {});
             }
-
-            await browser.close();
           })().catch(error => {
             console.error(error);
-            process.exitCode = 1;
+            process.exit(1);
           });
           NODE
 
