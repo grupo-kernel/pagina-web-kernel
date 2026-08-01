@@ -21,10 +21,13 @@ assert.match(safeguard, /core\/data\/projects\.v2\.json/);
 assert.match(safeguard, /withDeadline/);
 assert.match(safeguard, /fallbackResponse/);
 assert.match(safeguard, /kernel-home-data-fallback/);
+assert.match(safeguard, /recoverIntegratedHome/);
+assert.match(safeguard, /kernel-direct-recovery/);
+assert.match(safeguard, /RecoveryMutationObserver/);
 assert.match(safeguard, /kernel-home-2b__loading/);
 assert.match(safeguard, /data-kernel-platform-page=\\?"home-2b/);
-assert.match(finalizer, /kernel-home-direct-entry-fix\.js\?v=20260801-1/);
+assert.match(finalizer, /kernel-home-direct-entry-fix\.js\?v=20260801-2/);
 
 console.log(
-  "✓ Entrada directa protegida con límite de espera, datos seguros y reactivación de la portada."
+  "✓ Entrada directa protegida con límite de espera, datos seguros y recuperación controlada de la portada."
 );
