@@ -10,6 +10,10 @@ const finalizer = await readFile(
   "utf8"
 );
 
+assert.doesNotThrow(
+  () => new Function(safeguard),
+  "El protector de entrada directa debe ser JavaScript válido."
+);
 assert.match(safeguard, /REQUEST_TIMEOUT\s*=\s*2500/);
 assert.match(safeguard, /core\/data\/researchers\.v2\.json/);
 assert.match(safeguard, /core\/data\/publications\.v2\.json/);
