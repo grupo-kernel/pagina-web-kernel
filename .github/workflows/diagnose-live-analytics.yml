@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - El-Kernel-2.0
-    paths:
-      - .github/workflows/diagnose-live-analytics.yml
 
 permissions:
   contents: read
@@ -112,3 +110,5 @@ jobs:
           name: kernel-live-diagnostic
           path: /tmp/kernel-live.png
           if-no-files-found: ignore
+
+# trigger after workflow became available on the base branch
