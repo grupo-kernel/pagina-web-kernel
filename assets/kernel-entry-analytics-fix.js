@@ -4,9 +4,15 @@
   if (window.KernelEntryAnalyticsFix) return;
 
   const ROOT = document.documentElement;
-  const COUNTRY_ENDPOINT_ID = "AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q";
+  const ANALYTICS_API = "https://script.google.com/macros/s/AKfycbwYOIXuZWC1HiU2_iTsk8ytuHa1NDtFGbjQsO_37SmtbKWUsdS4RUQOOEU7GHz0E4wU7Q/exec";
+  const SNAPSHOT_URL = new URL("./data/analytics.json", document.baseURI).href;
+  const SNAPSHOT_MAX_AGE = 60 * 1000;
   const originalFetch = window.fetch.bind(window);
+
   let initialEntry = true;
+  let snapshotPromise = null;
+  let snapshotLoadedAt = 0;
+  let snapshotAvailable = false;
 
   function clearInitialRouteOverlay() {
     if (!initialEntry) return;
@@ -41,153 +47,83 @@
   window.addEventListener("pageshow", clearInitialRouteOverlay, true);
   setTimeout(finishInitialEntry, 4500);
 
-  const toNumber = value => {
-    const number = Number(String(value ?? "").replace(/\s/g, "").replace(",", "."));
-    return Number.isFinite(number) && number >= 0 ? number : 0;
-  };
-
-  function canonicalCountry(name, code = "") {
-    let cleanName = String(name || "").trim();
-    let cleanCode = String(code || "").trim().toUpperCase();
-    const normalized = cleanName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-    if (/^(es|esp|spain|espana)$/.test(normalized) || cleanCode === "ES") {
-      cleanName = "España";
-      cleanCode = "ES";
-    } else if (/^(do|dominican republic|republica dominicana)$/.test(normalized) || cleanCode === "DO") {
-      cleanName = "República Dominicana";
-      cleanCode = "DO";
-    } else if (/^(us|usa|united states|estados unidos)$/.test(normalized) || cleanCode === "US") {
-      cleanName = "Estados Unidos";
-      cleanCode = "US";
-    }
-
-    return { name: cleanName, code: cleanCode };
+  function requestMethod(input, init) {
+    return String(init?.method || (input instanceof Request ? input.method : "GET") || "GET").toUpperCase();
   }
 
-  function rowToCountry(row) {
-    if (Array.isArray(row)) {
-      const country = canonicalCountry(row[0], row[2]);
-      return { ...country, visitors: toNumber(row[1]) };
-    }
-    if (!row || typeof row !== "object") return null;
-
-    const gaName = Array.isArray(row.dimensionValues) ? row.dimensionValues[0]?.value : "";
-    const gaCode = Array.isArray(row.dimensionValues) ? row.dimensionValues[1]?.value : "";
-    const gaValue = Array.isArray(row.metricValues) ? row.metricValues[0]?.value : undefined;
-    const country = canonicalCountry(
-      row.pais ?? row.country ?? row.countryName ?? row.name ?? row.label ?? gaName,
-      row.codigo ?? row.code ?? row.countryCode ?? row.countryId ?? row.iso2 ?? row.iso ?? gaCode
-    );
-    const visitors = toNumber(
-      row.usuarios ?? row.visitantes ?? row.users ?? row.totalUsers ?? row.activeUsers ??
-      row.visitas ?? row.visits ?? row.count ?? row.total ?? row.sessions ??
-      row.screenPageViews ?? row.value ?? gaValue
-    );
-
-    if (!country.name && !country.code) return null;
-    return { ...country, visitors };
-  }
-
-  function rowsFromPayload(payload) {
-    if (Array.isArray(payload)) return payload;
-    if (!payload || typeof payload !== "object") return [];
-
-    const arrays = [
-      payload.paises,
-      payload.countries,
-      payload.rows,
-      payload.data?.rows,
-      payload.report?.rows,
-      payload.result?.rows,
-      payload.response?.rows,
-      payload.analytics?.rows,
-      payload.data?.paises,
-      payload.data?.countries
-    ];
-    const found = arrays.find(Array.isArray);
-    if (found) return found;
-
-    const maps = [
-      payload.country_breakdown,
-      payload.countryBreakdown,
-      payload.countriesMap,
-      payload.paisesMap,
-      payload.byCountry,
-      payload.data?.country_breakdown,
-      payload.data?.countryBreakdown
-    ];
-    const map = maps.find(value => value && typeof value === "object" && !Array.isArray(value));
-    return map ? Object.entries(map).map(([name, visitors]) => [name, visitors]) : [];
-  }
-
-  function normalizeCountryPayload(payload) {
-    const countries = new Map();
-
-    rowsFromPayload(payload).forEach(row => {
-      const country = rowToCountry(row);
-      if (!country) return;
-      const key = country.code || country.name.toLocaleLowerCase("es");
-      const current = countries.get(key);
-      if (current) current.visitors += country.visitors;
-      else countries.set(key, country);
-    });
-
-    if (!countries.size) return payload;
-
-    const paises = [...countries.values()]
-      .sort((a, b) => b.visitors - a.visitors || a.name.localeCompare(b.name, "es"))
-      .map(country => ({
-        codigo: country.code,
-        pais: country.name,
-        usuarios: country.visitors
-      }));
-
-    return payload && typeof payload === "object" && !Array.isArray(payload)
-      ? { ...payload, paises }
-      : { paises };
-  }
-
-  function isCountryRequest(input) {
+  function isAnalyticsRequest(input, init) {
+    if (requestMethod(input, init) !== "GET") return false;
     try {
-      const raw = typeof input === "string" ? input : input?.url;
+      const raw = typeof input === "string" || input instanceof URL ? String(input) : input?.url;
       if (!raw) return false;
-      const url = new URL(raw, location.href);
-      return url.href.includes(COUNTRY_ENDPOINT_ID) && url.searchParams.get("countries") === "1";
+      const url = new URL(raw, document.baseURI);
+      return url.origin === new URL(ANALYTICS_API).origin && url.pathname === new URL(ANALYTICS_API).pathname;
     } catch {
       return false;
     }
   }
 
-  window.fetch = async function kernelEntryAnalyticsFetch(input, init) {
-    const response = await originalFetch(input, init);
-    if (!isCountryRequest(input)) return response;
+  async function loadSnapshotText() {
+    const now = Date.now();
+    if (snapshotPromise && now - snapshotLoadedAt < SNAPSHOT_MAX_AGE) return snapshotPromise;
+
+    snapshotLoadedAt = now;
+    const cacheBuster = Math.floor(now / SNAPSHOT_MAX_AGE);
+    snapshotPromise = originalFetch(`${SNAPSHOT_URL}?v=${cacheBuster}`, {
+      method: "GET",
+      cache: "no-store",
+      credentials: "same-origin"
+    })
+      .then(async response => {
+        if (!response.ok) throw new Error(`Snapshot HTTP ${response.status}`);
+        const text = await response.text();
+        const payload = JSON.parse(text);
+        if (!payload?.ok || !payload?.visitantes) {
+          throw new Error("Invalid analytics snapshot");
+        }
+        snapshotAvailable = true;
+        return JSON.stringify(payload);
+      })
+      .catch(error => {
+        snapshotAvailable = false;
+        snapshotPromise = null;
+        throw error;
+      });
+
+    return snapshotPromise;
+  }
+
+  window.fetch = async function kernelAnalyticsFetch(input, init) {
+    if (!isAnalyticsRequest(input, init)) return originalFetch(input, init);
 
     try {
-      const payload = await response.clone().json();
-      const normalized = normalizeCountryPayload(payload);
-      if (normalized === payload) return response;
-
-      const headers = new Headers(response.headers);
-      headers.set("content-type", "application/json; charset=utf-8");
-      return new Response(JSON.stringify(normalized), {
-        status: response.status,
-        statusText: response.statusText,
-        headers
+      const body = await loadSnapshotText();
+      return new Response(body, {
+        status: 200,
+        headers: {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store"
+        }
       });
-    } catch (error) {
-      console.warn("Kernel Analytics: no se pudo normalizar la respuesta por países.", error);
-      return response;
+    } catch (snapshotError) {
+      console.warn("Kernel Analytics: usando el API remoto como respaldo.", snapshotError);
+      return originalFetch(input, init);
     }
   };
 
   window.KernelEntryAnalyticsFix = {
-    version: "1.0.0",
+    version: "2.0.0",
     clearInitialRouteOverlay,
-    normalizeCountryPayload,
+    refreshSnapshot: () => {
+      snapshotPromise = null;
+      snapshotLoadedAt = 0;
+      return loadSnapshotText();
+    },
     diagnostics: () => ({
       initialEntry,
       overlayActive: ROOT.hasAttribute("data-kernel-fast-route"),
+      snapshotAvailable,
+      snapshotUrl: SNAPSHOT_URL,
       page: `${location.pathname}${location.search}${location.hash}`
     })
   };
