@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const KERNEL_HOME_ROOT_FIX_VERSION = "3.0.0";
+
   const STYLE_ID = "kernel-home-2b-styles";
 
   const DATA = {
@@ -946,7 +948,7 @@
     if (!dataPromise) {
       dataPromise = Promise.all([
         fetch(DATA.researchers, {
-          cache: "no-store"
+          cache: "default"
         }).then(response =>
           response.ok
             ? response.json()
@@ -956,7 +958,7 @@
         ),
 
         fetch(DATA.publications, {
-          cache: "no-store"
+          cache: "default"
         }).then(response =>
           response.ok
             ? response.json()
@@ -966,7 +968,7 @@
         ),
 
         fetch(DATA.projects, {
-          cache: "no-store"
+          cache: "default"
         }).then(response =>
           response.ok
             ? response.json()
@@ -1053,7 +1055,7 @@
   async function render() {
     if (route() !== "home") return;
 
-    const currentTicket = ++renderTicket;
+    const currentTicket = renderTicket;
     const main = document.getElementById("main");
 
     if (!main) return;
@@ -1068,7 +1070,7 @@
     main.style.marginTop = "0";
     main.style.marginBottom = "0";
 
-    const t = labels();
+    let t = labels();
 
     if (!main.querySelector(".kernel-home-2b")) {
       main.innerHTML = `
@@ -1084,6 +1086,8 @@
         publications,
         projects
       } = await loadData();
+
+      t = labels();
 
       if (
         currentTicket !== renderTicket ||
@@ -1772,6 +1776,7 @@
   }
 
   function restoreMain() {
+    renderTicket += 1;
     const main = document.getElementById("main");
 
     if (!main) return;
@@ -1795,6 +1800,7 @@
 
   function schedule() {
     addStyles();
+    observeMain();
 
     if (route() === "home") {
       [0, 80, 260].forEach(delay => {
@@ -1806,18 +1812,39 @@
   }
 
   let mutationTimer = 0;
+  let observedMain = null;
+  let mainObserver = null;
 
-  new MutationObserver(() => {
-    window.clearTimeout(mutationTimer);
+  function observeMain() {
+    const main = document.getElementById("main");
 
-    mutationTimer = window.setTimeout(
-      schedule,
-      50
-    );
-  }).observe(document.documentElement, {
-    childList: true,
-    subtree: true
-  });
+    if (!main || main === observedMain) return;
+
+    mainObserver?.disconnect();
+    observedMain = main;
+
+    mainObserver = new MutationObserver(() => {
+      window.clearTimeout(mutationTimer);
+
+      mutationTimer = window.setTimeout(() => {
+        if (
+          route() === "home" &&
+          !main.querySelector(
+            '[data-kernel-platform-page="home-2b"]'
+          ) &&
+          !main.querySelector(
+            ".kernel-home-2b__loading"
+          )
+        ) {
+          render();
+        }
+      }, 50);
+    });
+
+    mainObserver.observe(main, {
+      childList: true
+    });
+  }
 
   document.addEventListener(
     "click",
