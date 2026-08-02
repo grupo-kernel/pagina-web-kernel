@@ -1,13 +1,9 @@
 import assert from "node:assert/strict";
 import { webkit } from "playwright";
 
-// La prueba exige que la raíz implícita se canonicalice antes de iniciar la SPA.
 const baseUrl = process.env.KERNEL_BASE_URL ||
   "https://www.grupoelkernel.com";
 const expectedDeployment = process.env.KERNEL_DEPLOYMENT || "";
-const delayMs = Number(
-  process.env.KERNEL_DATA_DELAY_MS || 1600
-);
 
 const sleep = milliseconds =>
   new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -32,41 +28,45 @@ async function waitForDeployment() {
   );
 }
 
-async function validateFirstEntry(browser, hash, label) {
+async function validateFirstEntry(browser, {
+  path,
+  label,
+  referer = ""
+}) {
   const context = await browser.newContext({
     locale: "es-DO",
     viewport: {
       width: 1366,
       height: 900
-    }
+    },
+    serviceWorkers: "block"
   });
 
   try {
     const page = await context.newPage();
     const pageErrors = [];
+    let blockedHomepageDataRequests = 0;
 
     page.on("pageerror", error => {
       pageErrors.push(String(error?.message || error));
     });
 
     await page.route("**/core/data/*.json", async route => {
-      await sleep(delayMs);
-      await route.continue();
+      blockedHomepageDataRequests += 1;
+      await route.abort("failed");
     });
 
-    const url =
-      `${baseUrl}/?first-entry-smoke=${Date.now()}${hash}`;
-
-    await page.goto(url, {
+    await page.goto(`${baseUrl}${path}`, {
       waitUntil: "domcontentloaded",
-      timeout: 30000
+      timeout: 30000,
+      ...(referer ? { referer } : {})
     });
 
     await page.waitForSelector(
       '[data-kernel-platform-page="home-2b"]',
       {
         state: "attached",
-        timeout: 15000
+        timeout: 10000
       }
     );
 
@@ -81,15 +81,28 @@ async function validateFirstEntry(browser, hash, label) {
           ".kernel-home-2b__loading"
         )
       ),
+      snapshotAvailable: Boolean(window.KernelHomeSnapshot),
+      snapshotPublications:
+        window.KernelHomeSnapshot?.publications?.summary
+          ?.unique_records || 0,
       navigationType:
         performance.getEntriesByType("navigation")[0]?.type || "",
-      title: document.title,
       deployment:
         document.querySelector(
           'meta[name="kernel-deployment"]'
         )?.content || ""
     }));
 
+    assert.equal(
+      state.snapshotAvailable,
+      true,
+      `${label}: la instantánea sincrónica no estaba disponible.`
+    );
+    assert.equal(
+      state.snapshotPublications,
+      162,
+      `${label}: la instantánea no contiene el conteo verificado de publicaciones.`
+    );
     assert.equal(
       state.ready,
       true,
@@ -114,7 +127,9 @@ async function validateFirstEntry(browser, hash, label) {
     );
 
     console.log(
-      `✓ ${label}: primera entrada WebKit completada sin recargar; versión ${state.deployment}.`
+      `✓ ${label}: portada construida sin recarga y sin depender de JSON; ` +
+      `solicitudes bloqueadas=${blockedHomepageDataRequests}; ` +
+      `versión=${state.deployment}.`
     );
   } finally {
     await context.close();
@@ -126,16 +141,19 @@ await waitForDeployment();
 const browser = await webkit.launch({ headless: true });
 
 try {
-  await validateFirstEntry(
-    browser,
-    "#/home",
-    "Ruta explícita #/home"
-  );
-  await validateFirstEntry(
-    browser,
-    "",
-    "Portada implícita sin hash"
-  );
+  await validateFirstEntry(browser, {
+    path: `/?first-entry-smoke=${Date.now()}#/home`,
+    label: "Ruta raíz explícita #/home"
+  });
+  await validateFirstEntry(browser, {
+    path: `/?first-entry-smoke=${Date.now()}`,
+    label: "Portada raíz implícita sin hash"
+  });
+  await validateFirstEntry(browser, {
+    path: "/index.html#/home",
+    label: "Ruta exacta index.html#/home",
+    referer: "https://drive.google.com/"
+  });
 } finally {
   await browser.close();
 }
