@@ -3,14 +3,70 @@
 
   if (window.KernelHomeLoadingRaceFix) return;
 
+  const VERSION = "2.0.0";
   const SENTINEL_ATTRIBUTE = "data-kernel-home-loading-sentinel";
   const LOADING_SELECTOR = ".kernel-home-2b__loading";
   const READY_SELECTOR = '[data-kernel-platform-page="home-2b"]';
   const HOME_ROUTES = new Set(["", "home", "portada"]);
+  const NativeMutationObserver = window.MutationObserver;
 
   let sentinelInsertions = 0;
+  let bridgeObserverSuppressions = 0;
   let lastStabilizedAt = "";
+  let recoveryRequested = false;
   let observer;
+
+  function callbackLooksLikeBridgeObserver(callback) {
+    let source = "";
+
+    try {
+      source = Function.prototype.toString.call(callback);
+    } catch {
+      return false;
+    }
+
+    return source.includes("mutationTimer") &&
+      source.includes("window.clearTimeout") &&
+      source.includes("window.setTimeout") &&
+      source.includes("schedule");
+  }
+
+  function installBridgeObserverGuard() {
+    if (
+      typeof NativeMutationObserver !== "function" ||
+      window.__KernelHomeBridgeObserverGuard
+    ) {
+      return;
+    }
+
+    class KernelHomeGuardedMutationObserver extends NativeMutationObserver {
+      constructor(callback) {
+        const bridgeObserver = callbackLooksLikeBridgeObserver(callback);
+        super(bridgeObserver ? () => {} : callback);
+        this.__kernelHomeBridgeObserver = bridgeObserver;
+      }
+
+      observe(target, options) {
+        if (
+          this.__kernelHomeBridgeObserver &&
+          target === document.documentElement &&
+          options?.childList === true &&
+          options?.subtree === true
+        ) {
+          bridgeObserverSuppressions += 1;
+          return;
+        }
+
+        return super.observe(target, options);
+      }
+    }
+
+    window.MutationObserver = KernelHomeGuardedMutationObserver;
+    window.__KernelHomeBridgeObserverGuard = Object.freeze({
+      version: VERSION,
+      native: NativeMutationObserver
+    });
+  }
 
   function currentRoute() {
     return window.location.hash
@@ -42,11 +98,13 @@
 
     if (!isHomeRoute()) {
       removeSentinel(main);
+      recoveryRequested = false;
       return;
     }
 
     if (main.querySelector(READY_SELECTOR)) {
       removeSentinel(main);
+      recoveryRequested = false;
       return;
     }
 
@@ -74,7 +132,7 @@
   function startObserver() {
     if (observer || !document.documentElement) return;
 
-    observer = new MutationObserver(() => {
+    observer = new window.MutationObserver(() => {
       stabilizeLoadingState();
     });
 
@@ -82,6 +140,27 @@
       childList: true,
       subtree: true
     });
+  }
+
+  function requestSingleRecovery(reason) {
+    const main = getMain();
+    if (
+      recoveryRequested ||
+      !main ||
+      !isHomeRoute() ||
+      main.querySelector(READY_SELECTOR)
+    ) {
+      return;
+    }
+
+    recoveryRequested = true;
+    window.KernelHomeDirectEntryFix?.recoverIntegratedHome?.(reason);
+    window.dispatchEvent(new Event("pageshow"));
+
+    window.setTimeout(() => {
+      recoveryRequested = false;
+      stabilizeLoadingState();
+    }, 1800);
   }
 
   function improveLongLoadingMessage() {
@@ -102,7 +181,7 @@
       </p>
     `;
 
-    window.KernelHomeDirectEntryFix?.releaseStalledHome?.();
+    requestSingleRecovery("bridge-observer-race-v2");
   }
 
   function offerManualRetry() {
@@ -129,14 +208,15 @@
 
     button.addEventListener("click", () => {
       button.disabled = true;
-      window.KernelHomeDirectEntryFix?.releaseStalledHome?.();
-      window.dispatchEvent(new Event("pageshow"));
-      window.setTimeout(() => window.location.reload(), 1200);
+      recoveryRequested = false;
+      requestSingleRecovery("manual-retry-v2");
+      window.setTimeout(() => window.location.reload(), 1800);
     });
 
     loading.appendChild(button);
   }
 
+  installBridgeObserverGuard();
   startObserver();
   scheduleStabilization();
 
@@ -146,18 +226,22 @@
   window.addEventListener("pageshow", scheduleStabilization);
   window.addEventListener("hashchange", scheduleStabilization);
 
-  window.setTimeout(improveLongLoadingMessage, 4200);
-  window.setTimeout(offerManualRetry, 8500);
+  window.setTimeout(() => requestSingleRecovery("initial-loading-v2"), 2800);
+  window.setTimeout(improveLongLoadingMessage, 4800);
+  window.setTimeout(offerManualRetry, 9000);
 
   window.KernelHomeLoadingRaceFix = {
-    version: "1.0.0",
+    version: VERSION,
     stabilize: stabilizeLoadingState,
+    recover: requestSingleRecovery,
     diagnostics: () => ({
       route: currentRoute() || "home",
       loading: Boolean(getMain()?.querySelector(LOADING_SELECTOR)),
       ready: Boolean(getMain()?.querySelector(READY_SELECTOR)),
       sentinelPresent: Boolean(getSentinel(getMain())),
       sentinelInsertions,
+      bridgeObserverSuppressions,
+      recoveryRequested,
       lastStabilizedAt
     })
   };
