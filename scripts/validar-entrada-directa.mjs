@@ -9,36 +9,19 @@ import {
   patchHomeBridgeSource
 } from "./patch-home-bridge.mjs";
 
-const fallbackSnapshotScript = await readFile(
-  new URL(
-    "../public/assets/kernel-home-snapshot.js",
-    import.meta.url
-  ),
+const read = relativePath => readFile(
+  new URL(relativePath, import.meta.url),
   "utf8"
 );
-const sourceIndex = await readFile(
-  new URL("../index.html", import.meta.url),
-  "utf8"
+
+const fallbackSnapshotScript = await read(
+  "../public/assets/kernel-home-snapshot.js"
 );
-const finalizer = await readFile(
-  new URL("./finalize-analytics-entry.mjs", import.meta.url),
-  "utf8"
-);
-const generator = await readFile(
-  new URL("./generate-home-snapshot.mjs", import.meta.url),
-  "utf8"
-);
-const deployWorkflow = await readFile(
-  new URL(
-    "../.github/workflows/deploy.yml",
-    import.meta.url
-  ),
-  "utf8"
-);
-const smokeTest = await readFile(
-  new URL("./smoke-home-first-entry.mjs", import.meta.url),
-  "utf8"
-);
+const sourceIndex = await read("../index.html");
+const finalizer = await read("./finalize-analytics-entry.mjs");
+const generator = await read("./generate-home-snapshot.mjs");
+const deployWorkflow = await read("../.github/workflows/deploy.yml");
+const smokeTest = await read("./smoke-home-first-entry.mjs");
 
 assert.doesNotThrow(
   () => new Function(fallbackSnapshotScript),
@@ -69,14 +52,12 @@ const fixtureSnapshot = buildHomeSnapshot({
     approved_projects: [
       {
         id: "uasd-dinamica-sin-jacobiana",
-        order: 11,
         title: "Proyecto UASD",
         status: "approved",
         featured: true
       },
       {
         id: "procesos-iterativos",
-        order: 1,
         title: "Procesos iterativos",
         status: "approved",
         featured: true
@@ -85,7 +66,6 @@ const fixtureSnapshot = buildHomeSnapshot({
     proposals: [
       {
         id: "fondocyt-transporte-nutrientes",
-        order: 1,
         title: "FONDOCyT nutrientes",
         status: "under-review"
       }
@@ -93,19 +73,18 @@ const fixtureSnapshot = buildHomeSnapshot({
   }
 });
 
-assert.equal(
-  fixtureSnapshot.researchers.group.member_count,
-  9
-);
+assert.equal(fixtureSnapshot.researchers.group.member_count, 9);
 assert.equal(
   fixtureSnapshot.publications.summary.unique_records,
   162
 );
 
-const generatedScript = snapshotToScript(fixtureSnapshot);
 const generatedWindow = {};
 assert.doesNotThrow(() => {
-  new Function("window", generatedScript)(generatedWindow);
+  new Function(
+    "window",
+    snapshotToScript(fixtureSnapshot)
+  )(generatedWindow);
 });
 assert.equal(
   generatedWindow.KernelHomeSnapshot
@@ -127,6 +106,7 @@ const bridgeFixture = `(() => {
         projects: {}
       });
     }
+
     return dataPromise;
   }
 
@@ -146,7 +126,9 @@ const bridgeFixture = `(() => {
         projects
       } = await loadData();
 
-      if (currentTicket !== renderTicket) return;
+      if (
+        currentTicket !== renderTicket
+      ) return;
     } catch (error) {}
   }
 
@@ -162,7 +144,11 @@ const bridgeFixture = `(() => {
 
   new MutationObserver(() => {
     window.clearTimeout(mutationTimer);
-    mutationTimer = window.setTimeout(schedule, 50);
+
+    mutationTimer = window.setTimeout(
+      schedule,
+      50
+    );
   }).observe(document.documentElement, {
     childList: true,
     subtree: true
@@ -189,10 +175,7 @@ assert.doesNotMatch(
   /observe\(document\.documentElement/
 );
 
-assert.match(
-  sourceIndex,
-  /id="kernel-home-route-canonicalizer"/
-);
+assert.match(sourceIndex, /id="kernel-home-route-canonicalizer"/);
 assert.match(sourceIndex, /history\.replaceState/);
 assert.match(sourceIndex, /"#\/home"/);
 
