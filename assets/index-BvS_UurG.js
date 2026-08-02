@@ -137,7 +137,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./authGuard-CEzcrBkK.j
 
                 <section class="text-white" aria-labelledby="titulo-contacto-footer">
                     <h2 id="titulo-contacto-footer" class="text-sm font-black uppercase tracking-[0.18em] text-[#efc86f]">Contacto y principios</h2>
-                    <a href="mailto:mleonardos@unapec.edu.do" class="mt-4 block break-all text-base font-black hover:text-emerald-200">mleonardos@unapec.edu.do</a>
+                    <a href="mailto:miguel.leonardo@grupoelkernel.com" class="mt-4 block break-all text-base font-black hover:text-emerald-200">miguel.leonardo@grupoelkernel.com</a>
                     <p class="mt-2 text-sm text-slate-300">República Dominicana</p>
                     <div class="mt-5 flex flex-wrap gap-2">
                         ${["Confidencialidad","Integridad académica","Protección de datos","Reproducibilidad"].map(a=>`<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-300">${a}</span>`).join("")}
@@ -756,7 +756,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./authGuard-CEzcrBkK.j
                 </div>
                 <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
                     <a href="#/diagnosticoServicios" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#d5a54a] px-6 py-4 font-black text-[#071820] shadow-lg hover:bg-[#efc86f]">Solicitar diagnóstico ${z("bx-right-arrow-alt","text-xl")}</a>
-                    <a href="mailto:mleonardos@unapec.edu.do" class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-black text-white hover:bg-white/20">mleonardos@unapec.edu.do</a>
+                    <a href="mailto:miguel.leonardo@grupoelkernel.com" class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-black text-white hover:bg-white/20">miguel.leonardo@grupoelkernel.com</a>
                 </div>
             </div>
         </section>
@@ -1724,7 +1724,7 @@ Gracias.`);return`
 
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
 
-                            <a href="mailto:mleonardos@unapec.edu.do?subject=${e}&body=${a}"
+                            <a href="mailto:miguel.leonardo@grupoelkernel.com?subject=${e}&body=${a}"
                                class="
                                    inline-flex items-center justify-center gap-2
                                    bg-sky-500 hover:bg-sky-600
@@ -1755,9 +1755,9 @@ Gracias.`);return`
 
                         <p class="text-slate-400 text-sm mt-6">
                             Contacto:
-                            <a href="mailto:mleonardos@unapec.edu.do"
+                            <a href="mailto:miguel.leonardo@grupoelkernel.com"
                                class="text-sky-300 hover:text-sky-200 hover:underline font-bold">
-                                mleonardos@unapec.edu.do
+                                miguel.leonardo@grupoelkernel.com
                             </a>
                         </p>
 
@@ -2310,9 +2310,9 @@ Gracias.`);return`
           </div>
           <div>
             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Correo</p>
-            <a href="mailto:mleonardos@unapec.edu.do" target="_blank" rel="noopener noreferrer"
+            <a href="mailto:miguel.leonardo@grupoelkernel.com" target="_blank" rel="noopener noreferrer"
                class="text-lg font-semibold text-slate-700 hover:text-blue-600 transition-colors">
-              mleonardos@unapec.edu.do
+              miguel.leonardo@grupoelkernel.com
             </a>
           </div>
         </div>
@@ -3907,7 +3907,7 @@ if (!contenedor) {
                     </p>
                     <div class="flex flex-col gap-3 sm:flex-row">
                         <a
-                            href="mailto:mleonardos@unapec.edu.do?subject=${a}"
+                            href="mailto:miguel.leonardo@grupoelkernel.com?subject=${a}"
                             class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-800 transition hover:border-sky-400 hover:text-sky-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-100"
                         >
                             Escribir por correo
@@ -4086,7 +4086,7 @@ if (!contenedor) {
                         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-sky-100 md:text-base">La reunión inicial permite identificar el servicio, paquete o alianza más adecuado y definir un alcance verificable.</p>
                     </div>
                     <div class="flex flex-col gap-3 sm:flex-row">
-                        <a href="mailto:mleonardos@unapec.edu.do?subject=Solicitud%20de%20informaci%C3%B3n%20sobre%20servicios" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 font-black text-white hover:bg-white/20">
+                        <a href="mailto:miguel.leonardo@grupoelkernel.com?subject=Solicitud%20de%20informaci%C3%B3n%20sobre%20servicios" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 font-black text-white hover:bg-white/20">
                             Escribir por correo
                         </a>
                         <a href="#/contacto" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-sky-900 shadow-lg hover:bg-sky-50">
@@ -4103,7 +4103,7 @@ if (!contenedor) {
             class="m-auto max-h-[92vh] w-[min(96vw,1180px)] overflow-y-auto rounded-[2rem] bg-transparent p-0 shadow-2xl backdrop:bg-slate-950/80"
             aria-label="Detalle del servicio"
         ></dialog>
-    `;const a=[...e.querySelectorAll("[data-servicio-card]")],t=[...e.querySelectorAll("[data-filtro-servicio]")],i=e.querySelector("[data-buscador-servicios]"),o=e.querySelector("[data-contador-servicios]"),r=e.querySelector("[data-vacio-servicios]"),s=e.querySelector("[data-dialogo-servicio]");let n="todos",d=null;function b(){const p=xt(i?.value);let u=0;a.forEach(x=>{const h=n==="todos"||x.dataset.categoria===n,w=!p||String(x.dataset.busqueda||"").includes(p),A=h&&w;x.classList.toggle("hidden",!A),A&&(u+=1)}),o&&(o.textContent=`${u} servicio${u===1?"":"s"} disponible${u===1?"":"s"}`),r?.classList.toggle("hidden",u!==0)}return t.forEach(p=>{p.addEventListener("click",()=>{n=p.dataset.filtroServicio||"todos",t.forEach(u=>{const x=u===p;u.setAttribute("aria-pressed",String(x)),u.classList.toggle("border-sky-700",x),u.classList.toggle("bg-sky-700",x),u.classList.toggle("text-white",x),u.classList.toggle("shadow-md",x),u.classList.toggle("border-slate-300",!x),u.classList.toggle("bg-white",!x),u.classList.toggle("text-slate-700",!x)}),b()})}),i?.addEventListener("input",b),e.addEventListener("click",p=>{const u=p.target.closest("[data-servicio-detalle]");if(!u||!e.contains(u))return;const x=ce.find(h=>h.id===u.dataset.servicioDetalle);!x||!s||(d=u,s.innerHTML=Ds(x),typeof s.showModal=="function"?s.showModal():s.setAttribute("open",""),s.querySelector("[data-cerrar-dialogo-servicio]")?.focus())}),s?.addEventListener("click",p=>{(p.target===s||p.target.closest("[data-cerrar-dialogo-servicio]"))&&(s.close?.(),s.removeAttribute("open"))}),s?.addEventListener("close",()=>{d?.focus(),d=null}),e}const Fa="kernel-services-filter",Rs="kernel-service-interest";function Ts(e){let a=null;try{a=window.sessionStorage.getItem(Fa),window.sessionStorage.removeItem(Fa)}catch(i){console.warn("[Kernel] No fue posible recuperar el filtro del catálogo.",i)}if(!a||a==="todos")return;const t=e.querySelector(`[data-filtro-servicio="${CSS.escape(a)}"]`);window.requestAnimationFrame(()=>t?.click())}function Os(e){if(e)try{window.sessionStorage.setItem(Rs,e)}catch(a){console.warn("[Kernel] No fue posible conservar el servicio de interés.",a)}}function Ns(e){e.querySelectorAll('a[href="#/contacto"]').forEach(t=>{t.href="#/diagnosticoServicios",t.textContent="Solicitar diagnóstico"});let a=null;e.addEventListener("click",t=>{const i=t.target.closest("[data-servicio-detalle]");if(i&&e.contains(i)){a=i.dataset.servicioDetalle||null;return}const o=t.target.closest('a[href="#/contacto"], a[href="#/diagnosticoServicios"]');!o||!e.contains(o)||(t.preventDefault(),Os(a),window.location.hash="/diagnosticoServicios")})}function Fs(){const e=document.createElement("section");e.className="w-full bg-slate-100 px-3 py-6 font-sans sm:px-5 md:py-9 lg:px-8";const a=document.createElement("div");a.className="mx-auto max-w-[1680px]";const t=qs();return t.classList.remove("rounded-[2rem]"),t.classList.add("rounded-3xl"),Ns(t),a.appendChild(t),e.appendChild(a),Ts(t),e}const Ua="mleonardos@unapec.edu.do",Ba="kernel-service-interest";function He(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Us(){return ce.map(e=>`
+    `;const a=[...e.querySelectorAll("[data-servicio-card]")],t=[...e.querySelectorAll("[data-filtro-servicio]")],i=e.querySelector("[data-buscador-servicios]"),o=e.querySelector("[data-contador-servicios]"),r=e.querySelector("[data-vacio-servicios]"),s=e.querySelector("[data-dialogo-servicio]");let n="todos",d=null;function b(){const p=xt(i?.value);let u=0;a.forEach(x=>{const h=n==="todos"||x.dataset.categoria===n,w=!p||String(x.dataset.busqueda||"").includes(p),A=h&&w;x.classList.toggle("hidden",!A),A&&(u+=1)}),o&&(o.textContent=`${u} servicio${u===1?"":"s"} disponible${u===1?"":"s"}`),r?.classList.toggle("hidden",u!==0)}return t.forEach(p=>{p.addEventListener("click",()=>{n=p.dataset.filtroServicio||"todos",t.forEach(u=>{const x=u===p;u.setAttribute("aria-pressed",String(x)),u.classList.toggle("border-sky-700",x),u.classList.toggle("bg-sky-700",x),u.classList.toggle("text-white",x),u.classList.toggle("shadow-md",x),u.classList.toggle("border-slate-300",!x),u.classList.toggle("bg-white",!x),u.classList.toggle("text-slate-700",!x)}),b()})}),i?.addEventListener("input",b),e.addEventListener("click",p=>{const u=p.target.closest("[data-servicio-detalle]");if(!u||!e.contains(u))return;const x=ce.find(h=>h.id===u.dataset.servicioDetalle);!x||!s||(d=u,s.innerHTML=Ds(x),typeof s.showModal=="function"?s.showModal():s.setAttribute("open",""),s.querySelector("[data-cerrar-dialogo-servicio]")?.focus())}),s?.addEventListener("click",p=>{(p.target===s||p.target.closest("[data-cerrar-dialogo-servicio]"))&&(s.close?.(),s.removeAttribute("open"))}),s?.addEventListener("close",()=>{d?.focus(),d=null}),e}const Fa="kernel-services-filter",Rs="kernel-service-interest";function Ts(e){let a=null;try{a=window.sessionStorage.getItem(Fa),window.sessionStorage.removeItem(Fa)}catch(i){console.warn("[Kernel] No fue posible recuperar el filtro del catálogo.",i)}if(!a||a==="todos")return;const t=e.querySelector(`[data-filtro-servicio="${CSS.escape(a)}"]`);window.requestAnimationFrame(()=>t?.click())}function Os(e){if(e)try{window.sessionStorage.setItem(Rs,e)}catch(a){console.warn("[Kernel] No fue posible conservar el servicio de interés.",a)}}function Ns(e){e.querySelectorAll('a[href="#/contacto"]').forEach(t=>{t.href="#/diagnosticoServicios",t.textContent="Solicitar diagnóstico"});let a=null;e.addEventListener("click",t=>{const i=t.target.closest("[data-servicio-detalle]");if(i&&e.contains(i)){a=i.dataset.servicioDetalle||null;return}const o=t.target.closest('a[href="#/contacto"], a[href="#/diagnosticoServicios"]');!o||!e.contains(o)||(t.preventDefault(),Os(a),window.location.hash="/diagnosticoServicios")})}function Fs(){const e=document.createElement("section");e.className="w-full bg-slate-100 px-3 py-6 font-sans sm:px-5 md:py-9 lg:px-8";const a=document.createElement("div");a.className="mx-auto max-w-[1680px]";const t=qs();return t.classList.remove("rounded-[2rem]"),t.classList.add("rounded-3xl"),Ns(t),a.appendChild(t),e.appendChild(a),Ts(t),e}const Ua="miguel.leonardo@grupoelkernel.com",Ba="kernel-service-interest";function He(e){return String(e??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function Us(){return ce.map(e=>`
         <option value="${He(e.id)}">${String(e.numero).padStart(2,"0")} · ${He(e.tituloCorto)}</option>
     `).join("")}function Bs(){return st.map(e=>`
         <option value="${He(e)}">${He(e)}</option>
