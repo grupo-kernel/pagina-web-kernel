@@ -1,10 +1,95 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const OLD_CONTACT_EMAIL = "mleonardos@unapec.edu.do";
+const NEW_CONTACT_EMAIL = "miguel.leonardo@grupoelkernel.com";
+const DIST_DIRECTORY = path.resolve("dist");
 const indexPath = path.resolve("dist/index.html");
 const snapshotPath = path.resolve(
   "dist/assets/kernel-home-snapshot.js"
 );
+
+function replaceContactEmailInPublishedFiles(directory) {
+  const textExtensions = new Set([
+    ".html",
+    ".js",
+    ".json",
+    ".css",
+    ".xml",
+    ".txt",
+    ".md"
+  ]);
+  let replacements = 0;
+  const changedFiles = [];
+
+  function visit(currentPath) {
+    fs.readdirSync(currentPath, { withFileTypes: true })
+      .forEach(entry => {
+        const entryPath = path.join(currentPath, entry.name);
+
+        if (entry.isDirectory()) {
+          visit(entryPath);
+          return;
+        }
+
+        if (!textExtensions.has(path.extname(entry.name).toLowerCase())) {
+          return;
+        }
+
+        const source = fs.readFileSync(entryPath, "utf8");
+        const occurrences = source.split(OLD_CONTACT_EMAIL).length - 1;
+
+        if (occurrences < 1) return;
+
+        fs.writeFileSync(
+          entryPath,
+          source.replaceAll(OLD_CONTACT_EMAIL, NEW_CONTACT_EMAIL),
+          "utf8"
+        );
+        replacements += occurrences;
+        changedFiles.push(path.relative(DIST_DIRECTORY, entryPath));
+      });
+  }
+
+  visit(directory);
+
+  const remaining = [];
+  function verify(currentPath) {
+    fs.readdirSync(currentPath, { withFileTypes: true })
+      .forEach(entry => {
+        const entryPath = path.join(currentPath, entry.name);
+
+        if (entry.isDirectory()) {
+          verify(entryPath);
+          return;
+        }
+
+        if (!textExtensions.has(path.extname(entry.name).toLowerCase())) {
+          return;
+        }
+
+        if (fs.readFileSync(entryPath, "utf8").includes(OLD_CONTACT_EMAIL)) {
+          remaining.push(path.relative(DIST_DIRECTORY, entryPath));
+        }
+      });
+  }
+
+  verify(directory);
+
+  if (remaining.length) {
+    throw new Error(
+      `El correo anterior todavía aparece en: ${remaining.join(", ")}`
+    );
+  }
+
+  if (replacements < 1) {
+    throw new Error(
+      "No se encontró el correo institucional anterior en la compilación; revise la fuente de contacto."
+    );
+  }
+
+  return { replacements, changedFiles };
+}
 
 let html = fs.readFileSync(indexPath, "utf8");
 const snapshotScript = fs.readFileSync(
@@ -125,6 +210,14 @@ if (
 }
 
 fs.writeFileSync(indexPath, html, "utf8");
+
+const contactUpdate = replaceContactEmailInPublishedFiles(
+  DIST_DIRECTORY
+);
+
 console.log(
   "Finalized entry: canonical route, inline synchronous snapshot, analytics and V5 modern-priority homepage bridge enabled."
+);
+console.log(
+  `Updated contact email in ${contactUpdate.replacements} occurrences across ${contactUpdate.changedFiles.length} published files: ${contactUpdate.changedFiles.join(", ")}.`
 );
