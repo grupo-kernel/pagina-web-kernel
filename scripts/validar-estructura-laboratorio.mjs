@@ -22,15 +22,31 @@ assert.equal(
     "catalogo-analisis",
     "La etapa Analizar debe conducir al catálogo directo."
 );
-assert.equal(
-    ETAPAS_FLUJO_LABORATORIO[2].accion,
-    null,
-    "Interpretar no debe enlazar a una función separada inexistente."
+assert.deepEqual(
+    {
+        estado: ETAPAS_FLUJO_LABORATORIO[2].estado,
+        tipo: ETAPAS_FLUJO_LABORATORIO[2].accion?.tipo,
+        valor: ETAPAS_FLUJO_LABORATORIO[2].accion?.valor
+    },
+    {
+        estado: "Disponible",
+        tipo: "ancla",
+        valor: "interpretador-resultados"
+    },
+    "Interpretar debe abrir una herramienta funcional dentro del Laboratorio."
 );
-assert.equal(
-    ETAPAS_FLUJO_LABORATORIO[3].accion,
-    null,
-    "Reportar no debe enlazar a una función separada inexistente."
+assert.deepEqual(
+    {
+        estado: ETAPAS_FLUJO_LABORATORIO[3].estado,
+        tipo: ETAPAS_FLUJO_LABORATORIO[3].accion?.tipo,
+        valor: ETAPAS_FLUJO_LABORATORIO[3].accion?.valor
+    },
+    {
+        estado: "Disponible",
+        tipo: "ancla",
+        valor: "generador-reporte"
+    },
+    "Reportar debe abrir un generador funcional dentro del Laboratorio."
 );
 
 const idsCatalogo = GRUPOS_CATALOGO_LABORATORIO.flatMap(
@@ -65,6 +81,21 @@ assert.ok(
 
 const fuenteLaboratorio = await readFile(
     new URL("../src/pages/LaboratorioKernel.js", import.meta.url),
+    "utf8"
+);
+const herramientaInterpretarReportar = await readFile(
+    new URL(
+        "../public/assets/kernel-lab-interpret-report.js",
+        import.meta.url
+    ),
+    "utf8"
+);
+const activadorDespliegue = await readFile(
+    new URL("./activate-lab-interpret-report.mjs", import.meta.url),
+    "utf8"
+);
+const flujoDespliegue = await readFile(
+    new URL("../.github/workflows/deploy.yml", import.meta.url),
     "utf8"
 );
 
@@ -112,6 +143,41 @@ assert.match(
     "La reestructuración debe conservar el cierre de sesión."
 );
 
+[
+    "interpretador-resultados",
+    "generador-reporte",
+    "data-kernel-interpret-form",
+    "data-kernel-report-form",
+    "Usar interpretación anterior",
+    "Descargar TXT",
+    "KernelInterpretReport"
+].forEach((marcador) => {
+    assert.ok(
+        herramientaInterpretarReportar.includes(marcador),
+        `La herramienta activa debe incluir ${marcador}.`
+    );
+});
+assert.match(
+    herramientaInterpretarReportar,
+    /p < alpha/,
+    "La interpretación debe comparar explícitamente el valor p con α."
+);
+assert.match(
+    herramientaInterpretarReportar,
+    /sessionStorage\.setItem\(STORAGE_KEY/,
+    "La interpretación debe poder transferirse al generador de reporte."
+);
+assert.match(
+    activadorDespliegue,
+    /kernel-lab-interpret-report\.js\?v=20260802-1/,
+    "El despliegue debe cargar una versión identificable de la herramienta."
+);
+assert.match(
+    flujoDespliegue,
+    /node scripts\/activate-lab-interpret-report\.mjs/,
+    "El flujo público debe activar las herramientas antes del despliegue."
+);
+
 console.log(
-    `✓ Laboratorio estructurado en ${ETAPAS_FLUJO_LABORATORIO.length} etapas, ${GRUPOS_CATALOGO_LABORATORIO.length} grupos y ${idsCatalogo.length} herramientas directas.`
+    `✓ Laboratorio estructurado en ${ETAPAS_FLUJO_LABORATORIO.length} etapas activas, ${GRUPOS_CATALOGO_LABORATORIO.length} grupos y ${idsCatalogo.length} herramientas directas.`
 );
