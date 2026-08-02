@@ -12,6 +12,13 @@ const safeguard = await readFile(
   ),
   "utf8"
 );
+const firstPaint = await readFile(
+  new URL(
+    "../public/assets/kernel-home-immediate-first-paint.js",
+    import.meta.url
+  ),
+  "utf8"
+);
 const sourceIndex = await readFile(
   new URL("../index.html", import.meta.url),
   "utf8"
@@ -32,6 +39,10 @@ assert.doesNotThrow(
   () => new Function(safeguard),
   "El protector de datos de entrada directa debe ser JavaScript válido."
 );
+assert.doesNotThrow(
+  () => new Function(firstPaint),
+  "La pintura inmediata de portada debe ser JavaScript válido."
+);
 
 assert.match(safeguard, /REQUEST_TIMEOUT\s*=\s*2500/);
 assert.match(safeguard, /core\/data\/researchers\.v2\.json/);
@@ -40,6 +51,11 @@ assert.match(safeguard, /core\/data\/projects\.v2\.json/);
 assert.match(safeguard, /withDeadline/);
 assert.match(safeguard, /fallbackResponse/);
 assert.match(safeguard, /kernel-home-data-fallback/);
+
+assert.match(firstPaint, /data-kernel-home-first-paint/);
+assert.match(firstPaint, /data-kernel-platform-page=\"home-2b\"/);
+assert.match(firstPaint, /Actualizando los datos institucionales/);
+assert.doesNotMatch(firstPaint, /Cargando la plataforma integrada/);
 
 const bridgeFixture = `(() => {
   "use strict";
@@ -144,7 +160,11 @@ assert.match(
 assert.match(finalizer, /history\.replaceState/);
 assert.match(
   finalizer,
-  /ruta canónica → Analytics → recuperación de datos → puente corregido de portada/
+  /kernel-home-immediate-first-paint\.js\?v=20260802-1/
+);
+assert.match(
+  finalizer,
+  /ruta canónica → Analytics → pintura inmediata → recuperación de datos → puente de portada/
 );
 assert.match(
   deployWorkflow,
@@ -160,5 +180,5 @@ assert.match(
 );
 
 console.log(
-  "✓ La primera entrada queda protegida en la raíz: URL canónica, puente serializado, observación acotada, datos resilientes y smoke test WebKit sin recarga."
+  "✓ La primera entrada queda protegida en la raíz con portada inmediata, URL canónica, puente serializado, datos resilientes y smoke test WebKit sin recarga."
 );
