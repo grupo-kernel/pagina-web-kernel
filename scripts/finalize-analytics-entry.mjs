@@ -29,6 +29,10 @@ html = html.replace(
   /\n\s*<script id="kernel-home-route-canonicalizer">[\s\S]*?<\/script>/g,
   ""
 );
+html = html.replace(
+  /\n\s*<script defer src="\.\/assets\/kernel-home-immediate-first-paint\.js\?v=[^"]+"><\/script>/g,
+  ""
+);
 
 const canonicalHomeRoute = `  <script id="kernel-home-route-canonicalizer">
     (function canonicalizarPortadaKernel(){
@@ -45,6 +49,8 @@ const canonicalHomeRoute = `  <script id="kernel-home-route-canonicalizer">
   </script>`;
 const analyticsLoader =
   '  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-2"></script>';
+const firstPaintLoader =
+  '  <script defer src="./assets/kernel-home-immediate-first-paint.js?v=20260802-1"></script>';
 const directEntryLoader =
   '  <script defer src="./assets/kernel-home-direct-entry-fix.js?v=20260801-2"></script>';
 const ksdeVisibleLoader =
@@ -64,7 +70,7 @@ const removeLoader = (source, loader) =>
 html = removeLoader(html, directEntryLoader);
 html = html.replace(
   analyticsLoader,
-  `${canonicalHomeRoute}\n\n${analyticsLoader}\n${directEntryLoader}`
+  `${canonicalHomeRoute}\n\n${analyticsLoader}\n${firstPaintLoader}\n${directEntryLoader}`
 );
 
 if (!html.includes(ksdeVisibleLoader)) {
@@ -82,17 +88,19 @@ if (!html.includes(bridgeLoader)) {
 
 const canonicalizerPosition = html.indexOf(canonicalHomeRoute);
 const analyticsPosition = html.indexOf(analyticsLoader);
+const firstPaintPosition = html.indexOf(firstPaintLoader);
 const directEntryPosition = html.indexOf(directEntryLoader);
 const bridgePosition = html.indexOf(bridgeLoader);
 
 if (
   canonicalizerPosition === -1 ||
   analyticsPosition <= canonicalizerPosition ||
-  directEntryPosition <= analyticsPosition ||
+  firstPaintPosition <= analyticsPosition ||
+  directEntryPosition <= firstPaintPosition ||
   bridgePosition <= directEntryPosition
 ) {
   throw new Error(
-    "El orden de carga debe ser ruta canónica → Analytics → recuperación de datos → puente corregido de portada."
+    "El orden de carga debe ser ruta canónica → Analytics → pintura inmediata → recuperación de datos → puente de portada."
   );
 }
 
@@ -104,5 +112,5 @@ if (html.includes("kernel-home-loading-race-fix.js")) {
 
 fs.writeFileSync(indexPath, html, "utf8");
 console.log(
-  "Finalized entry: canonical home route, analytics, resilient data fallback, root-fixed home bridge and visible KSDE details enabled."
+  "Finalized entry: canonical route, immediate home paint, resilient data enrichment, root-fixed bridge and visible KSDE details enabled."
 );
