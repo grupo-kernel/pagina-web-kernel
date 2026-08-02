@@ -27,8 +27,7 @@ function formatear(valor, decimales = 4) {
 
 function formatearP(valor) {
     if (!Number.isFinite(valor)) return "—";
-    if (valor < 0.0001) return "< 0.0001";
-    return formatear(valor, 4);
+    return valor < 0.0001 ? "< 0.0001" : formatear(valor, 4);
 }
 
 function convertirMatriz(texto, columnasEsperadas) {
@@ -38,13 +37,13 @@ function convertirMatriz(texto, columnasEsperadas) {
         .filter(Boolean);
 
     if (lineas.length < 2) {
-        throw new Error("Introduzca al menos dos filas, una por participante o unidad relacionada.");
+        throw new Error(
+            "Introduzca al menos dos filas, una por participante o unidad relacionada."
+        );
     }
 
     return lineas.map((linea, indice) => {
-        const valores = linea
-            .split(/[\s,;]+/)
-            .filter(Boolean);
+        const valores = linea.split(/[\s,;]+/).filter(Boolean);
 
         if (valores.length !== columnasEsperadas) {
             throw new Error(
@@ -71,13 +70,16 @@ function convertirEtiquetas(texto, cantidad) {
         .filter(Boolean);
 
     if (!etiquetas.length) {
-        return Array.from({ length: cantidad }, (_, indice) =>
-            `Condición ${indice + 1}`
+        return Array.from(
+            { length: cantidad },
+            (_, indice) => `Condición ${indice + 1}`
         );
     }
 
     if (etiquetas.length !== cantidad) {
-        throw new Error(`Introduzca exactamente ${cantidad} etiquetas separadas por comas.`);
+        throw new Error(
+            `Introduzca exactamente ${cantidad} etiquetas separadas por comas.`
+        );
     }
 
     if (new Set(etiquetas).size !== etiquetas.length) {
@@ -90,9 +92,13 @@ function convertirEtiquetas(texto, cantidad) {
 function tarjetaMetrica(titulo, valor, detalle = "") {
     return `
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p class="text-xs font-black uppercase tracking-widest text-slate-500">${escapar(titulo)}</p>
+            <p class="text-xs font-black uppercase tracking-widest text-slate-500">
+                ${escapar(titulo)}
+            </p>
             <p class="mt-2 text-2xl font-black text-slate-950">${escapar(valor)}</p>
-            ${detalle ? `<p class="mt-2 text-sm leading-relaxed text-slate-600">${escapar(detalle)}</p>` : ""}
+            ${detalle
+                ? `<p class="mt-2 text-sm leading-relaxed text-slate-600">${escapar(detalle)}</p>`
+                : ""}
         </article>
     `;
 }
@@ -101,6 +107,9 @@ function tablaCondiciones(resumen) {
     return `
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="w-full border-collapse text-sm">
+                <caption class="sr-only">
+                    Frecuencias y proporciones observadas en cada condición relacionada
+                </caption>
                 <thead class="bg-slate-100 text-slate-700">
                     <tr>
                         <th scope="col" class="px-4 py-3 text-left font-black">Condición</th>
@@ -112,10 +121,64 @@ function tablaCondiciones(resumen) {
                 <tbody>
                     ${resumen.map((fila) => `
                         <tr class="border-t border-slate-200">
-                            <th scope="row" class="px-4 py-3 text-left font-bold text-slate-800">${escapar(fila.etiqueta)}</th>
+                            <th scope="row" class="px-4 py-3 text-left font-bold text-slate-800">
+                                ${escapar(fila.etiqueta)}
+                            </th>
                             <td class="px-4 py-3 text-right text-slate-700">${fila.exitos}</td>
                             <td class="px-4 py-3 text-right text-slate-700">${fila.fracasos}</td>
-                            <td class="px-4 py-3 text-right font-bold text-slate-900">${formatear(fila.proporcion * 100, 2)} %</td>
+                            <td class="px-4 py-3 text-right font-bold text-slate-900">
+                                ${formatear(fila.proporcion * 100, 2)} %
+                            </td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function tablaComparaciones(comparaciones) {
+    if (!comparaciones.length) return "";
+
+    return `
+        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+            <table class="w-full border-collapse text-sm">
+                <caption class="sr-only">
+                    Comparaciones posteriores pareadas mediante McNemar exacta y ajuste de Holm
+                </caption>
+                <thead class="bg-slate-100 text-slate-700">
+                    <tr>
+                        <th scope="col" class="px-4 py-3 text-left font-black">Comparación</th>
+                        <th scope="col" class="px-4 py-3 text-right font-black">p exacta</th>
+                        <th scope="col" class="px-4 py-3 text-right font-black">p Holm</th>
+                        <th scope="col" class="px-4 py-3 text-right font-black">Diferencia</th>
+                        <th scope="col" class="px-4 py-3 text-center font-black">Conclusión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${comparaciones.map((fila) => `
+                        <tr class="border-t border-slate-200">
+                            <th scope="row" class="px-4 py-3 text-left font-bold text-slate-800">
+                                ${escapar(fila.condicion1)} vs. ${escapar(fila.condicion2)}
+                            </th>
+                            <td class="px-4 py-3 text-right">${formatearP(fila.valorP)}</td>
+                            <td class="px-4 py-3 text-right font-bold">
+                                ${formatearP(fila.valorPAjustadoHolm)}
+                            </td>
+                            <td class="px-4 py-3 text-right">
+                                ${formatear(fila.diferenciaProporciones * 100, 2)} pp
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="inline-flex rounded-full px-3 py-1 text-xs font-black ${
+                                    fila.significativaAjustada
+                                        ? "bg-emerald-100 text-emerald-800"
+                                        : "bg-slate-100 text-slate-700"
+                                }">
+                                    ${fila.significativaAjustada
+                                        ? "Significativa"
+                                        : "No significativa"}
+                                </span>
+                            </td>
                         </tr>
                     `).join("")}
                 </tbody>
@@ -133,15 +196,35 @@ function vistaMcNemar(resultado) {
             <header class="bg-emerald-700 px-6 py-7 text-white md:px-9">
                 <p class="text-xs font-black uppercase tracking-widest text-emerald-100">Resultado</p>
                 <h2 class="mt-2 text-3xl font-black">${escapar(resultado.nombre)}</h2>
-                <p class="mt-3 max-w-3xl leading-relaxed text-emerald-50">${escapar(resultado.metodo)}</p>
+                <p class="mt-3 max-w-3xl leading-relaxed text-emerald-50">
+                    ${escapar(resultado.metodo)}
+                </p>
             </header>
 
             <div class="space-y-7 px-6 py-8 md:px-9">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                    ${tarjetaMetrica(resultado.estadistico.simbolo, formatear(resultado.estadistico.valor), "Estadístico del contraste")}
-                    ${tarjetaMetrica("Valor p", formatearP(resultado.valorP), resultado.significativo ? "Evidencia de cambio al nivel seleccionado" : "No se detecta un cambio estadísticamente significativo")}
-                    ${tarjetaMetrica("Pares discordantes", String(resultado.discordantes), "Son los pares que determinan la prueba")}
-                    ${tarjetaMetrica("Diferencia pareada", `${formatear(resultado.diferenciaProporciones * 100, 2)} pp`, "Condición 2 menos condición 1")}
+                    ${tarjetaMetrica(
+                        resultado.estadistico.simbolo,
+                        formatear(resultado.estadistico.valor),
+                        "Estadístico del contraste"
+                    )}
+                    ${tarjetaMetrica(
+                        "Valor p",
+                        formatearP(resultado.valorP),
+                        resultado.significativo
+                            ? "Evidencia de cambio al nivel seleccionado"
+                            : "No se detecta un cambio estadísticamente significativo"
+                    )}
+                    ${tarjetaMetrica(
+                        "Pares discordantes",
+                        String(resultado.discordantes),
+                        "Son los pares que determinan la prueba"
+                    )}
+                    ${tarjetaMetrica(
+                        "Diferencia pareada",
+                        `${formatear(resultado.diferenciaProporciones * 100, 2)} pp`,
+                        "Condición 2 menos condición 1"
+                    )}
                 </div>
 
                 ${tablaCondiciones(resultado.resumenCondiciones)}
@@ -150,65 +233,59 @@ function vistaMcNemar(resultado) {
                     <article class="rounded-2xl border border-cyan-200 bg-cyan-50 p-5">
                         <h3 class="text-lg font-black text-cyan-950">Tabla pareada</h3>
                         <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
-                            <div class="rounded-xl bg-white p-3"><dt class="font-bold text-slate-600">0 → 0</dt><dd class="mt-1 text-xl font-black">${tabla.ambosNo}</dd></div>
-                            <div class="rounded-xl bg-white p-3"><dt class="font-bold text-slate-600">0 → 1</dt><dd class="mt-1 text-xl font-black">${tabla.cambio01}</dd></div>
-                            <div class="rounded-xl bg-white p-3"><dt class="font-bold text-slate-600">1 → 0</dt><dd class="mt-1 text-xl font-black">${tabla.cambio10}</dd></div>
-                            <div class="rounded-xl bg-white p-3"><dt class="font-bold text-slate-600">1 → 1</dt><dd class="mt-1 text-xl font-black">${tabla.ambosSi}</dd></div>
+                            <div class="rounded-xl bg-white p-3">
+                                <dt class="font-bold text-slate-600">0 → 0</dt>
+                                <dd class="mt-1 text-xl font-black">${tabla.ambosNo}</dd>
+                            </div>
+                            <div class="rounded-xl bg-white p-3">
+                                <dt class="font-bold text-slate-600">0 → 1</dt>
+                                <dd class="mt-1 text-xl font-black">${tabla.cambio01}</dd>
+                            </div>
+                            <div class="rounded-xl bg-white p-3">
+                                <dt class="font-bold text-slate-600">1 → 0</dt>
+                                <dd class="mt-1 text-xl font-black">${tabla.cambio10}</dd>
+                            </div>
+                            <div class="rounded-xl bg-white p-3">
+                                <dt class="font-bold text-slate-600">1 → 1</dt>
+                                <dd class="mt-1 text-xl font-black">${tabla.ambosSi}</dd>
+                            </div>
                         </dl>
                     </article>
 
                     <article class="rounded-2xl border border-blue-200 bg-blue-50 p-5">
                         <h3 class="text-lg font-black text-blue-950">Tamaño del efecto</h3>
                         <dl class="mt-4 space-y-3 text-sm text-blue-950">
-                            <div><dt class="font-bold">Odds ratio pareada</dt><dd class="mt-1 text-xl font-black">${formatear(resultado.tamanioEfecto.oddsRatioPareada)}</dd></div>
-                            <div><dt class="font-bold">IC de la diferencia</dt><dd class="mt-1 font-semibold">[${formatear(intervalo.inferior * 100, 2)}, ${formatear(intervalo.superior * 100, 2)}] puntos porcentuales</dd></div>
+                            <div>
+                                <dt class="font-bold">Odds ratio pareada</dt>
+                                <dd class="mt-1 text-xl font-black">
+                                    ${formatear(resultado.tamanioEfecto.oddsRatioPareada)}
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold">IC de la diferencia</dt>
+                                <dd class="mt-1 font-semibold">
+                                    [${formatear(intervalo.inferior * 100, 2)},
+                                    ${formatear(intervalo.superior * 100, 2)}] puntos porcentuales
+                                </dd>
+                            </div>
                         </dl>
                     </article>
                 </div>
 
-                ${resultado.advertencias.length ? `
-                    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-                        <h3 class="font-black">Advertencia metodológica</h3>
-                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">${resultado.advertencias.map((texto) => `<li>${escapar(texto)}</li>`).join("")}</ul>
-                    </div>
-                ` : ""}
+                ${resultado.advertencias.length
+                    ? `
+                        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                            <h3 class="font-black">Advertencia metodológica</h3>
+                            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">
+                                ${resultado.advertencias
+                                    .map((texto) => `<li>${escapar(texto)}</li>`)
+                                    .join("")}
+                            </ul>
+                        </div>
+                    `
+                    : ""}
             </div>
         </section>
-    `;
-}
-
-function tablaComparaciones(comparaciones) {
-    if (!comparaciones.length) return "";
-
-    return `
-        <div class="overflow-x-auto rounded-2xl border border-slate-200">
-            <table class="w-full border-collapse text-sm">
-                <thead class="bg-slate-100 text-slate-700">
-                    <tr>
-                        <th scope="col" class="px-4 py-3 text-left font-black">Comparación</th>
-                        <th scope="col" class="px-4 py-3 text-right font-black">p exacta</th>
-                        <th scope="col" class="px-4 py-3 text-right font-black">p Holm</th>
-                        <th scope="col" class="px-4 py-3 text-right font-black">Diferencia</th>
-                        <th scope="col" class="px-4 py-3 text-center font-black">Conclusión</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${comparaciones.map((fila) => `
-                        <tr class="border-t border-slate-200">
-                            <th scope="row" class="px-4 py-3 text-left font-bold text-slate-800">${escapar(fila.condicion1)} vs. ${escapar(fila.condicion2)}</th>
-                            <td class="px-4 py-3 text-right">${formatearP(fila.valorP)}</td>
-                            <td class="px-4 py-3 text-right font-bold">${formatearP(fila.valorPAjustadoHolm)}</td>
-                            <td class="px-4 py-3 text-right">${formatear(fila.diferenciaProporciones * 100, 2)} pp</td>
-                            <td class="px-4 py-3 text-center">
-                                <span class="inline-flex rounded-full px-3 py-1 text-xs font-black ${fila.significativaAjustada ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-700"}">
-                                    ${fila.significativaAjustada ? "Significativa" : "No significativa"}
-                                </span>
-                            </td>
-                        </tr>
-                    `).join("")}
-                </tbody>
-            </table>
-        </div>
     `;
 }
 
@@ -216,17 +293,35 @@ function vistaCochran(resultado) {
     return `
         <section class="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-xl">
             <header class="bg-violet-700 px-6 py-7 text-white md:px-9">
-                <p class="text-xs font-black uppercase tracking-widest text-violet-100">Resultado global</p>
+                <p class="text-xs font-black uppercase tracking-widest text-violet-100">
+                    Resultado global
+                </p>
                 <h2 class="mt-2 text-3xl font-black">Prueba Q de Cochran</h2>
-                <p class="mt-3 max-w-3xl leading-relaxed text-violet-50">${escapar(resultado.metodo)}</p>
+                <p class="mt-3 max-w-3xl leading-relaxed text-violet-50">
+                    ${escapar(resultado.metodo)}
+                </p>
             </header>
 
             <div class="space-y-7 px-6 py-8 md:px-9">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     ${tarjetaMetrica("Q", formatear(resultado.estadistico.valor), "Estadístico global")}
-                    ${tarjetaMetrica("Grados de libertad", String(resultado.gradosLibertad), `${resultado.k} condiciones relacionadas`)}
-                    ${tarjetaMetrica("Valor p", formatearP(resultado.valorP), resultado.significativo ? "Existen diferencias globales" : "No se detectan diferencias globales")}
-                    ${tarjetaMetrica("W equivalente", formatear(resultado.tamanioEfecto.wKendallEquivalente), "Indicador global del tamaño del efecto")}
+                    ${tarjetaMetrica(
+                        "Grados de libertad",
+                        String(resultado.gradosLibertad),
+                        `${resultado.k} condiciones relacionadas`
+                    )}
+                    ${tarjetaMetrica(
+                        "Valor p",
+                        formatearP(resultado.valorP),
+                        resultado.significativo
+                            ? "Existen diferencias globales"
+                            : "No se detectan diferencias globales"
+                    )}
+                    ${tarjetaMetrica(
+                        "W equivalente",
+                        formatear(resultado.tamanioEfecto.wKendallEquivalente),
+                        "Indicador global del tamaño del efecto"
+                    )}
                 </div>
 
                 ${tablaCondiciones(resultado.resumenCondiciones)}
@@ -234,17 +329,26 @@ function vistaCochran(resultado) {
                 <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
                     <h3 class="text-xl font-black text-slate-950">Comparaciones posteriores</h3>
                     <p class="mt-2 text-sm leading-relaxed text-slate-600">
-                        Se aplicó McNemar exacta a cada par de condiciones y se controló la multiplicidad mediante el ajuste de Holm.
+                        Se aplicó McNemar exacta a cada par de condiciones y se controló
+                        la multiplicidad mediante el ajuste de Holm.
                     </p>
-                    <div class="mt-5">${tablaComparaciones(resultado.comparacionesPosteriores)}</div>
+                    <div class="mt-5">
+                        ${tablaComparaciones(resultado.comparacionesPosteriores)}
+                    </div>
                 </article>
 
-                ${resultado.advertencias.length ? `
-                    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-                        <h3 class="font-black">Advertencia metodológica</h3>
-                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">${resultado.advertencias.map((texto) => `<li>${escapar(texto)}</li>`).join("")}</ul>
-                    </div>
-                ` : ""}
+                ${resultado.advertencias.length
+                    ? `
+                        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                            <h3 class="font-black">Advertencia metodológica</h3>
+                            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">
+                                ${resultado.advertencias
+                                    .map((texto) => `<li>${escapar(texto)}</li>`)
+                                    .join("")}
+                            </ul>
+                        </div>
+                    `
+                    : ""}
             </div>
         </section>
     `;
@@ -270,11 +374,20 @@ export function CalculadoraProporcionesRelacionadas() {
             <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-fuchsia-500/20"></div>
             <div class="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-violet-700/20"></div>
             <div class="relative z-10 max-w-4xl">
-                <button type="button" data-action="volver-modulo" class="mb-7 inline-flex items-center gap-2 font-black text-fuchsia-300 hover:text-white">
-                    <span aria-hidden="true">←</span> Volver a comparación de grupos
+                <button
+                    type="button"
+                    data-action="volver-modulo"
+                    class="mb-7 inline-flex items-center gap-2 font-black text-fuchsia-300 hover:text-white"
+                >
+                    <span aria-hidden="true">←</span>
+                    Volver a comparación de grupos
                 </button>
-                <p class="mb-3 text-xs font-black uppercase tracking-[0.20em] text-fuchsia-300 md:text-sm">Motor estadístico del Grupo El Kernel</p>
-                <h1 class="mb-5 text-4xl font-black leading-tight md:text-6xl">Proporciones relacionadas</h1>
+                <p class="mb-3 text-xs font-black uppercase tracking-[0.20em] text-fuchsia-300 md:text-sm">
+                    Motor estadístico del Grupo El Kernel
+                </p>
+                <h1 class="mb-5 text-4xl font-black leading-tight md:text-6xl">
+                    Proporciones relacionadas
+                </h1>
                 <p class="max-w-3xl text-lg leading-relaxed text-slate-200 md:text-xl">
                     Compare respuestas dicotómicas de las mismas personas mediante McNemar o Q de Cochran.
                 </p>
@@ -288,38 +401,72 @@ export function CalculadoraProporcionesRelacionadas() {
 
         <section class="mt-8 grid grid-cols-1 gap-7 xl:grid-cols-[0.72fr_1.28fr]">
             <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg md:p-8">
-                <p class="mb-2 text-xs font-black uppercase tracking-widest text-fuchsia-700">Selección metodológica</p>
-                <h2 class="mb-5 text-2xl font-black text-slate-900">¿Qué prueba corresponde?</h2>
+                <p class="mb-2 text-xs font-black uppercase tracking-widest text-fuchsia-700">
+                    Selección metodológica
+                </p>
+                <h2 class="mb-5 text-2xl font-black text-slate-900">
+                    ¿Qué prueba corresponde?
+                </h2>
                 <div class="space-y-5 text-slate-600">
-                    ${crearGuia("McNemar", "Dos mediciones relacionadas de una misma respuesta dicotómica, por ejemplo antes y después.")}
-                    ${crearGuia("Q de Cochran", "Tres o más condiciones o momentos relacionados con respuesta binaria en cada participante.")}
+                    ${crearGuia(
+                        "McNemar",
+                        "Dos mediciones relacionadas de una misma respuesta dicotómica, por ejemplo antes y después."
+                    )}
+                    ${crearGuia(
+                        "Q de Cochran",
+                        "Tres o más condiciones o momentos relacionados con respuesta binaria en cada participante."
+                    )}
                 </div>
                 <div class="mt-7 rounded-2xl border border-amber-200 bg-amber-50 p-5">
                     <h3 class="font-black text-amber-950">Estructura de los datos</h3>
                     <p class="mt-2 text-sm leading-relaxed text-amber-900">
-                        Cada fila representa una persona y cada columna una condición. Use 1 para presencia/éxito/sí y 0 para ausencia/fracaso/no.
+                        Cada fila representa una persona y cada columna una condición.
+                        Use 1 para presencia/éxito/sí y 0 para ausencia/fracaso/no.
                     </p>
                 </div>
             </aside>
 
-            <form id="formulario-proporciones-relacionadas" class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8" novalidate>
+            <form
+                id="formulario-proporciones-relacionadas"
+                class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8"
+                novalidate
+            >
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <label class="block">
-                        <span class="mb-2 block text-sm font-black text-slate-800">Prueba estadística</span>
-                        <select name="prueba" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100">
+                        <span class="mb-2 block text-sm font-black text-slate-800">
+                            Prueba estadística
+                        </span>
+                        <select
+                            name="prueba"
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                        >
                             <option value="mcnemar">McNemar: dos mediciones</option>
                             <option value="q-cochran">Q de Cochran: tres o más mediciones</option>
                         </select>
                     </label>
 
                     <label class="block" data-campo-condiciones>
-                        <span class="mb-2 block text-sm font-black text-slate-800">Número de condiciones</span>
-                        <input type="number" name="numeroCondiciones" min="3" max="8" value="3" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100">
+                        <span class="mb-2 block text-sm font-black text-slate-800">
+                            Número de condiciones
+                        </span>
+                        <input
+                            type="number"
+                            name="numeroCondiciones"
+                            min="3"
+                            max="8"
+                            value="3"
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                        >
                     </label>
 
                     <label class="block" data-campo-metodo>
-                        <span class="mb-2 block text-sm font-black text-slate-800">Método de McNemar</span>
-                        <select name="metodoMcNemar" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100">
+                        <span class="mb-2 block text-sm font-black text-slate-800">
+                            Método de McNemar
+                        </span>
+                        <select
+                            name="metodoMcNemar"
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                        >
                             <option value="automatico">Automático</option>
                             <option value="exacta">Exacto</option>
                             <option value="asintotica">Chi-cuadrado con continuidad</option>
@@ -327,8 +474,13 @@ export function CalculadoraProporcionesRelacionadas() {
                     </label>
 
                     <label class="block">
-                        <span class="mb-2 block text-sm font-black text-slate-800">Nivel de confianza</span>
-                        <select name="nivelConfianza" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100">
+                        <span class="mb-2 block text-sm font-black text-slate-800">
+                            Nivel de confianza
+                        </span>
+                        <select
+                            name="nivelConfianza"
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                        >
                             <option value="0.90">90 %</option>
                             <option value="0.95" selected>95 %</option>
                             <option value="0.99">99 %</option>
@@ -337,9 +489,18 @@ export function CalculadoraProporcionesRelacionadas() {
                 </div>
 
                 <label class="mt-6 block">
-                    <span class="mb-2 block text-sm font-black text-slate-800">Etiquetas de las condiciones</span>
-                    <input type="text" name="etiquetas" value="Antes, Después" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100">
-                    <span class="mt-2 block text-xs text-slate-500">Separe las etiquetas mediante comas.</span>
+                    <span class="mb-2 block text-sm font-black text-slate-800">
+                        Etiquetas de las condiciones
+                    </span>
+                    <input
+                        type="text"
+                        name="etiquetas"
+                        value="Antes, Después"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                    >
+                    <span class="mt-2 block text-xs text-slate-500">
+                        Separe las etiquetas mediante comas.
+                    </span>
                 </label>
 
                 <label class="mt-6 block">
@@ -347,25 +508,63 @@ export function CalculadoraProporcionesRelacionadas() {
                         <span>Matriz de respuestas</span>
                         <span data-contador class="text-xs font-bold text-slate-500">0 filas</span>
                     </span>
-                    <textarea name="matriz" rows="14" placeholder="1 1&#10;1 0&#10;0 1&#10;0 0" class="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-4 font-mono focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"></textarea>
+                    <textarea
+                        name="matriz"
+                        rows="14"
+                        placeholder="1 1&#10;1 0&#10;0 1&#10;0 0"
+                        class="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-4 font-mono focus:border-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
+                    ></textarea>
                 </label>
 
-                <div id="mensaje-error-proporciones" class="mt-6 hidden rounded-2xl border border-red-200 bg-red-50 p-5 text-red-900" role="alert" aria-live="polite"></div>
+                <div
+                    id="mensaje-error-proporciones"
+                    class="mt-6 hidden rounded-2xl border border-red-200 bg-red-50 p-5 text-red-900"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
 
                 <div class="mt-7 flex flex-col flex-wrap gap-3 sm:flex-row">
-                    <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-fuchsia-700 px-7 py-4 font-black text-white shadow-lg hover:bg-fuchsia-800">Ejecutar análisis <span class="ml-2" aria-hidden="true">→</span></button>
-                    <button type="button" data-action="cargar-ejemplo" class="inline-flex items-center justify-center rounded-xl border border-fuchsia-300 px-6 py-4 font-black text-fuchsia-700 hover:bg-fuchsia-50">Cargar datos de ejemplo</button>
-                    <button type="button" data-action="limpiar" class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-4 font-black text-slate-700 hover:bg-slate-50">Limpiar</button>
+                    <button
+                        type="submit"
+                        class="inline-flex items-center justify-center rounded-xl bg-fuchsia-700 px-7 py-4 font-black text-white shadow-lg hover:bg-fuchsia-800"
+                    >
+                        Ejecutar análisis
+                        <span class="ml-2" aria-hidden="true">→</span>
+                    </button>
+                    <button
+                        type="button"
+                        data-action="cargar-ejemplo"
+                        class="inline-flex items-center justify-center rounded-xl border border-fuchsia-300 px-6 py-4 font-black text-fuchsia-700 hover:bg-fuchsia-50"
+                    >
+                        Cargar datos de ejemplo
+                    </button>
+                    <button
+                        type="button"
+                        data-action="limpiar"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-4 font-black text-slate-700 hover:bg-slate-50"
+                    >
+                        Limpiar
+                    </button>
                 </div>
             </form>
         </section>
 
-        <section id="resultados-proporciones-relacionadas" class="mt-8 hidden" aria-live="polite"></section>
+        <section
+            id="resultados-proporciones-relacionadas"
+            class="mt-8 hidden"
+            aria-live="polite"
+        ></section>
     `;
 
-    const formulario = section.querySelector("#formulario-proporciones-relacionadas");
-    const resultados = section.querySelector("#resultados-proporciones-relacionadas");
-    const mensajeError = section.querySelector("#mensaje-error-proporciones");
+    const formulario = section.querySelector(
+        "#formulario-proporciones-relacionadas"
+    );
+    const resultados = section.querySelector(
+        "#resultados-proporciones-relacionadas"
+    );
+    const mensajeError = section.querySelector(
+        "#mensaje-error-proporciones"
+    );
     const contador = section.querySelector("[data-contador]");
     const campoCondiciones = section.querySelector("[data-campo-condiciones]");
     const campoMetodo = section.querySelector("[data-campo-metodo]");
@@ -374,12 +573,23 @@ export function CalculadoraProporcionesRelacionadas() {
         const esMcNemar = formulario.elements.prueba.value === "mcnemar";
         campoCondiciones.classList.toggle("hidden", esMcNemar);
         campoMetodo.classList.toggle("hidden", !esMcNemar);
+
         const cantidad = esMcNemar
             ? 2
-            : Math.max(3, Math.min(8, Number(formulario.elements.numeroCondiciones.value) || 3));
+            : Math.max(
+                3,
+                Math.min(
+                    8,
+                    Number(formulario.elements.numeroCondiciones.value) || 3
+                )
+            );
+
         formulario.elements.etiquetas.value = esMcNemar
             ? "Antes, Después"
-            : Array.from({ length: cantidad }, (_, indice) => `Condición ${indice + 1}`).join(", ");
+            : Array.from(
+                { length: cantidad },
+                (_, indice) => `Condición ${indice + 1}`
+            ).join(", ");
         resultados.classList.add("hidden");
     };
 
@@ -409,14 +619,28 @@ export function CalculadoraProporcionesRelacionadas() {
             const prueba = formulario.elements.prueba.value;
             const cantidad = prueba === "mcnemar"
                 ? 2
-                : Math.max(3, Math.min(8, Number(formulario.elements.numeroCondiciones.value) || 3));
-            const matriz = convertirMatriz(formulario.elements.matriz.value, cantidad);
-            const etiquetas = convertirEtiquetas(formulario.elements.etiquetas.value, cantidad);
+                : Math.max(
+                    3,
+                    Math.min(
+                        8,
+                        Number(formulario.elements.numeroCondiciones.value) || 3
+                    )
+                );
+            const matriz = convertirMatriz(
+                formulario.elements.matriz.value,
+                cantidad
+            );
+            const etiquetas = convertirEtiquetas(
+                formulario.elements.etiquetas.value,
+                cantidad
+            );
             const solicitud = {
                 matriz,
                 etiquetas,
                 prueba,
-                nivelConfianza: Number(formulario.elements.nivelConfianza.value),
+                nivelConfianza: Number(
+                    formulario.elements.nivelConfianza.value
+                ),
                 metodoMcNemar: formulario.elements.metodoMcNemar.value
             };
             const resultado = analizarProporcionesRelacionadas(solicitud);
@@ -430,7 +654,10 @@ export function CalculadoraProporcionesRelacionadas() {
                 nombre: prueba === "mcnemar" ? "mcnemar" : "q-cochran",
                 datos: { solicitud, resultado }
             });
-            resultados.scrollIntoView({ behavior: "smooth", block: "start" });
+            resultados.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
         } catch (error) {
             resultados.classList.add("hidden");
             mensajeError.textContent = error instanceof Error
@@ -452,6 +679,7 @@ export function CalculadoraProporcionesRelacionadas() {
 
         if (boton.dataset.action === "cargar-ejemplo") {
             const prueba = formulario.elements.prueba.value;
+
             if (prueba === "mcnemar") {
                 formulario.elements.etiquetas.value = "Antes, Después";
                 formulario.elements.matriz.value = [
@@ -460,12 +688,14 @@ export function CalculadoraProporcionesRelacionadas() {
                 ].join("\n");
             } else {
                 formulario.elements.numeroCondiciones.value = "3";
-                formulario.elements.etiquetas.value = "Método A, Método B, Método C";
+                formulario.elements.etiquetas.value =
+                    "Método A, Método B, Método C";
                 formulario.elements.matriz.value = [
                     "1 1 0", "1 1 0", "1 1 0", "1 0 0", "1 0 0", "1 0 0",
                     "1 1 1", "1 1 0", "0 1 0", "1 0 0", "1 0 1", "0 0 0"
                 ].join("\n");
             }
+
             actualizarContador();
             resultados.classList.add("hidden");
             mensajeError.classList.add("hidden");
