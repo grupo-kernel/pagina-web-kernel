@@ -139,6 +139,17 @@ const bridgeFixture = `(() => {
       if (
         currentTicket !== renderTicket
       ) return;
+
+      const signature = "es:9:162:11:48";
+
+      if (
+        main.dataset.kernelHomeSignature === signature
+      ) {
+        return;
+      }
+
+      main.dataset.kernelHomeSignature = signature;
+      main.innerHTML = '<section data-kernel-platform-page="home-2b"></section>';
     } catch (error) {}
   }
 
@@ -169,7 +180,7 @@ const patchedBridge = patchHomeBridgeSource(bridgeFixture);
 
 assert.match(
   patchedBridge,
-  /KERNEL_HOME_ROOT_FIX_VERSION\s*=\s*"4\.0\.0"/
+  /KERNEL_HOME_ROOT_FIX_VERSION\s*=\s*"5\.0\.0"/
 );
 assert.match(patchedBridge, /window\.KernelHomeSnapshot/);
 assert.match(patchedBridge, /dataPromise = Promise\.resolve\(/);
@@ -185,6 +196,14 @@ assert.doesNotMatch(
   patchedBridge,
   /observe\(document\.documentElement/
 );
+assert.match(
+  patchedBridge,
+  /main\.dataset\.kernelHomeSignature === signature &&/
+);
+assert.match(
+  patchedBridge,
+  /data-kernel-platform-page=\"home-2b\"/
+);
 
 assert.match(sourceIndex, /id="kernel-home-route-canonicalizer"/);
 assert.match(sourceIndex, /history\.replaceState/);
@@ -198,7 +217,7 @@ assert.match(finalizer, /id="kernel-home-snapshot"/);
 assert.match(finalizer, /window\.KernelHomeSnapshot/);
 assert.match(
   finalizer,
-  /kernel-home-2b-bridge\.js\?v=20260802-4/
+  /kernel-home-2b-bridge\.js\?v=20260802-5/
 );
 assert.doesNotMatch(
   finalizer,
@@ -227,7 +246,9 @@ assert.match(smokeTest, /index\.html#\/home/);
 assert.match(smokeTest, /snapshotAvailable/);
 assert.match(smokeTest, /provisional/);
 assert.match(smokeTest, /toolsVisible/);
+assert.match(smokeTest, /data-kernel-legacy-home/);
+assert.match(smokeTest, /recovered\.modern/);
 
 console.log(
-  "✓ La primera entrada usa la portada completa desde una instantánea sincrónica; no depende de JSON, recargas ni portadas provisionales."
+  "✓ La portada moderna conserva prioridad incluso cuando la SPA intenta sustituirla por la portada empresarial anterior."
 );
