@@ -44,9 +44,13 @@ export const ETAPAS_FLUJO_LABORATORIO = Object.freeze([
         descripcion:
             "Examine el estadístico, el valor p, el intervalo de confianza y el tamaño del efecto.",
         icono: "bx-line-chart",
-        estado: "Integrado",
-        detalleEstado: "Dentro de las calculadoras",
-        accion: null,
+        estado: "Disponible",
+        detalleEstado: "Intérprete de resultados",
+        accion: congelar({
+            tipo: "ancla",
+            valor: "interpretador-resultados",
+            etiqueta: "Interpretar resultado"
+        }),
         fondoIcono: "bg-amber-100",
         colorIcono: "text-amber-700",
         bordeIcono: "border-amber-200"
@@ -58,9 +62,13 @@ export const ETAPAS_FLUJO_LABORATORIO = Object.freeze([
         descripcion:
             "Utilice las orientaciones de cada herramienta para comunicar resultados con rigor y contexto.",
         icono: "bx-edit-alt",
-        estado: "Integrado",
-        detalleEstado: "Según la herramienta",
-        accion: null,
+        estado: "Disponible",
+        detalleEstado: "Generador de reporte",
+        accion: congelar({
+            tipo: "ancla",
+            valor: "generador-reporte",
+            etiqueta: "Generar reporte"
+        }),
         fondoIcono: "bg-violet-100",
         colorIcono: "text-violet-700",
         bordeIcono: "border-violet-200"
