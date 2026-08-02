@@ -68,6 +68,9 @@ jobs:
       - name: Finalize persistent blue featured tools
         run: node scripts/finalize-featured-tools-blue.mjs
 
+      - name: Activate interpretation and reporting tools
+        run: node scripts/activate-lab-interpret-report.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
