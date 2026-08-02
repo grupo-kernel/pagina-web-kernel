@@ -65,6 +65,9 @@ jobs:
       - name: Finalize analytics and first-entry loading
         run: node scripts/finalize-analytics-entry.mjs
 
+      - name: Finalize persistent blue featured tools
+        run: node scripts/finalize-featured-tools-blue.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
