@@ -41,13 +41,20 @@ jobs:
       - name: Build project with Vite
         run: npm run build
 
-      - name: Import current integrated home bridge
+      - name: Import authoritative homepage resources
         run: |
           set -euo pipefail
           git fetch origin gh-pages --depth=1
-          mkdir -p dist/assets
+          mkdir -p dist/assets dist/core/data
           git show origin/gh-pages:assets/kernel-home-2b-bridge.js \
             > dist/assets/kernel-home-2b-bridge.js
+          for file in researchers.v2.json publications.v2.json projects.v2.json; do
+            git show "origin/gh-pages:core/data/$file" \
+              > "dist/core/data/$file"
+          done
+
+      - name: Generate synchronous homepage snapshot
+        run: node scripts/generate-home-snapshot.mjs
 
       - name: Fix the home bridge at its source
         run: node scripts/patch-home-bridge.mjs
@@ -74,11 +81,10 @@ jobs:
           npm install --no-save playwright@1.54.1
           npx playwright install --with-deps webkit
 
-      - name: Verify first entry without reloading
+      - name: Verify first entry without reloading or homepage data requests
         env:
           KERNEL_BASE_URL: https://www.grupoelkernel.com
           KERNEL_DEPLOYMENT: source-${{ github.sha }}
-          KERNEL_DATA_DELAY_MS: 1800
         run: |
           export KERNEL_DEPLOYMENT="source-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
           node scripts/smoke-home-first-entry.mjs
