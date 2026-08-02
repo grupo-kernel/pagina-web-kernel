@@ -3,9 +3,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT_FIX_MARKER =
-  'const KERNEL_HOME_ROOT_FIX_VERSION = "4.0.0";';
-const PREVIOUS_ROOT_FIX_MARKER =
-  'const KERNEL_HOME_ROOT_FIX_VERSION = "3.0.0";';
+  'const KERNEL_HOME_ROOT_FIX_VERSION = "5.0.0";';
+const PREVIOUS_ROOT_FIX_MARKERS = [
+  'const KERNEL_HOME_ROOT_FIX_VERSION = "4.0.0";',
+  'const KERNEL_HOME_ROOT_FIX_VERSION = "3.0.0";'
+];
 
 const ORIGINAL_OBSERVER = `  let mutationTimer = 0;
 
@@ -72,6 +74,21 @@ const SNAPSHOT_LOAD_DATA_START = `  async function loadData() {
 
     if (!dataPromise) {`;
 
+const OLD_SIGNATURE_GUARD = `      if (
+        main.dataset.kernelHomeSignature === signature
+      ) {
+        return;
+      }`;
+
+const MODERN_SIGNATURE_GUARD = `      if (
+        main.dataset.kernelHomeSignature === signature &&
+        main.querySelector(
+          '[data-kernel-platform-page="home-2b"]'
+        )
+      ) {
+        return;
+      }`;
+
 function replaceRequired(source, search, replacement, label) {
   if (!source.includes(search)) {
     throw new Error(
@@ -98,7 +115,9 @@ function assertPatched(output) {
     "function observeMain()",
     "mainObserver.observe(main",
     'cache: "default"',
-    "!window.KernelHomeSnapshot &&"
+    "!window.KernelHomeSnapshot &&",
+    "main.dataset.kernelHomeSignature === signature &&",
+    "data-kernel-platform-page=\"home-2b\""
   ];
 
   requiredMarkers.forEach(marker => {
@@ -113,10 +132,11 @@ function assertPatched(output) {
     output.includes("const currentTicket = ++renderTicket;") ||
     output.includes(
       ").observe(document.documentElement, {\n    childList: true,\n    subtree: true\n  });"
-    )
+    ) ||
+    output.includes(OLD_SIGNATURE_GUARD)
   ) {
     throw new Error(
-      "El puente todavía contiene la carrera de renderizado original."
+      "El puente todavía permite que la portada antigua reemplace a la moderna."
     );
   }
 }
@@ -135,11 +155,12 @@ export function patchHomeBridgeSource(source) {
     return output;
   }
 
-  if (output.includes(PREVIOUS_ROOT_FIX_MARKER)) {
-    output = output.replace(
-      PREVIOUS_ROOT_FIX_MARKER,
-      ROOT_FIX_MARKER
-    );
+  const previousMarker = PREVIOUS_ROOT_FIX_MARKERS.find(marker =>
+    output.includes(marker)
+  );
+
+  if (previousMarker) {
+    output = output.replace(previousMarker, ROOT_FIX_MARKER);
   } else {
     output = replaceRequired(
       output,
@@ -226,6 +247,15 @@ export function patchHomeBridgeSource(source) {
     );
   }
 
+  if (!output.includes("main.dataset.kernelHomeSignature === signature &&")) {
+    output = replaceRequired(
+      output,
+      OLD_SIGNATURE_GUARD,
+      MODERN_SIGNATURE_GUARD,
+      "la prioridad permanente de la portada moderna"
+    );
+  }
+
   assertPatched(output);
   return output;
 }
@@ -249,6 +279,6 @@ if (invokedPath === modulePath) {
     "dist/assets/kernel-home-2b-bridge.js";
   const patchedPath = patchHomeBridgeFile(target);
   console.log(
-    `Patched integrated home bridge with synchronous snapshot at ${patchedPath}.`
+    `Patched integrated home bridge V5 at ${patchedPath}.`
   );
 }
