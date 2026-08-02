@@ -31,11 +31,7 @@ async function waitForDeployment() {
   );
 }
 
-await waitForDeployment();
-
-const browser = await webkit.launch({ headless: true });
-
-try {
+async function validateFirstEntry(browser, hash, label) {
   const context = await browser.newContext({
     locale: "es-DO",
     viewport: {
@@ -43,79 +39,101 @@ try {
       height: 900
     }
   });
-  const page = await context.newPage();
-  const pageErrors = [];
 
-  page.on("pageerror", error => {
-    pageErrors.push(String(error?.message || error));
-  });
+  try {
+    const page = await context.newPage();
+    const pageErrors = [];
 
-  await page.route("**/core/data/*.json", async route => {
-    await sleep(delayMs);
-    await route.continue();
-  });
+    page.on("pageerror", error => {
+      pageErrors.push(String(error?.message || error));
+    });
 
-  const url =
-    `${baseUrl}/?first-entry-smoke=${Date.now()}#/home`;
+    await page.route("**/core/data/*.json", async route => {
+      await sleep(delayMs);
+      await route.continue();
+    });
 
-  await page.goto(url, {
-    waitUntil: "domcontentloaded",
-    timeout: 30000
-  });
+    const url =
+      `${baseUrl}/?first-entry-smoke=${Date.now()}${hash}`;
 
-  await page.waitForSelector(
-    '[data-kernel-platform-page="home-2b"]',
-    {
-      state: "attached",
-      timeout: 15000
-    }
+    await page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: 30000
+    });
+
+    await page.waitForSelector(
+      '[data-kernel-platform-page="home-2b"]',
+      {
+        state: "attached",
+        timeout: 15000
+      }
+    );
+
+    const state = await page.evaluate(() => ({
+      ready: Boolean(
+        document.querySelector(
+          '[data-kernel-platform-page="home-2b"]'
+        )
+      ),
+      loading: Boolean(
+        document.querySelector(
+          ".kernel-home-2b__loading"
+        )
+      ),
+      navigationType:
+        performance.getEntriesByType("navigation")[0]?.type || "",
+      title: document.title,
+      deployment:
+        document.querySelector(
+          'meta[name="kernel-deployment"]'
+        )?.content || ""
+    }));
+
+    assert.equal(
+      state.ready,
+      true,
+      `${label}: la portada integrada no quedó disponible en la primera entrada.`
+    );
+    assert.equal(
+      state.loading,
+      false,
+      `${label}: el cargador permaneció visible después de construir la portada.`
+    );
+    assert.equal(
+      state.navigationType,
+      "navigate",
+      `${label}: la prueba requirió una recarga inesperada.`
+    );
+    assert.equal(
+      pageErrors.filter(message =>
+        /Kernel Home 2B Bridge|renderTicket|loading/i.test(message)
+      ).length,
+      0,
+      `${label}: se detectaron errores de portada: ${pageErrors.join(" | ")}`
+    );
+
+    console.log(
+      `✓ ${label}: primera entrada WebKit completada sin recargar; versión ${state.deployment}.`
+    );
+  } finally {
+    await context.close();
+  }
+}
+
+await waitForDeployment();
+
+const browser = await webkit.launch({ headless: true });
+
+try {
+  await validateFirstEntry(
+    browser,
+    "#/home",
+    "Ruta explícita #/home"
   );
-
-  const state = await page.evaluate(() => ({
-    ready: Boolean(
-      document.querySelector(
-        '[data-kernel-platform-page="home-2b"]'
-      )
-    ),
-    loading: Boolean(
-      document.querySelector(
-        ".kernel-home-2b__loading"
-      )
-    ),
-    navigationType:
-      performance.getEntriesByType("navigation")[0]?.type || "",
-    title: document.title,
-    deployment:
-      document.querySelector(
-        'meta[name="kernel-deployment"]'
-      )?.content || ""
-  }));
-
-  assert.equal(
-    state.ready,
-    true,
-    "La portada integrada no quedó disponible en la primera entrada."
-  );
-  assert.equal(
-    state.loading,
-    false,
-    "El cargador permaneció visible después de construir la portada."
-  );
-  assert.equal(
-    state.navigationType,
-    "navigate",
-    "La prueba requirió una recarga inesperada."
-  );
-  assert.equal(
-    pageErrors.filter(message =>
-      /Kernel Home 2B Bridge|renderTicket|loading/i.test(message)
-    ).length,
-    0,
-    `Se detectaron errores de portada: ${pageErrors.join(" | ")}`
-  );
-
-  console.log(
-    `✓ Primera entrada WebKit completada sin recargar; versión ${state.deployment}.`
+  await validateFirstEntry(
+    browser,
+    "",
+    "Portada implícita sin hash"
   );
 } finally {
   await browser.close();
