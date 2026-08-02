@@ -100,11 +100,21 @@ const bridgeFixture = `(() => {
 
   async function loadData() {
     if (!dataPromise) {
-      dataPromise = Promise.resolve({
+      dataPromise = Promise.all([
+        fetch("./core/data/researchers.v2.json", {
+          cache: "no-store"
+        }),
+        fetch("./core/data/publications.v2.json", {
+          cache: "no-store"
+        }),
+        fetch("./core/data/projects.v2.json", {
+          cache: "no-store"
+        })
+      ]).then(() => ({
         researchers: {},
         publications: {},
         projects: {}
-      });
+      }));
     }
 
     return dataPromise;
@@ -164,6 +174,7 @@ assert.match(
 assert.match(patchedBridge, /window\.KernelHomeSnapshot/);
 assert.match(patchedBridge, /dataPromise = Promise\.resolve\(/);
 assert.match(patchedBridge, /!window\.KernelHomeSnapshot &&/);
+assert.match(patchedBridge, /cache: "default"/);
 assert.match(patchedBridge, /const currentTicket = renderTicket;/);
 assert.doesNotMatch(
   patchedBridge,
