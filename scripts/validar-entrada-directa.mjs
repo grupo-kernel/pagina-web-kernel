@@ -1,12 +1,15 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
+import {
+  patchHomeBridgeSource
+} from "./patch-home-bridge.mjs";
+
 const safeguard = await readFile(
-  new URL("../public/assets/kernel-home-direct-entry-fix.js", import.meta.url),
-  "utf8"
-);
-const raceFix = await readFile(
-  new URL("../public/assets/kernel-home-loading-race-fix.js", import.meta.url),
+  new URL(
+    "../public/assets/kernel-home-direct-entry-fix.js",
+    import.meta.url
+  ),
   "utf8"
 );
 const sourceIndex = await readFile(
@@ -17,14 +20,17 @@ const finalizer = await readFile(
   new URL("./finalize-analytics-entry.mjs", import.meta.url),
   "utf8"
 );
+const deployWorkflow = await readFile(
+  new URL(
+    "../.github/workflows/deploy.yml",
+    import.meta.url
+  ),
+  "utf8"
+);
 
 assert.doesNotThrow(
   () => new Function(safeguard),
-  "El protector de entrada directa debe ser JavaScript válido."
-);
-assert.doesNotThrow(
-  () => new Function(raceFix),
-  "El estabilizador de carga de la portada debe ser JavaScript válido."
+  "El protector de datos de entrada directa debe ser JavaScript válido."
 );
 
 assert.match(safeguard, /REQUEST_TIMEOUT\s*=\s*2500/);
@@ -34,42 +40,109 @@ assert.match(safeguard, /core\/data\/projects\.v2\.json/);
 assert.match(safeguard, /withDeadline/);
 assert.match(safeguard, /fallbackResponse/);
 assert.match(safeguard, /kernel-home-data-fallback/);
-assert.match(safeguard, /recoverIntegratedHome/);
-assert.match(safeguard, /kernel-direct-recovery/);
-assert.match(safeguard, /RecoveryMutationObserver/);
-assert.match(safeguard, /kernel-home-2b__loading/);
-assert.match(safeguard, /data-kernel-platform-page=\\?"home-2b/);
 
-assert.match(raceFix, /data-kernel-home-loading-sentinel/);
-assert.match(raceFix, /className\s*=\s*"kernel-home-2b"/);
-assert.match(raceFix, /kernel-home-2b__loading/);
-assert.match(raceFix, /data-kernel-platform-page=\\?"home-2b/);
-assert.match(raceFix, /prevent-loading-render-race/);
-assert.match(raceFix, /MutationObserver/);
-assert.match(raceFix, /queueMicrotask/);
-assert.match(raceFix, /sentinelPresent/);
+const bridgeFixture = `(() => {
+  "use strict";
+
+  let dataPromise;
+  let renderTicket = 0;
+
+  async function loadData() {
+    return fetch("./core/data/researchers.v2.json", {
+      cache: "no-store"
+    });
+  }
+
+  async function render() {
+    const currentTicket = ++renderTicket;
+    const main = document.getElementById("main");
+    let ignored = main;
+    const t = labels();
+    try {
+      const {
+        researchers,
+        publications,
+        projects
+      } = await loadData();
+
+      if (
+        currentTicket !== renderTicket
+      ) return;
+    } catch (error) {}
+  }
+
+  function restoreMain() {
+    const main = document.getElementById("main");
+  }
+
+  function schedule() {
+    addStyles();
+  }
+
+  let mutationTimer = 0;
+
+  new MutationObserver(() => {
+    window.clearTimeout(mutationTimer);
+
+    mutationTimer = window.setTimeout(
+      schedule,
+      50
+    );
+  }).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();`;
+
+const patchedBridge = patchHomeBridgeSource(bridgeFixture);
+
+assert.match(
+  patchedBridge,
+  /KERNEL_HOME_ROOT_FIX_VERSION\s*=\s*"3\.0\.0"/
+);
+assert.match(
+  patchedBridge,
+  /const currentTicket = renderTicket;/
+);
 assert.doesNotMatch(
-  raceFix,
-  /setAttribute\([^\n]*data-kernel-platform-page/,
-  "El marcador temporal no debe declarar la portada como lista."
+  patchedBridge,
+  /const currentTicket = \+\+renderTicket;/
 );
+assert.match(patchedBridge, /renderTicket \+= 1;/);
+assert.match(patchedBridge, /function observeMain\(\)/);
+assert.match(patchedBridge, /mainObserver\.observe\(main/);
+assert.doesNotMatch(
+  patchedBridge,
+  /observe\(document\.documentElement/
+);
+assert.match(patchedBridge, /cache: "default"/);
+assert.match(patchedBridge, /t = labels\(\);/);
 
-assert.match(
+assert.doesNotMatch(
   sourceIndex,
-  /kernel-home-loading-race-fix\.js\?v=20260802-1/
+  /kernel-home-loading-race-fix\.js/
+);
+assert.doesNotMatch(
+  finalizer,
+  /kernel-home-loading-race-fix\.js\?v=/
 );
 assert.match(
   finalizer,
-  /kernel-home-loading-race-fix\.js\?v=20260802-1/
+  /kernel-home-2b-bridge\.js\?v=20260802-3/
 );
-assert.match(finalizer, /analyticsPosition/);
-assert.match(finalizer, /raceFixPosition/);
-assert.match(finalizer, /directEntryPosition/);
 assert.match(
-  finalizer,
-  /Analytics → estabilizador de portada → recuperación de entrada directa/
+  deployWorkflow,
+  /node scripts\/patch-home-bridge\.mjs/
+);
+assert.match(
+  deployWorkflow,
+  /smoke-home-first-entry\.mjs/
+);
+assert.match(
+  deployWorkflow,
+  /playwright install --with-deps webkit/
 );
 
 console.log(
-  "✓ Entrada directa protegida con límite de espera, datos seguros, estabilización de la carrera de renderizado y recuperación controlada de la portada."
+  "✓ La primera entrada queda protegida en la raíz: puente serializado, observación acotada, datos resilientes y smoke test WebKit sin recarga."
 );
