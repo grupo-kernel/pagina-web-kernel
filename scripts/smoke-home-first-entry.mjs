@@ -54,15 +54,17 @@ async function validateFirstEntry(browser, path, label) {
       timeout: 30000
     });
 
-    await page.waitForSelector(
-      '[data-kernel-platform-page="home-2b"]',
-      { state: "attached", timeout: 2000 }
+    await page.waitForFunction(
+      () => Boolean(
+        document.querySelector('[data-kernel-platform-page="home-2b"]')
+      ) && !document.querySelector(".kernel-home-2b__loading"),
+      null,
+      { timeout: 2000 }
     );
 
     const immediate = await page.evaluate(() => ({
       ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
       loading: Boolean(document.querySelector(".kernel-home-2b__loading")),
-      firstPaint: Boolean(document.querySelector('[data-kernel-home-first-paint="true"]')),
       navigationType: performance.getEntriesByType("navigation")[0]?.type || ""
     }));
 
@@ -71,7 +73,9 @@ async function validateFirstEntry(browser, path, label) {
     assert.equal(immediate.navigationType, "navigate", `${label}: hubo recarga inesperada.`);
 
     await page.waitForFunction(
-      () => !document.querySelector('[data-kernel-home-first-paint="true"]'),
+      () => Boolean(
+        document.querySelector('[data-kernel-platform-page="home-2b"]')
+      ) && !document.querySelector('[data-kernel-home-first-paint="true"]'),
       null,
       { timeout: 12000 }
     );
