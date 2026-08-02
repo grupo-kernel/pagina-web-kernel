@@ -25,7 +25,24 @@ html = html.replace(
   /\n\s*<script defer src="\.\/assets\/kernel-home-loading-race-fix\.js\?v=[^"]+"><\/script>/g,
   ""
 );
+html = html.replace(
+  /\n\s*<script id="kernel-home-route-canonicalizer">[\s\S]*?<\/script>/g,
+  ""
+);
 
+const canonicalHomeRoute = `  <script id="kernel-home-route-canonicalizer">
+    (function canonicalizarPortadaKernel(){
+      if (window.location.hash) return;
+
+      window.history.replaceState(
+        window.history.state,
+        "",
+        window.location.pathname +
+          window.location.search +
+          "#/home"
+      );
+    })();
+  </script>`;
 const analyticsLoader =
   '  <script defer src="./assets/kernel-entry-analytics-fix.js?v=20260801-2"></script>';
 const directEntryLoader =
@@ -47,7 +64,7 @@ const removeLoader = (source, loader) =>
 html = removeLoader(html, directEntryLoader);
 html = html.replace(
   analyticsLoader,
-  `${analyticsLoader}\n${directEntryLoader}`
+  `${canonicalHomeRoute}\n\n${analyticsLoader}\n${directEntryLoader}`
 );
 
 if (!html.includes(ksdeVisibleLoader)) {
@@ -63,17 +80,19 @@ if (!html.includes(bridgeLoader)) {
   );
 }
 
+const canonicalizerPosition = html.indexOf(canonicalHomeRoute);
 const analyticsPosition = html.indexOf(analyticsLoader);
 const directEntryPosition = html.indexOf(directEntryLoader);
 const bridgePosition = html.indexOf(bridgeLoader);
 
 if (
-  analyticsPosition === -1 ||
+  canonicalizerPosition === -1 ||
+  analyticsPosition <= canonicalizerPosition ||
   directEntryPosition <= analyticsPosition ||
   bridgePosition <= directEntryPosition
 ) {
   throw new Error(
-    "El orden de carga debe ser Analytics → recuperación de datos → puente corregido de portada."
+    "El orden de carga debe ser ruta canónica → Analytics → recuperación de datos → puente corregido de portada."
   );
 }
 
@@ -85,5 +104,5 @@ if (html.includes("kernel-home-loading-race-fix.js")) {
 
 fs.writeFileSync(indexPath, html, "utf8");
 console.log(
-  "Finalized entry: analytics, resilient data fallback, root-fixed home bridge and visible KSDE details enabled."
+  "Finalized entry: canonical home route, analytics, resilient data fallback, root-fixed home bridge and visible KSDE details enabled."
 );
