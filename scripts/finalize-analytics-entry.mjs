@@ -33,7 +33,7 @@ html = html.replace(
 );
 html = html.replace(
   /kernel-home-2b-bridge\.js\?v=[^"']+/g,
-  "kernel-home-2b-bridge.js?v=20260802-4"
+  "kernel-home-2b-bridge.js?v=20260802-5"
 );
 
 const removableScripts = [
@@ -73,7 +73,7 @@ const analyticsLoader =
 const ksdeVisibleLoader =
   '  <script defer src="./assets/kernel-ksde-visible-results.js?v=20260801-1"></script>';
 const bridgeLoader =
-  '  <script defer src="./assets/kernel-home-2b-bridge.js?v=20260802-4"></script>';
+  '  <script defer src="./assets/kernel-home-2b-bridge.js?v=20260802-5"></script>';
 
 if (!html.includes(analyticsLoader)) {
   throw new Error(
@@ -82,7 +82,7 @@ if (!html.includes(analyticsLoader)) {
 }
 if (!html.includes(bridgeLoader)) {
   throw new Error(
-    "No se encontró el puente V4 de portada en dist/index.html."
+    "No se encontró el puente V5 de portada en dist/index.html."
   );
 }
 
@@ -110,7 +110,7 @@ if (
   bridgePosition <= analyticsPosition
 ) {
   throw new Error(
-    "El orden de carga debe ser ruta canónica → instantánea sincrónica → Analytics → puente V4 de portada."
+    "El orden de carga debe ser ruta canónica → instantánea sincrónica → Analytics → puente V5 de portada."
   );
 }
 
@@ -126,5 +126,5 @@ if (
 
 fs.writeFileSync(indexPath, html, "utf8");
 console.log(
-  "Finalized entry: canonical route, inline synchronous snapshot, analytics and V4 homepage bridge enabled."
+  "Finalized entry: canonical route, inline synchronous snapshot, analytics and V5 modern-priority homepage bridge enabled."
 );
