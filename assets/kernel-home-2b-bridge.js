@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const KERNEL_HOME_ROOT_FIX_VERSION = "3.0.0";
+  const KERNEL_HOME_ROOT_FIX_VERSION = "4.0.0";
 
   const STYLE_ID = "kernel-home-2b-styles";
 
@@ -945,6 +945,16 @@
   }
 
   async function loadData() {
+    if (window.KernelHomeSnapshot) {
+      if (!dataPromise) {
+        dataPromise = Promise.resolve(
+          window.KernelHomeSnapshot
+        );
+      }
+
+      return dataPromise;
+    }
+
     if (!dataPromise) {
       dataPromise = Promise.all([
         fetch(DATA.researchers, {
@@ -1072,7 +1082,10 @@
 
     let t = labels();
 
-    if (!main.querySelector(".kernel-home-2b")) {
+    if (
+      !window.KernelHomeSnapshot &&
+      !main.querySelector(".kernel-home-2b")
+    ) {
       main.innerHTML = `
         <div class="kernel-home-2b__loading">
           ${escapeHtml(t.loading)}
