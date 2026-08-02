@@ -1,12 +1,11 @@
 import assert from "node:assert/strict";
 import { webkit } from "playwright";
 
-// La prueba exige que la raíz implícita se canonicalice antes de iniciar la SPA.
 const baseUrl = process.env.KERNEL_BASE_URL ||
   "https://www.grupoelkernel.com";
 const expectedDeployment = process.env.KERNEL_DEPLOYMENT || "";
 const delayMs = Number(
-  process.env.KERNEL_DATA_DELAY_MS || 1600
+  process.env.KERNEL_DATA_DELAY_MS || 5000
 );
 
 const sleep = milliseconds =>
@@ -23,7 +22,6 @@ async function waitForDeployment() {
     const html = await response.text();
 
     if (html.includes(expectedDeployment)) return;
-
     await sleep(5000);
   }
 
@@ -32,13 +30,10 @@ async function waitForDeployment() {
   );
 }
 
-async function validateFirstEntry(browser, hash, label) {
+async function validateFirstEntry(browser, path, label) {
   const context = await browser.newContext({
     locale: "es-DO",
-    viewport: {
-      width: 1366,
-      height: 900
-    }
+    viewport: { width: 1366, height: 900 }
   });
 
   try {
@@ -54,87 +49,65 @@ async function validateFirstEntry(browser, hash, label) {
       await route.continue();
     });
 
-    const url =
-      `${baseUrl}/?first-entry-smoke=${Date.now()}${hash}`;
-
-    await page.goto(url, {
+    await page.goto(`${baseUrl}${path}`, {
       waitUntil: "domcontentloaded",
       timeout: 30000
     });
 
     await page.waitForSelector(
       '[data-kernel-platform-page="home-2b"]',
-      {
-        state: "attached",
-        timeout: 15000
-      }
+      { state: "attached", timeout: 2000 }
     );
 
-    const state = await page.evaluate(() => ({
-      ready: Boolean(
-        document.querySelector(
-          '[data-kernel-platform-page="home-2b"]'
-        )
-      ),
-      loading: Boolean(
-        document.querySelector(
-          ".kernel-home-2b__loading"
-        )
-      ),
-      navigationType:
-        performance.getEntriesByType("navigation")[0]?.type || "",
-      title: document.title,
-      deployment:
-        document.querySelector(
-          'meta[name="kernel-deployment"]'
-        )?.content || ""
+    const immediate = await page.evaluate(() => ({
+      ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
+      loading: Boolean(document.querySelector(".kernel-home-2b__loading")),
+      firstPaint: Boolean(document.querySelector('[data-kernel-home-first-paint="true"]')),
+      navigationType: performance.getEntriesByType("navigation")[0]?.type || ""
     }));
 
-    assert.equal(
-      state.ready,
-      true,
-      `${label}: la portada integrada no quedó disponible en la primera entrada.`
-    );
-    assert.equal(
-      state.loading,
-      false,
-      `${label}: el cargador permaneció visible después de construir la portada.`
-    );
-    assert.equal(
-      state.navigationType,
-      "navigate",
-      `${label}: la prueba requirió una recarga inesperada.`
-    );
-    assert.equal(
-      pageErrors.filter(message =>
-        /Kernel Home 2B Bridge|renderTicket|loading/i.test(message)
-      ).length,
-      0,
-      `${label}: se detectaron errores de portada: ${pageErrors.join(" | ")}`
+    assert.equal(immediate.ready, true, `${label}: no hubo portada inmediata.`);
+    assert.equal(immediate.loading, false, `${label}: apareció el cargador bloqueante.`);
+    assert.equal(immediate.navigationType, "navigate", `${label}: hubo recarga inesperada.`);
+
+    await page.waitForFunction(
+      () => !document.querySelector('[data-kernel-home-first-paint="true"]'),
+      null,
+      { timeout: 12000 }
     );
 
-    console.log(
-      `✓ ${label}: primera entrada WebKit completada sin recargar; versión ${state.deployment}.`
+    const finalState = await page.evaluate(() => ({
+      ready: Boolean(document.querySelector('[data-kernel-platform-page="home-2b"]')),
+      loading: Boolean(document.querySelector(".kernel-home-2b__loading"))
+    }));
+
+    assert.equal(finalState.ready, true, `${label}: la portada final no quedó disponible.`);
+    assert.equal(finalState.loading, false, `${label}: el cargador quedó visible.`);
+    assert.equal(
+      pageErrors.filter(message => /Kernel Home 2B Bridge|renderTicket|loading/i.test(message)).length,
+      0,
+      `${label}: errores detectados: ${pageErrors.join(" | ")}`
     );
+
+    console.log(`✓ ${label}: portada inmediata y enriquecimiento posterior sin recargar.`);
   } finally {
     await context.close();
   }
 }
 
 await waitForDeployment();
-
 const browser = await webkit.launch({ headless: true });
 
 try {
   await validateFirstEntry(
     browser,
-    "#/home",
-    "Ruta explícita #/home"
+    `/index.html?first-paint=${Date.now()}#/home`,
+    "index.html#/home"
   );
   await validateFirstEntry(
     browser,
-    "",
-    "Portada implícita sin hash"
+    `/?first-paint=${Date.now()}`,
+    "portada raíz sin hash"
   );
 } finally {
   await browser.close();
