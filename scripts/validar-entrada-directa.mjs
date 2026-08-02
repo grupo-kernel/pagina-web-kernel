@@ -122,6 +122,13 @@ assert.doesNotMatch(
   sourceIndex,
   /kernel-home-loading-race-fix\.js/
 );
+assert.match(
+  sourceIndex,
+  /id="kernel-home-route-canonicalizer"/
+);
+assert.match(sourceIndex, /history\.replaceState/);
+assert.match(sourceIndex, /"#\/home"/);
+
 assert.doesNotMatch(
   finalizer,
   /kernel-home-loading-race-fix\.js\?v=/
@@ -129,6 +136,15 @@ assert.doesNotMatch(
 assert.match(
   finalizer,
   /kernel-home-2b-bridge\.js\?v=20260802-3/
+);
+assert.match(
+  finalizer,
+  /kernel-home-route-canonicalizer/
+);
+assert.match(finalizer, /history\.replaceState/);
+assert.match(
+  finalizer,
+  /ruta canónica → Analytics → recuperación de datos → puente corregido de portada/
 );
 assert.match(
   deployWorkflow,
@@ -144,5 +160,5 @@ assert.match(
 );
 
 console.log(
-  "✓ La primera entrada queda protegida en la raíz: puente serializado, observación acotada, datos resilientes y smoke test WebKit sin recarga."
+  "✓ La primera entrada queda protegida en la raíz: URL canónica, puente serializado, observación acotada, datos resilientes y smoke test WebKit sin recarga."
 );
