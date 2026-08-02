@@ -2,22 +2,30 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 import {
+  buildHomeSnapshot,
+  snapshotToScript
+} from "./generate-home-snapshot.mjs";
+import {
   patchHomeBridgeSource
 } from "./patch-home-bridge.mjs";
 
-const safeguard = await readFile(
-  new URL(
-    "../public/assets/kernel-home-direct-entry-fix.js",
-    import.meta.url
-  ),
-  "utf8"
-);
 const sourceIndex = await readFile(
   new URL("../index.html", import.meta.url),
   "utf8"
 );
+const fallbackSnapshotScript = await readFile(
+  new URL(
+    "../public/assets/kernel-home-snapshot.js",
+    import.meta.url
+  ),
+  "utf8"
+);
 const finalizer = await readFile(
   new URL("./finalize-analytics-entry.mjs", import.meta.url),
+  "utf8"
+);
+const generator = await readFile(
+  new URL("./generate-home-snapshot.mjs", import.meta.url),
   "utf8"
 );
 const deployWorkflow = await readFile(
@@ -27,19 +35,95 @@ const deployWorkflow = await readFile(
   ),
   "utf8"
 );
-
-assert.doesNotThrow(
-  () => new Function(safeguard),
-  "El protector de datos de entrada directa debe ser JavaScript válido."
+const smokeTest = await readFile(
+  new URL("./smoke-home-first-entry.mjs", import.meta.url),
+  "utf8"
 );
 
-assert.match(safeguard, /REQUEST_TIMEOUT\s*=\s*2500/);
-assert.match(safeguard, /core\/data\/researchers\.v2\.json/);
-assert.match(safeguard, /core\/data\/publications\.v2\.json/);
-assert.match(safeguard, /core\/data\/projects\.v2\.json/);
-assert.match(safeguard, /withDeadline/);
-assert.match(safeguard, /fallbackResponse/);
-assert.match(safeguard, /kernel-home-data-fallback/);
+assert.doesNotThrow(
+  () => new Function(fallbackSnapshotScript),
+  "La instantánea local de respaldo debe ser JavaScript válido."
+);
+assert.match(fallbackSnapshotScript, /member_count:\s*9/);
+assert.match(fallbackSnapshotScript, /unique_records:\s*162/);
+assert.match(
+  fallbackSnapshotScript,
+  /featured_approved_projects:\s*11/
+);
+assert.match(
+  fallbackSnapshotScript,
+  /additional_participations_not_itemized:\s*48/
+);
+
+const fixtureSnapshot = buildHomeSnapshot({
+  generatedAt: "2026-08-02T00:00:00.000Z",
+  researchers: {
+    group: { member_count: 9 },
+    researchers: []
+  },
+  publications: {
+    summary: { unique_records: 162 },
+    records: []
+  },
+  projects: {
+    summary: {
+      featured_approved_projects: 11,
+      additional_participations_not_itemized: 48
+    },
+    approved_projects: [
+      {
+        id: "uasd-dinamica-sin-jacobiana",
+        order: 11,
+        title: "Proyecto UASD",
+        status: "approved",
+        featured: true
+      },
+      {
+        id: "procesos-iterativos",
+        order: 1,
+        title: "Procesos iterativos",
+        status: "approved",
+        featured: true
+      }
+    ],
+    proposals: [
+      {
+        id: "fondocyt-transporte-nutrientes",
+        order: 1,
+        title: "FONDOCyT nutrientes",
+        status: "under-review"
+      }
+    ]
+  }
+});
+
+assert.equal(
+  fixtureSnapshot.researchers.group.member_count,
+  9
+);
+assert.equal(
+  fixtureSnapshot.publications.summary.unique_records,
+  162
+);
+assert.equal(
+  fixtureSnapshot.projects.approved_projects.length,
+  2
+);
+assert.equal(
+  fixtureSnapshot.projects.proposals.length,
+  1
+);
+
+const generatedScript = snapshotToScript(fixtureSnapshot);
+const generatedWindow = {};
+assert.doesNotThrow(() => {
+  new Function("window", generatedScript)(generatedWindow);
+});
+assert.equal(
+  generatedWindow.KernelHomeSnapshot
+    .publications.summary.unique_records,
+  162
+);
 
 const bridgeFixture = `(() => {
   "use strict";
@@ -48,16 +132,25 @@ const bridgeFixture = `(() => {
   let renderTicket = 0;
 
   async function loadData() {
-    return fetch("./core/data/researchers.v2.json", {
-      cache: "no-store"
-    });
+    if (!dataPromise) {
+      dataPromise = Promise.resolve({
+        researchers: {},
+        publications: {},
+        projects: {}
+      });
+    }
+    return dataPromise;
   }
 
   async function render() {
     const currentTicket = ++renderTicket;
     const main = document.getElementById("main");
-    let ignored = main;
     const t = labels();
+
+    if (!main.querySelector(".kernel-home-2b")) {
+      main.innerHTML = "loading";
+    }
+
     try {
       const {
         researchers,
@@ -98,7 +191,16 @@ const patchedBridge = patchHomeBridgeSource(bridgeFixture);
 
 assert.match(
   patchedBridge,
-  /KERNEL_HOME_ROOT_FIX_VERSION\s*=\s*"3\.0\.0"/
+  /KERNEL_HOME_ROOT_FIX_VERSION\s*=\s*"4\.0\.0"/
+);
+assert.match(patchedBridge, /window\.KernelHomeSnapshot/);
+assert.match(
+  patchedBridge,
+  /dataPromise = Promise\.resolve\(/
+);
+assert.match(
+  patchedBridge,
+  /!window\.KernelHomeSnapshot &&/
 );
 assert.match(
   patchedBridge,
@@ -115,13 +217,7 @@ assert.doesNotMatch(
   patchedBridge,
   /observe\(document\.documentElement/
 );
-assert.match(patchedBridge, /cache: "default"/);
-assert.match(patchedBridge, /t = labels\(\);/);
 
-assert.doesNotMatch(
-  sourceIndex,
-  /kernel-home-loading-race-fix\.js/
-);
 assert.match(
   sourceIndex,
   /id="kernel-home-route-canonicalizer"/
@@ -129,22 +225,32 @@ assert.match(
 assert.match(sourceIndex, /history\.replaceState/);
 assert.match(sourceIndex, /"#\/home"/);
 
+assert.match(generator, /FEATURED_PROJECT_IDS/);
+assert.match(generator, /kernel-home-snapshot\.js/);
+assert.match(generator, /window\.KernelHomeSnapshot/);
+
+assert.match(finalizer, /id="kernel-home-snapshot"/);
+assert.match(finalizer, /window\.KernelHomeSnapshot/);
+assert.match(
+  finalizer,
+  /kernel-home-2b-bridge\.js\?v=20260802-4/
+);
 assert.doesNotMatch(
   finalizer,
-  /kernel-home-loading-race-fix\.js\?v=/
+  /kernel-home-direct-entry-fix\.js\?v=/
 );
 assert.match(
   finalizer,
-  /kernel-home-2b-bridge\.js\?v=20260802-3/
+  /ruta canónica → instantánea sincrónica → Analytics → puente V4 de portada/
+);
+
+assert.match(
+  deployWorkflow,
+  /researchers\.v2\.json publications\.v2\.json projects\.v2\.json/
 );
 assert.match(
-  finalizer,
-  /kernel-home-route-canonicalizer/
-);
-assert.match(finalizer, /history\.replaceState/);
-assert.match(
-  finalizer,
-  /ruta canónica → Analytics → recuperación de datos → puente corregido de portada/
+  deployWorkflow,
+  /node scripts\/generate-home-snapshot\.mjs/
 );
 assert.match(
   deployWorkflow,
@@ -159,6 +265,11 @@ assert.match(
   /playwright install --with-deps webkit/
 );
 
+assert.match(smokeTest, /route\.abort\("failed"\)/);
+assert.match(smokeTest, /index\.html#\/home/);
+assert.match(smokeTest, /snapshotAvailable/);
+assert.match(smokeTest, /snapshotPublications/);
+
 console.log(
-  "✓ La primera entrada queda protegida en la raíz: URL canónica, puente serializado, observación acotada, datos resilientes y smoke test WebKit sin recarga."
+  "✓ La portada se construye desde una instantánea sincrónica verificada; no depende de solicitudes JSON, recargas ni parches de recuperación globales."
 );
