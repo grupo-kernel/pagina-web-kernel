@@ -1,12 +1,11 @@
 import assert from "node:assert/strict";
 import { webkit } from "playwright";
 
-// La prueba exige que la raíz implícita se canonicalice antes de iniciar la SPA.
 const baseUrl = process.env.KERNEL_BASE_URL ||
   "https://www.grupoelkernel.com";
 const expectedDeployment = process.env.KERNEL_DEPLOYMENT || "";
 const delayMs = Number(
-  process.env.KERNEL_DATA_DELAY_MS || 1600
+  process.env.KERNEL_DATA_DELAY_MS || 1800
 );
 
 const sleep = milliseconds =>
@@ -32,21 +31,71 @@ async function waitForDeployment() {
   );
 }
 
-async function validateFirstEntry(browser, hash, label) {
+async function collectDiagnostics(page, pageErrors, consoleMessages, responses) {
+  return page.evaluate(({ pageErrors, consoleMessages, responses }) => ({
+    href: location.href,
+    readyState: document.readyState,
+    title: document.title,
+    deployment:
+      document.querySelector('meta[name="kernel-deployment"]')?.content || "",
+    ready: Boolean(
+      document.querySelector('[data-kernel-platform-page="home-2b"]')
+    ),
+    loading: Boolean(
+      document.querySelector(".kernel-home-2b__loading")
+    ),
+    mainHtml: document.getElementById("main")?.innerHTML?.slice(0, 1800) || "",
+    scripts: [...document.scripts]
+      .map(script => script.src || script.id || "inline")
+      .filter(value => /kernel-home|index-/i.test(value)),
+    directEntryDiagnostics:
+      window.KernelHomeDirectEntryFix?.diagnostics?.() || null,
+    analyticsDiagnostics:
+      window.KernelEntryAnalyticsFix?.diagnostics?.() || null,
+    pageErrors,
+    consoleMessages,
+    responses
+  }), { pageErrors, consoleMessages, responses });
+}
+
+async function validateFirstEntry(browser, {
+  path,
+  label,
+  referer = ""
+}) {
   const context = await browser.newContext({
     locale: "es-DO",
     viewport: {
       width: 1366,
       height: 900
-    }
+    },
+    serviceWorkers: "block"
   });
 
   try {
     const page = await context.newPage();
     const pageErrors = [];
+    const consoleMessages = [];
+    const responses = [];
 
     page.on("pageerror", error => {
       pageErrors.push(String(error?.message || error));
+    });
+    page.on("console", message => {
+      const text = `${message.type()}: ${message.text()}`;
+      if (/Kernel|loading|home-2b|fallback/i.test(text)) {
+        consoleMessages.push(text);
+      }
+    });
+    page.on("response", response => {
+      const url = response.url();
+      if (/core\/data|kernel-home|index\.html/i.test(url)) {
+        responses.push({
+          url,
+          status: response.status(),
+          fromServiceWorker: response.fromServiceWorker()
+        });
+      }
     });
 
     await page.route("**/core/data/*.json", async route => {
@@ -54,41 +103,44 @@ async function validateFirstEntry(browser, hash, label) {
       await route.continue();
     });
 
-    const url =
-      `${baseUrl}/?first-entry-smoke=${Date.now()}${hash}`;
+    const url = `${baseUrl}${path}`;
 
     await page.goto(url, {
       waitUntil: "domcontentloaded",
-      timeout: 30000
+      timeout: 30000,
+      ...(referer ? { referer } : {})
     });
 
-    await page.waitForSelector(
-      '[data-kernel-platform-page="home-2b"]',
-      {
-        state: "attached",
-        timeout: 15000
-      }
-    );
+    try {
+      await page.waitForSelector(
+        '[data-kernel-platform-page="home-2b"]',
+        {
+          state: "attached",
+          timeout: 15000
+        }
+      );
+    } catch (error) {
+      const diagnostics = await collectDiagnostics(
+        page,
+        pageErrors,
+        consoleMessages,
+        responses
+      );
+      throw new Error(
+        `${label}: la portada quedó bloqueada. Diagnóstico: ${JSON.stringify(diagnostics)}`,
+        { cause: error }
+      );
+    }
 
-    const state = await page.evaluate(() => ({
-      ready: Boolean(
-        document.querySelector(
-          '[data-kernel-platform-page="home-2b"]'
-        )
-      ),
-      loading: Boolean(
-        document.querySelector(
-          ".kernel-home-2b__loading"
-        )
-      ),
-      navigationType:
-        performance.getEntriesByType("navigation")[0]?.type || "",
-      title: document.title,
-      deployment:
-        document.querySelector(
-          'meta[name="kernel-deployment"]'
-        )?.content || ""
-    }));
+    const state = await collectDiagnostics(
+      page,
+      pageErrors,
+      consoleMessages,
+      responses
+    );
+    state.navigationType = await page.evaluate(() =>
+      performance.getEntriesByType("navigation")[0]?.type || ""
+    );
 
     assert.equal(
       state.ready,
@@ -126,16 +178,19 @@ await waitForDeployment();
 const browser = await webkit.launch({ headless: true });
 
 try {
-  await validateFirstEntry(
-    browser,
-    "#/home",
-    "Ruta explícita #/home"
-  );
-  await validateFirstEntry(
-    browser,
-    "",
-    "Portada implícita sin hash"
-  );
+  await validateFirstEntry(browser, {
+    path: `/?first-entry-smoke=${Date.now()}#/home`,
+    label: "Ruta raíz explícita #/home"
+  });
+  await validateFirstEntry(browser, {
+    path: `/?first-entry-smoke=${Date.now()}`,
+    label: "Portada raíz implícita sin hash"
+  });
+  await validateFirstEntry(browser, {
+    path: "/index.html#/home",
+    label: "Ruta exacta index.html#/home",
+    referer: "https://drive.google.com/"
+  });
 } finally {
   await browser.close();
 }
