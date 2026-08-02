@@ -146,6 +146,61 @@ async function validateFirstEntry(browser, {
       "navigate",
       `${label}: la prueba requirió una recarga inesperada.`
     );
+
+    await page.evaluate(() => {
+      const main = document.getElementById("main");
+      main.innerHTML = `
+        <section data-kernel-legacy-home="true">
+          Soluciones cuantitativas para investigar, enseñar y decidir mejor
+        </section>
+      `;
+    });
+
+    await page.waitForFunction(
+      () => Boolean(
+        document.querySelector(
+          '[data-kernel-platform-page="home-2b"]'
+        )
+      ) && !document.querySelector(
+        '[data-kernel-legacy-home="true"]'
+      ),
+      null,
+      { timeout: 3000 }
+    );
+
+    const recovered = await page.evaluate(() => ({
+      modern: Boolean(
+        document.querySelector(
+          '[data-kernel-platform-page="home-2b"]'
+        )
+      ),
+      legacy: Boolean(
+        document.querySelector(
+          '[data-kernel-legacy-home="true"]'
+        )
+      ),
+      toolsVisible:
+        document.querySelectorAll(
+          ".kernel-home-2b__tool"
+        ).length
+    }));
+
+    assert.equal(
+      recovered.modern,
+      true,
+      `${label}: la portada moderna no recuperó prioridad después de la sobrescritura de la SPA.`
+    );
+    assert.equal(
+      recovered.legacy,
+      false,
+      `${label}: la portada empresarial antigua permaneció visible.`
+    );
+    assert.equal(
+      recovered.toolsVisible,
+      4,
+      `${label}: la recuperación no restauró la portada moderna completa.`
+    );
+
     assert.equal(
       pageErrors.filter(message =>
         /Kernel Home 2B Bridge|renderTicket|loading/i.test(message)
@@ -155,7 +210,7 @@ async function validateFirstEntry(browser, {
     );
 
     console.log(
-      `✓ ${label}: portada completa sin recarga y sin depender de JSON; ` +
+      `✓ ${label}: portada moderna completa, resistente a la sobrescritura de la SPA; ` +
       `solicitudes bloqueadas=${blockedHomepageDataRequests}; ` +
       `versión=${state.deployment}.`
     );
