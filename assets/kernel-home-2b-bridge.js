@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const KERNEL_HOME_ROOT_FIX_VERSION = "4.0.0";
+  const KERNEL_HOME_ROOT_FIX_VERSION = "5.0.0";
 
   const STYLE_ID = "kernel-home-2b-styles";
 
@@ -1141,7 +1141,10 @@
       ].join(":");
 
       if (
-        main.dataset.kernelHomeSignature === signature
+        main.dataset.kernelHomeSignature === signature &&
+        main.querySelector(
+          '[data-kernel-platform-page="home-2b"]'
+        )
       ) {
         return;
       }
