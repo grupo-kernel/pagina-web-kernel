@@ -15,11 +15,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -35,23 +37,48 @@ jobs:
 
       - name: Build Tailwind CSS
         run: npx tailwindcss -i ./src/css/style.css -o ./src/css/output.css
-        
-      - name: Build project (Vite)
+
+      - name: Build project with Vite
         run: npm run build
+
+      - name: Import current integrated home bridge
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages --depth=1
+          mkdir -p dist/assets
+          git show origin/gh-pages:assets/kernel-home-2b-bridge.js \
+            > dist/assets/kernel-home-2b-bridge.js
+
+      - name: Fix the home bridge at its source
+        run: node scripts/patch-home-bridge.mjs
 
       - name: Prepare complete production entry point
         run: node scripts/prepare-gh-pages-index.mjs
 
-      - name: Finalize analytics entry
+      - name: Finalize analytics and first-entry loading
         run: node scripts/finalize-analytics-entry.mjs
 
       - name: Validate generated route chunks
         run: npm run test:dist
 
-      - name: Deploy to GitHub Pages (gh-pages)
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           keep_files: true
           cname: www.grupoelkernel.com
+
+      - name: Install Playwright WebKit
+        run: |
+          npm install --no-save playwright@1.54.1
+          npx playwright install --with-deps webkit
+
+      - name: Verify first entry without reloading
+        env:
+          KERNEL_BASE_URL: https://www.grupoelkernel.com
+          KERNEL_DEPLOYMENT: source-${{ github.sha }}
+          KERNEL_DATA_DELAY_MS: 1800
+        run: |
+          export KERNEL_DEPLOYMENT="source-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
+          node scripts/smoke-home-first-entry.mjs
