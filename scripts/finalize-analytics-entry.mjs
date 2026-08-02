@@ -8,6 +8,9 @@ const indexPath = path.resolve("dist/index.html");
 const snapshotPath = path.resolve(
   "dist/assets/kernel-home-snapshot.js"
 );
+const featuredToolsBluePath = path.resolve(
+  "dist/assets/kernel-home-featured-tools-blue.js"
+);
 
 function replaceContactEmailInPublishedFiles(directory) {
   const textExtensions = new Set([
@@ -107,6 +110,25 @@ if (snapshotScript.includes("</script")) {
     "La instantánea contiene una secuencia insegura para inserción en HTML."
   );
 }
+if (!fs.existsSync(featuredToolsBluePath)) {
+  throw new Error(
+    "No se encontró el estilo azul de Herramientas destacadas en la compilación."
+  );
+}
+
+const featuredToolsBlueSource = fs.readFileSync(
+  featuredToolsBluePath,
+  "utf8"
+);
+if (
+  !featuredToolsBlueSource.includes("kernel-home-featured-tools-blue") ||
+  !featuredToolsBlueSource.includes(".kernel-home-2b__tool") ||
+  !featuredToolsBlueSource.includes("#1267ca")
+) {
+  throw new Error(
+    "El archivo de estilo azul de Herramientas destacadas está incompleto."
+  );
+}
 
 const duplicateTracker =
   /\n\s*\(function instalarSeguimientoDePaginasKernel\(\)\{[\s\S]*?\n\s*\}\)\(\);\n/;
@@ -119,6 +141,10 @@ html = html.replace(
 html = html.replace(
   /kernel-home-2b-bridge\.js\?v=[^"']+/g,
   "kernel-home-2b-bridge.js?v=20260802-5"
+);
+html = html.replace(
+  /kernel-home-featured-tools-blue\.js\?v=[^"']+/g,
+  "kernel-home-featured-tools-blue.js?v=20260802-1"
 );
 
 const removableScripts = [
@@ -159,6 +185,8 @@ const ksdeVisibleLoader =
   '  <script defer src="./assets/kernel-ksde-visible-results.js?v=20260801-1"></script>';
 const bridgeLoader =
   '  <script defer src="./assets/kernel-home-2b-bridge.js?v=20260802-5"></script>';
+const featuredToolsBlueLoader =
+  '  <script defer src="./assets/kernel-home-featured-tools-blue.js?v=20260802-1"></script>';
 
 if (!html.includes(analyticsLoader)) {
   throw new Error(
@@ -183,19 +211,28 @@ if (!html.includes(ksdeVisibleLoader)) {
   );
 }
 
+if (!html.includes(featuredToolsBlueLoader)) {
+  html = html.replace(
+    bridgeLoader,
+    `${bridgeLoader}\n${featuredToolsBlueLoader}`
+  );
+}
+
 const canonicalizerPosition = html.indexOf(canonicalHomeRoute);
 const snapshotPosition = html.indexOf(inlineSnapshot);
 const analyticsPosition = html.indexOf(analyticsLoader);
 const bridgePosition = html.indexOf(bridgeLoader);
+const featuredToolsBluePosition = html.indexOf(featuredToolsBlueLoader);
 
 if (
   canonicalizerPosition === -1 ||
   snapshotPosition <= canonicalizerPosition ||
   analyticsPosition <= snapshotPosition ||
-  bridgePosition <= analyticsPosition
+  bridgePosition <= analyticsPosition ||
+  featuredToolsBluePosition <= bridgePosition
 ) {
   throw new Error(
-    "El orden de carga debe ser ruta canónica → instantánea sincrónica → Analytics → puente V5 de portada."
+    "El orden de carga debe ser ruta canónica → instantánea sincrónica → Analytics → puente V5 → estilo azul de Herramientas destacadas."
   );
 }
 
@@ -216,7 +253,7 @@ const contactUpdate = replaceContactEmailInPublishedFiles(
 );
 
 console.log(
-  "Finalized entry: canonical route, inline synchronous snapshot, analytics and V5 modern-priority homepage bridge enabled."
+  "Finalized entry: canonical route, synchronous snapshot, analytics, V5 homepage bridge and blue featured-tool cards enabled."
 );
 console.log(
   `Updated contact email in ${contactUpdate.replacements} occurrences across ${contactUpdate.changedFiles.length} published files: ${contactUpdate.changedFiles.join(", ")}.`
