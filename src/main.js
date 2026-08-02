@@ -22,6 +22,9 @@ import {
 import {
     iniciarIntegracionUnaMuestra
 } from "./utils/integrarUnaMuestra.js";
+import {
+    iniciarIntegracionProporcionesRelacionadas
+} from "./utils/integrarProporcionesRelacionadas.js";
 
 function ejecutarInicializador(nombre, inicializador) {
     try {
@@ -83,4 +86,8 @@ ejecutarInicializador(
 ejecutarInicializador(
     "la calculadora de una muestra",
     iniciarIntegracionUnaMuestra
+);
+ejecutarInicializador(
+    "la calculadora de proporciones relacionadas",
+    iniciarIntegracionProporcionesRelacionadas
 );
