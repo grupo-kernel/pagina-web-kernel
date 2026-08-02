@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { webkit } from "playwright";
 
+// La prueba exige que la raíz implícita se canonicalice antes de iniciar la SPA.
 const baseUrl = process.env.KERNEL_BASE_URL ||
   "https://www.grupoelkernel.com";
 const expectedDeployment = process.env.KERNEL_DEPLOYMENT || "";
