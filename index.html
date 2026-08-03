@@ -21,7 +21,9 @@
                     : "";
 
             window.__kernelAnalyticsDisabled = analyticsDisabled;
-            window[`ga-disable-${measurementId}`] = analyticsDisabled;
+            if (analyticsDisabled) {
+                window[`ga-disable-${measurementId}`] = true;
+            }
             window.dataLayer = window.dataLayer || [];
 
             function claveVista(configuracion = {}) {
