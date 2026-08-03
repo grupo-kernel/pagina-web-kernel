@@ -34,45 +34,121 @@ const deploymentId = process.env.GITHUB_SHA
 const output = `<!DOCTYPE html>
 <html lang="es">
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1BBZYECVK"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ window.dataLayer.push(arguments); }
-    window.gtag = window.gtag || gtag;
-    gtag("js", new Date());
-    gtag("config", "G-V1BBZYECVK", {
-      anonymize_ip: true,
-      transport_type: "beacon",
-      send_page_view: false
-    });
+    (function configurarAnaliticaKernel(){
+      const measurementId = "G-V1BBZYECVK";
+      const parametros = new URLSearchParams(window.location.search);
+      const exclusionExplicita = ["off", "0", "false", "test"].includes(
+        String(parametros.get("kernel_analytics") || "").trim().toLowerCase()
+      );
+      const webdriver = navigator.webdriver === true;
+      const analyticsDisabled = exclusionExplicita || webdriver;
+      const exclusionReason = exclusionExplicita
+        ? "kernel_analytics"
+        : webdriver
+          ? "webdriver"
+          : "";
 
-    (function instalarSeguimientoDePaginasKernel(){
-      function rutaActual(){
-        return window.location.pathname + window.location.search + window.location.hash;
+      window.__kernelAnalyticsDisabled = analyticsDisabled;
+      window["ga-disable-" + measurementId] = analyticsDisabled;
+      window.dataLayer = window.dataLayer || [];
+
+      function claveVista(configuracion){
+        configuracion = configuracion || {};
+        const referencia =
+          configuracion.page_path ||
+          configuracion.page_location ||
+          window.location.pathname + window.location.hash;
+
+        try {
+          const url = new URL(referencia, window.location.href);
+          return url.pathname + url.hash;
+        } catch (error) {
+          return String(referencia).replace(/\\?.*?(?=#|$)/, "") ||
+            window.location.pathname + window.location.hash;
+        }
       }
+
+      function gtag(){
+        if (analyticsDisabled) return;
+
+        if (arguments[0] === "event" && arguments[1] === "page_view") {
+          const key = claveVista(arguments[2]);
+          if (window.__kernelLastTrackedPage === key) return;
+          window.__kernelLastTrackedPage = key;
+        }
+
+        window.dataLayer.push(arguments);
+      }
+
+      window.gtag = gtag;
+
       function registrarVista(){
-        const pagePath = rutaActual();
-        if (window.__kernelLastTrackedPage === pagePath) return;
-        window.__kernelLastTrackedPage = pagePath;
+        if (analyticsDisabled) return;
+
+        const pagePath =
+          window.location.pathname +
+          window.location.search +
+          window.location.hash;
+
         gtag("event", "page_view", {
           page_title: document.title,
           page_location: window.location.href,
           page_path: pagePath
         });
       }
+
       window.__kernelTrackPageView = registrarVista;
+      window.KernelAnalyticsControl = Object.freeze({
+        version: "3.0.0",
+        disabled: analyticsDisabled,
+        reason: exclusionReason,
+        diagnostics: () => ({
+          disabled: window.__kernelAnalyticsDisabled === true,
+          reason: exclusionReason,
+          webdriver: navigator.webdriver === true,
+          page: location.pathname + location.search + location.hash,
+          lastTrackedPage: window.__kernelLastTrackedPage || ""
+        })
+      });
+
+      if (analyticsDisabled) return;
+
+      const loader = document.createElement("script");
+      loader.async = true;
+      loader.src =
+        "https://www.googletagmanager.com/gtag/js?id=" + measurementId;
+      document.head.appendChild(loader);
+
+      gtag("js", new Date());
+      gtag("config", measurementId, {
+        anonymize_ip: true,
+        transport_type: "beacon",
+        send_page_view: false
+      });
+
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", registrarVista, { once:true });
+        document.addEventListener(
+          "DOMContentLoaded",
+          registrarVista,
+          { once:true }
+        );
       } else {
         registrarVista();
       }
-      window.addEventListener("hashchange", () => window.setTimeout(registrarVista, 0));
-      window.addEventListener("popstate", () => window.setTimeout(registrarVista, 0));
+
+      window.addEventListener(
+        "hashchange",
+        () => window.setTimeout(registrarVista, 0)
+      );
+      window.addEventListener(
+        "popstate",
+        () => window.setTimeout(registrarVista, 0)
+      );
       window.addEventListener("pageshow", event => {
-        if (event.persisted) {
-          window.__kernelLastTrackedPage = "";
-          window.setTimeout(registrarVista, 0);
-        }
+        if (!event.persisted) return;
+        window.__kernelLastTrackedPage = "";
+        window.setTimeout(registrarVista, 0);
       });
     })();
   </script>
