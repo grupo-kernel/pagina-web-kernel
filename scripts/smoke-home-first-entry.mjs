@@ -46,6 +46,7 @@ async function validateFirstEntry(browser, {
     const page = await context.newPage();
     const pageErrors = [];
     let blockedHomepageDataRequests = 0;
+    let blockedAnalyticsRequests = 0;
 
     page.on("pageerror", error => {
       pageErrors.push(String(error?.message || error));
@@ -55,6 +56,14 @@ async function validateFirstEntry(browser, {
       blockedHomepageDataRequests += 1;
       await route.abort("failed");
     });
+
+    await page.route(
+      /https?:\/\/[^/]*(?:googletagmanager\.com|google-analytics\.com|doubleclick\.net)\/.*/i,
+      async route => {
+        blockedAnalyticsRequests += 1;
+        await route.abort("blockedbyclient");
+      }
+    );
 
     await page.goto(`${baseUrl}${path}`, {
       waitUntil: "domcontentloaded",
@@ -103,7 +112,27 @@ async function validateFirstEntry(browser, {
       deployment:
         document.querySelector(
           'meta[name="kernel-deployment"]'
-        )?.content || ""
+        )?.content || "",
+      analyticsDisabled:
+        window.__kernelAnalyticsDisabled === true,
+      analyticsScriptLoaded:
+        [...document.scripts].some(script =>
+          /googletagmanager\.com\/gtag\/js/i.test(script.src || "")
+        ),
+      analyticsPageViews:
+        Array.isArray(window.dataLayer)
+          ? window.dataLayer.filter(entry => {
+              try {
+                const values = Array.from(entry);
+                return values[0] === "event" &&
+                  values[1] === "page_view";
+              } catch {
+                return false;
+              }
+            }).length
+          : 0,
+      analyticsDiagnostics:
+        window.KernelAnalyticsControl?.diagnostics?.() || null
     }));
 
     assert.equal(
@@ -146,6 +175,24 @@ async function validateFirstEntry(browser, {
       "navigate",
       `${label}: la prueba requirió una recarga inesperada.`
     );
+
+    if (expectedDeployment) {
+      assert.equal(
+        state.analyticsDisabled,
+        true,
+        `${label}: la navegación automatizada no desactivó GA4.`
+      );
+      assert.equal(
+        state.analyticsScriptLoaded,
+        false,
+        `${label}: se cargó Google Tag Manager durante una prueba automatizada.`
+      );
+      assert.equal(
+        state.analyticsPageViews,
+        0,
+        `${label}: la prueba automatizada generó eventos page_view.`
+      );
+    }
 
     await page.evaluate(() => {
       const main = document.getElementById("main");
@@ -210,8 +257,9 @@ async function validateFirstEntry(browser, {
     );
 
     console.log(
-      `✓ ${label}: portada moderna completa, resistente a la sobrescritura de la SPA; ` +
-      `solicitudes bloqueadas=${blockedHomepageDataRequests}; ` +
+      `✓ ${label}: portada moderna completa sin tráfico analítico automatizado; ` +
+      `datos bloqueados=${blockedHomepageDataRequests}; ` +
+      `Analytics bloqueado=${blockedAnalyticsRequests}; ` +
       `versión=${state.deployment}.`
     );
   } finally {
@@ -225,15 +273,15 @@ const browser = await webkit.launch({ headless: true });
 
 try {
   await validateFirstEntry(browser, {
-    path: `/?first-entry-smoke=${Date.now()}#/home`,
+    path: `/?kernel_analytics=off&first-entry-smoke=${Date.now()}#/home`,
     label: "Ruta raíz explícita #/home"
   });
   await validateFirstEntry(browser, {
-    path: `/?first-entry-smoke=${Date.now()}`,
+    path: `/?kernel_analytics=off&first-entry-smoke=${Date.now()}`,
     label: "Portada raíz implícita sin hash"
   });
   await validateFirstEntry(browser, {
-    path: "/index.html#/home",
+    path: "/index.html?kernel_analytics=off#/home",
     label: "Ruta exacta index.html#/home",
     referer: "https://drive.google.com/"
   });
