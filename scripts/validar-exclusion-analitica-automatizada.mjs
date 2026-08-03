@@ -8,6 +8,10 @@ const read = relativePath => readFile(
 
 const sourceIndex = await read("../index.html");
 const productionBuilder = await read("./prepare-gh-pages-index.mjs");
+const productionFinalizer = await read(
+  "./finalize-analytics-automation.mjs"
+);
+const deployWorkflow = await read("../.github/workflows/deploy.yml");
 const smokeTest = await read("./smoke-home-first-entry.mjs");
 
 const requiredSourceMarkers = [
@@ -29,6 +33,31 @@ requiredSourceMarkers.forEach(marker => {
     `La entrada de producción debe incluir el control analítico: ${marker}`
   );
 });
+
+assert.ok(
+  sourceIndex.includes("if (analyticsDisabled) {") &&
+    sourceIndex.includes("ga-disable-${measurementId}"),
+  "La entrada fuente debe respetar los indicadores previos de exclusión de GA4."
+);
+
+[
+  "safeAssignment",
+  "window.__kernelAnalyticsDisabled",
+  "navigator.webdriver",
+  "if (analyticsDisabled) return"
+].forEach(marker => {
+  assert.ok(
+    productionFinalizer.includes(marker),
+    `El finalizador de producción debe verificar: ${marker}`
+  );
+});
+
+assert.ok(
+  deployWorkflow.includes(
+    "node scripts/finalize-analytics-automation.mjs"
+  ),
+  "El despliegue debe ejecutar el finalizador de exclusión analítica."
+);
 
 assert.doesNotMatch(
   sourceIndex,
