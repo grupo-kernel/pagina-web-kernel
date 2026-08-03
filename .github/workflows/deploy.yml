@@ -71,6 +71,9 @@ jobs:
       - name: Activate interpretation and reporting tools
         run: node scripts/activate-lab-interpret-report.mjs
 
+      - name: Finalize automated Analytics exclusion
+        run: node scripts/finalize-analytics-automation.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
