@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-08-03T04:45:16.610Z",
+  "actualizadoEn": "2026-08-03T08:17:53.786Z",
   "ok": true,
   "paises": [
     {
@@ -10,7 +10,7 @@
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 37
+      "usuarios": 38
     },
     {
       "codigo": "IE",
@@ -36,8 +36,8 @@
   "propiedad": "546100922",
   "visitantes": {
     "hoy": 0,
-    "total": 102,
-    "ultimos30Dias": 102,
-    "ultimos7Dias": 57
+    "total": 103,
+    "ultimos30Dias": 103,
+    "ultimos7Dias": 58
   }
 }
