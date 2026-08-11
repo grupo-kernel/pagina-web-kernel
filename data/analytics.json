@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-08-11T04:12:19.484Z",
+  "actualizadoEn": "2026-08-11T13:37:17.351Z",
   "ok": true,
   "paises": [
     {
@@ -38,6 +38,6 @@
     "hoy": 0,
     "total": 149,
     "ultimos30Dias": 149,
-    "ultimos7Dias": 16
+    "ultimos7Dias": 17
   }
 }
