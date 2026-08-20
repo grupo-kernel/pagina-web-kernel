@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-08-20T03:08:04.685Z",
+  "actualizadoEn": "2026-08-20T03:55:20.033Z",
   "ok": true,
   "paises": [
     {
@@ -23,6 +23,11 @@
       "usuarios": 3
     },
     {
+      "codigo": "GT",
+      "pais": "Guatemala",
+      "usuarios": 1
+    },
+    {
       "codigo": "HK",
       "pais": "Hong Kong",
       "usuarios": 1
@@ -35,9 +40,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 2,
-    "total": 153,
-    "ultimos30Dias": 153,
-    "ultimos7Dias": 5
+    "hoy": 3,
+    "total": 154,
+    "ultimos30Dias": 154,
+    "ultimos7Dias": 6
   }
 }
