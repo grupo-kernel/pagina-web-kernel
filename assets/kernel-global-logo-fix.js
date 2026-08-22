@@ -1,19 +1,27 @@
 (() => {
   "use strict";
 
-  if (window.KernelGlobalLogoFix?.version === "20260730-4") return;
+  const VERSION = "20260821-1";
 
-  const VERSION = "20260730-4";
-  const LOGO = `./assets/logo-el-kernel-20260728.svg?v=${VERSION}`;
+  if (window.KernelGlobalLogoFix?.version === VERSION) return;
+
+  const scriptBase = document.currentScript?.src || document.baseURI;
+  const LOGO = new URL(
+    `./logo-kerf-20260821.png?v=${VERSION}`,
+    scriptBase
+  ).href;
+
   const TARGET_SOURCES = [
-    "elkernel-bvhowfrq.webp",
-    "elkernel.png",
-    "logo-el-kernel"
+    "elkernel",
+    "logo-el-kernel",
+    "logo-kerf",
+    "kerf.png"
   ];
+
   let timer = 0;
 
   const preload = new Image();
-  preload.decoding = "sync";
+  preload.decoding = "async";
   preload.fetchPriority = "high";
   preload.src = LOGO;
 
@@ -22,34 +30,40 @@
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
-  function isKernelLogo(image) {
+  function isKerFLogo(image) {
     if (!(image instanceof HTMLImageElement)) return false;
+
     const src = normalize(image.getAttribute("src"));
     const alt = normalize(image.getAttribute("alt"));
     const title = normalize(image.getAttribute("title"));
-    const branded = Boolean(image.closest(".kernel-brand") || image.closest("#header") || image.closest("#footer"));
+    const inHeader = Boolean(image.closest("#header,.kernel-brand"));
 
-    return branded ||
+    return inHeader ||
       TARGET_SOURCES.some(source => src.includes(source)) ||
       alt.includes("logo del grupo de investigacion el kernel") ||
       alt.includes("logotipo del grupo de investigacion el kernel") ||
+      alt.includes("logo del grupo de investigacion ker(f)") ||
+      alt.includes("logotipo del grupo de investigacion ker(f)") ||
       alt === "el kernel" ||
-      title === "el kernel";
+      alt === "ker(f)" ||
+      title === "el kernel" ||
+      title === "ker(f)";
   }
 
   function updateImage(image) {
-    if (!isKernelLogo(image)) return false;
+    if (!isKerFLogo(image)) return false;
 
-    if (String(image.getAttribute("src") || "") !== LOGO) {
-      image.setAttribute("src", LOGO);
+    if (image.src !== LOGO) {
+      image.src = LOGO;
     }
 
     image.removeAttribute("srcset");
-    image.alt = "Logotipo del Grupo de Investigación El Kernel";
-    image.decoding = "sync";
-    image.fetchPriority = "high";
+    image.alt = "Logotipo del Grupo de Investigación Ker(F)";
+    image.title = "Grupo de Investigación Ker(F)";
+    image.decoding = "async";
+    image.fetchPriority = image.closest("#header") ? "high" : "auto";
     image.dataset.kernelLogoVersion = VERSION;
-    image.dataset.kernelLogoVariant = "full";
+    image.dataset.kernelLogoVariant = "kerf";
 
     Object.assign(image.style, {
       objectFit: "contain",
@@ -67,9 +81,19 @@
   }
 
   function updateFavicons() {
-    document.querySelectorAll('link[rel*="icon"]').forEach(link => {
+    const rels = ["icon", "shortcut icon", "apple-touch-icon"];
+
+    rels.forEach(rel => {
+      let link = document.querySelector(`link[rel="${rel}"]`);
+
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = rel;
+        document.head.appendChild(link);
+      }
+
       link.href = LOGO;
-      link.type = "image/svg+xml";
+      link.type = "image/png";
       link.dataset.kernelLogoVersion = VERSION;
     });
   }
@@ -105,13 +129,15 @@
     subtree: true
   });
 
-  document.addEventListener("DOMContentLoaded", () => apply(), { once: true });
+  document.addEventListener("DOMContentLoaded", () => apply(), {
+    once: true
+  });
   window.addEventListener("pageshow", () => apply());
   window.addEventListener("hashchange", () => schedule());
   window.addEventListener("kernel-language-change", () => schedule());
   document.addEventListener("kernel-language-change", () => schedule());
 
-  window.KernelGlobalLogoFix = {
+  window.KernelGlobalLogoFix = Object.freeze({
     version: VERSION,
     logo: LOGO,
     apply,
@@ -120,16 +146,17 @@
       complete: preload.complete,
       naturalWidth: preload.naturalWidth,
       naturalHeight: preload.naturalHeight,
-      images: [...document.querySelectorAll("img[data-kernel-logo-version]")].map(image => ({
+      images: [...document.querySelectorAll(
+        "img[data-kernel-logo-version]"
+      )].map(image => ({
         src: image.getAttribute("src"),
         alt: image.getAttribute("alt"),
-        variant: image.dataset.kernelLogoVariant,
         version: image.dataset.kernelLogoVersion,
         width: image.getBoundingClientRect().width,
         height: image.getBoundingClientRect().height
       }))
     })
-  };
+  });
 
   apply();
 })();
