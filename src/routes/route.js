@@ -15,7 +15,6 @@ import { DiagnosticoServicios } from "../pages/DiagnosticoServicios.js";
 const RETRASO_REINTENTO_CARGA_MS = 450;
 const CLAVE_RECUPERACION_MODULO = "kernel:recuperacion-modulo";
 let navegacionActiva = 0;
-let promesaAccesoProtegido = null;
 
 function esperar(milisegundos) {
     return new Promise((resolve) => {
@@ -26,13 +25,6 @@ function esperar(milisegundos) {
 function esErrorCargaDiferida(error) {
     const mensaje = String(error?.message || error || "");
     return /chunkloaderror|failed to fetch dynamically imported module|importing a module script failed|error loading dynamically imported module|networkerror.*module|load failed.*module/i.test(mensaje);
-}
-
-function esErrorAutenticacionTransitorio(error) {
-    return [
-        "kernel/auth-timeout",
-        "auth/network-request-failed"
-    ].includes(error?.code);
 }
 
 async function importarConReintento(importador) {
@@ -64,23 +56,6 @@ function crearCargador(importador, exportacion, mensaje) {
 
         return fabrica();
     };
-}
-
-function cargarAccesoProtegido() {
-    if (!promesaAccesoProtegido) {
-        promesaAccesoProtegido = Promise.all([
-            importarConReintento(() => import("../auth/authGuard.js")),
-            importarConReintento(() => import("../auth/login.js"))
-        ]).then(([guard, login]) => ({
-            esperarAutenticacion: guard.esperarAutenticacion,
-            crearLogin: login.crearLogin
-        })).catch((error) => {
-            promesaAccesoProtegido = null;
-            throw error;
-        });
-    }
-
-    return promesaAccesoProtegido;
 }
 
 const cargarLaboratorioKernel = crearCargador(
@@ -171,7 +146,7 @@ const cargarCalculadoraRegresionCompleta = crearCargador(
 const cargarCalculadoraRegresionLogistica = crearCargador(
     () => import("../pages/CalculadoraRegresionLogistica.js"),
     "CalculadoraRegresionLogistica",
-    "La calculadora de regresión logística no está disponible."
+    "La calculadora de regresión logística binaria no está disponible."
 );
 const cargarCalculadoraRegresionConteo = crearCargador(
     () => import("../pages/CalculadoraRegresionConteo.js"),
@@ -180,60 +155,38 @@ const cargarCalculadoraRegresionConteo = crearCargador(
 );
 
 const routes = {
-    home: { page: CreatePageHome, layout: "full", title: "Portada | El Kernel" },
-    servicios: { page: Servicios, layout: "full", title: "Servicios profesionales y académicos | El Kernel" },
-    diagnosticoServicios: { page: DiagnosticoServicios, layout: "full", title: "Solicitar diagnóstico | El Kernel" },
-    quienesSomos: { page: CreatePageQuienesSomos, layout: "full", title: "Quiénes somos | El Kernel" },
-    equipment: { page: Equipment, layout: "default", title: "Equipo de investigación | El Kernel" },
-    FormacionAcademica: { page: FormacionAcademica, layout: "default", title: "Formación académica | El Kernel" },
-    noticias: { page: CreatePageNews, layout: "full", title: "Noticias | El Kernel" },
-    publicaciones: { page: publicaciones, layout: "default", title: "Publicaciones | El Kernel" },
-    proyectos: { page: proyectos, layout: "default", title: "Proyectos | El Kernel" },
-    lineas: { page: lineas, layout: "default", title: "Líneas de investigación | El Kernel" },
-    contacto: { page: Contacto, layout: "default", title: "Contacto | El Kernel" },
-    herramientas: { page: herramientas, layout: "default", title: "Herramientas | El Kernel" },
-    laboratorioKernel: { page: cargarLaboratorioKernel, layout: "default", title: "Laboratorio Inteligente de Investigación | El Kernel" },
-    asistentePruebas: { page: cargarAsistentePruebas, layout: "default", title: "¿Qué prueba debo utilizar? | El Kernel" },
-    comparacionGrupos: { page: cargarComparacionGrupos, layout: "default", title: "Comparación de grupos y mediciones | El Kernel" },
-    calculadoraDosGrupos: { page: cargarCalculadoraDosGrupos, layout: "default", title: "Comparación de dos grupos | El Kernel" },
-    calculadoraDosMuestrasRelacionadas: { page: cargarCalculadoraDosMuestrasRelacionadas, layout: "default", title: "Comparación de dos mediciones relacionadas | El Kernel" },
-    calculadoraTresOMasGrupos: { page: cargarCalculadoraTresOMasGrupos, layout: "default", title: "Comparación de tres o más grupos independientes | El Kernel" },
-    calculadoraTresOMasMedicionesRelacionadas: { page: cargarCalculadoraTresOMasMedicionesRelacionadas, layout: "default", title: "Comparación de tres o más mediciones relacionadas | El Kernel" },
-    correlacionAsociacion: { page: cargarCorrelacionAsociacion, layout: "default", title: "Correlación y asociación | El Kernel" },
-    calculadoraRelacionVariables: { page: cargarCalculadoraRelacionVariables, layout: "default", title: "Relación entre variables | El Kernel" },
-    calculadoraAsociacionCategorica: { page: cargarCalculadoraAsociacionCategorica, layout: "default", title: "Asociación entre variables categóricas | El Kernel" },
-    calculadoraEstadisticaDescriptiva: { page: cargarCalculadoraEstadisticaDescriptiva, layout: "default", title: "Estadística descriptiva | El Kernel" },
-    calculadoraFiabilidadCuestionarios: { page: cargarCalculadoraFiabilidadCuestionarios, layout: "default", title: "Cuestionarios y fiabilidad | El Kernel" },
-    calculadoraEvaluacionEducativa: { page: cargarCalculadoraEvaluacionEducativa, layout: "default", title: "Evaluación educativa | El Kernel" },
-    calculadoraTamanoMuestraPotencia: { page: cargarCalculadoraTamanoMuestraPotencia, layout: "default", title: "Tamaño de muestra y potencia | El Kernel" },
-    bibliotecaMetodologica: { page: cargarBibliotecaMetodologica, layout: "default", title: "Biblioteca metodológica | El Kernel" },
-    regresionModelos: { page: cargarRegresionModelos, layout: "default", title: "Modelos de regresión | El Kernel" },
-    calculadoraRegresion: { page: cargarCalculadoraRegresionCompleta, layout: "default", title: "Regresión lineal y múltiple | El Kernel" },
-    calculadoraRegresionLogistica: { page: cargarCalculadoraRegresionLogistica, layout: "default", title: "Regresión logística binaria | El Kernel" },
-    calculadoraRegresionConteo: { page: cargarCalculadoraRegresionConteo, layout: "default", title: "Regresión de Poisson y binomial negativa | El Kernel" }
+    home: { page: CreatePageHome, layout: "full", title: "Portada | Ker(F)" },
+    servicios: { page: Servicios, layout: "full", title: "Servicios profesionales y académicos | Ker(F)" },
+    diagnosticoServicios: { page: DiagnosticoServicios, layout: "full", title: "Solicitar diagnóstico | Ker(F)" },
+    quienesSomos: { page: CreatePageQuienesSomos, layout: "full", title: "Quiénes somos | Ker(F)" },
+    equipment: { page: Equipment, layout: "default", title: "Equipo de investigación | Ker(F)" },
+    FormacionAcademica: { page: FormacionAcademica, layout: "default", title: "Formación académica | Ker(F)" },
+    noticias: { page: CreatePageNews, layout: "full", title: "Noticias | Ker(F)" },
+    publicaciones: { page: publicaciones, layout: "default", title: "Publicaciones | Ker(F)" },
+    proyectos: { page: proyectos, layout: "default", title: "Proyectos | Ker(F)" },
+    lineas: { page: lineas, layout: "default", title: "Líneas de investigación | Ker(F)" },
+    contacto: { page: Contacto, layout: "default", title: "Contacto | Ker(F)" },
+    herramientas: { page: herramientas, layout: "default", title: "Herramientas | Ker(F)" },
+    laboratorioKernel: { page: cargarLaboratorioKernel, layout: "default", title: "Laboratorio Inteligente de Investigación | Ker(F)" },
+    asistentePruebas: { page: cargarAsistentePruebas, layout: "default", title: "¿Qué prueba debo utilizar? | Ker(F)" },
+    comparacionGrupos: { page: cargarComparacionGrupos, layout: "default", title: "Comparación de grupos y mediciones | Ker(F)" },
+    calculadoraDosGrupos: { page: cargarCalculadoraDosGrupos, layout: "default", title: "Comparación de dos grupos | Ker(F)" },
+    calculadoraDosMuestrasRelacionadas: { page: cargarCalculadoraDosMuestrasRelacionadas, layout: "default", title: "Comparación de dos mediciones relacionadas | Ker(F)" },
+    calculadoraTresOMasGrupos: { page: cargarCalculadoraTresOMasGrupos, layout: "default", title: "Comparación de tres o más grupos independientes | Ker(F)" },
+    calculadoraTresOMasMedicionesRelacionadas: { page: cargarCalculadoraTresOMasMedicionesRelacionadas, layout: "default", title: "Comparación de tres o más mediciones relacionadas | Ker(F)" },
+    correlacionAsociacion: { page: cargarCorrelacionAsociacion, layout: "default", title: "Correlación y asociación | Ker(F)" },
+    calculadoraRelacionVariables: { page: cargarCalculadoraRelacionVariables, layout: "default", title: "Relación entre variables | Ker(F)" },
+    calculadoraAsociacionCategorica: { page: cargarCalculadoraAsociacionCategorica, layout: "default", title: "Asociación entre variables categóricas | Ker(F)" },
+    calculadoraEstadisticaDescriptiva: { page: cargarCalculadoraEstadisticaDescriptiva, layout: "default", title: "Estadística descriptiva | Ker(F)" },
+    calculadoraFiabilidadCuestionarios: { page: cargarCalculadoraFiabilidadCuestionarios, layout: "default", title: "Cuestionarios y fiabilidad | Ker(F)" },
+    calculadoraEvaluacionEducativa: { page: cargarCalculadoraEvaluacionEducativa, layout: "default", title: "Evaluación educativa | Ker(F)" },
+    calculadoraTamanoMuestraPotencia: { page: cargarCalculadoraTamanoMuestraPotencia, layout: "default", title: "Tamaño de muestra y potencia | Ker(F)" },
+    bibliotecaMetodologica: { page: cargarBibliotecaMetodologica, layout: "default", title: "Biblioteca metodológica | Ker(F)" },
+    regresionModelos: { page: cargarRegresionModelos, layout: "default", title: "Modelos de regresión | Ker(F)" },
+    calculadoraRegresion: { page: cargarCalculadoraRegresionCompleta, layout: "default", title: "Regresión lineal y múltiple | Ker(F)" },
+    calculadoraRegresionLogistica: { page: cargarCalculadoraRegresionLogistica, layout: "default", title: "Regresión logística binaria | Ker(F)" },
+    calculadoraRegresionConteo: { page: cargarCalculadoraRegresionConteo, layout: "default", title: "Regresión de Poisson y binomial negativa | Ker(F)" }
 };
-
-const RUTAS_PROTEGIDAS = new Set([
-    "laboratorioKernel",
-    "asistentePruebas",
-    "comparacionGrupos",
-    "calculadoraDosGrupos",
-    "calculadoraDosMuestrasRelacionadas",
-    "calculadoraTresOMasGrupos",
-    "calculadoraTresOMasMedicionesRelacionadas",
-    "correlacionAsociacion",
-    "calculadoraRelacionVariables",
-    "calculadoraAsociacionCategorica",
-    "calculadoraEstadisticaDescriptiva",
-    "calculadoraFiabilidadCuestionarios",
-    "calculadoraEvaluacionEducativa",
-    "calculadoraTamanoMuestraPotencia",
-    "bibliotecaMetodologica",
-    "regresionModelos",
-    "calculadoraRegresion",
-    "calculadoraRegresionLogistica",
-    "calculadoraRegresionConteo"
-]);
 
 let previousPageLocation = document.referrer || "";
 
@@ -268,14 +221,6 @@ function trackPageView(route, title) {
     previousPageLocation = pageLocation;
 }
 
-function crearVistaLogin(crearLogin) {
-    document.title = "Acceso al Laboratorio | El Kernel";
-
-    return crearLogin(() => {
-        loadRoute(obtenerRutaActual());
-    });
-}
-
 function crearVistaCargando() {
     const section = document.createElement("section");
     section.className = "w-full max-w-4xl mx-auto px-4 py-16 md:px-8 font-sans";
@@ -284,17 +229,13 @@ function crearVistaCargando() {
     section.innerHTML = `
         <div class="rounded-3xl border border-slate-200 bg-white p-7 text-center shadow-lg md:p-10">
             <div class="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-4 border-slate-200 border-t-[#0f5b5d]" aria-hidden="true"></div>
-            <h1 class="text-2xl font-black text-slate-900">Abriendo la sección…</h1>
-            <p class="mt-2 text-slate-600">Estamos verificando la sesión y preparando el contenido.</p>
+            <h1 class="text-2xl md:text-3xl font-black text-slate-900">Abriendo la sección…</h1>
+            <p class="mt-2 text-slate-600">Preparando el contenido del Laboratorio Inteligente.</p>
         </div>`;
     return section;
 }
 
 function mensajeErrorRuta(error) {
-    if (error?.code === "kernel/auth-timeout") {
-        return "La verificación de la sesión tardó más de lo esperado. Compruebe su conexión e inténtelo nuevamente.";
-    }
-
     if (esErrorCargaDiferida(error)) {
         return "No fue posible descargar esta sección. Puede tratarse de una interrupción temporal de la conexión.";
     }
@@ -385,20 +326,14 @@ function enfocarTituloPrincipal(contenedor) {
 }
 
 async function resolverPagina(route, page) {
-    if (!RUTAS_PROTEGIDAS.has(route)) {
-        return page.page();
-    }
-
-    const {
-        esperarAutenticacion,
-        crearLogin
-    } = await cargarAccesoProtegido();
-    const user = await esperarAutenticacion();
-    return user ? page.page() : crearVistaLogin(crearLogin);
+    // El Laboratorio y todas sus herramientas son públicas.
+    // Se conserva esta función para mantener una resolución uniforme
+    // y facilitar futuras políticas de acceso sin afectar las rutas.
+    void route;
+    return page.page();
 }
 
-async function loadRoute(route, opciones = {}) {
-    const { intentoAutenticacion = 0 } = opciones;
+async function loadRoute(route) {
     const content = document.querySelector("main");
     const page = routes[route];
     if (!content) return;
@@ -435,19 +370,7 @@ async function loadRoute(route, opciones = {}) {
     } catch (error) {
         if (idNavegacion !== navegacionActiva) return;
 
-        console.error(`[Kernel] Error al cargar la ruta ${route}.`, error);
-        if (
-            esErrorAutenticacionTransitorio(error) &&
-            intentoAutenticacion < 1
-        ) {
-            await esperar(650);
-            if (idNavegacion === navegacionActiva) {
-                return loadRoute(route, {
-                    intentoAutenticacion: intentoAutenticacion + 1
-                });
-            }
-            return;
-        }
+        console.error(`[Ker(F)] Error al cargar la ruta ${route}.`, error);
 
         if (intentarRecuperacionAutomatica(route, error)) return;
 
