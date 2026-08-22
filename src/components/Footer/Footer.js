@@ -1,4 +1,4 @@
-import kernel from "../../assets/ElKernel.webp";
+import kerFLogo from "../../assets/KerF.png";
 
 export function Footer() {
     const anio = new Date().getFullYear();
@@ -6,11 +6,11 @@ export function Footer() {
     return `
         <div class="border-b border-white/10 bg-[#071820]">
             <div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-9 px-5 py-10 md:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-10">
-                <section class="text-white" aria-labelledby="titulo-footer-kernel">
+                <section class="text-white" aria-labelledby="titulo-footer-kerf">
                     <div class="flex items-center gap-4">
-                        <img class="h-16 w-16 rounded-2xl bg-white p-1.5 object-contain shadow-lg" src="${kernel}" alt="Logo del Grupo de Investigación El Kernel" loading="lazy" />
+                        <img class="h-16 w-16 rounded-2xl bg-white p-1.5 object-contain shadow-lg" src="${kerFLogo}" alt="Logotipo del Grupo de Investigación Ker(F)" loading="lazy" />
                         <div>
-                            <h2 id="titulo-footer-kernel" class="text-xl font-black">Grupo de Investigación El Kernel</h2>
+                            <h2 id="titulo-footer-kerf" class="text-xl font-black">Grupo de Investigación Ker(F)</h2>
                             <p class="mt-1 text-sm font-semibold text-[#efc86f]">Rigor matemático para investigar, enseñar y decidir mejor.</p>
                         </div>
                     </div>
@@ -41,7 +41,7 @@ export function Footer() {
 
                 <section class="text-white" aria-labelledby="titulo-contacto-footer">
                     <h2 id="titulo-contacto-footer" class="text-sm font-black uppercase tracking-[0.18em] text-[#efc86f]">Contacto y principios</h2>
-                    <a href="mailto:mleonardos@unapec.edu.do" class="mt-4 block break-all text-base font-black hover:text-emerald-200">mleonardos@unapec.edu.do</a>
+                    <a href="mailto:miguel.leonardo@grupoelkernel.com" class="mt-4 block break-all text-base font-black hover:text-emerald-200">miguel.leonardo@grupoelkernel.com</a>
                     <p class="mt-2 text-sm text-slate-300">República Dominicana</p>
                     <div class="mt-5 flex flex-wrap gap-2">
                         ${["Confidencialidad", "Integridad académica", "Protección de datos", "Reproducibilidad"].map((principio) => `<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-300">${principio}</span>`).join("")}
@@ -58,7 +58,7 @@ export function Footer() {
         </div>
         <div class="bg-[#041014] px-5 py-5 text-xs text-slate-400 md:px-8 md:text-sm">
             <div class="mx-auto flex max-w-[1600px] flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                <p>© ${anio} Grupo de Investigación El Kernel — Todos los derechos reservados.</p>
+                <p>© ${anio} Grupo de Investigación Ker(F) — Todos los derechos reservados.</p>
                 <div class="flex flex-col gap-1 md:items-end">
                     <p>Los alcances, responsables, aliados, tiempos y tarifas se definen después del diagnóstico inicial.</p>
                     <a href="./THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer" class="w-fit underline decoration-slate-600 underline-offset-4 transition hover:text-slate-200">Licencias y créditos</a>
