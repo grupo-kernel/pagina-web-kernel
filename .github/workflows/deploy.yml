@@ -74,6 +74,9 @@ jobs:
       - name: Finalize automated Analytics exclusion
         run: node scripts/finalize-analytics-automation.mjs
 
+      - name: Finalize registered Ker(F) identity
+        run: node scripts/finalize-kerf-brand.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
