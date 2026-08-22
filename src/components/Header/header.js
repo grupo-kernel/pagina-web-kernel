@@ -1,13 +1,13 @@
-import kernel from "../../assets/ElKernel.webp";
+import kerFLogo from "../../assets/KerF.png";
 
 export function createHeader() {
     return `
         <div class="flex w-full items-center justify-between gap-4">
-            <a href="#/home" class="flex min-w-0 items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100" aria-label="Ir a la portada de El Kernel">
-                <img class="h-12 w-12 shrink-0 rounded-xl object-contain md:h-14 md:w-14" src="${kernel}" alt="Logo del Grupo de Investigación El Kernel" title="El Kernel" />
+            <a href="#/home" class="flex min-w-0 items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100" aria-label="Ir a la portada del Grupo de Investigación Ker(F)">
+                <img class="h-14 w-14 shrink-0 rounded-xl bg-white object-contain md:h-16 md:w-16" src="${kerFLogo}" alt="Logotipo del Grupo de Investigación Ker(F)" title="Grupo de Investigación Ker(F)" />
                 <span class="min-w-0">
-                    <span class="block truncate text-xl font-black text-slate-950 md:text-2xl xl:text-3xl">El Kernel</span>
-                    <span class="hidden text-xs font-semibold text-slate-500 sm:block">Investigación y servicios científicos</span>
+                    <span class="block truncate text-xl font-black text-slate-950 md:text-2xl xl:text-3xl">Ker(F)</span>
+                    <span class="hidden text-xs font-semibold text-slate-500 sm:block">Grupo de Investigación</span>
                 </span>
             </a>
             <button

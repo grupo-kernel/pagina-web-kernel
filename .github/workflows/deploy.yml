@@ -74,6 +74,9 @@ jobs:
       - name: Finalize automated Analytics exclusion
         run: node scripts/finalize-analytics-automation.mjs
 
+      - name: Finalize registered Ker(F) identity
+        run: node scripts/finalize-kerf-brand.mjs
+
       - name: Validate generated route chunks
         run: npm run test:dist
 
@@ -97,3 +100,11 @@ jobs:
         run: |
           export KERNEL_DEPLOYMENT="source-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
           node scripts/smoke-home-first-entry.mjs
+
+      - name: Verify public Ker(F) identity
+        env:
+          KERNEL_BASE_URL: https://www.grupoelkernel.com
+          KERNEL_DEPLOYMENT: source-${{ github.sha }}
+        run: |
+          export KERNEL_DEPLOYMENT="source-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
+          node scripts/smoke-kerf-brand.mjs
