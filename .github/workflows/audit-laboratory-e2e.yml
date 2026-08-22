@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - audit/laboratorio-integral-20260822
+  pull_request:
+    branches:
+      - El-Kernel-2.0
   workflow_dispatch:
 
 permissions:
