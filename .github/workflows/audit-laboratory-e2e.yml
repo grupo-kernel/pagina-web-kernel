@@ -1,0 +1,49 @@
+name: Audit laboratory E2E
+
+on:
+  push:
+    branches:
+      - audit/laboratorio-integral-20260822
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    name: Audit all public laboratory routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install project dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.54.1
+          npx playwright install --with-deps chromium webkit
+
+      - name: Audit production in Chromium and WebKit
+        env:
+          KERNEL_AUDIT_BASE_URL: https://www.grupoelkernel.com
+          KERNEL_AUDIT_OUTPUT: audit-artifacts
+        run: node scripts/auditar-laboratorio-e2e.mjs
+
+      - name: Upload audit report and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-laboratorio-e2e
+          path: audit-artifacts
+          if-no-files-found: error
+          retention-days: 14
