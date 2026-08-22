@@ -1,4 +1,4 @@
-import kerFLogo from "../../assets/KerF.png";
+const KERF_LOGO = "/assets/logo-kerf-20260821.png?v=20260821-2";
 
 export function Footer() {
     const anio = new Date().getFullYear();
@@ -8,7 +8,7 @@ export function Footer() {
             <div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-9 px-5 py-10 md:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-10">
                 <section class="text-white" aria-labelledby="titulo-footer-kerf">
                     <div class="flex items-center gap-4">
-                        <img class="h-16 w-16 rounded-2xl bg-white p-1.5 object-contain shadow-lg" src="${kerFLogo}" alt="Logotipo del Grupo de Investigación Ker(F)" loading="lazy" />
+                        <img class="h-16 w-16 rounded-2xl bg-white p-1.5 object-contain shadow-lg" src="${KERF_LOGO}" alt="Logotipo del Grupo de Investigación Ker(F)" loading="lazy" />
                         <div>
                             <h2 id="titulo-footer-kerf" class="text-xl font-black">Grupo de Investigación Ker(F)</h2>
                             <p class="mt-1 text-sm font-semibold text-[#efc86f]">Rigor matemático para investigar, enseñar y decidir mejor.</p>
