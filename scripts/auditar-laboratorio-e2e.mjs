@@ -61,8 +61,14 @@ const BROWSERS = Object.freeze([
 const lower = (value) => String(value || "").toLocaleLowerCase("es");
 
 function isIgnorableRequest(url) {
-  return /google-analytics|googletagmanager|fonts\.googleapis|fonts\.gstatic|api64\.ipify|counterapi|firebaseio/i.test(
+  return /google-analytics|googletagmanager|fonts\.googleapis|fonts\.gstatic|api64\.ipify|counterapi|firebaseio|identitytoolkit/i.test(
     url
+  );
+}
+
+function isCancelledFailure(errorText) {
+  return /err_aborted|cancelled|canceled|load request cancelled|ns_binding_aborted/i.test(
+    String(errorText || "")
   );
 }
 
@@ -81,23 +87,30 @@ async function auditRoute(page, browserName, route, expectedToken) {
     elapsedMs: 0,
     pageErrors: [],
     failedRequests: [],
+    httpErrors: [],
     findings: [],
   };
 
   const started = Date.now();
-  const onPageError = (error) => result.pageErrors.push(String(error?.message || error));
+  const onPageError = (error) => {
+    result.pageErrors.push(String(error?.message || error));
+  };
   const onRequestFailed = (request) => {
     const url = request.url();
-    if (!isIgnorableRequest(url)) {
-      result.failedRequests.push({
-        url,
-        error: request.failure()?.errorText || "request failed",
-      });
-    }
+    const error = request.failure()?.errorText || "request failed";
+    if (isIgnorableRequest(url) || isCancelledFailure(error)) return;
+    result.failedRequests.push({ url, error });
+  };
+  const onResponse = (response) => {
+    const url = response.url();
+    const status = response.status();
+    if (status < 400 || isIgnorableRequest(url)) return;
+    result.httpErrors.push({ url, status });
   };
 
   page.on("pageerror", onPageError);
   page.on("requestfailed", onRequestFailed);
+  page.on("response", onResponse);
 
   try {
     await page.goto(result.url, {
@@ -127,21 +140,29 @@ async function auditRoute(page, browserName, route, expectedToken) {
       { timeout: 30_000 }
     );
 
-    await page.waitForTimeout(350);
+    await page.waitForTimeout(500);
 
     const snapshot = await page.evaluate(() => {
       const main = document.querySelector("main");
       const text = String(main?.innerText || "");
       const heading = main?.querySelector("h1")?.textContent?.trim() || "";
-      const passwordFields = main?.querySelectorAll('input[type="password"]').length || 0;
-      const loginControls = [...(main?.querySelectorAll("button, input[type='submit']") || [])]
-        .filter((element) => /iniciar sesión|recuperar contraseña/i.test(
+      const passwordFields =
+        main?.querySelectorAll('input[type="password"]').length || 0;
+      const loginControls = [
+        ...(main?.querySelectorAll("button, input[type='submit']") || []),
+      ].filter((element) =>
+        /iniciar sesión|recuperar contraseña/i.test(
           String(element.textContent || element.value || "")
-        )).length;
-      const logoutControls = [...(main?.querySelectorAll("button, a") || [])]
-        .filter((element) => /cerrar sesión|sign out|log out/i.test(
+        )
+      ).length;
+      const logoutControls = [
+        ...(main?.querySelectorAll("button, a") || []),
+      ].filter((element) =>
+        /cerrar sesión|sign out|log out/i.test(
           String(element.textContent || "").trim()
-        )).length;
+        )
+      ).length;
+
       return {
         text,
         heading,
@@ -195,7 +216,12 @@ async function auditRoute(page, browserName, route, expectedToken) {
     }
     if (result.failedRequests.length) {
       result.findings.push(
-        `${result.failedRequests.length} solicitud(es) esencial(es) fallaron.`
+        `${result.failedRequests.length} solicitud(es) de red no cancelada(s) fallaron.`
+      );
+    }
+    if (result.httpErrors.length) {
+      result.findings.push(
+        `${result.httpErrors.length} respuesta(s) HTTP devolvieron estado 4xx/5xx.`
       );
     }
 
@@ -206,14 +232,17 @@ async function auditRoute(page, browserName, route, expectedToken) {
     result.elapsedMs = Date.now() - started;
     page.off("pageerror", onPageError);
     page.off("requestfailed", onRequestFailed);
+    page.off("response", onResponse);
   }
 
   if (!result.passed) {
     const safeRoute = route.replace(/[^a-z0-9_-]/gi, "-");
-    await page.screenshot({
-      path: `${OUTPUT_DIR}/${browserName}-${safeRoute}.png`,
-      fullPage: true,
-    }).catch(() => {});
+    await page
+      .screenshot({
+        path: `${OUTPUT_DIR}/${browserName}-${safeRoute}.png`,
+        fullPage: true,
+      })
+      .catch(() => {});
   }
 
   return result;
@@ -237,18 +266,30 @@ function markdownReport(results) {
 
   for (const item of results) {
     lines.push(
-      `| ${item.browser} | ${item.route} | ${item.passed ? "APROBADA" : "REVISAR"} | ${item.heading.replaceAll("|", "\\|") || "—"} | ${item.elapsedMs} ms | ${item.findings.join(" · ").replaceAll("|", "\\|") || "—"} |`
+      `| ${item.browser} | ${item.route} | ${
+        item.passed ? "APROBADA" : "REVISAR"
+      } | ${item.heading.replaceAll("|", "\\|") || "—"} | ${
+        item.elapsedMs
+      } ms | ${
+        item.findings.join(" · ").replaceAll("|", "\\|") || "—"
+      } |`
     );
   }
 
-  lines.push("", "## Errores y solicitudes fallidas", "");
+  lines.push("", "## Errores técnicos", "");
   for (const item of results.filter(
-    (entry) => entry.pageErrors.length || entry.failedRequests.length
+    (entry) =>
+      entry.pageErrors.length ||
+      entry.failedRequests.length ||
+      entry.httpErrors.length
   )) {
     lines.push(`### ${item.browser} · ${item.route}`, "");
     for (const error of item.pageErrors) lines.push(`- JavaScript: ${error}`);
     for (const failure of item.failedRequests) {
       lines.push(`- Red: ${failure.error} — ${failure.url}`);
+    }
+    for (const failure of item.httpErrors) {
+      lines.push(`- HTTP ${failure.status}: ${failure.url}`);
     }
     lines.push("");
   }
@@ -276,7 +317,9 @@ for (const browserSpec of BROWSERS) {
     );
     results.push(result);
     console.log(
-      `${result.passed ? "✓" : "✗"} ${browserSpec.name} · ${route} · ${result.elapsedMs} ms`
+      `${result.passed ? "✓" : "✗"} ${browserSpec.name} · ${route} · ${
+        result.elapsedMs
+      } ms`
     );
     if (!result.passed) {
       result.findings.forEach((finding) => console.log(`  - ${finding}`));
