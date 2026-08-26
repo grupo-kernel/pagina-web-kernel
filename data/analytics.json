@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-08-26T04:07:52.628Z",
+  "actualizadoEn": "2026-08-26T07:15:17.943Z",
   "ok": true,
   "paises": [
     {
@@ -31,13 +31,18 @@
       "codigo": "HK",
       "pais": "Hong Kong",
       "usuarios": 1
+    },
+    {
+      "codigo": "SG",
+      "pais": "Singapore",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 157,
-    "ultimos30Dias": 116,
-    "ultimos7Dias": 7
+    "hoy": 1,
+    "total": 158,
+    "ultimos30Dias": 117,
+    "ultimos7Dias": 8
   }
 }
