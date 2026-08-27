@@ -1,21 +1,21 @@
 {
-  "actualizadoEn": "2026-08-27T05:15:16.340Z",
+  "actualizadoEn": "2026-08-27T16:35:19.859Z",
   "ok": true,
   "paises": [
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 52
+      "usuarios": 54
     },
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 49
+      "usuarios": 51
     },
     {
       "codigo": "DE",
       "pais": "Germany",
-      "usuarios": 2
+      "usuarios": 5
     },
     {
       "codigo": "GT",
@@ -35,9 +35,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 159,
-    "ultimos30Dias": 106,
-    "ultimos7Dias": 9
+    "hoy": 7,
+    "total": 166,
+    "ultimos30Dias": 113,
+    "ultimos7Dias": 16
   }
 }
