@@ -1,26 +1,21 @@
 {
-  "actualizadoEn": "2026-08-26T23:47:21.516Z",
+  "actualizadoEn": "2026-08-27T05:15:16.340Z",
   "ok": true,
   "paises": [
-    {
-      "codigo": "DO",
-      "pais": "Dominican Republic",
-      "usuarios": 57
-    },
     {
       "codigo": "US",
       "pais": "United States",
       "usuarios": 52
     },
     {
-      "codigo": "DE",
-      "pais": "Germany",
-      "usuarios": 3
+      "codigo": "DO",
+      "pais": "Dominican Republic",
+      "usuarios": 49
     },
     {
-      "codigo": "IE",
-      "pais": "Ireland",
-      "usuarios": 3
+      "codigo": "DE",
+      "pais": "Germany",
+      "usuarios": 2
     },
     {
       "codigo": "GT",
@@ -40,9 +35,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 3,
+    "hoy": 0,
     "total": 159,
-    "ultimos30Dias": 118,
+    "ultimos30Dias": 106,
     "ultimos7Dias": 9
   }
 }
