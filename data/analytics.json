@@ -1,16 +1,16 @@
 {
-  "actualizadoEn": "2026-08-28T22:39:42.491Z",
+  "actualizadoEn": "2026-08-29T10:30:06.242Z",
   "ok": true,
   "paises": [
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 56
+      "usuarios": 55
     },
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 51
+      "usuarios": 50
     },
     {
       "codigo": "DE",
@@ -23,11 +23,6 @@
       "usuarios": 1
     },
     {
-      "codigo": "HK",
-      "pais": "Hong Kong",
-      "usuarios": 1
-    },
-    {
       "codigo": "SG",
       "pais": "Singapore",
       "usuarios": 1
@@ -35,9 +30,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
+    "hoy": 0,
     "total": 168,
-    "ultimos30Dias": 115,
-    "ultimos7Dias": 17
+    "ultimos30Dias": 111,
+    "ultimos7Dias": 16
   }
 }
