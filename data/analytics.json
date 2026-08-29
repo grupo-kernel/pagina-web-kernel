@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-08-29T10:30:06.242Z",
+  "actualizadoEn": "2026-08-29T18:25:44.459Z",
   "ok": true,
   "paises": [
     {
@@ -18,6 +18,11 @@
       "usuarios": 5
     },
     {
+      "codigo": "FR",
+      "pais": "France",
+      "usuarios": 2
+    },
+    {
       "codigo": "GT",
       "pais": "Guatemala",
       "usuarios": 1
@@ -30,9 +35,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 168,
-    "ultimos30Dias": 111,
-    "ultimos7Dias": 16
+    "hoy": 2,
+    "total": 170,
+    "ultimos30Dias": 113,
+    "ultimos7Dias": 18
   }
 }
