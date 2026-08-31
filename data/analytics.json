@@ -1,11 +1,11 @@
 {
-  "actualizadoEn": "2026-08-30T06:50:59.979Z",
+  "actualizadoEn": "2026-08-31T06:06:05.856Z",
   "ok": true,
   "paises": [
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 55
+      "usuarios": 52
     },
     {
       "codigo": "DO",
@@ -37,7 +37,7 @@
   "visitantes": {
     "hoy": 0,
     "total": 170,
-    "ultimos30Dias": 111,
+    "ultimos30Dias": 108,
     "ultimos7Dias": 16
   }
 }
