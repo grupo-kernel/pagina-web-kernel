@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-09-02T06:24:05.971Z",
+  "actualizadoEn": "2026-09-02T18:48:44.621Z",
   "ok": true,
   "paises": [
     {
@@ -25,7 +25,7 @@
     {
       "codigo": "GT",
       "pais": "Guatemala",
-      "usuarios": 1
+      "usuarios": 2
     },
     {
       "codigo": "SG",
@@ -35,9 +35,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 171,
-    "ultimos30Dias": 69,
-    "ultimos7Dias": 14
+    "hoy": 1,
+    "total": 172,
+    "ultimos30Dias": 70,
+    "ultimos7Dias": 15
   }
 }
