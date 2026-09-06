@@ -1,0 +1,30 @@
+name: Kernel UI DOM Audit Only
+
+on:
+  pull_request:
+    branches:
+      - gh-pages
+    paths:
+      - .github/workflows/ui-i18n-dom-only.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit-dom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check selenium
+      - run: python scripts/ui_i18n_dom_audit.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-ui-i18n-dom-audit
+          path: ui-i18n-dom-audit/
+          if-no-files-found: error
+          retention-days: 7
