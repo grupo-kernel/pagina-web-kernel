@@ -1,0 +1,245 @@
+name: Live UI and Language Verification Continuation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [diagnostic/live-ui-i18n-verification]
+    paths:
+      - '.github/workflows/live-ui-i18n-continuation.yml'
+  pull_request:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/live-ui-i18n-continuation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-continuation:
+    name: Verify profiles, research pages and Spanish restoration
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Continue public verification
+        env:
+          LIVE_BASE_URL: https://www.grupoelkernel.com
+          LIVE_RESULT_DIR: live-ui-i18n-continuation
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import os
+          import re
+          import time
+          import traceback
+          from pathlib import Path
+
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          base = os.environ['LIVE_BASE_URL'].rstrip('/')
+          out = Path(os.environ['LIVE_RESULT_DIR'])
+          out.mkdir(parents=True, exist_ok=True)
+          report = {'base_url': base, 'checks': {}, 'failures': [], 'exception': None}
+
+          options = Options()
+          for argument in ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--window-size=1440,1800']:
+              options.add_argument(argument)
+          options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+
+          driver = webdriver.Chrome(options=options)
+          driver.set_page_load_timeout(120)
+          wait = WebDriverWait(driver, 90)
+
+          def save() -> None:
+              (out / 'result.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
+
+          def record(name: str, condition: bool, detail=None) -> None:
+              report['checks'][name] = {'ok': bool(condition), 'detail': detail}
+              if not condition:
+                  report['failures'].append(name)
+              print(('PASS' if condition else 'FAIL') + ': ' + name + (f' — {detail}' if detail is not None else ''))
+              save()
+
+          def body_text() -> str:
+              return driver.execute_script("return (document.body.innerText || '').replace(/\\s+/g,' ').trim()")
+
+          def set_language(language: str) -> None:
+              driver.execute_script(
+                  """
+                  const lang=arguments[0];
+                  localStorage.setItem('kernel-language',lang);
+                  localStorage.setItem('language',lang);
+                  localStorage.setItem('lang',lang);
+                  document.documentElement.lang=lang;
+                  window.dispatchEvent(new CustomEvent('kernel-language-change',{detail:{language:lang}}));
+                  document.dispatchEvent(new CustomEvent('kernel-language-change',{detail:{language:lang}}));
+                  """,
+                  language,
+              )
+
+          def apply_layers() -> None:
+              driver.execute_script(
+                  """
+                  window.KernelUiI18nUnification?.apply?.();
+                  window.KernelUiI18nFinalizer?.apply?.();
+                  window.KernelUiI18nWatchdog?.apply?.();
+                  window.KernelSiteChromeLanguageFix?.apply?.();
+                  window.KernelTeamLanguageFix?.apply?.();
+                  window.KernelToolsEnglishContent?.apply?.();
+                  window.KernelNameDegreeFix?.apply?.();
+                  window.KernelSpanishRestoration?.apply?.();
+                  """
+              )
+
+          def open_route(route: str, language: str, selector: str, expected: str) -> None:
+              driver.get(f'{base}/?verify={int(time.time()*1000)}#/{route}')
+              wait.until(lambda d: d.execute_script('return document.readyState') == 'complete')
+              wait.until(
+                  lambda d: d.execute_script(
+                      "return Boolean(window.KernelUiI18nUnification && window.KernelUiI18nFinalizer && window.KernelSpanishRestoration && window.KernelTeamLanguageFix && window.KernelNameDegreeFix)"
+                  )
+              )
+              wait.until(
+                  lambda d: d.execute_script(
+                      "return window.KernelUiI18nUnification?.diagnostics().translations >= 590 && window.KernelUiI18nFinalizer?.diagnostics().translations >= 590"
+                  )
+              )
+              set_language(language)
+              wait.until(lambda d: d.find_elements(By.CSS_SELECTOR, selector))
+              apply_layers()
+              WebDriverWait(driver, 35).until(lambda d: expected.lower() in body_text().lower())
+              time.sleep(1.0)
+              apply_layers()
+              time.sleep(0.35)
+
+          def background(selector: str) -> str:
+              return driver.execute_script(
+                  "const e=document.querySelector(arguments[0]); return e ? getComputedStyle(e).backgroundColor : '';",
+                  selector,
+              )
+
+          try:
+              open_route('equipment', 'en', '.kernel-team-core__card', 'Researcher in numerical methods, PDEs, and mathematics education')
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
+              apply_layers()
+              time.sleep(1.2)
+
+              headings = driver.execute_script(
+                  "return [...document.querySelectorAll('.kernel-team-core__card h2')].map(h => h.textContent.replace(/\\s+/g,' ').trim())"
+              )
+              duplicate_degrees = [heading for heading in headings if len(re.findall(r'(?:Ph\.D\.|M\.Sc\.)', heading)) > 1]
+              jose_heading = next((heading for heading in headings if heading.startswith('Jose Alberto Reyes Reyes')), '')
+              record('Nine researcher cards are visible on the public site', len(headings) == 9, headings)
+              record('Researcher roles are English on the public site', 'Researcher in numerical methods, PDEs, and mathematics education' in body_text() and 'Investigador en métodos numéricos' not in body_text())
+              record('Researcher card degrees are not duplicated', not duplicate_degrees, duplicate_degrees)
+              record('Jose degree appears once on his card', jose_heading.count('Ph.D.') == 1, jose_heading)
+
+              profile_ids = driver.execute_script(
+                  "return [...document.querySelectorAll('[data-kernel-team-open]')].map(button => button.dataset.kernelTeamOpen)"
+              )
+              opened = []
+              for profile_id in profile_ids:
+                  driver.execute_script(
+                      "document.querySelector('[data-kernel-team-open=\\"' + arguments[0] + '\\"]')?.click()",
+                      profile_id,
+                  )
+                  panel_selector = f'[data-kernel-profile-panel="{profile_id}"]'
+                  WebDriverWait(driver, 30).until(lambda d, selector=panel_selector: d.find_elements(By.CSS_SELECTOR, selector))
+                  apply_layers()
+                  time.sleep(0.45)
+                  heading = driver.execute_script(
+                      "const h=document.querySelector(arguments[0] + ' h2'); return h ? h.textContent.replace(/\\s+/g,' ').trim() : ''",
+                      panel_selector,
+                  )
+                  sections = driver.execute_script(
+                      "return [...document.querySelectorAll(arguments[0] + ' h3')].map(h => h.textContent.trim())",
+                      panel_selector,
+                  )
+                  degree_count = len(re.findall(r'(?:Ph\.D\.|M\.Sc\.)', heading))
+                  opened.append({'id': profile_id, 'heading': heading, 'sections': sections, 'degree_count': degree_count})
+                  driver.execute_script("document.querySelector('[data-kernel-team-profile-back]')?.click()")
+                  WebDriverWait(driver, 25).until(lambda d: not d.find_elements(By.CSS_SELECTOR, '[data-kernel-profile-panel]'))
+                  WebDriverWait(driver, 25).until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.kernel-team-core__card')) == 9)
+
+              record('All nine public profiles open and close', len(opened) == 9, opened)
+              record('All public profile headings avoid repeated degrees', all(item['degree_count'] <= 1 for item in opened), opened)
+              record('Public profile section labels are English', all('Education' in item['sections'] and 'Experience' in item['sections'] for item in opened), opened)
+              driver.save_screenshot(str(out / 'team-profiles-live-english.png'))
+
+              open_route('lineas', 'en', '.lineas-shell', "The group's scientific work areas")
+              line_background = driver.execute_script(
+                  "const e=document.querySelector('[data-kernel-line-card].kernel-line-active'); return e ? getComputedStyle(e).backgroundImage : '';"
+              )
+              record('Research lines are English on the public site', "The group's scientific work areas" in body_text() and 'Áreas de trabajo científico del grupo' not in body_text())
+              record('Selected research line uses the institutional gradient', '15, 91, 93' in line_background and '85, 128, 193' not in line_background, line_background)
+              driver.save_screenshot(str(out / 'research-lines-live-english.png'))
+
+              open_route('proyectos', 'en', '.kernel-project-card', 'The 58 participations do not necessarily represent 58 unique projects')
+              record('Projects are English on the public site', 'The 58 participations do not necessarily represent 58 unique projects' in body_text() and 'Las 58 participaciones no equivalen' not in body_text())
+              driver.save_screenshot(str(out / 'projects-live-english.png'))
+
+              open_route('publicaciones', 'en', '.kernel-publication-card', 'El Kernel publications')
+              record('Publications are English on the public site', 'El Kernel publications' in body_text() and 'Producción científica verificable' not in body_text())
+              driver.save_screenshot(str(out / 'publications-live-english.png'))
+
+              open_route('diagnosticoServicios', 'es', 'form', 'Cuéntenos qué necesita resolver')
+              spanish = body_text()
+              record('Spanish is restored after using English', 'Cuéntenos qué necesita resolver' in spanish and 'Tell us what you need to solve' not in spanish, spanish[:500])
+              driver.save_screenshot(str(out / 'diagnostic-live-spanish.png'))
+
+              driver.set_window_size(390, 844)
+              open_route('herramientas', 'en', '#tab-xmera', 'Academic Tools')
+              record('Institutional active tab remains teal on mobile', background('#tab-xmera') == 'rgb(15, 91, 93)', background('#tab-xmera'))
+              driver.save_screenshot(str(out / 'tools-live-mobile.png'))
+
+              severe = [
+                  entry for entry in driver.get_log('browser')
+                  if entry.get('level') == 'SEVERE' and 'favicon' not in entry.get('message', '').lower()
+              ]
+              record('No severe JavaScript errors in continuation checks', not severe, severe)
+
+          except Exception as error:  # noqa: BLE001
+              report['exception'] = {
+                  'type': type(error).__name__,
+                  'message': str(error),
+                  'traceback': traceback.format_exc(),
+                  'url': driver.current_url,
+              }
+              report['failures'].append('exception')
+              save()
+              try:
+                  driver.save_screenshot(str(out / 'exception.png'))
+              except Exception:
+                  pass
+          finally:
+              save()
+              driver.quit()
+
+          print(json.dumps(report, indent=2, ensure_ascii=False))
+          if report['failures']:
+              raise SystemExit('Continuation verification failures: ' + ', '.join(dict.fromkeys(report['failures'])))
+          PY
+
+      - name: Upload continuation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-ui-i18n-continuation
+          path: live-ui-i18n-continuation/
+          if-no-files-found: error
+          retention-days: 7
