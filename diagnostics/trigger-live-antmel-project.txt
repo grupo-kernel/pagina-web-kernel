@@ -1,0 +1,1 @@
+Trigger public Antmel project diagnostic after the workflow was added to gh-pages.
