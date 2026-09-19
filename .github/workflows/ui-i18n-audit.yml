@@ -1,0 +1,229 @@
+name: Kernel UI and English Audit
+
+on:
+  push:
+    branches:
+      - diagnostic/ui-i18n-audit
+    paths:
+      - .github/workflows/ui-i18n-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout audit branch
+        uses: actions/checkout@v4
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Selenium
+        run: python -m pip install --disable-pip-version-check selenium
+
+      - name: Inspect public navigation, tabs and English text
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          import time
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          BASE = "https://www.grupoelkernel.com/?audit=ui-i18n-20260726"
+          OUT = Path("ui-i18n-audit")
+          OUT.mkdir(exist_ok=True)
+
+          options = Options()
+          for argument in [
+              "--headless=new",
+              "--no-sandbox",
+              "--disable-gpu",
+              "--disable-dev-shm-usage",
+              "--window-size=1440,1400",
+          ]:
+              options.add_argument(argument)
+          options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
+
+          driver = webdriver.Chrome(options=options)
+          driver.set_page_load_timeout(90)
+          wait = WebDriverWait(driver, 45)
+
+          spanish_tokens = [
+              "Portada", "Servicios", "Investigación", "Nosotros", "Noticias", "Contacto",
+              "Solicitar diagnóstico", "Formación", "Equipo", "Publicaciones", "Proyectos",
+              "Ver perfil", "Volver", "Buscar", "Filtrar", "Todos", "Todas", "Países",
+              "Actividad del sitio", "Visitantes", "Últimos", "Abrir", "Cerrar", "Descargar",
+              "Generar", "Copiar", "Limpiar", "Iniciar sesión", "Contraseña", "Correo electrónico",
+              "Calculadora", "Asistente", "Resultados", "Método", "Seleccionar", "Área protegida",
+              "Herramientas", "Quiénes somos", "Formación académica", "Líneas de investigación",
+              "Novedades", "Acceso rápido", "Ver todas", "Más información", "Actualizado",
+              "Reintentar", "Países de origen", "países registrados", "visitantes"
+          ]
+
+          manual_routes = [
+              "#/home", "#/services", "#/laboratory", "#/research", "#/publications",
+              "#/projects", "#/equipment", "#/quienesSomos", "#/news", "#/contact",
+              "#/tools", "#/xmera", "#/banner"
+          ]
+
+          def slug(value: str) -> str:
+              cleaned = re.sub(r"[^a-zA-Z0-9]+", "-", value).strip("-").lower()
+              return cleaned or "home"
+
+          def wait_ready() -> None:
+              wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
+              wait.until(lambda d: d.find_element(By.ID, "main"))
+              time.sleep(2.2)
+
+          def set_english() -> None:
+              driver.execute_script("""
+                localStorage.setItem('kernel-language','en');
+                localStorage.setItem('language','en');
+                localStorage.setItem('lang','en');
+                document.documentElement.lang='en';
+              """)
+              driver.refresh()
+              wait_ready()
+              driver.execute_script("""
+                document.documentElement.lang='en';
+                window.dispatchEvent(new CustomEvent('kernel-language-change', {detail:{language:'en'}}));
+                document.dispatchEvent(new CustomEvent('kernel-language-change', {detail:{language:'en'}}));
+              """)
+              time.sleep(1.5)
+
+          def visible_controls() -> list[dict]:
+              return driver.execute_script("""
+                const selectors = [
+                  '#navBar a', '#navBar button',
+                  '[role="tab"]', '[role="tablist"] > *',
+                  'details > summary',
+                  '[data-route]', '[data-kernel-academic-select]',
+                  '.kernel-team-core__filter', '.kernel-research-chip',
+                  '.kernel-research-clear', '.kernel-home-2b__quick-card',
+                  '.kernel-home-2b__tool-card a', '.kernel-publication-actions a',
+                  '.kernel-project-people a'
+                ];
+                const nodes=[...document.querySelectorAll(selectors.join(','))];
+                const seen=new Set();
+                return nodes.filter(node => {
+                  if (seen.has(node)) return false;
+                  seen.add(node);
+                  const box=node.getBoundingClientRect();
+                  const style=getComputedStyle(node);
+                  return box.width>0 && box.height>0 && style.display!=='none' && style.visibility!=='hidden';
+                }).map(node => {
+                  const s=getComputedStyle(node), b=node.getBoundingClientRect();
+                  return {
+                    tag:node.tagName.toLowerCase(),
+                    text:(node.innerText||node.textContent||'').replace(/\s+/g,' ').trim().slice(0,180),
+                    className:typeof node.className==='string'?node.className:'',
+                    id:node.id||'',
+                    href:node.getAttribute('href')||'',
+                    backgroundColor:s.backgroundColor,
+                    backgroundImage:s.backgroundImage,
+                    color:s.color,
+                    borderColor:s.borderColor,
+                    borderRadius:s.borderRadius,
+                    fontSize:s.fontSize,
+                    fontWeight:s.fontWeight,
+                    padding:s.padding,
+                    width:Math.round(b.width),
+                    height:Math.round(b.height)
+                  };
+                });
+              """)
+
+          report = {
+              "base": BASE,
+              "language_candidates": [],
+              "discovered_routes": [],
+              "routes": [],
+              "browser_errors": [],
+          }
+
+          try:
+              driver.get(BASE + "#/home")
+              wait_ready()
+              driver.save_screenshot(str(OUT / "home-spanish.png"))
+
+              report["language_candidates"] = driver.execute_script("""
+                return [...document.querySelectorAll('button,a')].map(node => ({
+                  tag:node.tagName.toLowerCase(),
+                  text:(node.innerText||node.textContent||'').replace(/\s+/g,' ').trim(),
+                  className:typeof node.className==='string'?node.className:'',
+                  id:node.id||'', href:node.getAttribute('href')||''
+                })).filter(item => /^(en|es|english|español)$/i.test(item.text) || /lang|idioma|language/i.test(item.className+' '+item.id));
+              """)
+
+              hrefs = driver.execute_script("return [...document.querySelectorAll('a[href*="#/"]')].map(a=>a.getAttribute('href')).filter(Boolean)")
+              routes = []
+              for href in hrefs + manual_routes:
+                  parsed = urlparse(href)
+                  route = parsed.fragment
+                  route = "#/" + route.lstrip("#/") if route else (href if href.startswith("#/") else "")
+                  if route and route not in routes:
+                      routes.append(route)
+              report["discovered_routes"] = routes
+
+              set_english()
+              driver.save_screenshot(str(OUT / "home-english.png"))
+
+              for route in routes:
+                  driver.execute_script("location.hash=arguments[0]", route)
+                  time.sleep(2.4)
+                  driver.execute_script("""
+                    document.documentElement.lang='en';
+                    window.dispatchEvent(new CustomEvent('kernel-language-change', {detail:{language:'en'}}));
+                  """)
+                  time.sleep(1.0)
+                  body = driver.execute_script("return document.body.innerText || ''")
+                  found = [token for token in spanish_tokens if token.casefold() in body.casefold()]
+                  current = driver.current_url
+                  route_name = slug(route)
+                  driver.save_screenshot(str(OUT / f"{route_name}-english.png"))
+                  report["routes"].append({
+                      "route": route,
+                      "url": current,
+                      "title": driver.title,
+                      "spanish_tokens": found,
+                      "body_excerpt": body[:6000],
+                      "controls": visible_controls(),
+                  })
+
+              report["browser_errors"] = [entry for entry in driver.get_log("browser") if entry.get("level") == "SEVERE"]
+          finally:
+              driver.quit()
+
+          (OUT / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+          (OUT / "summary.txt").write_text(
+              "\n".join(
+                  f"{item['route']}: {', '.join(item['spanish_tokens']) or 'sin coincidencias del diccionario'}"
+                  for item in report["routes"]
+              ),
+              encoding="utf-8",
+          )
+          print((OUT / "summary.txt").read_text(encoding="utf-8"))
+          PY
+
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-ui-i18n-audit
+          path: ui-i18n-audit/
+          if-no-files-found: error
+          retention-days: 7
