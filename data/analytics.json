@@ -1,11 +1,11 @@
 {
-  "actualizadoEn": "2026-09-24T21:40:30.011Z",
+  "actualizadoEn": "2026-09-25T09:00:27.351Z",
   "ok": true,
   "paises": [
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 25
+      "usuarios": 23
     },
     {
       "codigo": "US",
@@ -26,18 +26,13 @@
       "codigo": "GT",
       "pais": "Guatemala",
       "usuarios": 1
-    },
-    {
-      "codigo": "SG",
-      "pais": "Singapore",
-      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
+    "hoy": 0,
     "total": 193,
-    "ultimos30Dias": 41,
+    "ultimos30Dias": 39,
     "ultimos7Dias": 10
   }
 }
