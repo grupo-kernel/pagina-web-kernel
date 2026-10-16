@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-10-16T05:00:01.485Z",
+  "actualizadoEn": "2026-10-16T23:32:10.049Z",
   "ok": true,
   "paises": [
     {
@@ -31,13 +31,18 @@
       "codigo": "LT",
       "pais": "Lithuania",
       "usuarios": 1
+    },
+    {
+      "codigo": "VE",
+      "pais": "Venezuela",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 217,
-    "ultimos30Dias": 38,
-    "ultimos7Dias": 9
+    "hoy": 1,
+    "total": 218,
+    "ultimos30Dias": 39,
+    "ultimos7Dias": 10
   }
 }
