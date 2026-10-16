@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-10-15T19:30:25.060Z",
+  "actualizadoEn": "2026-10-16T05:00:01.485Z",
   "ok": true,
   "paises": [
     {
@@ -15,7 +15,7 @@
     {
       "codigo": "DE",
       "pais": "Germany",
-      "usuarios": 3
+      "usuarios": 2
     },
     {
       "codigo": "IE",
@@ -35,9 +35,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
+    "hoy": 0,
     "total": 217,
-    "ultimos30Dias": 39,
-    "ultimos7Dias": 11
+    "ultimos30Dias": 38,
+    "ultimos7Dias": 9
   }
 }
