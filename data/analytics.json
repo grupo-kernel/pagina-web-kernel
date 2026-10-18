@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-10-18T05:21:06.769Z",
+  "actualizadoEn": "2026-10-18T09:43:58.488Z",
   "ok": true,
   "paises": [
     {
@@ -23,6 +23,11 @@
       "usuarios": 2
     },
     {
+      "codigo": "CA",
+      "pais": "Canada",
+      "usuarios": 1
+    },
+    {
       "codigo": "GT",
       "pais": "Guatemala",
       "usuarios": 1
@@ -41,8 +46,8 @@
   "propiedad": "546100922",
   "visitantes": {
     "hoy": 0,
-    "total": 218,
-    "ultimos30Dias": 39,
-    "ultimos7Dias": 8
+    "total": 219,
+    "ultimos30Dias": 40,
+    "ultimos7Dias": 9
   }
 }
