@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-24T20:55:15Z",
+  "generated_at": "2026-10-26T14:24:50Z",
   "catalog_status": "automated",
   "counting_method": "DOI normalizado; si no existe DOI, identificador OpenAlex o título normalizado + año",
   "coverage_note": "Registros públicos recuperados por ORCID desde Crossref y, cuando existen credenciales configuradas, ORCID Public API y OpenAlex.",
@@ -17,7 +17,7 @@
     }
   },
   "summary": {
-    "unique_catalog_records": 162,
+    "unique_catalog_records": 163,
     "researchers_with_records": 7,
     "latest_year": 2026,
     "sync_successes": 2,
@@ -47,6 +47,41 @@
         "0168-9274"
       ],
       "quartile": null
+    },
+    {
+      "doi": "10.3390/math14213871",
+      "title": "A Class of Higher-Order Iterative Methods for Simultaneous Solutions of Nonlinear Equations with Applications to Biological Problems",
+      "journal": "Mathematics",
+      "publication_date": "2026-10-23",
+      "year": 2026,
+      "type": "journal-article",
+      "authors": [
+        "Monika Panwar",
+        "Sonia Bhalla",
+        "Ramandeep Behl",
+        "Paula Triguero-Navarro",
+        "Alicia Cordero",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "source": "Crossref",
+      "url": "https://doi.org/10.3390/math14213871",
+      "import_source": "crossref",
+      "issn": [
+        "2227-7390"
+      ],
+      "quartile": {
+        "quartile": "Q1",
+        "system": "JCR",
+        "category": "Mathematics",
+        "metric_year": 2025,
+        "verified_at": "2026-07-24",
+        "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+        "journal_name": "Mathematics"
+      }
     },
     {
       "doi": "10.3390/math14122114",

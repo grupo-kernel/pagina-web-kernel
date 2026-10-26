@@ -2,7 +2,7 @@
   "schema_version": 2,
   "status": "candidate-not-active",
   "generated_from": "data/publications.json",
-  "generated_at": "2026-07-24T20:55:15Z",
+  "generated_at": "2026-10-26T14:24:50Z",
   "counting_method": "DOI normalizado; si no existe DOI, identificador OpenAlex o título normalizado + año",
   "coverage_note": "Registros públicos recuperados por ORCID desde Crossref y, cuando existen credenciales configuradas, ORCID Public API y OpenAlex.",
   "profile_metrics": {
@@ -18,14 +18,14 @@
     }
   },
   "summary": {
-    "source_records": 162,
-    "unique_records": 162,
+    "source_records": 163,
+    "unique_records": 163,
     "duplicate_records_removed": 0,
     "researchers_with_records": 7,
     "latest_year": 2026,
-    "records_with_doi": 162,
+    "records_with_doi": 163,
     "records_without_doi": 0,
-    "records_with_quartile": 68
+    "records_with_quartile": 69
   },
   "records": [
     {
@@ -62,10 +62,61 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
+      }
+    },
+    {
+      "id": "doi:10.3390/math14213871",
+      "status": "published",
+      "type": "journal-article",
+      "title": "A Class of Higher-Order Iterative Methods for Simultaneous Solutions of Nonlinear Equations with Applications to Biological Problems",
+      "bibliographic": {
+        "journal": "Mathematics",
+        "publication_date": "2026-10-23",
+        "year": 2026,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "article_number": null,
+        "issn": [
+          "2227-7390"
+        ]
+      },
+      "identifiers": {
+        "doi": "10.3390/math14213871",
+        "openalex": null,
+        "url": "https://doi.org/10.3390/math14213871"
+      },
+      "authors": [
+        "Monika Panwar",
+        "Sonia Bhalla",
+        "Ramandeep Behl",
+        "Paula Triguero-Navarro",
+        "Alicia Cordero",
+        "Juan R. Torregrosa"
+      ],
+      "researcher_ids": [
+        "alicia-cordero",
+        "juan-torregrosa"
+      ],
+      "provenance": {
+        "display_source": "Crossref",
+        "import_source": "crossref",
+        "imported_at": "2026-10-26T14:24:50Z"
+      },
+      "metrics": {
+        "quartile": {
+          "value": "Q1",
+          "system": "JCR",
+          "category": "Mathematics",
+          "metric_year": 2025,
+          "verified_at": "2026-07-24",
+          "source_url": "https://www.mdpi.com/journal/mathematics/stats",
+          "journal_name": "Mathematics"
+        }
       }
     },
     {
@@ -107,7 +158,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -157,7 +208,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -209,7 +260,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -258,7 +309,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -308,7 +359,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -356,7 +407,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -405,7 +456,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -446,7 +497,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -497,7 +548,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -537,7 +588,7 @@
       "provenance": {
         "display_source": "RIUNET/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -587,7 +638,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -637,7 +688,7 @@
       "provenance": {
         "display_source": "RIUNET/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -678,7 +729,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -726,7 +777,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -767,7 +818,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -802,7 +853,7 @@
       "provenance": {
         "display_source": "DOI/Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -842,7 +893,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -884,7 +935,7 @@
       "provenance": {
         "display_source": "RIUNET/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -933,7 +984,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -975,7 +1026,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref/RIUNET / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1024,7 +1075,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1067,7 +1118,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1109,7 +1160,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1158,7 +1209,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1200,7 +1251,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1244,7 +1295,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1293,7 +1344,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1334,7 +1385,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1384,7 +1435,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1435,7 +1486,7 @@
       "provenance": {
         "display_source": "DOI/MDPI / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1478,7 +1529,7 @@
       "provenance": {
         "display_source": "DOI/Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1513,7 +1564,7 @@
       "provenance": {
         "display_source": "DOI/Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1554,7 +1605,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1596,7 +1647,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1647,7 +1698,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1696,7 +1747,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1738,7 +1789,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1787,7 +1838,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -1837,7 +1888,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1879,7 +1930,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1920,7 +1971,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -1961,7 +2012,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2002,7 +2053,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2050,7 +2101,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2091,7 +2142,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2140,7 +2191,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2182,7 +2233,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2224,7 +2275,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2274,7 +2325,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2315,7 +2366,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2365,7 +2416,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2413,7 +2464,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2454,7 +2505,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2495,7 +2546,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2536,7 +2587,7 @@
       "provenance": {
         "display_source": "ORCID/Crossref / Crossref",
         "import_source": "curated",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2586,7 +2637,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2627,7 +2678,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2675,7 +2726,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2725,7 +2776,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2773,7 +2824,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2814,7 +2865,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2853,7 +2904,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2894,7 +2945,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -2942,7 +2993,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -2981,7 +3032,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3029,7 +3080,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3078,7 +3129,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3119,7 +3170,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3168,7 +3219,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3210,7 +3261,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3258,7 +3309,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3306,7 +3357,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3355,7 +3406,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3404,7 +3455,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3445,7 +3496,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3494,7 +3545,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3534,7 +3585,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3582,7 +3633,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3623,7 +3674,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3672,7 +3723,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3713,7 +3764,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3761,7 +3812,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3810,7 +3861,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3858,7 +3909,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3899,7 +3950,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -3940,7 +3991,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -3990,7 +4041,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4031,7 +4082,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4080,7 +4131,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4129,7 +4180,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4170,7 +4221,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4219,7 +4270,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4268,7 +4319,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4309,7 +4360,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4357,7 +4408,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4405,7 +4456,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4444,7 +4495,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4484,7 +4535,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4533,7 +4584,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4582,7 +4633,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4631,7 +4682,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4672,7 +4723,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4712,7 +4763,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4754,7 +4805,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4794,7 +4845,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4834,7 +4885,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4883,7 +4934,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -4932,7 +4983,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -4972,7 +5023,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5013,7 +5064,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5053,7 +5104,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5095,7 +5146,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5135,7 +5186,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5177,7 +5228,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5217,7 +5268,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -5264,7 +5315,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5304,7 +5355,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5347,7 +5398,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5388,7 +5439,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5429,7 +5480,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5469,7 +5520,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5507,7 +5558,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5547,7 +5598,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5587,7 +5638,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5628,7 +5679,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5668,7 +5719,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -5716,7 +5767,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -5764,7 +5815,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -5813,7 +5864,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5857,7 +5908,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5899,7 +5950,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5941,7 +5992,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -5981,7 +6032,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6023,7 +6074,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6064,7 +6115,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6112,7 +6163,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6161,7 +6212,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6204,7 +6255,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6243,7 +6294,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6291,7 +6342,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6330,7 +6381,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6370,7 +6421,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6418,7 +6469,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6466,7 +6517,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6514,7 +6565,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6564,7 +6615,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6602,7 +6653,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6641,7 +6692,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6683,7 +6734,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6723,7 +6774,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6764,7 +6815,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": {
@@ -6813,7 +6864,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6852,7 +6903,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6893,7 +6944,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6936,7 +6987,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -6977,7 +7028,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -7018,7 +7069,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -7059,7 +7110,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -7099,7 +7150,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -7142,7 +7193,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
@@ -7183,7 +7234,7 @@
       "provenance": {
         "display_source": "Crossref",
         "import_source": "crossref",
-        "imported_at": "2026-07-24T20:55:15Z"
+        "imported_at": "2026-10-26T14:24:50Z"
       },
       "metrics": {
         "quartile": null
