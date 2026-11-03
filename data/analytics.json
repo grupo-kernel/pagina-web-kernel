@@ -1,11 +1,11 @@
 {
-  "actualizadoEn": "2026-11-02T08:14:37.567Z",
+  "actualizadoEn": "2026-11-03T01:05:10.645Z",
   "ok": true,
   "paises": [
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 14
+      "usuarios": 15
     },
     {
       "codigo": "US",
@@ -40,9 +40,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 225,
-    "ultimos30Dias": 27,
-    "ultimos7Dias": 6
+    "hoy": 1,
+    "total": 226,
+    "ultimos30Dias": 28,
+    "ultimos7Dias": 7
   }
 }
