@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-07T18:44:51.012Z",
+  "actualizadoEn": "2026-11-08T07:56:25.948Z",
   "ok": true,
   "paises": [
     {
@@ -8,14 +8,14 @@
       "usuarios": 17
     },
     {
-      "codigo": "US",
-      "pais": "United States",
-      "usuarios": 4
-    },
-    {
       "codigo": "DE",
       "pais": "Germany",
       "usuarios": 3
+    },
+    {
+      "codigo": "US",
+      "pais": "United States",
+      "usuarios": 2
     },
     {
       "codigo": "CA",
@@ -40,9 +40,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
+    "hoy": 0,
     "total": 231,
-    "ultimos30Dias": 28,
-    "ultimos7Dias": 12
+    "ultimos30Dias": 26,
+    "ultimos7Dias": 11
   }
 }
