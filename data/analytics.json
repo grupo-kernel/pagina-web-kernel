@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-15T09:59:59.400Z",
+  "actualizadoEn": "2026-11-16T07:55:41.509Z",
   "ok": true,
   "paises": [
     {
@@ -18,11 +18,6 @@
       "usuarios": 3
     },
     {
-      "codigo": "CA",
-      "pais": "Canada",
-      "usuarios": 1
-    },
-    {
       "codigo": "FR",
       "pais": "France",
       "usuarios": 1
@@ -37,7 +32,7 @@
   "visitantes": {
     "hoy": 0,
     "total": 236,
-    "ultimos30Dias": 24,
-    "ultimos7Dias": 5
+    "ultimos30Dias": 23,
+    "ultimos7Dias": 4
   }
 }
