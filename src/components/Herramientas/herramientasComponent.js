@@ -1,4 +1,5 @@
 import { bannerComponent } from "../Banner/bannerComponent.js";
+import { parseXmeraRows, generateXmeraCode } from "../../utils/xmeraCalificaciones.js";
 
 export function herramientasComponent() {
     const container = document.createElement("section");
@@ -8,7 +9,7 @@ export function herramientasComponent() {
     container.innerHTML = `
         <div class="mb-8 text-center">
             <p class="mb-2 text-sm font-bold uppercase tracking-wide text-sky-600">
-                Grupo de Investigación Kernel
+                Grupo de Investigación Ker(F)
             </p>
 
             <h1 class="text-3xl font-black leading-tight text-slate-800 md:text-4xl">
@@ -52,9 +53,9 @@ export function herramientasComponent() {
                         </h2>
 
                         <p class="mt-3 max-w-3xl leading-relaxed text-slate-500">
-                            Pega las matrículas y calificaciones desde Excel o
-                            escríbelas manualmente. Cada estudiante debe ocupar
-                            una línea.
+                            Copia desde Excel tres columnas: matrícula,
+                            prácticas/asignaciones y parcial, en ese orden y
+                            sin encabezados. Cada estudiante debe ocupar una línea.
                         </p>
                     </div>
 
@@ -73,9 +74,9 @@ export function herramientasComponent() {
                         </label>
 
                         <p class="mb-4 text-sm text-slate-500">
-                            Ejemplo: matrícula, primera nota y segunda nota.
-                            Puedes separar los valores con espacios,
-                            tabulaciones, comas o punto y coma.
+                            Prácticas/asignaciones: de 0 a 60. Parcial: de 0 a 20,
+                            siempre dentro del máximo de cada casilla de Xmera.
+                            Una celda vacía conserva la nota existente; 0 coloca cero.
                         </p>
 
                         <textarea
@@ -83,10 +84,7 @@ export function herramientasComponent() {
                             rows="14"
                             spellcheck="false"
                             class="w-full resize-y rounded-xl border border-slate-300 bg-white p-4 font-mono text-sm text-slate-800 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                            placeholder="20250893    18    4
-20212267    13    5
-202010828    19
-20252000     0"
+                            placeholder="2025-0893&#9;45&#9;18&#10;2021-2267&#9;52&#9;16"
                         ></textarea>
 
                         <div class="mt-4 flex flex-col gap-3 sm:flex-row">
@@ -109,6 +107,8 @@ export function herramientasComponent() {
 
                         <div
                             id="xmera-message"
+                            role="status"
+                            aria-live="polite"
                             class="mt-4 hidden rounded-xl px-4 py-3 text-sm font-semibold"
                         ></div>
                     </div>
@@ -121,7 +121,8 @@ export function herramientasComponent() {
                                 </p>
 
                                 <p class="mt-1 text-xs text-slate-400">
-                                    Copia este código y pégalo en Xmera.
+                                    Completa las coincidencias por matrícula y pulsa
+                                    «Guardar Calificaciones» en Xmera.
                                 </p>
                             </div>
 
@@ -138,22 +139,33 @@ export function herramientasComponent() {
                         <pre
                             id="xmera-output"
                             class="min-h-[350px] max-h-[520px] overflow-auto whitespace-pre-wrap break-words rounded-xl bg-black/30 p-4 font-mono text-sm text-emerald-300"
-                        >var data_todo = {
-};</pre>
+                        ></pre>
                     </div>
                 </div>
 
                 <div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
                     <p class="font-black text-amber-900">
-                        Formato admitido
+                        Antes de guardar
                     </p>
 
                     <p class="mt-2 text-sm text-amber-800">
-                        Cada línea debe comenzar con una matrícula y contener al
-                        menos una calificación numérica. Las filas vacías serán
-                        ignoradas.
+                        La segunda columna se coloca en «Prácticas» o «Asignaciones»,
+                        según la pantalla. Mantén las tres columnas, aunque una nota
+                        esté vacía. No se convierten las notas ni se cambia su escala.
+                        Si alguna supera el límite de su casilla, el proceso se detiene
+                        antes de modificar las notas.
                     </p>
                 </div>
+
+                <ol class="mt-5 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-600">
+                    <li>En ITLA, abre «Digitar Calificación» en la sección y el parcial correspondientes.</li>
+                    <li>Revisa el interruptor «Publicar»: el código conserva su estado.</li>
+                    <li>Genera y copia el código. Pégalo en la consola de esa pantalla y pulsa Enter.
+                        En Chrome o Edge: Ctrl + Mayús + J en Windows; ⌘ + ⌥ + J en Mac.</li>
+                    <li>Comprueba el aviso de guardado de Xmera. Solo se completan las matrículas
+                        cargadas en la página; las ausentes se enumeran en la consola.</li>
+                </ol>
+                <p class="mt-4 text-sm text-slate-500">Las calificaciones se procesan en tu navegador; esta herramienta no las envía al sitio de Ker(F).</p>
             </div>
         </div>
 
@@ -173,7 +185,7 @@ export function herramientasComponent() {
     const panelBanner = container.querySelector("#panel-banner");
 
     function resetOutput() {
-        output.textContent = "var data_todo = {\n};";
+        output.textContent = "";
         copyButton.disabled = true;
     }
 
@@ -208,178 +220,6 @@ export function herramientasComponent() {
         }
     }
 
-    function parseRows(text) {
-        const lines = text
-            .split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(Boolean);
-
-        const records = [];
-        const errors = [];
-        const matriculas = new Set();
-
-        lines.forEach((line, index) => {
-            const values = line
-                .split(/[\t,; ]+/)
-                .map(value => value.trim())
-                .filter(Boolean);
-
-            const lineNumber = index + 1;
-            const matricula = values[0];
-            const grades = values.slice(1);
-
-            if (!matricula) {
-                errors.push(`Línea ${lineNumber}: falta la matrícula.`);
-                return;
-            }
-
-            if (!/^\d+$/.test(matricula)) {
-                errors.push(
-                    `Línea ${lineNumber}: la matrícula "${matricula}" no es válida.`
-                );
-                return;
-            }
-
-            if (matriculas.has(matricula)) {
-                errors.push(
-                    `Línea ${lineNumber}: la matrícula ${matricula} está repetida.`
-                );
-                return;
-            }
-
-            if (grades.length === 0) {
-                errors.push(
-                    `Línea ${lineNumber}: falta al menos una calificación.`
-                );
-                return;
-            }
-
-            const numericGrades = grades.map(value => Number(value));
-
-            if (numericGrades.some(value => !Number.isFinite(value))) {
-                errors.push(
-                    `Línea ${lineNumber}: existe una calificación no numérica.`
-                );
-                return;
-            }
-
-            matriculas.add(matricula);
-
-            records.push({
-                matricula,
-                grades: numericGrades
-            });
-        });
-
-        return {
-            records,
-            errors
-        };
-    }
-
-    function generateCode(records) {
-        const rows = records.map(({ matricula, grades }) => {
-            return `  "${matricula}":[${grades.join(",")}]`;
-        });
-
-        return `var data_todo = {
-${rows.join(",\n")}
-};
-
-var contenedor = document.querySelector(
-  ".standardTable, form.form-table-special, table"
-);
-
-if (!contenedor) {
-  console.log("No se encontró la tabla de calificaciones.");
-} else {
-  var filas = contenedor.querySelectorAll("tbody tr");
-
-  if (filas.length === 0) {
-    filas = contenedor.querySelectorAll("tr");
-  }
-
-  function asignarValor(input, valor) {
-    var descriptor = Object.getOwnPropertyDescriptor(
-      Object.getPrototypeOf(input),
-      "value"
-    );
-
-    if (descriptor && descriptor.set) {
-      descriptor.set.call(input, valor);
-    } else {
-      input.value = valor;
-    }
-
-    input.dispatchEvent(
-      new Event("input", { bubbles: true })
-    );
-
-    input.dispatchEvent(
-      new Event("change", { bubbles: true })
-    );
-
-    input.dispatchEvent(
-      new Event("blur", { bubbles: true })
-    );
-  }
-
-  filas.forEach(function(fila) {
-    try {
-      var celdas = fila.querySelectorAll("td");
-
-      if (celdas.length === 0) {
-        return;
-      }
-
-      var matricula = celdas[0].innerText
-        .trim()
-        .replace(/[^0-9]/g, "");
-
-      if (!matricula) {
-        return;
-      }
-
-      if (
-        Object.prototype.hasOwnProperty.call(
-          data_todo,
-          matricula
-        )
-      ) {
-        var notas = data_todo[matricula];
-
-        var inputs = fila.querySelectorAll(
-          "input[type='number'], input[type='text']"
-        );
-
-        for (
-          var i = 0;
-          i < notas.length && i < inputs.length;
-          i++
-        ) {
-          asignarValor(inputs[i], notas[i]);
-        }
-
-        console.log(
-          matricula + " aplicada correctamente"
-        );
-      } else {
-        console.log(
-          matricula + " sin notas"
-        );
-      }
-    } catch (error) {
-      console.log(
-        "Problema con una fila:",
-        error
-      );
-    }
-  });
-
-  console.log("Proceso de asignación finalizado.");
-}`;
-    }
-
     function activateTab(activeTab) {
         const showXmera = activeTab === "xmera";
 
@@ -396,40 +236,25 @@ if (!contenedor) {
     }
 
     generateButton.addEventListener("click", () => {
-        const text = input.value.trim();
+        resetOutput();
 
-        if (!text) {
-            resetOutput();
-
-            showMessage(
-                "Debes introducir al menos una matrícula con sus calificaciones.",
-                "error"
-            );
-
-            return;
-        }
-
-        const { records, errors } = parseRows(text);
-
-        if (errors.length > 0) {
-            resetOutput();
+        try {
+            const records = parseXmeraRows(input.value);
+            output.textContent = generateXmeraCode(records);
+            copyButton.disabled = false;
 
             showMessage(
-                errors.join(" "),
-                "error"
+                `Código listo: ${records.length} matrícula${records.length === 1 ? "" : "s"}. Se guardarán únicamente las coincidencias de la página abierta.`
             );
-
-            return;
+        } catch (error) {
+            showMessage(error.message, "error");
         }
+    });
 
-        output.textContent = generateCode(records);
-        copyButton.disabled = false;
-
-        showMessage(
-            `Código generado correctamente para ${records.length} estudiante${
-                records.length === 1 ? "" : "s"
-            }.`
-        );
+    input.addEventListener("input", () => {
+        resetOutput();
+        message.textContent = "";
+        message.classList.add("hidden");
     });
 
     copyButton.addEventListener("click", async () => {
@@ -507,3 +332,4 @@ if (!contenedor) {
 
     return container;
 }
+
