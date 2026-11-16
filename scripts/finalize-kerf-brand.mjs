@@ -19,6 +19,9 @@ const TEXT_EXTENSIONS = new Set([
 ]);
 
 const SKIP_FILES = new Set([
+  // Los avisos y licencias deben conservarse íntegros en el artefacto final.
+  "LICENSE",
+  "THIRD_PARTY_NOTICES.md",
   "kernel-brand-identity.js",
   "kernel-global-logo-fix.js"
 ]);
@@ -193,3 +196,4 @@ console.log(
   `Identidad Ker(F) finalizada: ${changedFiles} archivos ajustados; ` +
   `${replacements} grupos de sustituciones aplicados.`
 );
+
