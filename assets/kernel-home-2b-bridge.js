@@ -51,7 +51,7 @@
     currentLanguage() === "en"
       ? {
           welcome: "Welcome to",
-          name: "El Kernel",
+          name: "Ker(F)",
           group: "Research Group",
           intro:
             "We generate knowledge, develop solutions and promote scientific and technological innovation with social and academic impact.",
@@ -117,7 +117,7 @@
         }
       : {
           welcome: "Bienvenidos a",
-          name: "El Kernel",
+          name: "Ker(F)",
           group: "Grupo de Investigación",
           intro:
             "Generamos conocimiento, desarrollamos soluciones y promovemos la innovación científica y tecnológica con impacto académico y social.",

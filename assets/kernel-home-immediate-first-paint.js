@@ -71,7 +71,7 @@
         </style>
         <div class="kernel-home-first-paint__hero">
           <p class="kernel-home-first-paint__eyebrow">${text.welcome}</p>
-          <h1>El Kernel</h1>
+          <h1>Ker(F)</h1>
           <p class="kernel-home-first-paint__group">${text.group}</p>
           <p class="kernel-home-first-paint__intro">${text.intro}</p>
           <div class="kernel-home-first-paint__actions">
