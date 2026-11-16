@@ -62,7 +62,16 @@ assert.match(sourceIndex, /kernel-global-logo-fix\.js\?v=20260821-1/);
 assert.match(sourceIndex, /kernel-brand-identity\.js\?v=20260821-1/);
 assert.match(sourceIndex, /logo-kerf-20260821\.png\?v=20260821-1/);
 
-assert.match(header, /import kerFLogo from "\.\.\/\.\.\/assets\/KerF\.png"/);
+const importedOfficialLogo =
+  /import kerFLogo from "\.\.\/\.\.\/assets\/KerF\.png"/.test(header) &&
+  /src="\$\{kerFLogo\}"/.test(header);
+const publicOfficialLogo =
+  /const KERF_LOGO = "\/assets\/logo-kerf-20260821\.png(?:\?v=[\w-]+)?";/.test(header) &&
+  /src="\$\{KERF_LOGO\}"/.test(header);
+assert.ok(
+  importedOfficialLogo || publicOfficialLogo,
+  "La cabecera debe mostrar el logotipo oficial, importado o servido desde public/assets."
+);
 assert.match(header, /Grupo de Investigación Ker\(F\)/);
 assert.doesNotMatch(header, />El Kernel</);
 
@@ -94,3 +103,4 @@ assert.match(packageJson, /npm run test:brand/);
 console.log(
   "✓ La identidad web usa el logotipo oficial y el nombre Grupo de Investigación Ker(F), con referencia al registro ONAPI 947795."
 );
+
