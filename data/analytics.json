@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-19T13:36:06.796Z",
+  "actualizadoEn": "2026-11-19T21:47:19.927Z",
   "ok": true,
   "paises": [
     {
@@ -30,7 +30,7 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
+    "hoy": 1,
     "total": 241,
     "ultimos30Dias": 27,
     "ultimos7Dias": 9
