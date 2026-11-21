@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-20T10:29:15.059Z",
+  "actualizadoEn": "2026-11-21T00:13:39.437Z",
   "ok": true,
   "paises": [
     {
@@ -18,21 +18,26 @@
       "usuarios": 4
     },
     {
+      "codigo": "FR",
+      "pais": "France",
+      "usuarios": 3
+    },
+    {
       "codigo": "SG",
       "pais": "Singapore",
       "usuarios": 2
     },
     {
-      "codigo": "FR",
-      "pais": "France",
+      "codigo": "MG",
+      "pais": "Madagascar",
       "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 242,
-    "ultimos30Dias": 28,
-    "ultimos7Dias": 9
+    "hoy": 3,
+    "total": 245,
+    "ultimos30Dias": 31,
+    "ultimos7Dias": 12
   }
 }
