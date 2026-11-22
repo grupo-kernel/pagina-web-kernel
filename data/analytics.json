@@ -1,11 +1,11 @@
 {
-  "actualizadoEn": "2026-11-21T07:03:07.933Z",
+  "actualizadoEn": "2026-11-22T07:33:55.674Z",
   "ok": true,
   "paises": [
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 16
+      "usuarios": 15
     },
     {
       "codigo": "DE",
@@ -13,19 +13,29 @@
       "usuarios": 5
     },
     {
-      "codigo": "US",
-      "pais": "United States",
-      "usuarios": 4
-    },
-    {
       "codigo": "FR",
       "pais": "France",
+      "usuarios": 3
+    },
+    {
+      "codigo": "US",
+      "pais": "United States",
       "usuarios": 3
     },
     {
       "codigo": "SG",
       "pais": "Singapore",
       "usuarios": 2
+    },
+    {
+      "codigo": "AR",
+      "pais": "Argentina",
+      "usuarios": 1
+    },
+    {
+      "codigo": "BR",
+      "pais": "Brazil",
+      "usuarios": 1
     },
     {
       "codigo": "MG",
@@ -36,8 +46,8 @@
   "propiedad": "546100922",
   "visitantes": {
     "hoy": 0,
-    "total": 245,
-    "ultimos30Dias": 31,
-    "ultimos7Dias": 12
+    "total": 246,
+    "ultimos30Dias": 30,
+    "ultimos7Dias": 13
   }
 }
