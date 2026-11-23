@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-23T09:45:07.518Z",
+  "actualizadoEn": "2026-11-23T21:40:40.809Z",
   "ok": true,
   "paises": [
     {
@@ -41,13 +41,18 @@
       "codigo": "MG",
       "pais": "Madagascar",
       "usuarios": 1
+    },
+    {
+      "codigo": "PH",
+      "pais": "Philippines",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 247,
-    "ultimos30Dias": 31,
-    "ultimos7Dias": 13
+    "hoy": 1,
+    "total": 248,
+    "ultimos30Dias": 32,
+    "ultimos7Dias": 14
   }
 }
