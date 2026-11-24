@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-24T05:29:41.804Z",
+  "actualizadoEn": "2026-11-24T16:08:38.802Z",
   "ok": true,
   "paises": [
     {
@@ -8,14 +8,14 @@
       "usuarios": 15
     },
     {
+      "codigo": "US",
+      "pais": "United States",
+      "usuarios": 8
+    },
+    {
       "codigo": "DE",
       "pais": "Germany",
       "usuarios": 5
-    },
-    {
-      "codigo": "US",
-      "pais": "United States",
-      "usuarios": 4
     },
     {
       "codigo": "FR",
@@ -46,13 +46,18 @@
       "codigo": "PH",
       "pais": "Philippines",
       "usuarios": 1
+    },
+    {
+      "codigo": "TH",
+      "pais": "Thailand",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
     "hoy": 0,
-    "total": 248,
-    "ultimos30Dias": 32,
-    "ultimos7Dias": 12
+    "total": 253,
+    "ultimos30Dias": 37,
+    "ultimos7Dias": 17
   }
 }
