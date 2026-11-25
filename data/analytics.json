@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-24T16:08:38.802Z",
+  "actualizadoEn": "2026-11-25T00:36:33.341Z",
   "ok": true,
   "paises": [
     {
@@ -38,6 +38,11 @@
       "usuarios": 1
     },
     {
+      "codigo": "JO",
+      "pais": "Jordan",
+      "usuarios": 1
+    },
+    {
       "codigo": "MG",
       "pais": "Madagascar",
       "usuarios": 1
@@ -55,9 +60,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 253,
-    "ultimos30Dias": 37,
-    "ultimos7Dias": 17
+    "hoy": 1,
+    "total": 254,
+    "ultimos30Dias": 38,
+    "ultimos7Dias": 18
   }
 }
