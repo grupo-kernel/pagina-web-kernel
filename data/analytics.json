@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-26T02:10:01.948Z",
+  "actualizadoEn": "2026-11-26T10:47:02.169Z",
   "ok": true,
   "paises": [
     {
@@ -10,7 +10,7 @@
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 10
+      "usuarios": 12
     },
     {
       "codigo": "DE",
@@ -18,13 +18,13 @@
       "usuarios": 5
     },
     {
-      "codigo": "FR",
-      "pais": "France",
-      "usuarios": 3
-    },
-    {
       "codigo": "SG",
       "pais": "Singapore",
+      "usuarios": 4
+    },
+    {
+      "codigo": "FR",
+      "pais": "France",
       "usuarios": 3
     },
     {
@@ -66,13 +66,18 @@
       "codigo": "TR",
       "pais": "Türkiye",
       "usuarios": 1
+    },
+    {
+      "codigo": "VE",
+      "pais": "Venezuela",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 3,
-    "total": 258,
-    "ultimos30Dias": 42,
-    "ultimos7Dias": 19
+    "hoy": 0,
+    "total": 263,
+    "ultimos30Dias": 46,
+    "ultimos7Dias": 22
   }
 }
