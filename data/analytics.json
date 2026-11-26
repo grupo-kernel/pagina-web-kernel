@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-25T19:11:17.277Z",
+  "actualizadoEn": "2026-11-26T02:10:01.948Z",
   "ok": true,
   "paises": [
     {
@@ -25,7 +25,7 @@
     {
       "codigo": "SG",
       "pais": "Singapore",
-      "usuarios": 2
+      "usuarios": 3
     },
     {
       "codigo": "AR",
@@ -48,6 +48,11 @@
       "usuarios": 1
     },
     {
+      "codigo": "PK",
+      "pais": "Pakistan",
+      "usuarios": 1
+    },
+    {
       "codigo": "PH",
       "pais": "Philippines",
       "usuarios": 1
@@ -56,13 +61,18 @@
       "codigo": "TH",
       "pais": "Thailand",
       "usuarios": 1
+    },
+    {
+      "codigo": "TR",
+      "pais": "Türkiye",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
-    "total": 256,
-    "ultimos30Dias": 40,
-    "ultimos7Dias": 17
+    "hoy": 3,
+    "total": 258,
+    "ultimos30Dias": 42,
+    "ultimos7Dias": 19
   }
 }
