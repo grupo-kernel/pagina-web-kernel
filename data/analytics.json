@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-26T19:53:23.287Z",
+  "actualizadoEn": "2026-11-27T02:29:18.698Z",
   "ok": true,
   "paises": [
     {
@@ -10,7 +10,7 @@
     {
       "codigo": "US",
       "pais": "United States",
-      "usuarios": 12
+      "usuarios": 13
     },
     {
       "codigo": "DE",
@@ -28,13 +28,28 @@
       "usuarios": 3
     },
     {
+      "codigo": "BR",
+      "pais": "Brazil",
+      "usuarios": 2
+    },
+    {
+      "codigo": "PK",
+      "pais": "Pakistan",
+      "usuarios": 2
+    },
+    {
+      "codigo": "TR",
+      "pais": "Türkiye",
+      "usuarios": 2
+    },
+    {
       "codigo": "AR",
       "pais": "Argentina",
       "usuarios": 1
     },
     {
-      "codigo": "BR",
-      "pais": "Brazil",
+      "codigo": "AU",
+      "pais": "Australia",
       "usuarios": 1
     },
     {
@@ -48,13 +63,13 @@
       "usuarios": 1
     },
     {
-      "codigo": "PK",
-      "pais": "Pakistan",
+      "codigo": "PH",
+      "pais": "Philippines",
       "usuarios": 1
     },
     {
-      "codigo": "PH",
-      "pais": "Philippines",
+      "codigo": "RO",
+      "pais": "Romania",
       "usuarios": 1
     },
     {
@@ -68,11 +83,6 @@
       "usuarios": 1
     },
     {
-      "codigo": "TR",
-      "pais": "Türkiye",
-      "usuarios": 1
-    },
-    {
       "codigo": "VE",
       "pais": "Venezuela",
       "usuarios": 1
@@ -80,9 +90,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
-    "total": 264,
-    "ultimos30Dias": 47,
-    "ultimos7Dias": 23
+    "hoy": 7,
+    "total": 270,
+    "ultimos30Dias": 53,
+    "ultimos7Dias": 29
   }
 }
