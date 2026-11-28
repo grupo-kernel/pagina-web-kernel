@@ -1,11 +1,11 @@
 {
-  "actualizadoEn": "2026-11-28T02:17:53.050Z",
+  "actualizadoEn": "2026-11-28T10:39:15.804Z",
   "ok": true,
   "paises": [
     {
       "codigo": "DO",
       "pais": "Dominican Republic",
-      "usuarios": 16
+      "usuarios": 15
     },
     {
       "codigo": "US",
@@ -23,13 +23,18 @@
       "usuarios": 4
     },
     {
+      "codigo": "BR",
+      "pais": "Brazil",
+      "usuarios": 3
+    },
+    {
       "codigo": "FR",
       "pais": "France",
       "usuarios": 3
     },
     {
-      "codigo": "BR",
-      "pais": "Brazil",
+      "codigo": "JO",
+      "pais": "Jordan",
       "usuarios": 2
     },
     {
@@ -68,11 +73,6 @@
       "usuarios": 1
     },
     {
-      "codigo": "JO",
-      "pais": "Jordan",
-      "usuarios": 1
-    },
-    {
       "codigo": "MG",
       "pais": "Madagascar",
       "usuarios": 1
@@ -86,13 +86,18 @@
       "codigo": "TN",
       "pais": "Tunisia",
       "usuarios": 1
+    },
+    {
+      "codigo": "GB",
+      "pais": "United Kingdom",
+      "usuarios": 1
     }
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 1,
-    "total": 273,
-    "ultimos30Dias": 57,
-    "ultimos7Dias": 30
+    "hoy": 3,
+    "total": 276,
+    "ultimos30Dias": 59,
+    "ultimos7Dias": 32
   }
 }
