@@ -1,5 +1,5 @@
 {
-  "actualizadoEn": "2026-11-27T11:11:16.729Z",
+  "actualizadoEn": "2026-11-28T02:17:53.050Z",
   "ok": true,
   "paises": [
     {
@@ -43,6 +43,11 @@
       "usuarios": 2
     },
     {
+      "codigo": "RO",
+      "pais": "Romania",
+      "usuarios": 2
+    },
+    {
       "codigo": "TR",
       "pais": "Türkiye",
       "usuarios": 2
@@ -73,11 +78,6 @@
       "usuarios": 1
     },
     {
-      "codigo": "RO",
-      "pais": "Romania",
-      "usuarios": 1
-    },
-    {
       "codigo": "TH",
       "pais": "Thailand",
       "usuarios": 1
@@ -90,9 +90,9 @@
   ],
   "propiedad": "546100922",
   "visitantes": {
-    "hoy": 0,
-    "total": 272,
-    "ultimos30Dias": 56,
-    "ultimos7Dias": 29
+    "hoy": 1,
+    "total": 273,
+    "ultimos30Dias": 57,
+    "ultimos7Dias": 30
   }
 }
